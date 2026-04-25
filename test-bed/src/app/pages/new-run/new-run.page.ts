@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CatalogService } from '../../data/catalog.service';
@@ -104,6 +105,14 @@ export class NewRunPage {
 
   private readonly _selectedRoles = signal<Set<string>>(new Set());
 
+  // Bridge the form's status (an RxJS observable) to a signal so the
+  // computed below tracks it like any other signal. Without this, `canSubmit`
+  // only re-evaluates when _selectedRoles changes, never when the form becomes
+  // valid — which is the bug that left the Start-run button stuck disabled.
+  private readonly formStatus = toSignal(this.form.statusChanges, {
+    initialValue: this.form.status,
+  });
+
   readonly roles = computed(() => this.catalog.roles());
 
   readonly roleSummary = computed(() => {
@@ -114,20 +123,11 @@ export class NewRunPage {
   });
 
   readonly canSubmit = computed(() => {
-    return this.form.valid && this._selectedRoles().size > 0;
+    return this.formStatus() === 'VALID' && this._selectedRoles().size > 0;
   });
 
   constructor() {
     void this.catalog.load();
-    // Re-emit `valid` changes via a tracked signal so canSubmit recomputes.
-    effect(onCleanup => {
-      const sub = this.form.statusChanges.subscribe(() => {
-        // statusChanges fires on validity transitions; signal read in canSubmit
-        // already covers it, but we touch _selectedRoles to nudge the computed.
-        this._selectedRoles.update(s => new Set(s));
-      });
-      onCleanup(() => sub.unsubscribe());
-    });
   }
 
   isSelected(role: string): boolean {
