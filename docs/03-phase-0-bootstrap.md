@@ -24,8 +24,8 @@ title: Open the application's starting page in a fresh browser
 goal: |
   Confirm that someone with no account can reach a meaningful starting
   page that explains what to do next.
-role_functions:
-  - access-fresh-application
+roles:
+  - Administrator
 preconditions:
   - The application is installed and reachable at its expected URL.
   - No accounts have been created yet.
@@ -87,8 +87,8 @@ title: Create the first administrator account
 goal: |
   Establish the first user. This person will configure the rest of
   the company.
-role_functions:
-  - register-first-admin
+roles:
+  - Administrator
 preconditions:
   - You completed P0-INSTALL-001.
   - No user accounts exist yet.
@@ -181,8 +181,8 @@ goal: |
   Make sure the first admin's account has the permissions required to
   perform the rest of Phase 0. A first admin who can sign in but
   can't reach company settings is a critical bug.
-role_functions:
-  - verify-admin-permissions
+roles:
+  - Administrator
 preconditions:
   - You completed P0-ADMIN-001 and are signed in as the first admin.
 prerequisite_cases:
@@ -230,8 +230,8 @@ goal: |
   Put the company's real name and address into the system so it can
   appear on documents like invoices, purchase orders, and packing
   slips later.
-role_functions:
-  - configure-tenant-identity
+roles:
+  - Administrator
 preconditions:
   - You are signed in as the first admin.
   - No company-level settings have been entered.
@@ -293,8 +293,8 @@ title: Set the company's primary language and regional formats
 goal: |
   Configure the language the system displays in and the formats used
   for dates, numbers, and currency.
-role_functions:
-  - configure-tenant-locale
+roles:
+  - Administrator
 preconditions:
   - The company identity is saved (from P0-TENANT-001).
 prerequisite_cases:
@@ -360,8 +360,8 @@ title: Set the primary time zone
 goal: |
   Make sure timestamps displayed in the application use the company's
   local time, not the server's time.
-role_functions:
-  - configure-tenant-timezone
+roles:
+  - Administrator
 preconditions:
   - Company identity is saved.
 prerequisite_cases:
@@ -419,9 +419,8 @@ goal: |
   Set the company's accounting calendar and the currency it operates
   in. This information shapes financial reports for the rest of the
   company's life in the system.
-role_functions:
-  - configure-fiscal-year
-  - configure-primary-currency
+roles:
+  - Administrator
 preconditions:
   - Company identity is saved.
   - No financial transactions have been recorded.
@@ -476,8 +475,8 @@ goal: |
   Pick the method the system uses to put a dollar value on inventory
   and finished goods. This is a one-time choice that affects every
   financial number the company produces.
-role_functions:
-  - configure-costing-model
+roles:
+  - Administrator
 preconditions:
   - Fiscal year and currency are saved.
   - No inventory or production transactions exist.
@@ -550,8 +549,8 @@ goal: |
   Decide how the system will record financial transactions: by
   pushing them automatically to a connected accounting system like
   QuickBooks, or by tracking them inside this application alone.
-role_functions:
-  - configure-accounting-integration
+roles:
+  - Administrator
 preconditions:
   - Costing model is saved.
 prerequisite_cases:
@@ -652,8 +651,8 @@ goal: |
   Decide which package carriers (UPS, FedEx, USPS, freight providers)
   the system will connect to for live rates and label printing — or
   configure for manual tracking entry.
-role_functions:
-  - configure-shipping-integrations
+roles:
+  - Administrator
 preconditions:
   - Costing model is saved.
 prerequisite_cases:
@@ -699,8 +698,8 @@ goal: |
   Set up the way the system figures sales tax on customer invoices.
   This can be a connected service that calculates tax automatically,
   or manually entered tax rates the company maintains itself.
-role_functions:
-  - configure-tax-calculation
+roles:
+  - Administrator
 preconditions:
   - Company identity is saved.
 prerequisite_cases:
@@ -746,8 +745,8 @@ goal: |
   "Floor Operator," "Bookkeeper") that will be assigned to users
   later. A small shop may have only two or three; a large
   organization may have a dozen or more.
-role_functions:
-  - configure-roles
+roles:
+  - Administrator
 preconditions:
   - Admin account is signed in.
   - No additional users have been created yet.
@@ -817,8 +816,8 @@ goal: |
   Take one of the roles you defined and assign it a meaningful set
   of permissions. Verify that the permission system uses plain
   language a non-technical person can understand.
-role_functions:
-  - configure-role-permissions
+roles:
+  - Administrator
 preconditions:
   - Roles are defined (from P0-USER-001).
 prerequisite_cases:
@@ -875,9 +874,8 @@ title: Invite a second user and assign them a role
 goal: |
   Verify that the first admin can create a second user, assign them
   a role, and that the new user can sign in successfully.
-role_functions:
-  - invite-user
-  - assign-user-role
+roles:
+  - Administrator
 preconditions:
   - Roles are defined and at least one (Floor Operator) has
     permissions configured.
@@ -962,8 +960,8 @@ goal: |
   Make sure the configuration work done so far is genuinely saved,
   not just held in memory or a session. This is a sanity check
   before the company starts entering valuable data.
-role_functions:
-  - verify-data-persistence
+roles:
+  - Administrator
 preconditions:
   - All previous Phase 0 cases are completed.
 prerequisite_cases:

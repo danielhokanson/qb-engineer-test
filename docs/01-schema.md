@@ -13,7 +13,7 @@ The author writes prose. Plain English steps. Multi-line notes. JSON makes that 
 | `id` | string | Stable identifier. Format `PHASE-AREA-NNN` (e.g. `P0-TENANT-001`) or `TUT-NNN` for tutorial. Never reused, never renumbered, never reordered. |
 | `title` | string | Short human-readable name. Shows in the case list. Should make sense out of context. |
 | `goal` | string | One sentence in plain English: what is the tester trying to accomplish? Written so a brand-new tester gets it without reading the steps. |
-| `role_functions` | list | Tags identifying which functional capabilities this case exercises (e.g. `register-first-admin`, `configure-tenant-locale`). Roles are composed from these elsewhere; this field lists the ingredients, not the role. |
+| `roles` | list | Roles that own or execute this case in a typical organization (e.g. `Administrator`, `Floor Operator`, `Procurement`). One or more. The runner derives the available role list by taking the union across all cases — there is no separate roles file. |
 | `preconditions` | list | Plain-English statements describing the state the system must be in before the case can run. One statement per item. |
 | `steps` | list | Ordered list of step objects. See "Step structure" below. |
 | `expected_overall` | string | What should be true after the last step succeeds. The tester reads this before starting to know what "done" looks like. |
@@ -108,8 +108,8 @@ title: Set the company's primary language and locale
 goal: |
   Configure the tenant so the application displays in the company's
   preferred language and uses local date and number formats.
-role_functions:
-  - configure-tenant-locale
+roles:
+  - Administrator
 preconditions:
   - The first admin account is registered and signed in.
   - No company-level settings have been saved yet — this is a fresh tenant.

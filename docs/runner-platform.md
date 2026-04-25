@@ -118,7 +118,7 @@ type Case = {
   id: string;
   title: string;
   goal: string;
-  role_functions: string[];
+  roles: string[];
   preconditions: string[];
   steps: Step[];
   expected_overall: string;

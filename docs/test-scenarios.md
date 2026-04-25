@@ -113,7 +113,7 @@ The full schema is defined in [`01-schema.md`](01-schema.md). This section summa
 | `id` | Stable identifier, `PHASE-AREA-NNN` or `TUT-NNN`. Never renumbered, reused, or reordered, even if a case is deleted. |
 | `title` | Short human-readable name. Must make sense out of context. |
 | `goal` | One plain-English sentence: what is the tester trying to accomplish? |
-| `role_functions` | Tags listing the functional capabilities the case exercises. Roles are *composed* from these tags elsewhere; the case itself doesn't pre-assign a role. |
+| `roles` | Roles that own or execute this case in a typical organization. One or more. The runner derives the available role list by taking the union across all cases. |
 | `preconditions` | State the system must be in before the case can run, one item per line. |
 | `steps` | Ordered list of action-and-expected pairs (see Section 3.3). |
 | `expected_overall` | What is true after the last step succeeds. The tester reads this before starting to know what "done" looks like. |
@@ -280,7 +280,7 @@ Preconditions should be specific enough that the runner can mechanically check t
 
 1. Start with the case ID and title. Decide where it slots in the phase sequence.
 2. Write the goal — one sentence, plain English.
-3. List preconditions and tag `role_functions`.
+3. List preconditions and tag `roles`.
 4. Draft the steps. Use concrete values. Verify each `expected` is checkable.
 5. Write `expected_overall` and `pass_criteria`.
 6. Add negative variants for any input or state-transition cases.
@@ -339,49 +339,43 @@ Future enhancement: optional GitHub Issues integration — sign in with a person
 
 ---
 
-## 7. Roles and role composition
+## 7. Roles
 
-### 7.1 Why roles aren't tagged on cases directly
+### 7.1 How roles are declared
 
-Cases don't carry a single "role" tag because the same functional work maps to different roles in different organizations. A 4-person shop has one person doing what 15 different people do at a 200-person shop. Tagging cases with concrete roles would force either parallel libraries (duplication) or a single library that doesn't fit anyone (compromise).
+Each case declares one or more `roles` directly — concrete role names like `Administrator`, `Floor Operator`, `Procurement`, `Production Manager`. The runner derives the available role list by taking the union across all cases. There is no separate roles file and no role-composition layer.
 
-Instead, cases tag `role_functions` — the *functional capabilities* the case exercises. Roles are defined separately as compositions of role-functions, and the role-to-function mapping varies by organization size.
+When a tester picks roles at the start of a run, the runner shows them only the cases whose `roles` list intersects their selection.
 
-### 7.2 The role mapping file
+### 7.2 Multi-role cases
 
-A `role-functions.yml` file (planned) declares standard roles and the role-functions each one owns:
+A case that two roles realistically share (e.g., a Floor Operator scanning a work order start, but a Production Manager doing the same thing during coverage) lists both. The case still appears once in the library; it just shows up for whichever role is selected.
 
-```yaml
-roles:
-  small-shop:
-    owner-operator:
-      - register-first-admin
-      - configure-tenant-locale
-      - configure-shipping
-      - ... (40 more)
-    worker:
-      - operate-scanner
-      - record-labor
-      - ... (10 more)
+### 7.3 Role granularity
 
-  mid-market:
-    administrator:
-      - register-first-admin
-      - configure-tenant-locale
-    floor-operator:
-      - operate-scanner
-      - record-labor
-    procurement:
-      - configure-vendors
-      - create-purchase-order
-    # ... etc.
-```
+Pick the role that owns the work in a typical mid-market organization. Smaller shops collapse roles (one owner-operator does everything); larger shops split them further (Lead Operator vs. Floor Operator). The library doesn't try to cover all variations — it picks one defensible role-per-case mapping and trusts that small-shop testers select multiple roles when they wear multiple hats.
 
-The runner uses the active organization size to render role-specific reference appendices. The case content itself doesn't change.
+If a case genuinely spans roles in every organization (e.g., "review a draft before it ships" is done by whoever's available), list two or three. Don't list every plausible role — that defeats the point of role filtering.
 
-### 7.3 Custom roles
+### 7.4 Standard roles in this library
 
-Customers with non-standard role splits can supply their own mapping file. The library's case content stays unchanged; only the mapping changes.
+The library uses a deliberately small set of role names so that selecting roles at run time is meaningful rather than overwhelming. Current standard roles:
+
+- `Administrator` — first-time setup, tenant configuration, integrations
+- `IT Admin` — user management, role permissions, system-wide settings
+- `Controller` — chart of accounts, tax configuration, financial periods
+- `HR` — employee records, onboarding, time-off, compliance documents
+- `Production Manager` — work centers, routings, scheduling, sprint/kanban setup
+- `Production Planner` — release work orders, allocate to operators
+- `Floor Operator` — scanner-driven production-floor work
+- `Procurement` — vendors, purchase orders, receiving
+- `Warehouse / Logistics` — bin transfers, picks, ships
+- `Maintenance Manager` — assets, PM schedules, work orders for repair
+- `Maintenance Tech` — executes maintenance work orders
+- `QC Inspector` — inspection gates, fail/rework loops
+- `Sales / Account Manager` — leads, quotes, customers, sales orders
+
+New roles can be added when a case genuinely doesn't fit any existing one — but additions should be discussed before introduction. Drift in the role vocabulary is the main risk.
 
 ---
 
