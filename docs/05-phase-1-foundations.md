@@ -47,6 +47,8 @@ goal: |
   inventory, employees) can reference it.
 roles:
   - Administrator
+flows:
+  - foundational-records
 preconditions:
   - Phase 0 is complete.
   - You are signed in as an administrator.
@@ -103,6 +105,8 @@ goal: |
   operations.
 roles:
   - Administrator
+flows:
+  - foundational-records
 scale_tags:
   - mid-market
   - enterprise
@@ -157,6 +161,8 @@ goal: |
 roles:
   - Production Manager
   - Administrator
+flows:
+  - foundational-records
 preconditions:
   - At least one location exists.
   - You are signed in as a user with permission to configure work centers.
@@ -213,6 +219,8 @@ goal: |
   to these.
 roles:
   - Production Manager
+flows:
+  - foundational-records
 preconditions:
   - P1-WC-001 has passed.
 steps:
@@ -253,6 +261,8 @@ goal: |
   the rest runs two).
 roles:
   - Production Manager
+flows:
+  - foundational-records
 scale_tags:
   - mid-market
   - enterprise
@@ -302,6 +312,8 @@ goal: |
   yours doesn't, it's a setup gap to flag.
 roles:
   - Administrator
+flows:
+  - foundational-records
 preconditions:
   - Phase 0 is complete.
 steps:
@@ -342,6 +354,8 @@ goal: |
   defaults.
 roles:
   - Administrator
+flows:
+  - foundational-records
 preconditions:
   - P1-UOM-001 has passed.
 steps:
@@ -378,6 +392,8 @@ goal: |
   measurements when issuing or receiving inventory.
 roles:
   - Administrator
+flows:
+  - foundational-records
 preconditions:
   - P1-UOM-001 and P1-UOM-002 have passed.
 steps:
@@ -424,6 +440,8 @@ goal: |
   later financial transaction will fail.
 roles:
   - Controller
+flows:
+  - foundational-records
 preconditions:
   - Phase 0 is complete.
   - The costing model and currency are configured (P0-TENANT-005).
@@ -477,6 +495,8 @@ goal: |
   cover.
 roles:
   - Controller
+flows:
+  - foundational-records
 preconditions:
   - P1-GL-001 has passed.
 steps:
@@ -527,6 +547,8 @@ goal: |
   jurisdiction.
 roles:
   - Controller
+flows:
+  - foundational-records
 preconditions:
   - P0-INTEG-003 (tax integration choice) is complete.
   - The chart of accounts is initialized.
@@ -574,6 +596,8 @@ goal: |
   that are legitimately exempt (resale, government, out-of-state).
 roles:
   - Controller
+flows:
+  - foundational-records
 preconditions:
   - P1-TAX-001 has passed.
 steps:
@@ -616,6 +640,8 @@ goal: |
 roles:
   - HR
   - Administrator
+flows:
+  - foundational-records
 preconditions:
   - The first administrator has a system account (P0-ADMIN-001).
   - At least one location exists (P1-LOC-001).
@@ -672,6 +698,8 @@ roles:
   - HR
   - IT Admin
   - Administrator
+flows:
+  - foundational-records
 preconditions:
   - P1-EMP-001 has passed.
 steps:
@@ -717,6 +745,8 @@ goal: |
   management, exempt vs. non-exempt.
 roles:
   - HR
+flows:
+  - foundational-records
 preconditions:
   - P1-EMP-001 has passed.
 steps:
@@ -765,6 +795,8 @@ goal: |
 roles:
   - IT Admin
   - Administrator
+flows:
+  - foundational-records
 preconditions:
   - At least one non-admin role exists (P0-USER-001).
   - P1-EMP-003 has passed (employees exist to potentially link to).
@@ -809,6 +841,8 @@ goal: |
   see or change administrator-only settings.
 roles:
   - IT Admin
+flows:
+  - foundational-records
 preconditions:
   - P1-USER-001 has passed.
   - You can sign in as the user created in P1-USER-001 (a credential
@@ -877,6 +911,8 @@ goal: |
   without losing their historical activity in the system.
 roles:
   - IT Admin
+flows:
+  - foundational-records
 preconditions:
   - At least one non-admin user exists (P1-USER-001).
 steps:
@@ -928,6 +964,8 @@ goal: |
 roles:
   - Production Manager
   - Administrator
+flows:
+  - foundational-records
 preconditions:
   - At least one location exists (P1-LOC-001).
 steps:
@@ -978,6 +1016,8 @@ goal: |
   used by P1-WC-003 and similar overrides.
 roles:
   - Production Manager
+flows:
+  - foundational-records
 scale_tags:
   - mid-market
   - enterprise
@@ -1024,6 +1064,8 @@ goal: |
   shutdown, training day).
 roles:
   - Production Manager
+flows:
+  - foundational-records
 preconditions:
   - P1-CAL-001 has passed.
 steps:
@@ -1075,6 +1117,8 @@ goal: |
 roles:
   - Maintenance Manager
   - Administrator
+flows:
+  - foundational-records
 preconditions:
   - At least one work center exists (P1-WC-001).
   - At least one GL account for fixed assets exists (P1-GL-001).
@@ -1127,6 +1171,8 @@ goal: |
   work center works as expected.
 roles:
   - Maintenance Manager
+flows:
+  - foundational-records
 preconditions:
   - P1-ASSET-001 has passed.
 steps:
@@ -1175,6 +1221,8 @@ goal: |
 roles:
   - Procurement
   - Controller
+flows:
+  - foundational-records
 scale_tags:
   - mid-market
   - enterprise

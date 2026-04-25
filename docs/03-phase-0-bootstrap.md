@@ -26,6 +26,8 @@ goal: |
   page that explains what to do next.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - The application is installed and reachable at its expected URL.
   - No accounts have been created yet.
@@ -89,6 +91,8 @@ goal: |
   the company.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - You completed P0-INSTALL-001.
   - No user accounts exist yet.
@@ -183,6 +187,8 @@ goal: |
   can't reach company settings is a critical bug.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - You completed P0-ADMIN-001 and are signed in as the first admin.
 prerequisite_cases:
@@ -232,6 +238,8 @@ goal: |
   slips later.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - You are signed in as the first admin.
   - No company-level settings have been entered.
@@ -295,6 +303,8 @@ goal: |
   for dates, numbers, and currency.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - The company identity is saved (from P0-TENANT-001).
 prerequisite_cases:
@@ -362,6 +372,8 @@ goal: |
   local time, not the server's time.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - Company identity is saved.
 prerequisite_cases:
@@ -421,6 +433,8 @@ goal: |
   company's life in the system.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - Company identity is saved.
   - No financial transactions have been recorded.
@@ -477,6 +491,8 @@ goal: |
   financial number the company produces.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - Fiscal year and currency are saved.
   - No inventory or production transactions exist.
@@ -551,6 +567,8 @@ goal: |
   QuickBooks, or by tracking them inside this application alone.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - Costing model is saved.
 prerequisite_cases:
@@ -653,6 +671,8 @@ goal: |
   configure for manual tracking entry.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - Costing model is saved.
 prerequisite_cases:
@@ -700,6 +720,8 @@ goal: |
   or manually entered tax rates the company maintains itself.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - Company identity is saved.
 prerequisite_cases:
@@ -747,6 +769,8 @@ goal: |
   organization may have a dozen or more.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - Admin account is signed in.
   - No additional users have been created yet.
@@ -818,6 +842,8 @@ goal: |
   language a non-technical person can understand.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - Roles are defined (from P0-USER-001).
 prerequisite_cases:
@@ -876,6 +902,8 @@ goal: |
   a role, and that the new user can sign in successfully.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - Roles are defined and at least one (Floor Operator) has
     permissions configured.
@@ -962,6 +990,8 @@ goal: |
   before the company starts entering valuable data.
 roles:
   - Administrator
+flows:
+  - tenant-onboarding
 preconditions:
   - All previous Phase 0 cases are completed.
 prerequisite_cases:

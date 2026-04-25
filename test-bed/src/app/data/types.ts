@@ -41,6 +41,7 @@ export interface Case {
   phase?: string;
   goal: string;
   roles: string[];
+  flows?: string[];
   preconditions: string[];
   steps: Step[];
   expected_overall: string;
