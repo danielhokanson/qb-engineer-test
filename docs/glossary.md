@@ -18,6 +18,10 @@ A list of the components that go into making a product. For each component, the 
 
 A BOM can be hierarchical: the BOM for a finished assembly may include sub-assemblies, each of which has its own BOM.
 
+## Audit log
+
+A chronological record of what happened in the system: who signed in, what records they changed, what transactions they posted. Audit logs are typically immutable — entries can be added but not edited or deleted. They are referenced when answering "who changed this and when" or for compliance reviews.
+
 ## Calendar
 
 A schedule that defines when work happens. Includes shift times, weekends, holidays, and planned downtime. Calendars apply to the plant by default and can be overridden per work center for areas that run on different schedules.
@@ -34,15 +38,39 @@ The list of general ledger accounts the business uses to categorize financial ac
 
 The chart is set up once during onboarding and only changed deliberately afterward — every transaction posts to one or more of these accounts.
 
+## Depreciation
+
+The accounting practice of spreading the cost of a fixed asset over its useful life rather than expensing the full cost when purchased. A $50,000 machine with a 10-year life depreciates $5,000 per year using straight-line depreciation. The depreciation schedule is set up when the asset is recorded and runs automatically thereafter.
+
+## Employee
+
+A person employed by the business. Employees are tracked separately from system users. Some employees have system access (linked to a user); others don't (a production worker who clocks in via a kiosk doesn't necessarily have a login). Employee records carry pay information, hire date, location, and other HR data that's distinct from anything a system user record needs.
+
+## Exempt vs. non-exempt
+
+A US labor-law classification that determines whether an employee is eligible for overtime pay. Exempt employees (typically salaried managers and professionals) are not paid overtime; non-exempt employees (typically hourly workers and many salaried supervisors) are. Misclassifying employees is a common compliance risk.
+
 ## General ledger account (GL account)
 
 A single line item in the chart of accounts. Each transaction in the system posts a debit or credit to one or more GL accounts. The sum of all postings to all accounts forms the financial statements.
+
+## Fixed asset vs. inventory
+
+A fixed asset is something the business *uses* over time (a machine, a building, a vehicle) — capitalized at purchase and depreciated. Inventory is something the business *consumes* or *sells* — expensed when used or sold. The distinction matters at purchase time because the two go to different GL accounts and follow different downstream processes.
 
 ## Location
 
 A physical site where the business operates. Examples: the main plant, a secondary plant, an off-site warehouse, an office. Records like work centers, employees, inventory, and assets are scoped to a location.
 
 A business with one site has one location. A business with three sites has three.
+
+## Purchase order (PO)
+
+A document the business issues to a vendor authorizing the vendor to ship goods or perform services in exchange for payment. POs reference vendors, line items (with parts or services), quantities, prices, and tax codes. Receiving against a PO creates inventory or fixed assets; the corresponding vendor invoice is matched against the PO before payment.
+
+## Role
+
+A named bundle of permissions in the system. Roles control what a user can see and do. Examples: Administrator (everything), Floor Operator (production-floor screens only), Controller (financial screens only). Roles are typically defined once during onboarding and rarely changed afterward; users are assigned to one or more roles.
 
 ## Routing
 
@@ -51,6 +79,10 @@ The sequence of operations needed to produce a product, with each operation assi
 ## Tax code
 
 A classification applied to transactions to determine how tax is calculated. Examples: a US sales tax code by state, a VAT code in countries with value-added tax, an exempt code for tax-free transactions. Tax codes are typically configured once during onboarding (or when a new tax jurisdiction becomes relevant).
+
+## System user (or just "user")
+
+A person (or service) with login credentials in the application. Users are tracked separately from employees. A user may be linked to an employee, may not be (a consultant), or there may be employees with no user (production staff using shared kiosks). Users carry roles that determine their permissions; employees do not.
 
 ## Unit of measure (UoM)
 

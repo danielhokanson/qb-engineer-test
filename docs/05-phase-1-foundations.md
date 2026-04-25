@@ -601,3 +601,629 @@ why_this_matters: |
   "we charged 0%." Conflating the two is a common audit finding.
 est_minutes: 3
 ```
+
+---
+
+## P1-EMP-001 — Create the first employee record
+
+```yaml
+id: P1-EMP-001
+title: Create the first employee record
+goal: |
+  Add the founder/first administrator as an employee. Employee records
+  are separate from system users — every employee may not have a
+  login, and every user may not be an employee.
+roles:
+  - HR
+  - Administrator
+preconditions:
+  - The first administrator has a system account (P0-ADMIN-001).
+  - At least one location exists (P1-LOC-001).
+steps:
+  - n: 1
+    action: |
+      Find and open the employees area. (Common labels: "Employees,"
+      "People," "Team.")
+    expected: |
+      The employees list appears, empty by default.
+  - n: 2
+    action: |
+      Choose the action to create a new employee. Enter:
+      - First and last name
+      - Hire date (today or a plausible date in the past)
+      - Default location: {{primary_location}} - Main Plant
+      - Department or role title (e.g., "Owner / Admin")
+      - Pay type: salaried or hourly with a plausible rate
+    expected: |
+      The form accepts the values and saves.
+  - n: 3
+    action: |
+      Open the employee record you just created.
+    expected: |
+      All entered values are visible. The record carries an ID. There
+      is a way to link this employee to a system user account
+      (separately or in a follow-up step).
+expected_overall: |
+  The first employee exists, with a location, pay info, and a stable
+  ID. Can be referenced by labor records and time tracking later.
+pass_criteria: |
+  Employee record exists AND links to the primary location AND has
+  pay information set.
+est_minutes: 6
+why_this_matters: |
+  An "employee" and a "user" are different things. The cleaning crew
+  has employee records but no system access. A consultant has a
+  system user but no employee record. ERPs that conflate the two
+  break in subtle ways when this distinction matters.
+```
+
+---
+
+## P1-EMP-002 — Link an employee to a system user
+
+```yaml
+id: P1-EMP-002
+title: Link an employee record to a system user
+goal: |
+  Connect the first employee record to the first administrator's
+  system user account, so labor and audit trails attribute to the
+  same person consistently.
+roles:
+  - HR
+  - IT Admin
+  - Administrator
+preconditions:
+  - P1-EMP-001 has passed.
+steps:
+  - n: 1
+    action: |
+      Open the employee record from P1-EMP-001.
+    expected: |
+      The employee detail view opens.
+  - n: 2
+    action: |
+      Find the linkage to a system user (may be on the main detail
+      page or a separate "Account" tab). Link to the first
+      administrator's user.
+    expected: |
+      The link is created. The user's email or username is now
+      visible on the employee record.
+  - n: 3
+    action: |
+      Open the system user record and verify the reverse link is
+      present.
+    expected: |
+      The user record shows it is linked to the employee record.
+expected_overall: |
+  Employee and user records cross-reference each other. Reports that
+  combine the two (e.g., "labor hours by employee, who else has system
+  access") work consistently.
+pass_criteria: |
+  Both directions of the link are visible AND removing one removes
+  the other (or at least surfaces a warning).
+est_minutes: 4
+```
+
+---
+
+## P1-EMP-003 — Add additional employees
+
+```yaml
+id: P1-EMP-003
+title: Add additional employees with varied pay types
+goal: |
+  Build out a small employee roster covering the variety of pay
+  structures the system needs to support: hourly production, salaried
+  management, exempt vs. non-exempt.
+roles:
+  - HR
+preconditions:
+  - P1-EMP-001 has passed.
+steps:
+  - n: 1
+    action: |
+      Create three more employees:
+      - One hourly production worker with an overtime-eligible pay
+        rate.
+      - One salaried-exempt manager (no overtime).
+      - One salaried-non-exempt supervisor (eligible for overtime
+        even though salaried).
+    expected: |
+      Each employee saves successfully. Pay-type / exemption
+      classifications are captured.
+  - n: 2
+    action: |
+      Open the employees list.
+    expected: |
+      All four employees appear (the original from P1-EMP-001 plus
+      the three new ones). Pay type and exemption are visible or
+      filterable.
+expected_overall: |
+  A small but representative employee roster exists. Records cover
+  the three main pay-classification combinations.
+pass_criteria: |
+  Four employees total AND each one's pay-type and exemption fields
+  reflect what was entered.
+est_minutes: 8
+why_this_matters: |
+  Many ERPs handle hourly and salaried but get exempt vs. non-exempt
+  classification wrong, which leads to overtime miscalculations.
+  Verifying both options exist and stick is worth the extra minute.
+```
+
+---
+
+## P1-USER-001 — Invite a second system user
+
+```yaml
+id: P1-USER-001
+title: Invite a second system user with a non-admin role
+goal: |
+  Create a second user account assigned to a less-privileged role,
+  to verify role-based access actually restricts what the user can
+  see and do.
+roles:
+  - IT Admin
+  - Administrator
+preconditions:
+  - At least one non-admin role exists (P0-USER-001).
+  - P1-EMP-003 has passed (employees exist to potentially link to).
+steps:
+  - n: 1
+    action: |
+      Find and open the users area. Choose to invite a new user.
+    expected: |
+      The invite form appears with fields for email, name, and role.
+  - n: 2
+    action: |
+      Invite a user with email "operator@example.com" assigned to a
+      Floor Operator role (or equivalent non-admin role from P0).
+    expected: |
+      The invite is sent (or the user is created directly with a
+      temporary credential, depending on your auth flow).
+  - n: 3
+    action: |
+      Optionally link the new user to one of the employee records
+      from P1-EMP-003.
+    expected: |
+      The link is recorded. The user record reflects the employee
+      linkage.
+expected_overall: |
+  A second user exists with a non-admin role and (optionally) is
+  linked to an employee record.
+pass_criteria: |
+  User exists with the assigned role AND can sign in (verify in
+  P1-USER-002) AND, if linked, the employee linkage is visible.
+est_minutes: 6
+```
+
+---
+
+## P1-USER-002 — Verify role-based restrictions actually restrict
+
+```yaml
+id: P1-USER-002
+title: Verify role-based access restricts what a non-admin user can see
+goal: |
+  Sign in as the user created in P1-USER-001 and confirm they cannot
+  see or change administrator-only settings.
+roles:
+  - IT Admin
+preconditions:
+  - P1-USER-001 has passed.
+  - You can sign in as the user created in P1-USER-001 (a credential
+    or invite link).
+steps:
+  - n: 1
+    action: |
+      Sign out from the administrator account. Sign in as the second
+      user.
+    expected: |
+      Sign-in succeeds. The home / landing page is appropriate to a
+      Floor Operator (work order list, scanner workflow, etc.) — NOT
+      the administrator setup pages.
+  - n: 2
+    action: |
+      Try to navigate to the administrator-only areas: company
+      settings, user management, role permissions, integrations,
+      chart of accounts.
+    expected: |
+      Each area is either invisible in the navigation OR returns a
+      clear "you don't have permission" message — not a stack trace,
+      not a blank screen, not a partial page.
+  - n: 3
+    action: |
+      Sign back out. Sign back in as the original administrator.
+    expected: |
+      The administrator pages are visible and functional again.
+expected_overall: |
+  Role permissions actually restrict access. The non-admin user sees
+  only what their role allows; the administrator sees everything.
+pass_criteria: |
+  Each restricted area was inaccessible to the non-admin user AND
+  produced a clear, non-leaky error or omission.
+why_this_matters: |
+  Permissions checks that look right in the UI but don't actually
+  enforce on the backend are a common security bug — the UI hides
+  the menu but a direct URL still works. Spot-checking a few areas
+  in this case catches the most common version of that bug.
+modality:
+  - keyboard
+est_minutes: 7
+negative_variants:
+  - id: P1-USER-002-N1
+    title: Direct URL access to a restricted page
+    action: |
+      While signed in as the non-admin user, try to reach an
+      administrator-only page by typing its URL directly into the
+      browser address bar.
+    expected: |
+      The page does NOT render. Either you're redirected to a
+      "permission denied" screen or back to your role's home page.
+    pass_criteria: |
+      Restricted page does not load AND no privileged data leaks
+      into the page that does load.
+```
+
+---
+
+## P1-USER-003 — Deactivate a user
+
+```yaml
+id: P1-USER-003
+title: Deactivate a system user
+goal: |
+  Verify a user can be deactivated (so they can no longer sign in)
+  without losing their historical activity in the system.
+roles:
+  - IT Admin
+preconditions:
+  - At least one non-admin user exists (P1-USER-001).
+steps:
+  - n: 1
+    action: |
+      Open the user record from P1-USER-001. Find and use the
+      deactivate / disable action.
+    expected: |
+      A confirmation dialog appears. Choose to confirm.
+  - n: 2
+    action: |
+      Sign out and try to sign in as the deactivated user.
+    expected: |
+      Sign-in is rejected with a clear message — not a generic
+      "wrong password" error that would let an attacker enumerate
+      accounts.
+  - n: 3
+    action: |
+      Sign back in as the administrator. Search for the deactivated
+      user.
+    expected: |
+      The user still appears, marked as deactivated. Their
+      historical activity (audit log entries, anything attributed
+      to them) is preserved.
+expected_overall: |
+  Deactivated users cannot sign in but their records and history
+  remain. They can be reactivated if needed.
+pass_criteria: |
+  Sign-in is blocked AND the user record still exists AND
+  historical activity is preserved.
+why_this_matters: |
+  Deletion of users would orphan audit log entries and make it
+  impossible to reconstruct who did what. Deactivation preserves
+  the trail while preventing further access.
+est_minutes: 5
+```
+
+---
+
+## P1-CAL-001 — Configure the plant default calendar
+
+```yaml
+id: P1-CAL-001
+title: Configure the plant default calendar
+goal: |
+  Set up the default working schedule the plant runs on (which days,
+  which shifts, what's a holiday). Other capacity calculations
+  reference this calendar.
+roles:
+  - Production Manager
+  - Administrator
+preconditions:
+  - At least one location exists (P1-LOC-001).
+steps:
+  - n: 1
+    action: |
+      Find and open the calendars area. (Common labels: "Calendars,"
+      "Schedules," "Shop Calendar.")
+    expected: |
+      A calendar configuration screen appears. There may be a
+      pre-existing default calendar to edit, or a prompt to create one.
+  - n: 2
+    action: |
+      Configure or edit the default calendar:
+      - Working days: Monday through Friday
+      - Shifts: one shift, 8 hours, e.g. 7:00 AM to 3:30 PM with a
+        30-minute lunch
+      - Mark a few US federal holidays for the upcoming year as
+        non-working days (e.g., Independence Day, Thanksgiving,
+        Christmas).
+    expected: |
+      The calendar accepts the configuration and saves. The visible
+      schedule reflects the working days, shift times, and holidays.
+  - n: 3
+    action: |
+      Open a work center detail page (from P1-WC-001) and verify it
+      uses this calendar by default.
+    expected: |
+      The work center shows the default calendar is active.
+expected_overall: |
+  The plant default calendar is configured. Capacity calculations
+  for any work center using the default will reflect the configured
+  shift hours and holidays.
+pass_criteria: |
+  Calendar saved successfully AND work centers default to it AND
+  configured holidays are observed in the visible schedule.
+est_minutes: 8
+```
+
+---
+
+## P1-CAL-002 — Configure a second-shift calendar
+
+```yaml
+id: P1-CAL-002
+title: Configure a second-shift calendar
+goal: |
+  Set up an alternative calendar for areas that run a second shift,
+  used by P1-WC-003 and similar overrides.
+roles:
+  - Production Manager
+scale_tags:
+  - mid-market
+  - enterprise
+preconditions:
+  - P1-CAL-001 has passed.
+steps:
+  - n: 1
+    action: |
+      Open the calendars area. Choose to create a new calendar.
+    expected: |
+      The calendar creation form appears.
+  - n: 2
+    action: |
+      Configure:
+      - Name: "Second Shift"
+      - Working days: Monday through Friday
+      - Shifts: one shift from 3:30 PM to 11:00 PM with a 30-minute
+        meal break
+      - Inherit holidays from the plant default calendar (or
+        re-enter the same holidays).
+    expected: |
+      The calendar saves. It is selectable as an override on work
+      center records.
+expected_overall: |
+  A second-shift calendar exists, distinguishable from the default,
+  and assignable to work centers that need to run on a different
+  schedule.
+pass_criteria: |
+  Second-shift calendar exists AND its shift times differ from the
+  plant default AND it can be selected on a work center record.
+est_minutes: 5
+```
+
+---
+
+## P1-CAL-003 — Add a planned downtime block
+
+```yaml
+id: P1-CAL-003
+title: Add a planned downtime block to a calendar
+goal: |
+  Reserve time on the calendar that's not a holiday but isn't
+  available for production either (planned maintenance, facility
+  shutdown, training day).
+roles:
+  - Production Manager
+preconditions:
+  - P1-CAL-001 has passed.
+steps:
+  - n: 1
+    action: |
+      Open the plant default calendar.
+    expected: |
+      The calendar opens for editing.
+  - n: 2
+    action: |
+      Add a planned downtime block:
+      - Start: a Friday afternoon two weeks from now
+      - End: end of day
+      - Reason: "Quarterly facility maintenance"
+    expected: |
+      The downtime block saves and is visible on the calendar.
+  - n: 3
+    action: |
+      Verify capacity for that day reflects the lost time. Open a
+      capacity report or work center capacity view for that day.
+    expected: |
+      Available capacity for the affected work centers is reduced
+      to reflect the lost hours.
+expected_overall: |
+  Planned downtime is recorded and capacity calculations subtract
+  it appropriately.
+pass_criteria: |
+  Downtime block visible on the calendar AND capacity for the
+  affected day is reduced.
+why_this_matters: |
+  Schedulers need to know not just "we don't run on Christmas" but
+  also "the paint booth is down for maintenance Friday afternoon."
+  Treating planned downtime as a first-class concept on calendars
+  prevents over-promising delivery dates.
+est_minutes: 5
+```
+
+---
+
+## P1-ASSET-001 — Create the first asset record
+
+```yaml
+id: P1-ASSET-001
+title: Create the first asset record
+goal: |
+  Add a piece of equipment as a fixed asset. Asset records will be
+  referenced by work orders that use the equipment, by PM schedules,
+  and by depreciation calculations later.
+roles:
+  - Maintenance Manager
+  - Administrator
+preconditions:
+  - At least one work center exists (P1-WC-001).
+  - At least one GL account for fixed assets exists (P1-GL-001).
+steps:
+  - n: 1
+    action: |
+      Find and open the assets area. (Common labels: "Assets,"
+      "Equipment," "Fixed Assets.")
+    expected: |
+      The assets list appears, empty by default.
+  - n: 2
+    action: |
+      Choose to create a new asset. Enter:
+      - Name: "Press 1 - 60 ton hydraulic"
+      - Asset tag / serial: a plausible identifier
+      - Location: {{primary_location}} - Main Plant
+      - Work center: Press Shop
+      - Acquisition date: a plausible past date
+      - Acquisition cost: a plausible amount (e.g., $45,000)
+      - Asset GL account: an asset account from P1-GL-001
+      - Depreciation method: straight-line, 10-year life
+    expected: |
+      The form accepts the values and saves.
+  - n: 3
+    action: |
+      Open the asset record you just created.
+    expected: |
+      All entered values are visible. The asset is linked to the
+      Press Shop work center. A depreciation schedule is generated
+      or available to view.
+expected_overall: |
+  The asset exists, is linked to a work center, and has the
+  financial details needed for depreciation. Work orders can now
+  reference it.
+pass_criteria: |
+  Asset record exists AND links to the correct work center AND
+  shows a depreciation schedule (or offers to generate one).
+est_minutes: 8
+```
+
+---
+
+## P1-ASSET-002 — Create additional assets and verify list filtering
+
+```yaml
+id: P1-ASSET-002
+title: Create additional assets across multiple work centers
+goal: |
+  Build out a small asset list and verify filtering by location and
+  work center works as expected.
+roles:
+  - Maintenance Manager
+preconditions:
+  - P1-ASSET-001 has passed.
+steps:
+  - n: 1
+    action: |
+      Create the following assets:
+      - "MIG Welder #2" — work center: Weld
+      - "Paint Booth A" — work center: Paint
+      - "CNC Mill - Haas VF-2" — work center: Cut & Saw
+    expected: |
+      Each asset saves successfully and links to the named work
+      center.
+  - n: 2
+    action: |
+      Open the assets list. Filter or sort by work center.
+    expected: |
+      All four assets appear (Press 1 plus the three new ones).
+      Filtering by work center shows only the assets in that work
+      center.
+  - n: 3
+    action: |
+      Filter by location.
+    expected: |
+      All four assets remain (all are at the primary location).
+expected_overall: |
+  Four assets exist, each linked to its work center. Filters work
+  predictably.
+pass_criteria: |
+  Four assets total AND filter by work center returns the right
+  subset for each.
+est_minutes: 6
+```
+
+---
+
+## P1-ASSET-003 — Distinguish inventory from fixed assets at the PO line item level
+
+```yaml
+id: P1-ASSET-003
+title: Verify inventory and fixed assets are differentiated at PO time
+goal: |
+  Confirm that when a purchase order is created, line items can be
+  classified as either inventory (will be consumed or sold) or fixed
+  asset (will be capitalized and depreciated). Get this right at PO
+  entry time, not after the fact.
+roles:
+  - Procurement
+  - Controller
+scale_tags:
+  - mid-market
+  - enterprise
+preconditions:
+  - P1-GL-001 (chart of accounts) has passed.
+  - At least one vendor exists (covered in Phase 2 — for now, this
+    case can be deferred or run with a placeholder vendor).
+prerequisite_cases:
+  - P1-GL-001
+steps:
+  - n: 1
+    action: |
+      Find the purchase order area. Choose to create a new PO.
+    expected: |
+      The PO creation form opens with line items available.
+  - n: 2
+    action: |
+      Add two line items:
+      - Line 1: 100 units of a part (inventory)
+      - Line 2: 1 piece of equipment (fixed asset, e.g., "60-ton
+        press, model XYZ")
+    expected: |
+      For each line, the form prompts for or distinguishes between
+      inventory and fixed-asset classification. The fixed-asset line
+      requires (or accepts) acquisition cost, asset class, and a
+      capitalization GL account.
+  - n: 3
+    action: |
+      Save the PO as a draft. Re-open it. Verify line classifications
+      persist.
+    expected: |
+      Line 1 shows as inventory; Line 2 shows as a fixed asset with
+      the capitalization details preserved.
+expected_overall: |
+  POs distinguish between inventory and fixed-asset purchases at the
+  line level. Receipt against each line will eventually post to the
+  correct account (inventory vs. capital asset).
+pass_criteria: |
+  PO can carry both line types AND the distinction persists across
+  save and reload.
+why_this_matters: |
+  ERPs that don't enforce this at PO time end up with fixed assets
+  posted to inventory accounts (or vice versa) and require manual
+  journal-entry corrections. Catching the bug at PO entry is far
+  cheaper than catching it at month-end close.
+est_minutes: 7
+notes: |
+  This case may not be fully runnable until Phase 2 (master data,
+  including vendors). Run as far as you can and stop at the first
+  step that needs a vendor or part record that doesn't exist yet.
+  Re-run after Phase 2 if needed.
+```
