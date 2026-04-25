@@ -8,7 +8,7 @@ A library of manual test cases describing how a manufacturing-focused ERP *shoul
 
 ## Status
 
-Early but advancing. Phases 0 and 1 are written, plus the schema, onboarding tutorial, glossary, and a working Angular test runner in `test-bed/`. Phases 2 through 5, role reference appendices, and the dedicated i18n and accessibility suites are not yet written.
+The full canonical lifecycle is written: Phases 0 through 5, plus the schema, onboarding tutorial, glossary, flow definitions, and a working Angular test runner in `test-bed/`. ~120 cases across the library. Role reference appendices and dedicated i18n / accessibility suites are not yet written.
 
 ## Documentation
 
@@ -23,20 +23,27 @@ Read those before contributing. The rest of this README is a quick orientation.
 
 ```
 docs/
-  test-scenarios.md            Reference: the test library
-  runner-platform.md           Reference: the test runner
-  glossary.md                  Plain-English term definitions
-  01-schema.md                 Test case field structure and conventions
-  02-onboarding-tutorial.md    Tutorial cases (TUT-NNN) for new testers
-  03-phase-0-bootstrap.md      Phase 0 cases (P0-AREA-NNN)
-  04-phase-0-manifest.md       Phase 0 sequence, branches, checkpoints
-  05-phase-1-foundations.md    Phase 1 cases (P1-AREA-NNN)
-  06-phase-1-manifest.md       Phase 1 sequence, role coverage, checkpoints
+  test-scenarios.md              Reference: the test library
+  runner-platform.md             Reference: the test runner
+  glossary.md                    Plain-English term definitions
+  flows.md                       Cross-phase business journeys
+  01-schema.md                   Test case field structure and conventions
+  02-onboarding-tutorial.md      Tutorial cases (TUT-NNN)
+  03-phase-0-bootstrap.md        Phase 0 cases (15) — bootstrap from empty database
+  04-phase-0-manifest.md         Phase 0 sequence, branches, checkpoints
+  05-phase-1-foundations.md      Phase 1 cases (24) — foundational records
+  06-phase-1-manifest.md         Phase 1 sequence, role coverage, checkpoints
+  07-phase-2-master-data.md      Phase 2 cases (30) — vendors, customers, parts, BOMs, routings, R&D
+  08-phase-2-manifest.md         Phase 2 sequence, checkpoints
+  09-phase-3-transactions.md     Phase 3 cases (14) — first POs, receipts, asset commissioning, opening balances
+  10-phase-3-manifest.md         Phase 3 sequence, checkpoints
+  11-phase-4-production-cycle.md Phase 4 cases (22) — full quote-to-cash + hire-to-first-assignment
+  12-phase-4-manifest.md         Phase 4 sequence, checkpoints
+  13-phase-5-exception-cycles.md Phase 5 cases (21) — damage, PM, RMA, period close, traceability, subcontract
+  14-phase-5-manifest.md         Phase 5 sequence, checkpoints
 
-test-bed/                      Angular SPA test runner
+test-bed/                        Angular SPA test runner
 ```
-
-Future phases follow the same naming pattern (`docs/07-phase-2-master-data.md`, etc.).
 
 ## Conventions
 

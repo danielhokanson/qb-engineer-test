@@ -66,30 +66,36 @@ The tutorial uses an in-runner Practice App (see [`runner-platform.md`](runner-p
 
 ```
 docs/
-  test-scenarios.md            This document
-  runner-platform.md           Runner reference
-  glossary.md                  Plain-English term definitions
-  01-schema.md                 Schema definition (the source of truth for case structure)
-  02-onboarding-tutorial.md    TUT-NNN cases
-  03-phase-0-bootstrap.md      P0 cases — bootstrap from empty database
-  04-phase-0-manifest.md       P0 sequence, branches, checkpoints
-  05-phase-1-foundations.md    P1 cases — foundational records
-  06-phase-1-manifest.md       P1 sequence, role coverage, checkpoints
-  07-phase-2-master-data.md    P2 cases (planned)
-  08-phase-2-manifest.md       P2 sequence (planned)
-  ... (etc. through P5)
+  test-scenarios.md                This document
+  runner-platform.md               Runner reference
+  glossary.md                      Plain-English term definitions
+  flows.md                         Cross-phase business journeys
+  01-schema.md                     Schema definition (source of truth for case structure)
+  02-onboarding-tutorial.md        TUT-NNN cases (3)
+  03-phase-0-bootstrap.md          P0 — bootstrap (15 cases)
+  04-phase-0-manifest.md           P0 manifest
+  05-phase-1-foundations.md        P1 — foundational records (24 cases)
+  06-phase-1-manifest.md           P1 manifest
+  07-phase-2-master-data.md        P2 — master data (30 cases)
+  08-phase-2-manifest.md           P2 manifest
+  09-phase-3-transactions.md       P3 — first transactions (14 cases)
+  10-phase-3-manifest.md           P3 manifest
+  11-phase-4-production-cycle.md   P4 — quote-to-cash + hire-to-first-assignment (22 cases)
+  12-phase-4-manifest.md           P4 manifest
+  13-phase-5-exception-cycles.md   P5 — exceptions (21 cases)
+  14-phase-5-manifest.md           P5 manifest
 
-  appendices/                  (planned)
-    role-floor-operator.md     Role reference: cases relevant to this role, in role-specific order
+  appendices/                      (planned)
+    role-floor-operator.md         Role reference: cases relevant to this role, in role-specific order
     role-procurement.md
     ... (one per role)
 
-  suites/                      (planned)
-    i18n-suite.md              Dedicated i18n cases against representative screens
-    accessibility-suite.md     Dedicated 508 cases
+  suites/                          (planned)
+    i18n-suite.md                  Dedicated i18n cases against representative screens
+    accessibility-suite.md         Dedicated 508 cases
 
-  fixtures/                    (planned)
-    cascade-components-mid.yml   Default mid-market fictional company
+  fixtures/                        (planned)
+    cascade-components-mid.yml     Default mid-market fictional company
     ... (other scale variants)
 ```
 
