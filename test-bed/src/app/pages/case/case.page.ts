@@ -7,6 +7,7 @@ import {
   input,
   signal,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CatalogService } from '../../data/catalog.service';
@@ -182,11 +183,17 @@ export class CasePage {
   readonly resultChoice = signal<CaseStatus | null>(null);
   readonly noteControl = new FormControl<string>('', { nonNullable: true });
 
+  // Bridge the note input's value to a signal so canSubmit reacts to typing.
+  // Reading noteControl.value directly inside a computed is non-reactive.
+  private readonly noteValue = toSignal(this.noteControl.valueChanges, {
+    initialValue: this.noteControl.value,
+  });
+
   readonly canSubmit = computed(() => {
     const choice = this.resultChoice();
     if (!choice) return false;
     if (choice === 'pass') return true;
-    return this.noteControl.value.trim().length > 0;
+    return (this.noteValue() ?? '').trim().length > 0;
   });
 
   constructor() {
