@@ -24,10 +24,20 @@ export class SessionService {
    */
   readonly sessions = signal<Session[]>([]);
 
+  /**
+   * All case results across all sessions. Used by the landing page to
+   * render per-session result counts. Backed by Dexie liveQuery so
+   * it updates automatically.
+   */
+  readonly allResults = signal<CaseResult[]>([]);
+
   constructor() {
     liveQuery(() =>
       db.sessions.orderBy('updated_at').reverse().toArray(),
     ).subscribe(rows => this.sessions.set(rows));
+    liveQuery(() => db.results.toArray()).subscribe(rows =>
+      this.allResults.set(rows),
+    );
   }
 
   async createSession(input: {
@@ -94,5 +104,56 @@ export class SessionService {
     await db.results.put(result);
     await this.touchSession(input.sessionId, { current_case_id: input.caseId });
     return result;
+  }
+
+  /** Stamp completed_at on the session if not already set. Idempotent. */
+  async markCompleted(sessionId: string): Promise<void> {
+    const session = await db.sessions.get(sessionId);
+    if (!session || session.completed_at) return;
+    await db.sessions.put({
+      ...session,
+      completed_at: nowIso(),
+      updated_at: nowIso(),
+    });
+  }
+
+  /** Build a JSON export of the session and its results. */
+  async buildExport(sessionId: string): Promise<{
+    session: Session;
+    results: CaseResult[];
+    exported_at: string;
+    library_version: string;
+  } | null> {
+    const session = await db.sessions.get(sessionId);
+    if (!session) return null;
+    const results = await this.resultsForSession(sessionId);
+    return {
+      session,
+      results,
+      exported_at: nowIso(),
+      library_version: '0.1.0',
+    };
+  }
+
+  /** Trigger a browser download of the session's JSON export. */
+  async downloadExport(sessionId: string): Promise<void> {
+    const payload = await this.buildExport(sessionId);
+    if (!payload) return;
+    const safeName = payload.session.name
+      .replace(/[^a-z0-9_-]+/gi, '_')
+      .toLowerCase()
+      .slice(0, 60);
+    const filename = `qb-test-${safeName}-${payload.session.id.slice(0, 8)}.json`;
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: 'application/json',
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 }

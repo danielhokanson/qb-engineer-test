@@ -41,12 +41,26 @@
   border-radius: 999px;
 }
 
+.head-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .title {
   margin: 0;
   font-size: 1.875rem;
   font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--color-text);
+  flex: 1;
+}
+
+.meta-pill.complete {
+  color: var(--color-success);
+  border-color: var(--color-success);
+  background-color: rgba(34, 197, 94, 0.1);
 }
 
 .run-stats {
@@ -77,6 +91,85 @@
 
 .stat-value.pass { color: var(--color-success); font-family: var(--font-mono); font-weight: 600; }
 .stat-value.fail { color: var(--color-danger); font-family: var(--font-mono); font-weight: 600; }
+.stat-value.blocked { color: var(--color-warning); font-family: var(--font-mono); font-weight: 600; }
+
+.completion-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.75rem;
+  border: 1px solid var(--color-accent);
+  border-radius: 0.625rem;
+  background: linear-gradient(180deg, rgba(20, 184, 166, 0.08) 0%, rgba(20, 184, 166, 0.02) 100%);
+}
+
+.completion-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.completion-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-accent);
+}
+
+.completion-title {
+  margin: 0;
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.completion-sub {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.completion-stats {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.completion-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.completion-num {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.completion-stat.pass .completion-num { color: var(--color-success); }
+.completion-stat.fail .completion-num { color: var(--color-danger); }
+.completion-stat.blocked .completion-num { color: var(--color-warning); }
+
+.completion-cap {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-dim);
+}
+
+.completion-actions {
+  display: flex;
+  gap: 0.75rem;
+}
 
 .case-group {
   display: flex;

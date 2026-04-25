@@ -1,7 +1,14 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { SessionService } from '../../data/session.service';
-import { Session } from '../../data/types';
+import { CaseResult, Session } from '../../data/types';
+
+interface SessionCounts {
+  pass: number;
+  fail: number;
+  blocked: number;
+  total: number;
+}
 
 @Component({
   selector: 'app-landing',
@@ -47,17 +54,46 @@ import { Session } from '../../data/types';
                   class="run-card-main"
                   type="button"
                   (click)="open(s)">
-                  <div class="run-name">{{ s.name }}</div>
+                  <div class="run-name-row">
+                    <span class="run-name">{{ s.name }}</span>
+                    @if (s.completed_at) {
+                      <span class="run-badge complete">Complete</span>
+                    }
+                  </div>
                   <div class="run-meta">
                     <span class="meta-item">
                       <span class="meta-label">Roles</span>
                       <span class="meta-value">{{ rolesLabel(s) }}</span>
                     </span>
                     <span class="meta-item">
-                      <span class="meta-label">Updated</span>
-                      <span class="meta-value">{{ relTime(s.updated_at) }}</span>
+                      <span class="meta-label">
+                        {{ s.completed_at ? 'Completed' : 'Updated' }}
+                      </span>
+                      <span class="meta-value">
+                        {{ relTime(s.completed_at ?? s.updated_at) }}
+                      </span>
                     </span>
                   </div>
+                  @if (countsFor(s.id); as c) {
+                    @if (c.total > 0) {
+                      <div class="result-row" aria-label="Result counts">
+                        <span class="result-pill pass" [class.zero]="c.pass === 0">
+                          <span class="pill-num">{{ c.pass }}</span>
+                          <span class="pill-label">pass</span>
+                        </span>
+                        <span class="result-pill fail" [class.zero]="c.fail === 0">
+                          <span class="pill-num">{{ c.fail }}</span>
+                          <span class="pill-label">fail</span>
+                        </span>
+                        <span
+                          class="result-pill blocked"
+                          [class.zero]="c.blocked === 0">
+                          <span class="pill-num">{{ c.blocked }}</span>
+                          <span class="pill-label">blocked</span>
+                        </span>
+                      </div>
+                    }
+                  }
                 </button>
                 <button
                   class="btn-ghost run-delete"
@@ -79,6 +115,32 @@ export class LandingPage {
   private readonly router = inject(Router);
 
   readonly sessions = this.sessionSvc.sessions;
+  private readonly allResults = this.sessionSvc.allResults;
+
+  /** Per-session counts indexed by session id. */
+  private readonly countsBySession = computed<Map<string, SessionCounts>>(() => {
+    const map = new Map<string, SessionCounts>();
+    for (const r of this.allResults()) {
+      const c = map.get(r.session_id) ?? { pass: 0, fail: 0, blocked: 0, total: 0 };
+      if (r.status === 'pass') c.pass++;
+      else if (r.status === 'fail') c.fail++;
+      else if (r.status === 'blocked') c.blocked++;
+      c.total = c.pass + c.fail + c.blocked;
+      map.set(r.session_id, c);
+    }
+    return map;
+  });
+
+  countsFor(sessionId: string): SessionCounts {
+    return (
+      this.countsBySession().get(sessionId) ?? {
+        pass: 0,
+        fail: 0,
+        blocked: 0,
+        total: 0,
+      }
+    );
+  }
 
   rolesLabel(s: Session): string {
     if (!s.selected_roles?.length) return '—';

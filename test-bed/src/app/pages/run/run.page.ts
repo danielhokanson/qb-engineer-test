@@ -10,7 +10,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { CatalogService } from '../../data/catalog.service';
 import { SessionService } from '../../data/session.service';
-import { Case, CaseResult, CaseStatus, Session } from '../../data/types';
+import { Case, CaseStatus, Session } from '../../data/types';
 
 @Component({
   selector: 'app-run',
@@ -30,8 +30,22 @@ import { Case, CaseResult, CaseStatus, Session } from '../../data/types';
           <div class="head-meta">
             <span class="label-mono">test run</span>
             <span class="meta-pill">{{ scopeLabel() }}</span>
+            @if (s.completed_at) {
+              <span class="meta-pill complete">Complete</span>
+            }
           </div>
-          <h1 class="title">{{ s.name }}</h1>
+          <div class="head-row">
+            <h1 class="title">{{ s.name }}</h1>
+            @if (totalRecorded() > 0) {
+              <button
+                type="button"
+                class="btn-secondary"
+                (click)="exportResults()"
+                title="Download a JSON file with this run's results">
+                Export results
+              </button>
+            }
+          </div>
           <div class="run-stats">
             <span class="stat">
               <span class="stat-label">Roles</span>
@@ -46,11 +60,52 @@ import { Case, CaseResult, CaseStatus, Session } from '../../data/types';
               <span class="stat-value fail">{{ counts().fail }}</span>
             </span>
             <span class="stat">
+              <span class="stat-label">Blocked</span>
+              <span class="stat-value blocked">{{ counts().blocked }}</span>
+            </span>
+            <span class="stat">
               <span class="stat-label">Pending</span>
               <span class="stat-value">{{ counts().pending }}</span>
             </span>
           </div>
         </header>
+
+        @if (isComplete()) {
+          <section class="completion-banner">
+            <div class="completion-head">
+              <span class="completion-eyebrow">Run complete</span>
+              <h2 class="completion-title">
+                You ran every case in this session.
+              </h2>
+              <p class="completion-sub">
+                Export your results to send to the maintainer, or head back to
+                pick up another run.
+              </p>
+            </div>
+            <div class="completion-stats">
+              <span class="completion-stat pass">
+                <span class="completion-num">{{ counts().pass }}</span>
+                <span class="completion-cap">passed</span>
+              </span>
+              <span class="completion-stat fail">
+                <span class="completion-num">{{ counts().fail }}</span>
+                <span class="completion-cap">failed</span>
+              </span>
+              <span class="completion-stat blocked">
+                <span class="completion-num">{{ counts().blocked }}</span>
+                <span class="completion-cap">blocked</span>
+              </span>
+            </div>
+            <div class="completion-actions">
+              <button type="button" class="btn-primary" (click)="exportResults()">
+                Export results
+              </button>
+              <a routerLink="/" class="btn-secondary">
+                Back to all runs
+              </a>
+            </div>
+          </section>
+        }
 
         @if (tutorialCases().length > 0 && !s.tutorial_completed) {
           <section class="case-group">
@@ -129,7 +184,14 @@ export class RunPage {
   private readonly sessionSvc = inject(SessionService);
 
   readonly session = signal<Session | undefined>(undefined);
-  readonly results = signal<CaseResult[]>([]);
+
+  /** Results filtered to this session, sourced from the live signal in
+   * SessionService so they update automatically when the case page records
+   * a new result. */
+  readonly results = computed(() => {
+    const id = this.sessionId();
+    return this.sessionSvc.allResults().filter(r => r.session_id === id);
+  });
 
   readonly filteredCases = computed<Case[]>(() => {
     const s = this.session();
@@ -137,7 +199,11 @@ export class RunPage {
     return this.catalog.casesForRoles(s.selected_roles);
   });
 
-  readonly tutorialCases = computed(() => this.catalog.tutorial());
+  readonly tutorialCases = computed(() => {
+    const s = this.session();
+    if (s?.tutorial_completed) return [];
+    return this.catalog.tutorial();
+  });
 
   readonly scopeLabel = computed(() => {
     const s = this.session();
@@ -161,17 +227,39 @@ export class RunPage {
     return { pass, fail, blocked, pending };
   });
 
+  readonly totalRecorded = computed(() => {
+    const c = this.counts();
+    return c.pass + c.fail + c.blocked;
+  });
+
+  readonly isComplete = computed(() => {
+    const c = this.counts();
+    return c.pending === 0 && c.pass + c.fail + c.blocked > 0;
+  });
+
   constructor() {
     void this.catalog.load();
 
+    // Load the session whenever the route id changes.
     effect(async () => {
       const id = this.sessionId();
       if (!id) return;
       const session = await this.sessionSvc.getSession(id);
       this.session.set(session);
-      if (session) {
-        const results = await this.sessionSvc.resultsForSession(session.id);
-        this.results.set(results);
+    });
+
+    // When this run becomes complete (and the catalog has loaded so counts
+    // are meaningful), stamp completed_at on the session if not already set.
+    effect(async () => {
+      const id = this.sessionId();
+      const session = this.session();
+      const complete = this.isComplete();
+      if (!id || !session || !this.catalog.loaded()) return;
+      if (complete && !session.completed_at) {
+        await this.sessionSvc.markCompleted(id);
+        // Re-read to reflect the new timestamp in the UI.
+        const updated = await this.sessionSvc.getSession(id);
+        this.session.set(updated);
       }
     });
   }
@@ -187,5 +275,9 @@ export class RunPage {
       case 'blocked': return 'Blocked';
       default: return 'Not started';
     }
+  }
+
+  async exportResults(): Promise<void> {
+    await this.sessionSvc.downloadExport(this.sessionId());
   }
 }
