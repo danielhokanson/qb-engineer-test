@@ -1,0 +1,13 @@
+{
+  "id": "cascade-components-mid",
+  "label": "Cascade Components, LLC (mid-market default)",
+  "scale": "mid-market",
+  "values": {
+    "company_name": "Cascade Components, LLC",
+    "primary_location": "Eugene, Oregon",
+    "primary_currency": "USD",
+    "fiscal_year_start": "January",
+    "default_customer": "ACME Industrial",
+    "default_vendor": "Pacific Steel Supply"
+  }
+}

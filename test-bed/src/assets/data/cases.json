@@ -1,0 +1,190 @@
+[
+  {
+    "id": "P0-INSTALL-001",
+    "title": "Open the application's starting page in a fresh browser",
+    "phase": "P0",
+    "goal": "Confirm that someone with no account can reach a meaningful starting page that explains what to do next.",
+    "roles": ["Administrator"],
+    "preconditions": [
+      "The application is installed and reachable at its expected URL.",
+      "No accounts have been created yet.",
+      "You are using a browser with no prior cookies for this application (a new private/incognito window works)."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open a fresh private/incognito browser window. Navigate to the application URL.",
+        "expected": "A page loads. The page makes it clear what kind of application this is and what someone arriving for the first time should do next. There is a visible way to begin setup or create the first account."
+      },
+      {
+        "n": 2,
+        "action": "Read the page. Look for any text directed at a brand-new user.",
+        "expected": "You can identify, within 30 seconds of looking, what the next step is."
+      }
+    ],
+    "expected_overall": "A first-time visitor with no account has a clear path forward and is not stuck staring at a sign-in form for an account that doesn't exist.",
+    "pass_criteria": "Within 30 seconds of the page loading, you knew what to do next.",
+    "est_minutes": 3
+  },
+  {
+    "id": "P0-ADMIN-001",
+    "title": "Register the first administrator account",
+    "phase": "P0",
+    "goal": "Create the initial administrator user that will configure the rest of the system.",
+    "roles": ["Administrator"],
+    "preconditions": [
+      "P0-INSTALL-001 has passed.",
+      "No accounts exist yet."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "From the starting page, choose the action that begins setup or creates the first account.",
+        "expected": "A registration form appears with fields for at least name, email, and password (or equivalent identity setup)."
+      },
+      {
+        "n": 2,
+        "action": "Fill in plausible administrator details and submit.",
+        "expected": "The account is created. You are signed in. The next step in setting up the company is clear."
+      }
+    ],
+    "expected_overall": "An administrator account exists and is signed in, ready to configure the tenant.",
+    "pass_criteria": "Account creation completed without errors AND you are signed in as that account.",
+    "est_minutes": 5
+  },
+  {
+    "id": "P0-TENANT-001",
+    "title": "Set the company identity",
+    "phase": "P0",
+    "goal": "Configure the company's name, address, and primary contact information.",
+    "roles": ["Administrator"],
+    "preconditions": [
+      "P0-ADMIN-001 has passed.",
+      "You are signed in as the first administrator."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Find and open the company settings or organization profile area.",
+        "expected": "A settings page appears with editable fields for company name, address, phone, etc."
+      },
+      {
+        "n": 2,
+        "action": "Enter a company name, address, and phone number. Save the settings.",
+        "expected": "A confirmation appears. The values you entered are visible after the save and persist across reload."
+      }
+    ],
+    "expected_overall": "The company identity is saved and visible in the application's chrome (header, page titles, etc.) where appropriate.",
+    "pass_criteria": "Saved values match what was entered AND survived a page reload.",
+    "est_minutes": 4
+  },
+  {
+    "id": "P1-WC-001",
+    "title": "Create the first work center",
+    "phase": "P1",
+    "goal": "Configure a physical or logical area where production work happens. Work orders will be assigned to work centers.",
+    "roles": ["Production Manager"],
+    "preconditions": [
+      "Phase 0 cases have passed.",
+      "At least one location exists.",
+      "You are signed in as a user with permission to configure work centers."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Find and open the work centers area.",
+        "expected": "A list of existing work centers appears. The list is empty (or shows only seed data clearly marked as such)."
+      },
+      {
+        "n": 2,
+        "action": "Choose the action to create a new work center. Fill in a name (e.g. \"Press Shop\"), a location, and a default labor rate.",
+        "expected": "The form accepts the values. Save succeeds."
+      }
+    ],
+    "expected_overall": "The new work center is visible in the list and can be selected when creating routings later.",
+    "pass_criteria": "Work center exists in the list AND opens to show the values you entered.",
+    "est_minutes": 6
+  },
+  {
+    "id": "P1-VENDOR-001",
+    "title": "Create the first vendor",
+    "phase": "P1",
+    "goal": "Add a supplier so that purchase orders can later be issued against them.",
+    "roles": ["Procurement"],
+    "preconditions": [
+      "Phase 0 cases have passed.",
+      "You are signed in as a user with permission to manage vendors."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Find and open the vendors area.",
+        "expected": "A list of vendors appears, empty by default."
+      },
+      {
+        "n": 2,
+        "action": "Choose the action to create a new vendor. Enter vendor name, contact, address, and payment terms.",
+        "expected": "The form accepts the values. Save succeeds."
+      }
+    ],
+    "expected_overall": "Vendor is created and visible in the list.",
+    "pass_criteria": "Vendor record exists with the entered values.",
+    "est_minutes": 5
+  },
+  {
+    "id": "P4-WO-START",
+    "title": "Start work on an assigned work order",
+    "phase": "P4",
+    "goal": "Begin work on an open work order from the floor.",
+    "roles": ["Floor Operator", "Production Manager"],
+    "preconditions": [
+      "An open work order is assigned to your work center.",
+      "You have a scanner or input device available.",
+      "You are signed in to the floor application."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Scan or select the work order ID. Then scan or select the start action.",
+        "expected": "The work order changes to in-progress status. The current operation, target quantity, and any setup instructions are visible."
+      },
+      {
+        "n": 2,
+        "action": "Confirm the work center association.",
+        "expected": "The work center is shown and matches your assigned area."
+      }
+    ],
+    "expected_overall": "The work order is in-progress and labor time is being tracked against it.",
+    "pass_criteria": "Status reflects in-progress AND your user is recorded as the operator AND time tracking has begun.",
+    "modality": ["scanner", "manual-entry"],
+    "est_minutes": 4
+  },
+  {
+    "id": "P5-DAMAGE-001",
+    "title": "Report damage on a piece of equipment",
+    "phase": "P5",
+    "goal": "Log a damage report against a fixed asset, creating a maintenance ticket.",
+    "roles": ["Floor Operator", "Maintenance Technician"],
+    "preconditions": [
+      "A fixed asset record exists for the equipment.",
+      "You are signed in.",
+      "You have a way to identify the asset (asset tag, scanner)."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Find or scan the asset's record.",
+        "expected": "The asset's profile opens, showing recent activity and any open tickets."
+      },
+      {
+        "n": 2,
+        "action": "Choose the action to report damage or open a maintenance ticket. Fill in a description and severity.",
+        "expected": "A ticket is created. It appears in the maintenance team's queue."
+      }
+    ],
+    "expected_overall": "Damage is logged. A maintenance ticket exists, linked to the asset, with the description you provided.",
+    "pass_criteria": "Ticket exists AND links to the correct asset AND appears in the maintenance queue.",
+    "modality": ["scanner", "manual-entry"],
+    "est_minutes": 5
+  }
+]

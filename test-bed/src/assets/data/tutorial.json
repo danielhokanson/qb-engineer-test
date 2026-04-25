@@ -1,0 +1,93 @@
+[
+  {
+    "id": "TUT-001",
+    "title": "How to read a test step",
+    "goal": "Learn what an action is, what an expected result is, and the difference between them.",
+    "preconditions": [
+      "The Practice App is open below this case.",
+      "The counter shows 0."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Read the next two lines carefully before doing anything.",
+        "expected": "You read the lines.",
+        "notes": "Every test step has TWO parts. The action tells you what to do. The expected tells you what should happen. You always check the expected against what you actually see. If they don't match, that is a bug — even if it seems small."
+      },
+      {
+        "n": 2,
+        "action": "Click the \"Add 1\" button one time.",
+        "expected": "The counter now shows 1."
+      },
+      {
+        "n": 3,
+        "action": "Click \"Add 1\" two more times.",
+        "expected": "The counter now shows 3."
+      }
+    ],
+    "expected_overall": "You clicked Add 1 three times and the counter ended on 3.",
+    "pass_criteria": "The counter shows 3 after three clicks.",
+    "est_minutes": 2,
+    "uses_practice_app": true
+  },
+  {
+    "id": "TUT-002",
+    "title": "How to record a passing result",
+    "goal": "Practice marking a case as passed.",
+    "preconditions": [
+      "You completed TUT-001.",
+      "The counter shows 3 from the previous case."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Click \"Reset\" to set the counter back to 0.",
+        "expected": "The counter now shows 0."
+      },
+      {
+        "n": 2,
+        "action": "Click \"Subtract 1\" once.",
+        "expected": "The counter now shows -1."
+      },
+      {
+        "n": 3,
+        "action": "When everything matches what was expected, mark this case as passed using the runner controls.",
+        "expected": "The case is recorded as passed."
+      }
+    ],
+    "expected_overall": "The counter went 0, -1, and you marked the case passed in the runner.",
+    "pass_criteria": "The counter behaved correctly AND the runner recorded a pass.",
+    "est_minutes": 2,
+    "uses_practice_app": true
+  },
+  {
+    "id": "TUT-003",
+    "title": "How to record a failing result and write a useful note",
+    "goal": "Practice marking a case as failed and writing a note someone else can read later.",
+    "preconditions": [
+      "You completed TUT-002.",
+      "The Practice App is visible."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Click the button labeled \"Crash on purpose.\"",
+        "expected": "The counter shows a number (any number)."
+      },
+      {
+        "n": 2,
+        "action": "Look at the counter. Compare what you actually see to the expected result above.",
+        "expected": "You notice the counter is showing something that is not a number."
+      },
+      {
+        "n": 3,
+        "action": "Mark this case as failed. When the runner asks for a note, write what you actually saw. Be specific.",
+        "expected": "The case is recorded as failed with your note attached."
+      }
+    ],
+    "expected_overall": "You correctly identified the mismatch, marked the case failed, and wrote a useful note.",
+    "pass_criteria": "Case is recorded as failed AND the note describes what was seen, not just \"doesn't work\".",
+    "est_minutes": 4,
+    "uses_practice_app": true
+  }
+]

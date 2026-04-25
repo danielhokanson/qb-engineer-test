@@ -1,0 +1,191 @@
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { CatalogService } from '../../data/catalog.service';
+import { SessionService } from '../../data/session.service';
+import { Case, CaseResult, CaseStatus, Session } from '../../data/types';
+
+@Component({
+  selector: 'app-run',
+  imports: [RouterLink],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './run.page.css',
+  template: `
+    <main class="page">
+      <nav class="breadcrumbs">
+        <a routerLink="/">All runs</a>
+        <span class="sep">/</span>
+        <span class="current">{{ session()?.name ?? '…' }}</span>
+      </nav>
+
+      @if (session(); as s) {
+        <header class="head">
+          <div class="head-meta">
+            <span class="label-mono">test run</span>
+            <span class="meta-pill">{{ scopeLabel() }}</span>
+          </div>
+          <h1 class="title">{{ s.name }}</h1>
+          <div class="run-stats">
+            <span class="stat">
+              <span class="stat-label">Roles</span>
+              <span class="stat-value">{{ s.selected_roles.join(', ') || '—' }}</span>
+            </span>
+            <span class="stat">
+              <span class="stat-label">Pass</span>
+              <span class="stat-value pass">{{ counts().pass }}</span>
+            </span>
+            <span class="stat">
+              <span class="stat-label">Fail</span>
+              <span class="stat-value fail">{{ counts().fail }}</span>
+            </span>
+            <span class="stat">
+              <span class="stat-label">Pending</span>
+              <span class="stat-value">{{ counts().pending }}</span>
+            </span>
+          </div>
+        </header>
+
+        @if (tutorialCases().length > 0 && !s.tutorial_completed) {
+          <section class="case-group">
+            <div class="group-head">
+              <h2 class="group-title">Tutorial</h2>
+              <span class="group-sub">Optional. Teaches how to read and run cases.</span>
+            </div>
+            <ul class="case-list">
+              @for (c of tutorialCases(); track c.id) {
+                <li class="surface-card surface-card-hover case-card">
+                  <a [routerLink]="['/run', s.id, 'case', c.id]" class="case-card-link">
+                    <div class="case-id-block">
+                      <span class="case-id">{{ c.id }}</span>
+                      <span class="case-status status-{{ statusFor(c.id) }}">
+                        {{ statusLabel(statusFor(c.id)) }}
+                      </span>
+                    </div>
+                    <div class="case-title">{{ c.title }}</div>
+                    <div class="case-goal">{{ c.goal }}</div>
+                    @if (c.est_minutes; as min) {
+                      <div class="case-meta">~{{ min }} min</div>
+                    }
+                  </a>
+                </li>
+              }
+            </ul>
+          </section>
+        }
+
+        <section class="case-group">
+          <div class="group-head">
+            <h2 class="group-title">Cases for your roles</h2>
+            <span class="group-sub">{{ filteredCases().length }} cases</span>
+          </div>
+          @if (filteredCases().length === 0) {
+            <div class="surface-card empty-state">
+              No cases match the selected roles. Either add cases tagged with
+              these roles, or
+              <a [routerLink]="['/']">start a new run</a> with different roles.
+            </div>
+          } @else {
+            <ul class="case-list">
+              @for (c of filteredCases(); track c.id) {
+                <li class="surface-card surface-card-hover case-card">
+                  <a [routerLink]="['/run', s.id, 'case', c.id]" class="case-card-link">
+                    <div class="case-id-block">
+                      <span class="case-id">{{ c.id }}</span>
+                      <span class="case-status status-{{ statusFor(c.id) }}">
+                        {{ statusLabel(statusFor(c.id)) }}
+                      </span>
+                    </div>
+                    <div class="case-title">{{ c.title }}</div>
+                    <div class="case-goal">{{ c.goal }}</div>
+                    <div class="case-meta">
+                      <span>{{ c.roles.join(', ') }}</span>
+                      @if (c.est_minutes; as min) {
+                        <span>· ~{{ min }} min</span>
+                      }
+                    </div>
+                  </a>
+                </li>
+              }
+            </ul>
+          }
+        </section>
+      } @else {
+        <div class="loading">Loading run…</div>
+      }
+    </main>
+  `,
+})
+export class RunPage {
+  readonly sessionId = input.required<string>();
+
+  private readonly catalog = inject(CatalogService);
+  private readonly sessionSvc = inject(SessionService);
+
+  readonly session = signal<Session | undefined>(undefined);
+  readonly results = signal<CaseResult[]>([]);
+
+  readonly filteredCases = computed<Case[]>(() => {
+    const s = this.session();
+    if (!s) return [];
+    return this.catalog.casesForRoles(s.selected_roles);
+  });
+
+  readonly tutorialCases = computed(() => this.catalog.tutorial());
+
+  readonly scopeLabel = computed(() => {
+    const s = this.session();
+    if (!s) return '';
+    if (s.selected_roles.length === 0) return 'no roles';
+    if (s.selected_roles.length === 1) return s.selected_roles[0];
+    return `${s.selected_roles.length} roles`;
+  });
+
+  readonly counts = computed(() => {
+    const cases = [...this.tutorialCases(), ...this.filteredCases()];
+    const map = new Map(this.results().map(r => [r.case_id, r.status]));
+    let pass = 0, fail = 0, blocked = 0, pending = 0;
+    for (const c of cases) {
+      const s = map.get(c.id) ?? 'pending';
+      if (s === 'pass') pass++;
+      else if (s === 'fail') fail++;
+      else if (s === 'blocked') blocked++;
+      else pending++;
+    }
+    return { pass, fail, blocked, pending };
+  });
+
+  constructor() {
+    void this.catalog.load();
+
+    effect(async () => {
+      const id = this.sessionId();
+      if (!id) return;
+      const session = await this.sessionSvc.getSession(id);
+      this.session.set(session);
+      if (session) {
+        const results = await this.sessionSvc.resultsForSession(session.id);
+        this.results.set(results);
+      }
+    });
+  }
+
+  statusFor(caseId: string): CaseStatus {
+    return this.results().find(r => r.case_id === caseId)?.status ?? 'pending';
+  }
+
+  statusLabel(s: CaseStatus): string {
+    switch (s) {
+      case 'pass': return 'Passed';
+      case 'fail': return 'Failed';
+      case 'blocked': return 'Blocked';
+      default: return 'Not started';
+    }
+  }
+}
