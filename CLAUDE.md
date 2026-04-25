@@ -34,6 +34,7 @@ The Angular app is at `test-bed/`. Structure (as scaffolded; will grow):
 - **Signals + `input()` / `signal()` / `computed()` / `effect()`** for component state. Avoid RxJS subjects for component-local state.
 - **Zoneless change detection** is on (`provideZonelessChangeDetection()`). Don't pull in Zone.js APIs.
 - **ReactiveForms only**. No `ngModel`. Validate with built-in `Validators`.
+- **Bridge ReactiveForms to signals via `toSignal`**. Reading `form.valid`, `control.value`, etc. directly inside a `computed()` is non-reactive — the computed memoizes once and never updates when the form changes. Use `toSignal(form.statusChanges, { initialValue: form.status })` or `toSignal(control.valueChanges, { initialValue: control.value })` and have the computed read the resulting signal. This bug bit `new-run.page.ts` and `case.page.ts` early on.
 - **URL as source of truth for navigation state.** Session id, current case, branch choices that affect the URL — keep them in the route, not just signals. Signals own ephemeral UI state; the URL owns shareable/refreshable state.
 - **No hardcoded option lists in components.** Roles, fixtures, languages, cases — all derived from data files (and eventually IndexedDB / compiled JSON), never hardcoded into TypeScript.
 - **Minimal custom CSS.** Check `styles.css` first — `surface-card`, `btn-*`, `input-field`, `label-mono` cover most needs. Component-level CSS only for layout particulars.
