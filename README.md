@@ -8,7 +8,7 @@ A library of manual test cases describing how a manufacturing-focused ERP *shoul
 
 ## Status
 
-Early. The pilot covers Phase 0 (bootstrap from empty database to configured tenant), the test case schema, and an in-runner onboarding tutorial that teaches new testers how to read cases and record results. Phases 1 through 5, role reference appendices, the role-function-to-role mapping, glossary, and the dedicated i18n and accessibility suites are not yet written.
+Early but advancing. Phases 0 and 1 are written, plus the schema, onboarding tutorial, glossary, and a working Angular test runner in `test-bed/`. Phases 2 through 5, role reference appendices, and the dedicated i18n and accessibility suites are not yet written.
 
 ## Documentation
 
@@ -23,15 +23,20 @@ Read those before contributing. The rest of this README is a quick orientation.
 
 ```
 docs/
-  test-scenarios.md          Reference: the test library
-  runner-platform.md         Reference: the test runner
-  01-schema.md               Test case field structure and conventions
-  02-onboarding-tutorial.md  Tutorial cases (TUT-NNN) for new testers
-  03-phase-0-bootstrap.md    Phase 0 cases (P0-AREA-NNN)
-  04-phase-0-manifest.md     Phase 0 sequence, branches, and checkpoints
+  test-scenarios.md            Reference: the test library
+  runner-platform.md           Reference: the test runner
+  glossary.md                  Plain-English term definitions
+  01-schema.md                 Test case field structure and conventions
+  02-onboarding-tutorial.md    Tutorial cases (TUT-NNN) for new testers
+  03-phase-0-bootstrap.md      Phase 0 cases (P0-AREA-NNN)
+  04-phase-0-manifest.md       Phase 0 sequence, branches, checkpoints
+  05-phase-1-foundations.md    Phase 1 cases (P1-AREA-NNN)
+  06-phase-1-manifest.md       Phase 1 sequence, role coverage, checkpoints
+
+test-bed/                      Angular SPA test runner
 ```
 
-Future phases follow the same naming pattern (`docs/05-phase-1-foundations.md`, etc.).
+Future phases follow the same naming pattern (`docs/07-phase-2-master-data.md`, etc.).
 
 ## Conventions
 
@@ -46,7 +51,14 @@ See [`docs/01-schema.md`](docs/01-schema.md) for the full schema.
 
 ## Running the tests
 
-A web-based runner is planned but not built. For now, cases are read and executed manually from the source files. Testers record results in whatever way works for them; bug reports go directly to the maintainer (eventually via GitHub Issues on this repo).
+A web-based runner is now in place at `test-bed/` (Angular SPA, IndexedDB-backed, no server required). To work on it:
+
+```
+cd test-bed
+npx ng serve
+```
+
+Then open the URL the dev server prints. Sample data drives the runner today; a build pipeline that compiles real cases from `docs/` to runner-consumable JSON is a future enhancement. Testers record results in IndexedDB; bug reports go directly to the maintainer (eventually via GitHub Issues on this repo).
 
 ## Reporting bugs in the application under test
 

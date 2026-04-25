@@ -66,30 +66,31 @@ The tutorial uses an in-runner Practice App (see [`runner-platform.md`](runner-p
 
 ```
 docs/
-  test-scenarios.md          This document
-  runner-platform.md         Runner reference
-  01-schema.md               Schema definition (the source of truth for case structure)
-  02-onboarding-tutorial.md  TUT-NNN cases
-  03-phase-0-bootstrap.md    P0-AREA-NNN cases
-  04-phase-0-manifest.md     P0 sequence, branches, checkpoints
-  05-phase-1-foundations.md  P1 cases (planned)
-  06-phase-1-manifest.md     P1 sequence (planned)
+  test-scenarios.md            This document
+  runner-platform.md           Runner reference
+  glossary.md                  Plain-English term definitions
+  01-schema.md                 Schema definition (the source of truth for case structure)
+  02-onboarding-tutorial.md    TUT-NNN cases
+  03-phase-0-bootstrap.md      P0 cases — bootstrap from empty database
+  04-phase-0-manifest.md       P0 sequence, branches, checkpoints
+  05-phase-1-foundations.md    P1 cases — foundational records
+  06-phase-1-manifest.md       P1 sequence, role coverage, checkpoints
+  07-phase-2-master-data.md    P2 cases (planned)
+  08-phase-2-manifest.md       P2 sequence (planned)
   ... (etc. through P5)
 
-  appendices/                (planned)
-    role-floor-operator.md   Role reference: cases relevant to this role, in role-specific order
+  appendices/                  (planned)
+    role-floor-operator.md     Role reference: cases relevant to this role, in role-specific order
     role-procurement.md
     ... (one per role)
 
-  suites/                    (planned)
-    i18n-suite.md            Dedicated i18n cases against representative screens
-    accessibility-suite.md   Dedicated 508 cases
+  suites/                      (planned)
+    i18n-suite.md              Dedicated i18n cases against representative screens
+    accessibility-suite.md     Dedicated 508 cases
 
-  fixtures/                  (planned)
+  fixtures/                    (planned)
     cascade-components-mid.yml   Default mid-market fictional company
     ... (other scale variants)
-
-  glossary.md                (planned) Centralized term definitions
 ```
 
 Each phase has two files: a content file with the cases, and a manifest file that declares sequence, branches, and checkpoints. The split lets the cases themselves stay portable (readable as documentation by humans) while the manifest carries the orchestration the runner needs.
