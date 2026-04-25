@@ -13,11 +13,10 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CatalogService } from '../../data/catalog.service';
 import { SessionService } from '../../data/session.service';
 import { Case, CaseStatus, Session } from '../../data/types';
-import { PracticeAppComponent } from '../../shared/practice-app/practice-app.component';
 
 @Component({
   selector: 'app-case',
-  imports: [RouterLink, ReactiveFormsModule, PracticeAppComponent],
+  imports: [RouterLink, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './case.page.css',
   template: `
@@ -53,7 +52,25 @@ import { PracticeAppComponent } from '../../shared/practice-app/practice-app.com
         </header>
 
         @if (c.uses_practice_app) {
-          <app-practice-app />
+          <aside class="practice-link">
+            <div class="practice-link-text">
+              <span class="label-mono">practice app required</span>
+              <p class="practice-link-body">
+                This case uses the tutorial Practice App. Open it in a new
+                tab, follow the steps there, then come back to this tab to
+                record your result — the same way you'll use the real
+                application later.
+              </p>
+            </div>
+            <a
+              href="/practice"
+              target="_blank"
+              rel="noopener"
+              class="btn-primary">
+              Open Practice App
+              <span aria-hidden="true">↗</span>
+            </a>
+          </aside>
         }
 
         <section class="block">
