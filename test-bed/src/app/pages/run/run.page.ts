@@ -51,6 +51,12 @@ import { Case, CaseStatus, Session } from '../../data/types';
               <span class="stat-label">Roles</span>
               <span class="stat-value">{{ s.selected_roles.join(', ') || '—' }}</span>
             </span>
+            @if (s.selected_flows && s.selected_flows.length > 0) {
+              <span class="stat">
+                <span class="stat-label">Flows</span>
+                <span class="stat-value">{{ s.selected_flows.join(', ') }}</span>
+              </span>
+            }
             <span class="stat">
               <span class="stat-label">Pass</span>
               <span class="stat-value pass">{{ counts().pass }}</span>
@@ -196,7 +202,10 @@ export class RunPage {
   readonly filteredCases = computed<Case[]>(() => {
     const s = this.session();
     if (!s) return [];
-    return this.catalog.casesForRoles(s.selected_roles);
+    return this.catalog.casesForRolesAndFlows(
+      s.selected_roles,
+      s.selected_flows ?? [],
+    );
   });
 
   readonly tutorialCases = computed(() => {

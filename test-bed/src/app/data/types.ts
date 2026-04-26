@@ -79,6 +79,9 @@ export interface Session {
   fixture_id: string;
   language: LanguageCode;
   selected_roles: string[];
+  /** Optional. When non-empty, filters cases to those that match at
+   * least one of these flows in addition to matching a selected role. */
+  selected_flows: string[];
   branch_choices: Record<string, string>;
   tutorial_completed: boolean;
   current_case_id: string | null;

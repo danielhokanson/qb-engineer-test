@@ -32,6 +32,17 @@ export class CatalogService {
     return [...set].sort();
   });
 
+  /** Unique flow ids derived from the union of cases.flows. */
+  readonly flows = computed(() => {
+    const set = new Set<string>();
+    for (const c of this._cases()) {
+      for (const flow of c.flows ?? []) {
+        set.add(flow);
+      }
+    }
+    return [...set].sort();
+  });
+
   /** Phase names present in the case set, in declared order. */
   readonly phases = computed(() => {
     const seen = new Set<string>();
@@ -68,5 +79,27 @@ export class CatalogService {
     if (roles.length === 0) return [];
     const wanted = new Set(roles);
     return this._cases().filter(c => c.roles.some(r => wanted.has(r)));
+  }
+
+  /** Cases that match the role filter and (if any flows specified) at
+   * least one of the supplied flows. Empty `flows` means "no flow filter." */
+  casesForRolesAndFlows(roles: string[], flows: string[]): Case[] {
+    const byRole = this.casesForRoles(roles);
+    if (flows.length === 0) return byRole;
+    const wantedFlows = new Set(flows);
+    return byRole.filter(c =>
+      (c.flows ?? []).some(f => wantedFlows.has(f)),
+    );
+  }
+
+  /** Count cases matching a single role (for badges in pickers). */
+  caseCountForRole(role: string): number {
+    return this._cases().filter(c => (c.roles ?? []).includes(role)).length;
+  }
+
+  /** Count cases matching a single flow within an optional role filter. */
+  caseCountForFlow(flow: string, withinRoles: string[] = []): number {
+    const pool = withinRoles.length === 0 ? this._cases() : this.casesForRoles(withinRoles);
+    return pool.filter(c => (c.flows ?? []).includes(flow)).length;
   }
 }

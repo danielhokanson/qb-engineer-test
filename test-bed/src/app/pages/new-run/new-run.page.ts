@@ -5,6 +5,24 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CatalogService } from '../../data/catalog.service';
 import { SessionService } from '../../data/session.service';
 
+/** Human-readable labels for flow ids. The flow id stays canonical
+ * (kebab-case), this is just for the UI. */
+const FLOW_LABELS: Record<string, string> = {
+  'tenant-onboarding': 'Tenant onboarding',
+  'foundational-records': 'Foundational records',
+  'vendor-to-asset': 'Vendor to asset',
+  'part-to-inventory': 'Part to inventory',
+  'lead-to-customer': 'Lead to customer',
+  'quote-to-cash': 'Quote to cash',
+  'hire-to-first-assignment': 'Hire to first assignment',
+  'rd-to-product': 'R&D to product',
+  'damage-to-completion': 'Damage to completion',
+  'wear-to-repair': 'Wear and tear to repair',
+  'customer-return': 'Customer return',
+  'period-close': 'Period close',
+  'cycle-count': 'Cycle count',
+};
+
 @Component({
   selector: 'app-new-run',
   imports: [ReactiveFormsModule, RouterLink],
@@ -19,11 +37,12 @@ import { SessionService } from '../../data/session.service';
       </nav>
 
       <header class="head">
-        <div class="label-mono">step 1 of 1</div>
+        <div class="label-mono">configure your run</div>
         <h1 class="title">Configure a new test run</h1>
         <p class="sub">
-          Give the run a name you'll recognize later, and pick the roles you want
-          to test. The runner will pull the cases that match those roles.
+          Pick the roles you'll be wearing and (optionally) the specific
+          business flows you want to test. The runner shows you only the
+          cases that match.
         </p>
       </header>
 
@@ -63,11 +82,11 @@ import { SessionService } from '../../data/session.service';
                     <input
                       type="checkbox"
                       class="role-check"
-                      [checked]="isSelected(role)"
+                      [checked]="isRoleSelected(role)"
                       (change)="toggleRole(role)" />
                     <span class="role-name">{{ role }}</span>
                     <span class="role-count">
-                      {{ caseCountForRole(role) }} cases
+                      {{ catalog.caseCountForRole(role) }} cases
                     </span>
                   </label>
                 </li>
@@ -79,6 +98,49 @@ import { SessionService } from '../../data/session.service';
             roles you select.
           </p>
         </div>
+
+        @if (selectedRolesArray().length > 0) {
+          <div class="field">
+            <div class="field-label-row">
+              <span class="field-label">Flows (optional)</span>
+              <span class="field-meta">{{ flowSummary() }}</span>
+            </div>
+            @if (availableFlows().length === 0) {
+              <div class="role-empty">
+                No flows tagged on cases for the selected roles.
+              </div>
+            } @else {
+              <ul class="role-list">
+                @for (flow of availableFlows(); track flow.id) {
+                  <li>
+                    <label class="role-row">
+                      <input
+                        type="checkbox"
+                        class="role-check"
+                        [checked]="isFlowSelected(flow.id)"
+                        (change)="toggleFlow(flow.id)" />
+                      <span class="role-name">{{ flow.label }}</span>
+                      <span class="role-count">
+                        {{ flow.count }} cases
+                      </span>
+                    </label>
+                  </li>
+                }
+              </ul>
+            }
+            <p class="field-hint">
+              A flow is a cross-phase business journey (e.g., quote-to-cash,
+              vendor-to-asset). Pick one or more to scope your run to a
+              specific outcome instead of every case for your role. Leave
+              empty to run everything for the selected roles.
+            </p>
+            <div class="filter-summary">
+              <span class="filter-label">Will surface</span>
+              <span class="filter-count">{{ effectiveCaseCount() }}</span>
+              <span class="filter-label-after">cases for this run.</span>
+            </div>
+          </div>
+        }
 
         <div class="actions">
           <a routerLink="/" class="btn-secondary">Cancel</a>
@@ -104,33 +166,64 @@ export class NewRunPage {
   });
 
   private readonly _selectedRoles = signal<Set<string>>(new Set());
+  private readonly _selectedFlows = signal<Set<string>>(new Set());
 
-  // Bridge the form's status (an RxJS observable) to a signal so the
-  // computed below tracks it like any other signal. Without this, `canSubmit`
-  // only re-evaluates when _selectedRoles changes, never when the form becomes
-  // valid — which is the bug that left the Start-run button stuck disabled.
   private readonly formStatus = toSignal(this.form.statusChanges, {
     initialValue: this.form.status,
   });
 
   readonly roles = computed(() => this.catalog.roles());
 
+  readonly selectedRolesArray = computed(() => [...this._selectedRoles()]);
+
+  /** Flows that have at least one case matching the currently selected roles.
+   * If no roles are selected, the list is empty (we only ask after roles). */
+  readonly availableFlows = computed(() => {
+    const roles = this.selectedRolesArray();
+    if (roles.length === 0) return [];
+    const allFlows = this.catalog.flows();
+    return allFlows
+      .map(id => ({
+        id,
+        label: FLOW_LABELS[id] ?? id,
+        count: this.catalog.caseCountForFlow(id, roles),
+      }))
+      .filter(f => f.count > 0);
+  });
+
   readonly roleSummary = computed(() => {
     const n = this._selectedRoles().size;
     if (n === 0) return 'none selected';
-    if (n === 1) return '1 selected';
-    return `${n} selected`;
+    return n === 1 ? '1 selected' : `${n} selected`;
+  });
+
+  readonly flowSummary = computed(() => {
+    const n = this._selectedFlows().size;
+    if (n === 0) return 'all flows for these roles';
+    return n === 1 ? '1 flow' : `${n} flows`;
+  });
+
+  /** How many cases will the runner ultimately surface, given current
+   * role + flow selections. Updates live as the user toggles checkboxes. */
+  readonly effectiveCaseCount = computed(() => {
+    const roles = this.selectedRolesArray();
+    const flows = [...this._selectedFlows()];
+    return this.catalog.casesForRolesAndFlows(roles, flows).length;
   });
 
   readonly canSubmit = computed(() => {
-    return this.formStatus() === 'VALID' && this._selectedRoles().size > 0;
+    return (
+      this.formStatus() === 'VALID' &&
+      this._selectedRoles().size > 0 &&
+      this.effectiveCaseCount() > 0
+    );
   });
 
   constructor() {
     void this.catalog.load();
   }
 
-  isSelected(role: string): boolean {
+  isRoleSelected(role: string): boolean {
     return this._selectedRoles().has(role);
   }
 
@@ -141,10 +234,26 @@ export class NewRunPage {
       else next.add(role);
       return next;
     });
+    // When roles change, prune any selected flow that's no longer reachable.
+    const reachable = new Set(this.availableFlows().map(f => f.id));
+    this._selectedFlows.update(set => {
+      const next = new Set<string>();
+      for (const f of set) if (reachable.has(f)) next.add(f);
+      return next;
+    });
   }
 
-  caseCountForRole(role: string): number {
-    return this.catalog.cases().filter(c => c.roles.includes(role)).length;
+  isFlowSelected(flow: string): boolean {
+    return this._selectedFlows().has(flow);
+  }
+
+  toggleFlow(flow: string): void {
+    this._selectedFlows.update(set => {
+      const next = new Set(set);
+      if (next.has(flow)) next.delete(flow);
+      else next.add(flow);
+      return next;
+    });
   }
 
   async submit(): Promise<void> {
@@ -154,7 +263,8 @@ export class NewRunPage {
     const session = await this.sessionSvc.createSession({
       name,
       fixtureId: fixture?.id ?? 'cascade-components-mid',
-      selectedRoles: [...this._selectedRoles()],
+      selectedRoles: this.selectedRolesArray(),
+      selectedFlows: [...this._selectedFlows()],
     });
     await this.router.navigate(['/run', session.id]);
   }
