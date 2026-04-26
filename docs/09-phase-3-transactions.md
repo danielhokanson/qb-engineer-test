@@ -39,7 +39,7 @@ scale_tags:
   - mid-market
   - enterprise
 preconditions:
-  - Phase 2 master data exists.
+  - Phase 2 master data exists: at least one vendor, one customer, raw and finished parts, a BOM, a routing, and pricing — all with their supporting fields populated. (Phase 2 outcomes.)
   - At least one part and one vendor exist.
 steps:
   - n: 1
@@ -142,7 +142,7 @@ flows:
   - vendor-to-asset
 preconditions:
   - At least one vendor exists.
-  - Asset GL account exists from P1.
+  - At least one fixed-asset GL account is present in the chart of accounts, available to assign on a fixed-asset PO line. (Established in P1-GL-001.)
 steps:
   - n: 1
     action: |
@@ -188,7 +188,7 @@ flows:
   - vendor-to-asset
   - part-to-inventory
 preconditions:
-  - P3-PO-001 has passed (an issued PO exists).
+  - A purchase order has been issued to a vendor, has a stable PO number, and has at least one line for a part with quantity and price. (Established by P3-PO-001.)
 steps:
   - n: 1
     action: |
@@ -233,7 +233,7 @@ roles:
 flows:
   - part-to-inventory
 preconditions:
-  - P3-PO-001 has passed.
+  - A purchase order has been issued to a vendor, has a stable PO number, and has at least one line for a part with quantity and price. (Established by P3-PO-001.)
 modality:
   - scanner
   - manual-entry
@@ -397,7 +397,7 @@ roles:
 flows:
   - vendor-to-asset
 preconditions:
-  - P3-PO-002 has passed (PO with a fixed-asset line).
+  - A purchase order has been issued that includes a fixed-asset line (capitalize-on-receipt) alongside any inventory lines, with asset class and capitalization GL account specified. (Established by P3-PO-002.)
   - P3-RECV-001 or equivalent has received the asset line.
 steps:
   - n: 1
@@ -453,8 +453,8 @@ flows:
   - vendor-to-asset
   - part-to-inventory
 preconditions:
-  - P3-PO-001 has passed.
-  - P3-RECV-001 has passed.
+  - A purchase order has been issued to a vendor, has a stable PO number, and has at least one line for a part with quantity and price. (Established by P3-PO-001.)
+  - First inventory exists from a vendor receipt: the PO is in Received or Closed status, lot numbers have been recorded for lot-tracked items, and GR/IR is pending the vendor invoice. (Established by P3-RECV-001.)
 steps:
   - n: 1
     action: |
@@ -607,7 +607,7 @@ roles:
 flows:
   - cycle-count
 preconditions:
-  - P3-OB-001 has passed (opening inventory exists).
+  - Opening inventory balances have been posted: at least five parts have starting quantities and unit costs as of a cutover date, with the offsetting equity / opening-balance GL entry. (Established by P3-OB-001.)
 modality:
   - scanner
   - manual-entry
@@ -703,7 +703,7 @@ flows:
   - vendor-to-asset
   - part-to-inventory
 preconditions:
-  - P3-AP-001 has passed (an approved AP invoice exists).
+  - A vendor invoice has been 3-way matched against its PO and receipt, is approved for payment, and AP is increased accordingly. (Established by P3-AP-001.)
 steps:
   - n: 1
     action: |

@@ -38,7 +38,7 @@ flows:
   - vendor-to-asset
   - part-to-inventory
 preconditions:
-  - Phase 1 is complete (chart of accounts, tax codes, locations exist).
+  - Foundational records exist: at least one location, work center, standard UoMs, the chart of accounts, at least one tax code, employees, calendar, and asset records. (Phase 1 outcomes.)
   - You are signed in as a user with permission to manage vendors.
 steps:
   - n: 1
@@ -88,7 +88,7 @@ roles:
 flows:
   - vendor-to-asset
 preconditions:
-  - P2-VENDOR-001 has passed.
+  - The first vendor record exists with name, address, primary contact, payment terms, and default expense / inventory GL account. (Established by P2-VENDOR-001.)
 steps:
   - n: 1
     action: |
@@ -136,7 +136,7 @@ roles:
 flows:
   - vendor-to-asset
 preconditions:
-  - P2-VENDOR-001 has passed.
+  - The first vendor record exists with name, address, primary contact, payment terms, and default expense / inventory GL account. (Established by P2-VENDOR-001.)
 steps:
   - n: 1
     action: |
@@ -191,7 +191,7 @@ scale_tags:
   - mid-market
   - enterprise
 preconditions:
-  - P2-VENDOR-001 has passed.
+  - The first vendor record exists with name, address, primary contact, payment terms, and default expense / inventory GL account. (Established by P2-VENDOR-001.)
 steps:
   - n: 1
     action: |
@@ -285,7 +285,7 @@ flows:
   - lead-to-customer
   - quote-to-cash
 preconditions:
-  - Phase 1 is complete.
+  - Foundational records exist: at least one location, one work center, standard units of measure, the chart of accounts, at least one tax code, the first employee, a default calendar, and at least one fixed asset. (Phase 1 outcomes.)
   - Tax codes from P1-TAX-001 exist.
 steps:
   - n: 1
@@ -335,7 +335,7 @@ flows:
   - lead-to-customer
   - quote-to-cash
 preconditions:
-  - P2-CUST-001 has passed.
+  - The first customer record exists with billing and shipping addresses, primary contact, default tax code, payment terms, and a $50,000 credit limit. (Established by P2-CUST-001.)
 steps:
   - n: 1
     action: |
@@ -383,7 +383,7 @@ flows:
   - lead-to-customer
   - quote-to-cash
 preconditions:
-  - P2-CUST-001 has passed (customer with $50,000 credit limit).
+  - The first customer record exists with billing and shipping addresses, primary contact, default tax code, payment terms, and a $50,000 credit limit. (Established by P2-CUST-001.)
 steps:
   - n: 1
     action: |
@@ -442,7 +442,7 @@ scale_tags:
   - mid-market
   - enterprise
 preconditions:
-  - P2-CUST-001 has passed.
+  - The first customer record exists with billing and shipping addresses, primary contact, default tax code, payment terms, and a $50,000 credit limit. (Established by P2-CUST-001.)
   - Multi-currency is enabled in tenant settings (P0).
 steps:
   - n: 1
@@ -536,7 +536,7 @@ flows:
   - part-to-inventory
   - quote-to-cash
 preconditions:
-  - P2-PART-001 has passed.
+  - A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)
 steps:
   - n: 1
     action: |
@@ -580,7 +580,7 @@ roles:
 flows:
   - part-to-inventory
 preconditions:
-  - P2-PART-001 has passed.
+  - A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)
 steps:
   - n: 1
     action: |
@@ -625,7 +625,7 @@ scale_tags:
   - mid-market
   - enterprise
 preconditions:
-  - P2-PART-002 has passed.
+  - A finished-goods part exists (e.g. FG-BRACKET-A1) with type, unit of measure, sales GL account, and a list price. (Established by P2-PART-002.)
 steps:
   - n: 1
     action: |
@@ -727,8 +727,8 @@ flows:
   - part-to-inventory
   - rd-to-product
 preconditions:
-  - P2-PART-001 (raw material) has passed.
-  - P2-PART-002 (finished goods) has passed.
+  - A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)
+  - A finished-goods part exists (e.g. FG-BRACKET-A1) with type, unit of measure, sales GL account, and a list price. (Established by P2-PART-002.)
 steps:
   - n: 1
     action: |
@@ -778,7 +778,7 @@ scale_tags:
   - mid-market
   - enterprise
 preconditions:
-  - P2-BOM-001 has passed.
+  - A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)
 steps:
   - n: 1
     action: |
@@ -823,7 +823,7 @@ flows:
   - part-to-inventory
   - rd-to-product
 preconditions:
-  - P2-BOM-001 has passed.
+  - A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)
 steps:
   - n: 1
     action: |
@@ -871,7 +871,7 @@ roles:
 flows:
   - part-to-inventory
 preconditions:
-  - P2-BOM-001 has passed.
+  - A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)
 steps:
   - n: 1
     action: |
@@ -911,7 +911,7 @@ flows:
   - part-to-inventory
   - rd-to-product
 preconditions:
-  - P2-BOM-001 has passed.
+  - A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)
   - Work centers from P1-WC-001/002 exist.
 steps:
   - n: 1
@@ -966,7 +966,7 @@ scale_tags:
   - mid-market
   - enterprise
 preconditions:
-  - P2-ROUTE-001 has passed.
+  - A finished-goods part has a routing with ordered operations at the right work centers, including setup and run times for each. (Established by P2-ROUTE-001.)
   - At least one vendor that does subcontract work exists (or can be
     added).
 steps:
@@ -1021,7 +1021,7 @@ flows:
 scale_tags:
   - enterprise
 preconditions:
-  - P2-ROUTE-001 has passed.
+  - A finished-goods part has a routing with ordered operations at the right work centers, including setup and run times for each. (Established by P2-ROUTE-001.)
 steps:
   - n: 1
     action: |
@@ -1118,7 +1118,7 @@ roles:
 flows:
   - quote-to-cash
 preconditions:
-  - P2-PART-002 has passed.
+  - A finished-goods part exists (e.g. FG-BRACKET-A1) with type, unit of measure, sales GL account, and a list price. (Established by P2-PART-002.)
 steps:
   - n: 1
     action: |
@@ -1158,8 +1158,8 @@ flows:
   - vendor-to-asset
   - part-to-inventory
 preconditions:
-  - P2-VENDOR-001 has passed.
-  - P2-PART-001 has passed.
+  - The first vendor record exists with name, address, primary contact, payment terms, and default expense / inventory GL account. (Established by P2-VENDOR-001.)
+  - A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)
 steps:
   - n: 1
     action: |
@@ -1247,7 +1247,7 @@ scale_tags:
   - mid-market
   - enterprise
 preconditions:
-  - P2-BOM-001 has passed.
+  - A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)
 steps:
   - n: 1
     action: |
@@ -1344,7 +1344,7 @@ roles:
 flows:
   - rd-to-product
 preconditions:
-  - P2-RD-001 has passed.
+  - A prototype part exists, marked not-for-production / not-for-sale and gated from sales orders. (Established by P2-RD-001.)
   - The prototype has a BOM and routing.
 steps:
   - n: 1
@@ -1383,7 +1383,7 @@ roles:
 flows:
   - lead-to-customer
 preconditions:
-  - Phase 1 is complete.
+  - Foundational records exist: at least one location, one work center, standard units of measure, the chart of accounts, at least one tax code, the first employee, a default calendar, and at least one fixed asset. (Phase 1 outcomes.)
 steps:
   - n: 1
     action: |
@@ -1424,7 +1424,7 @@ roles:
 flows:
   - lead-to-customer
 preconditions:
-  - P2-LEAD-001 has passed.
+  - A sales lead has been captured with company, contact info, source attribution, and estimated deal size. (Established by P2-LEAD-001.)
 steps:
   - n: 1
     action: |

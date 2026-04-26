@@ -50,7 +50,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - Phase 0 is complete.
+  - The application is bootstrapped: company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)
   - You are signed in as an administrator.
   - No locations have been created yet.
 steps:
@@ -111,7 +111,7 @@ scale_tags:
   - mid-market
   - enterprise
 preconditions:
-  - P1-LOC-001 has passed.
+  - The primary location exists with a complete address and is flagged as the company default. (Established by P1-LOC-001.)
 steps:
   - n: 1
     action: |
@@ -222,7 +222,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - P1-WC-001 has passed.
+  - At least one work center exists (e.g. Press Shop), linked to the primary location, with a default labor rate and capacity. (Established by P1-WC-001.)
 steps:
   - n: 1
     action: |
@@ -268,7 +268,7 @@ scale_tags:
   - enterprise
 preconditions:
   - At least one calendar exists. (See P1-CAL-001.)
-  - P1-WC-002 has passed.
+  - Multiple work centers exist covering common operations (Press Shop, Cut & Saw, Weld, Paint, Assembly, Inspection), all linked to the primary location. (Established by P1-WC-002.)
 prerequisite_cases:
   - P1-CAL-001
 steps:
@@ -315,7 +315,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - Phase 0 is complete.
+  - The application is bootstrapped: company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)
 steps:
   - n: 1
     action: |
@@ -357,7 +357,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - P1-UOM-001 has passed.
+  - Standard units of measure are available (each, kilogram, pound, hour, foot, square foot, gallon, liter). (Established by P1-UOM-001.)
 steps:
   - n: 1
     action: |
@@ -395,7 +395,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - P1-UOM-001 and P1-UOM-002 have passed.
+  - Standard units of measure exist (each, kilogram, pound, hour, foot, square foot, gallon, liter) plus at least one custom unit (e.g. "sheet"). (Established by P1-UOM-001 and P1-UOM-002.)
 steps:
   - n: 1
     action: |
@@ -443,7 +443,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - Phase 0 is complete.
+  - The application is bootstrapped: company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)
   - The costing model and currency are configured (P0-TENANT-005).
 steps:
   - n: 1
@@ -498,7 +498,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - P1-GL-001 has passed.
+  - The chart of accounts is initialized with standard accounts: cash, accounts receivable, inventory, accounts payable, sales, cost of goods sold, and wages — at minimum. (Established by P1-GL-001.)
 steps:
   - n: 1
     action: |
@@ -550,7 +550,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - P0-INTEG-003 (tax integration choice) is complete.
+  - Tax calculation has been configured: a tax provider has been chosen (integrated provider or manual rates) and the choice persists across tenant settings. (Established by P0-INTEG-003.)
   - The chart of accounts is initialized.
 steps:
   - n: 1
@@ -599,7 +599,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - P1-TAX-001 has passed.
+  - At least one sales tax code exists with a defined rate, exemption flag, and posting GL account. (Established by P1-TAX-001.)
 steps:
   - n: 1
     action: |
@@ -701,7 +701,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - P1-EMP-001 has passed.
+  - The first employee record exists with hire date, default location, department, and pay info. (Established by P1-EMP-001.)
 steps:
   - n: 1
     action: |
@@ -748,7 +748,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - P1-EMP-001 has passed.
+  - The first employee record exists with hire date, default location, department, and pay info. (Established by P1-EMP-001.)
 steps:
   - n: 1
     action: |
@@ -799,7 +799,7 @@ flows:
   - foundational-records
 preconditions:
   - At least one non-admin role exists (P0-USER-001).
-  - P1-EMP-003 has passed (employees exist to potentially link to).
+  - At least four employees exist covering varied pay classifications (hourly with overtime, salaried-exempt, salaried-non-exempt). (Established by P1-EMP-003.)
 steps:
   - n: 1
     action: |
@@ -844,7 +844,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - P1-USER-001 has passed.
+  - A second non-admin system user exists, assigned a Floor Operator (or equivalent) role and able to sign in. (Established by P1-USER-001.)
   - You can sign in as the user created in P1-USER-001 (a credential
     or invite link).
 steps:
@@ -1022,7 +1022,7 @@ scale_tags:
   - mid-market
   - enterprise
 preconditions:
-  - P1-CAL-001 has passed.
+  - The plant default calendar is configured with working days, shift times, and at least the upcoming-year US federal holidays marked non-working. (Established by P1-CAL-001.)
 steps:
   - n: 1
     action: |
@@ -1067,7 +1067,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - P1-CAL-001 has passed.
+  - The plant default calendar is configured with working days, shift times, and at least the upcoming-year US federal holidays marked non-working. (Established by P1-CAL-001.)
 steps:
   - n: 1
     action: |
@@ -1174,7 +1174,7 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - P1-ASSET-001 has passed.
+  - At least one fixed asset record exists, linked to a work center, with depreciation method and useful life configured and a depreciation schedule generated. (Established by P1-ASSET-001.)
 steps:
   - n: 1
     action: |
@@ -1227,7 +1227,7 @@ scale_tags:
   - mid-market
   - enterprise
 preconditions:
-  - P1-GL-001 (chart of accounts) has passed.
+  - The chart of accounts is initialized with standard accounts: cash, accounts receivable, inventory, accounts payable, sales, cost of goods sold, and wages — at minimum. (Established by P1-GL-001.)
   - At least one vendor exists (covered in Phase 2 — for now, this
     case can be deferred or run with a placeholder vendor).
 prerequisite_cases:

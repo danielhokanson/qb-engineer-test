@@ -695,7 +695,9 @@
       "foundational-records"
     ],
     "preconditions": [
-      "Phase 0 is complete.",
+      {
+        "The application is bootstrapped": "company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)"
+      },
       "You are signed in as an administrator.",
       "No locations have been created yet."
     ],
@@ -744,7 +746,7 @@
       "enterprise"
     ],
     "preconditions": [
-      "P1-LOC-001 has passed."
+      "The primary location exists with a complete address and is flagged as the company default. (Established by P1-LOC-001.)"
     ],
     "steps": [
       {
@@ -824,7 +826,7 @@
       "foundational-records"
     ],
     "preconditions": [
-      "P1-WC-001 has passed."
+      "At least one work center exists (e.g. Press Shop), linked to the primary location, with a default labor rate and capacity. (Established by P1-WC-001.)"
     ],
     "steps": [
       {
@@ -858,7 +860,7 @@
     ],
     "preconditions": [
       "At least one calendar exists. (See P1-CAL-001.)",
-      "P1-WC-002 has passed."
+      "Multiple work centers exist covering common operations (Press Shop, Cut & Saw, Weld, Paint, Assembly, Inspection), all linked to the primary location. (Established by P1-WC-002.)"
     ],
     "prerequisite_cases": [
       "P1-CAL-001"
@@ -895,7 +897,9 @@
       "foundational-records"
     ],
     "preconditions": [
-      "Phase 0 is complete."
+      {
+        "The application is bootstrapped": "company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)"
+      }
     ],
     "steps": [
       {
@@ -925,7 +929,7 @@
       "foundational-records"
     ],
     "preconditions": [
-      "P1-UOM-001 has passed."
+      "Standard units of measure are available (each, kilogram, pound, hour, foot, square foot, gallon, liter). (Established by P1-UOM-001.)"
     ],
     "steps": [
       {
@@ -954,7 +958,7 @@
       "foundational-records"
     ],
     "preconditions": [
-      "P1-UOM-001 and P1-UOM-002 have passed."
+      "Standard units of measure exist (each, kilogram, pound, hour, foot, square foot, gallon, liter) plus at least one custom unit (e.g. \"sheet\"). (Established by P1-UOM-001 and P1-UOM-002.)"
     ],
     "steps": [
       {
@@ -989,7 +993,9 @@
       "foundational-records"
     ],
     "preconditions": [
-      "Phase 0 is complete.",
+      {
+        "The application is bootstrapped": "company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)"
+      },
       "The costing model and currency are configured (P0-TENANT-005)."
     ],
     "steps": [
@@ -1025,7 +1031,9 @@
       "foundational-records"
     ],
     "preconditions": [
-      "P1-GL-001 has passed."
+      {
+        "The chart of accounts is initialized with standard accounts": "cash, accounts receivable, inventory, accounts payable, sales, cost of goods sold, and wages — at minimum. (Established by P1-GL-001.)"
+      }
     ],
     "steps": [
       {
@@ -1068,7 +1076,9 @@
       "foundational-records"
     ],
     "preconditions": [
-      "P0-INTEG-003 (tax integration choice) is complete.",
+      {
+        "Tax calculation has been configured": "a tax provider has been chosen (integrated provider or manual rates) and the choice persists across tenant settings. (Established by P0-INTEG-003.)"
+      },
       "The chart of accounts is initialized."
     ],
     "steps": [
@@ -1103,7 +1113,7 @@
       "foundational-records"
     ],
     "preconditions": [
-      "P1-TAX-001 has passed."
+      "At least one sales tax code exists with a defined rate, exemption flag, and posting GL account. (Established by P1-TAX-001.)"
     ],
     "steps": [
       {
@@ -1172,7 +1182,7 @@
       "foundational-records"
     ],
     "preconditions": [
-      "P1-EMP-001 has passed."
+      "The first employee record exists with hire date, default location, department, and pay info. (Established by P1-EMP-001.)"
     ],
     "steps": [
       {
@@ -1206,7 +1216,7 @@
       "foundational-records"
     ],
     "preconditions": [
-      "P1-EMP-001 has passed."
+      "The first employee record exists with hire date, default location, department, and pay info. (Established by P1-EMP-001.)"
     ],
     "steps": [
       {
@@ -1238,7 +1248,7 @@
     ],
     "preconditions": [
       "At least one non-admin role exists (P0-USER-001).",
-      "P1-EMP-003 has passed (employees exist to potentially link to)."
+      "At least four employees exist covering varied pay classifications (hourly with overtime, salaried-exempt, salaried-non-exempt). (Established by P1-EMP-003.)"
     ],
     "steps": [
       {
@@ -1272,7 +1282,7 @@
       "foundational-records"
     ],
     "preconditions": [
-      "P1-USER-001 has passed.",
+      "A second non-admin system user exists, assigned a Floor Operator (or equivalent) role and able to sign in. (Established by P1-USER-001.)",
       "You can sign in as the user created in P1-USER-001 (a credential or invite link)."
     ],
     "steps": [
@@ -1394,7 +1404,7 @@
       "enterprise"
     ],
     "preconditions": [
-      "P1-CAL-001 has passed."
+      "The plant default calendar is configured with working days, shift times, and at least the upcoming-year US federal holidays marked non-working. (Established by P1-CAL-001.)"
     ],
     "steps": [
       {
@@ -1423,7 +1433,7 @@
       "foundational-records"
     ],
     "preconditions": [
-      "P1-CAL-001 has passed."
+      "The plant default calendar is configured with working days, shift times, and at least the upcoming-year US federal holidays marked non-working. (Established by P1-CAL-001.)"
     ],
     "steps": [
       {
@@ -1494,7 +1504,7 @@
       "foundational-records"
     ],
     "preconditions": [
-      "P1-ASSET-001 has passed."
+      "At least one fixed asset record exists, linked to a work center, with depreciation method and useful life configured and a depreciation schedule generated. (Established by P1-ASSET-001.)"
     ],
     "steps": [
       {
@@ -1533,7 +1543,9 @@
       "enterprise"
     ],
     "preconditions": [
-      "P1-GL-001 (chart of accounts) has passed.",
+      {
+        "The chart of accounts is initialized with standard accounts": "cash, accounts receivable, inventory, accounts payable, sales, cost of goods sold, and wages — at minimum. (Established by P1-GL-001.)"
+      },
       "At least one vendor exists (covered in Phase 2 — for now, this case can be deferred or run with a placeholder vendor)."
     ],
     "prerequisite_cases": [
@@ -1576,7 +1588,9 @@
       "part-to-inventory"
     ],
     "preconditions": [
-      "Phase 1 is complete (chart of accounts, tax codes, locations exist).",
+      {
+        "Foundational records exist": "at least one location, work center, standard UoMs, the chart of accounts, at least one tax code, employees, calendar, and asset records. (Phase 1 outcomes.)"
+      },
       "You are signed in as a user with permission to manage vendors."
     ],
     "steps": [
@@ -1612,7 +1626,7 @@
       "vendor-to-asset"
     ],
     "preconditions": [
-      "P2-VENDOR-001 has passed."
+      "The first vendor record exists with name, address, primary contact, payment terms, and default expense / inventory GL account. (Established by P2-VENDOR-001.)"
     ],
     "steps": [
       {
@@ -1648,7 +1662,7 @@
       "vendor-to-asset"
     ],
     "preconditions": [
-      "P2-VENDOR-001 has passed."
+      "The first vendor record exists with name, address, primary contact, payment terms, and default expense / inventory GL account. (Established by P2-VENDOR-001.)"
     ],
     "steps": [
       {
@@ -1690,7 +1704,7 @@
       "enterprise"
     ],
     "preconditions": [
-      "P2-VENDOR-001 has passed."
+      "The first vendor record exists with name, address, primary contact, payment terms, and default expense / inventory GL account. (Established by P2-VENDOR-001.)"
     ],
     "steps": [
       {
@@ -1763,7 +1777,9 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "Phase 1 is complete.",
+      {
+        "Foundational records exist": "at least one location, one work center, standard units of measure, the chart of accounts, at least one tax code, the first employee, a default calendar, and at least one fixed asset. (Phase 1 outcomes.)"
+      },
       "Tax codes from P1-TAX-001 exist."
     ],
     "steps": [
@@ -1800,7 +1816,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P2-CUST-001 has passed."
+      "The first customer record exists with billing and shipping addresses, primary contact, default tax code, payment terms, and a $50,000 credit limit. (Established by P2-CUST-001.)"
     ],
     "steps": [
       {
@@ -1837,7 +1853,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P2-CUST-001 has passed (customer with $50,000 credit limit)."
+      "The first customer record exists with billing and shipping addresses, primary contact, default tax code, payment terms, and a $50,000 credit limit. (Established by P2-CUST-001.)"
     ],
     "steps": [
       {
@@ -1878,7 +1894,7 @@
       "enterprise"
     ],
     "preconditions": [
-      "P2-CUST-001 has passed.",
+      "The first customer record exists with billing and shipping addresses, primary contact, default tax code, payment terms, and a $50,000 credit limit. (Established by P2-CUST-001.)",
       "Multi-currency is enabled in tenant settings (P0)."
     ],
     "steps": [
@@ -1948,7 +1964,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P2-PART-001 has passed."
+      "A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)"
     ],
     "steps": [
       {
@@ -1979,7 +1995,7 @@
       "part-to-inventory"
     ],
     "preconditions": [
-      "P2-PART-001 has passed."
+      "A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)"
     ],
     "steps": [
       {
@@ -2014,7 +2030,7 @@
       "enterprise"
     ],
     "preconditions": [
-      "P2-PART-002 has passed."
+      "A finished-goods part exists (e.g. FG-BRACKET-A1) with type, unit of measure, sales GL account, and a list price. (Established by P2-PART-002.)"
     ],
     "steps": [
       {
@@ -2091,8 +2107,8 @@
       "rd-to-product"
     ],
     "preconditions": [
-      "P2-PART-001 (raw material) has passed.",
-      "P2-PART-002 (finished goods) has passed."
+      "A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)",
+      "A finished-goods part exists (e.g. FG-BRACKET-A1) with type, unit of measure, sales GL account, and a list price. (Established by P2-PART-002.)"
     ],
     "steps": [
       {
@@ -2132,7 +2148,7 @@
       "enterprise"
     ],
     "preconditions": [
-      "P2-BOM-001 has passed."
+      "A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)"
     ],
     "steps": [
       {
@@ -2168,7 +2184,7 @@
       "rd-to-product"
     ],
     "preconditions": [
-      "P2-BOM-001 has passed."
+      "A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)"
     ],
     "steps": [
       {
@@ -2204,7 +2220,7 @@
       "part-to-inventory"
     ],
     "preconditions": [
-      "P2-BOM-001 has passed."
+      "A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)"
     ],
     "steps": [
       {
@@ -2236,7 +2252,7 @@
       "rd-to-product"
     ],
     "preconditions": [
-      "P2-BOM-001 has passed.",
+      "A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)",
       "Work centers from P1-WC-001/002 exist."
     ],
     "steps": [
@@ -2279,7 +2295,7 @@
       "enterprise"
     ],
     "preconditions": [
-      "P2-ROUTE-001 has passed.",
+      "A finished-goods part has a routing with ordered operations at the right work centers, including setup and run times for each. (Established by P2-ROUTE-001.)",
       "At least one vendor that does subcontract work exists (or can be added)."
     ],
     "steps": [
@@ -2315,7 +2331,7 @@
       "enterprise"
     ],
     "preconditions": [
-      "P2-ROUTE-001 has passed."
+      "A finished-goods part has a routing with ordered operations at the right work centers, including setup and run times for each. (Established by P2-ROUTE-001.)"
     ],
     "steps": [
       {
@@ -2387,7 +2403,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P2-PART-002 has passed."
+      "A finished-goods part exists (e.g. FG-BRACKET-A1) with type, unit of measure, sales GL account, and a list price. (Established by P2-PART-002.)"
     ],
     "steps": [
       {
@@ -2418,8 +2434,8 @@
       "part-to-inventory"
     ],
     "preconditions": [
-      "P2-VENDOR-001 has passed.",
-      "P2-PART-001 has passed."
+      "The first vendor record exists with name, address, primary contact, payment terms, and default expense / inventory GL account. (Established by P2-VENDOR-001.)",
+      "A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)"
     ],
     "steps": [
       {
@@ -2490,7 +2506,7 @@
       "enterprise"
     ],
     "preconditions": [
-      "P2-BOM-001 has passed."
+      "A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)"
     ],
     "steps": [
       {
@@ -2565,7 +2581,7 @@
       "rd-to-product"
     ],
     "preconditions": [
-      "P2-RD-001 has passed.",
+      "A prototype part exists, marked not-for-production / not-for-sale and gated from sales orders. (Established by P2-RD-001.)",
       "The prototype has a BOM and routing."
     ],
     "steps": [
@@ -2596,7 +2612,9 @@
       "lead-to-customer"
     ],
     "preconditions": [
-      "Phase 1 is complete."
+      {
+        "Foundational records exist": "at least one location, one work center, standard units of measure, the chart of accounts, at least one tax code, the first employee, a default calendar, and at least one fixed asset. (Phase 1 outcomes.)"
+      }
     ],
     "steps": [
       {
@@ -2626,7 +2644,7 @@
       "lead-to-customer"
     ],
     "preconditions": [
-      "P2-LEAD-001 has passed."
+      "A sales lead has been captured with company, contact info, source attribution, and estimated deal size. (Established by P2-LEAD-001.)"
     ],
     "steps": [
       {
@@ -2667,7 +2685,9 @@
       "enterprise"
     ],
     "preconditions": [
-      "Phase 2 master data exists.",
+      {
+        "Phase 2 master data exists": "at least one vendor, one customer, raw and finished parts, a BOM, a routing, and pricing — all with their supporting fields populated. (Phase 2 outcomes.)"
+      },
       "At least one part and one vendor exist."
     ],
     "steps": [
@@ -2747,7 +2767,7 @@
     ],
     "preconditions": [
       "At least one vendor exists.",
-      "Asset GL account exists from P1."
+      "At least one fixed-asset GL account is present in the chart of accounts, available to assign on a fixed-asset PO line. (Established in P1-GL-001.)"
     ],
     "steps": [
       {
@@ -2779,7 +2799,7 @@
       "part-to-inventory"
     ],
     "preconditions": [
-      "P3-PO-001 has passed (an issued PO exists)."
+      "A purchase order has been issued to a vendor, has a stable PO number, and has at least one line for a part with quantity and price. (Established by P3-PO-001.)"
     ],
     "steps": [
       {
@@ -2815,7 +2835,7 @@
       "part-to-inventory"
     ],
     "preconditions": [
-      "P3-PO-001 has passed."
+      "A purchase order has been issued to a vendor, has a stable PO number, and has at least one line for a part with quantity and price. (Established by P3-PO-001.)"
     ],
     "modality": [
       "scanner",
@@ -2945,7 +2965,7 @@
       "vendor-to-asset"
     ],
     "preconditions": [
-      "P3-PO-002 has passed (PO with a fixed-asset line).",
+      "A purchase order has been issued that includes a fixed-asset line (capitalize-on-receipt) alongside any inventory lines, with asset class and capitalization GL account specified. (Established by P3-PO-002.)",
       "P3-RECV-001 or equivalent has received the asset line."
     ],
     "steps": [
@@ -2984,8 +3004,10 @@
       "part-to-inventory"
     ],
     "preconditions": [
-      "P3-PO-001 has passed.",
-      "P3-RECV-001 has passed."
+      "A purchase order has been issued to a vendor, has a stable PO number, and has at least one line for a part with quantity and price. (Established by P3-PO-001.)",
+      {
+        "First inventory exists from a vendor receipt": "the PO is in Received or Closed status, lot numbers have been recorded for lot-tracked items, and GR/IR is pending the vendor invoice. (Established by P3-RECV-001.)"
+      }
     ],
     "steps": [
       {
@@ -3105,7 +3127,9 @@
       "cycle-count"
     ],
     "preconditions": [
-      "P3-OB-001 has passed (opening inventory exists)."
+      {
+        "Opening inventory balances have been posted": "at least five parts have starting quantities and unit costs as of a cutover date, with the offsetting equity / opening-balance GL entry. (Established by P3-OB-001.)"
+      }
     ],
     "modality": [
       "scanner",
@@ -3184,7 +3208,7 @@
       "part-to-inventory"
     ],
     "preconditions": [
-      "P3-AP-001 has passed (an approved AP invoice exists)."
+      "A vendor invoice has been 3-way matched against its PO and receipt, is approved for payment, and AP is increased accordingly. (Established by P3-AP-001.)"
     ],
     "steps": [
       {
@@ -3260,7 +3284,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-QUOTE-001 has passed."
+      "A quote has been created for a customer with the right customer-list pricing applied, validity dates set, and the quote sent. (Established by P4-QUOTE-001.)"
     ],
     "steps": [
       {
@@ -3290,7 +3314,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-QUOTE-001 has passed."
+      "A quote has been created for a customer with the right customer-list pricing applied, validity dates set, and the quote sent. (Established by P4-QUOTE-001.)"
     ],
     "steps": [
       {
@@ -3326,7 +3350,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-QUOTE-003 has passed.",
+      "A sales order has been created from an accepted quote, in Open or Booked status, with customer PO number, requested ship date, and ship-to address all confirmed. (Established by P4-QUOTE-003.)",
       "The part on the SO has a BOM and routing."
     ],
     "steps": [
@@ -3363,7 +3387,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-WO-001 has passed."
+      "A work order has been released from a sales order. The WO carries a stable number, references the BOM and routing active at release, and is in Released status — visible to the floor but not yet started. (Established by P4-WO-001.)"
     ],
     "steps": [
       {
@@ -3393,7 +3417,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-WO-001 has passed."
+      "A work order has been released from a sales order. The WO carries a stable number, references the BOM and routing active at release, and is in Released status — visible to the floor but not yet started. (Established by P4-WO-001.)"
     ],
     "modality": [
       "scanner",
@@ -3433,7 +3457,9 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-WO-START has passed.",
+      {
+        "A work-order operation is in progress": "an operator scanned the WO and the start action, the operation transitioned from Released to In Progress, labor time is tracking, and the kanban card has moved accordingly. (Established by P4-WO-START.)"
+      },
       "Inventory exists for the BOM components (from P3 receipt)."
     ],
     "modality": [
@@ -3482,7 +3508,9 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-WO-START has passed."
+      {
+        "A work-order operation is in progress": "an operator scanned the WO and the start action, the operation transitioned from Released to In Progress, labor time is tracking, and the kanban card has moved accordingly. (Established by P4-WO-START.)"
+      }
     ],
     "modality": [
       "scanner",
@@ -3516,7 +3544,9 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-WO-START has passed."
+      {
+        "A work-order operation is in progress": "an operator scanned the WO and the start action, the operation transitioned from Released to In Progress, labor time is tracking, and the kanban card has moved accordingly. (Established by P4-WO-START.)"
+      }
     ],
     "modality": [
       "scanner",
@@ -3585,7 +3615,9 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-COMP-FINAL has passed."
+      {
+        "The final routing operation is complete": "WO is closed, finished goods are in inventory, WIP is cleared, and any required serial numbers have been recorded. (Established by P4-COMP-FINAL.)"
+      }
     ],
     "modality": [
       "scanner",
@@ -3623,7 +3655,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-PUTAWAY has passed.",
+      "Finished goods have been moved from the staging area to a storage bin and are visible in the available-to-pick view at the new location. (Established by P4-PUTAWAY.)",
       "Finished goods are available."
     ],
     "modality": [
@@ -3663,7 +3695,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-PICK has passed."
+      "All sales-order lines have been picked at the bin, allocated to the SO, and staged for shipping. (Established by P4-PICK.)"
     ],
     "modality": [
       "scanner",
@@ -3697,7 +3729,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-PACK has passed.",
+      "The order is packed into shipping containers, the packing slip has been generated, and items have been verified against the SO. (Established by P4-PACK.)",
       "A shipping integration is configured (P0-INTEG-002) — or manual shipment entry."
     ],
     "steps": [
@@ -3769,7 +3801,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-SHIP has passed."
+      "The order has been handed off to a carrier, a tracking number is recorded on the SO, and the customer invoice has been triggered or queued. (Established by P4-SHIP.)"
     ],
     "steps": [
       {
@@ -3809,7 +3841,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-INV-001 has passed."
+      "A customer invoice has been posted from a shipped sales order, AR has increased accordingly, and the invoice has been sent to the customer. (Established by P4-INV-001.)"
     ],
     "steps": [
       {
@@ -3945,7 +3977,7 @@
       "hire-to-first-assignment"
     ],
     "preconditions": [
-      "P4-HIRE-001 has passed."
+      "A new employee record exists with all required onboarding documents (W-4, I-9, direct deposit, background check, drug test) captured and any required digital signatures attached. (Established by P4-HIRE-001.)"
     ],
     "steps": [
       {
@@ -3982,7 +4014,7 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P4-HIRE-002 has passed.",
+      "The new employee has a system user account, the user is linked to the employee record, and a Floor Operator role is assigned. (Established by P4-HIRE-002.)",
       "At least one open WO operation exists."
     ],
     "steps": [
@@ -4058,7 +4090,7 @@
       "damage-to-completion"
     ],
     "preconditions": [
-      "P5-DAMAGE-001 has passed."
+      "A damage report exists against an asset, with description, severity, and (optionally) photos, and a maintenance ticket has been created in the maintenance queue. (Established by P5-DAMAGE-001.)"
     ],
     "steps": [
       {
@@ -4088,7 +4120,9 @@
       "damage-to-completion"
     ],
     "preconditions": [
-      "P5-DAMAGE-002 has passed."
+      {
+        "A maintenance ticket has been triaged": "priority is set, a tech is assigned, and the ticket is scheduled for execution. (Established by P5-DAMAGE-002.)"
+      }
     ],
     "modality": [
       "scanner",
@@ -4168,7 +4202,7 @@
       "wear-to-repair"
     ],
     "preconditions": [
-      "P5-PM-001 has passed."
+      "A preventative maintenance schedule is configured on an asset, with interval, description, required parts, estimated labor, and a next-due date that will trigger a PM work order. (Established by P5-PM-001.)"
     ],
     "steps": [
       {
@@ -4274,7 +4308,7 @@
       "customer-return"
     ],
     "preconditions": [
-      "P5-RMA-001 has passed."
+      "An RMA has been created against a shipped invoice, with returned quantity, reason, desired resolution, and customer-facing return instructions. (Established by P5-RMA-001.)"
     ],
     "modality": [
       "scanner",
@@ -4313,7 +4347,7 @@
       "customer-return"
     ],
     "preconditions": [
-      "P5-RMA-002 has passed."
+      "Returned product has been physically received, inspected, and dispositioned — units routed to return-to-stock, rework, or scrap as appropriate. (Established by P5-RMA-002.)"
     ],
     "steps": [
       {
@@ -4497,7 +4531,9 @@
       "period-close"
     ],
     "preconditions": [
-      "Phase 4 has produced real inventory transactions."
+      {
+        "Phase 4 has run at least one full quote-to-cash cycle": "a work order has consumed material, finished goods went to inventory, an order was shipped, an invoice was posted, and cash was applied. (Phase 4 outcomes.)"
+      }
     ],
     "steps": [
       {
@@ -4527,7 +4563,9 @@
       "period-close"
     ],
     "preconditions": [
-      "Phase 4 produced AR transactions; Phase 3 produced AP."
+      {
+        "AR and AP both have transaction history": "at least one customer invoice exists in AR (from Phase 4) and at least one vendor invoice and payment exist in AP (from Phase 3). (Phase 3 + Phase 4 outcomes.)"
+      }
     ],
     "steps": [
       {
@@ -4781,7 +4819,9 @@
       "quote-to-cash"
     ],
     "preconditions": [
-      "P5-OFFSITE-SEND has passed."
+      {
+        "A sub-assembly has been shipped out for subcontract processing": "a shipper / pack list was generated and the material is flagged offsite-with-vendor (no longer in available inventory). (Established by P5-OFFSITE-SEND.)"
+      }
     ],
     "modality": [
       "scanner",

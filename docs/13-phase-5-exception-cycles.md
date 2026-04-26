@@ -85,7 +85,7 @@ roles:
 flows:
   - damage-to-completion
 preconditions:
-  - P5-DAMAGE-001 has passed.
+  - A damage report exists against an asset, with description, severity, and (optionally) photos, and a maintenance ticket has been created in the maintenance queue. (Established by P5-DAMAGE-001.)
 steps:
   - n: 1
     action: |
@@ -123,7 +123,7 @@ roles:
 flows:
   - damage-to-completion
 preconditions:
-  - P5-DAMAGE-002 has passed.
+  - A maintenance ticket has been triaged: priority is set, a tech is assigned, and the ticket is scheduled for execution. (Established by P5-DAMAGE-002.)
 modality:
   - scanner
   - manual-entry
@@ -224,7 +224,7 @@ roles:
 flows:
   - wear-to-repair
 preconditions:
-  - P5-PM-001 has passed.
+  - A preventative maintenance schedule is configured on an asset, with interval, description, required parts, estimated labor, and a next-due date that will trigger a PM work order. (Established by P5-PM-001.)
 steps:
   - n: 1
     action: |
@@ -358,7 +358,7 @@ roles:
 flows:
   - customer-return
 preconditions:
-  - P5-RMA-001 has passed.
+  - An RMA has been created against a shipped invoice, with returned quantity, reason, desired resolution, and customer-facing return instructions. (Established by P5-RMA-001.)
 modality:
   - scanner
   - manual-entry
@@ -405,7 +405,7 @@ roles:
 flows:
   - customer-return
 preconditions:
-  - P5-RMA-002 has passed.
+  - Returned product has been physically received, inspected, and dispositioned — units routed to return-to-stock, rework, or scrap as appropriate. (Established by P5-RMA-002.)
 steps:
   - n: 1
     action: |
@@ -639,7 +639,7 @@ roles:
 flows:
   - period-close
 preconditions:
-  - Phase 4 has produced real inventory transactions.
+  - Phase 4 has run at least one full quote-to-cash cycle: a work order has consumed material, finished goods went to inventory, an order was shipped, an invoice was posted, and cash was applied. (Phase 4 outcomes.)
 steps:
   - n: 1
     action: |
@@ -677,7 +677,7 @@ roles:
 flows:
   - period-close
 preconditions:
-  - Phase 4 produced AR transactions; Phase 3 produced AP.
+  - AR and AP both have transaction history: at least one customer invoice exists in AR (from Phase 4) and at least one vendor invoice and payment exist in AP (from Phase 3). (Phase 3 + Phase 4 outcomes.)
 steps:
   - n: 1
     action: |
@@ -999,7 +999,7 @@ roles:
 flows:
   - quote-to-cash
 preconditions:
-  - P5-OFFSITE-SEND has passed.
+  - A sub-assembly has been shipped out for subcontract processing: a shipper / pack list was generated and the material is flagged offsite-with-vendor (no longer in available inventory). (Established by P5-OFFSITE-SEND.)
 modality:
   - scanner
   - manual-entry
