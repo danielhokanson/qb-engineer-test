@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { CatalogService } from '../../data/catalog.service';
 import { SessionService } from '../../data/session.service';
+import { TutorialService } from '../../data/tutorial.service';
 import { CaseResult, Session } from '../../data/types';
 
 interface SessionCounts {
@@ -31,6 +33,29 @@ interface SessionCounts {
             <span aria-hidden="true">→</span>
           </a>
         </div>
+      </section>
+
+      <section class="tutorial-card-section">
+        <a routerLink="/tutorial" class="surface-card surface-card-hover tutorial-card">
+          <div class="tutorial-text">
+            <span class="label-mono">tutorial</span>
+            <div class="tutorial-title">
+              {{ tutorialAllComplete() ? 'Review the tutorial' : 'Take the tutorial first' }}
+            </div>
+            <div class="tutorial-body">
+              @if (tutorialAllComplete()) {
+                Tutorial complete. Open it any time to review or reset.
+              } @else if (tutorialStarted()) {
+                You started the tutorial — finish it before doing real runs.
+              } @else {
+                A short walk-through of how to read cases and record
+                results. Built around a fake practice app, so nothing you
+                do affects your real test data.
+              }
+            </div>
+          </div>
+          <span class="tutorial-arrow" aria-hidden="true">→</span>
+        </a>
       </section>
 
       <section class="runs">
@@ -112,10 +137,21 @@ interface SessionCounts {
 })
 export class LandingPage {
   private readonly sessionSvc = inject(SessionService);
+  private readonly catalog = inject(CatalogService);
+  private readonly tutorial = inject(TutorialService);
   private readonly router = inject(Router);
 
   readonly sessions = this.sessionSvc.sessions;
   private readonly allResults = this.sessionSvc.allResults;
+
+  readonly tutorialStarted = this.tutorial.started;
+  readonly tutorialAllComplete = computed(() =>
+    this.tutorial.isCompleteFor(this.catalog.tutorial().map(c => c.id)),
+  );
+
+  constructor() {
+    void this.catalog.load();
+  }
 
   /** Per-session counts indexed by session id. */
   private readonly countsBySession = computed<Map<string, SessionCounts>>(() => {

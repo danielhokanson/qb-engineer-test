@@ -113,34 +113,6 @@ import { Case, CaseStatus, Session } from '../../data/types';
           </section>
         }
 
-        @if (tutorialCases().length > 0 && !s.tutorial_completed) {
-          <section class="case-group">
-            <div class="group-head">
-              <h2 class="group-title">Tutorial</h2>
-              <span class="group-sub">Optional. Teaches how to read and run cases.</span>
-            </div>
-            <ul class="case-list">
-              @for (c of tutorialCases(); track c.id) {
-                <li class="surface-card surface-card-hover case-card">
-                  <a [routerLink]="['/run', s.id, 'case', c.id]" class="case-card-link">
-                    <div class="case-id-block">
-                      <span class="case-id">{{ c.id }}</span>
-                      <span class="case-status status-{{ statusFor(c.id) }}">
-                        {{ statusLabel(statusFor(c.id)) }}
-                      </span>
-                    </div>
-                    <div class="case-title">{{ c.title }}</div>
-                    <div class="case-goal">{{ c.goal }}</div>
-                    @if (c.est_minutes; as min) {
-                      <div class="case-meta">~{{ min }} min</div>
-                    }
-                  </a>
-                </li>
-              }
-            </ul>
-          </section>
-        }
-
         <section class="case-group">
           <div class="group-head">
             <h2 class="group-title">Cases for your roles</h2>
@@ -208,12 +180,6 @@ export class RunPage {
     );
   });
 
-  readonly tutorialCases = computed(() => {
-    const s = this.session();
-    if (s?.tutorial_completed) return [];
-    return this.catalog.tutorial();
-  });
-
   readonly scopeLabel = computed(() => {
     const s = this.session();
     if (!s) return '';
@@ -223,7 +189,7 @@ export class RunPage {
   });
 
   readonly counts = computed(() => {
-    const cases = [...this.tutorialCases(), ...this.filteredCases()];
+    const cases = this.filteredCases();
     const map = new Map(this.results().map(r => [r.case_id, r.status]));
     let pass = 0, fail = 0, blocked = 0, pending = 0;
     for (const c of cases) {

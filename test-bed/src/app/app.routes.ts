@@ -27,5 +27,17 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/practice/practice.page').then(m => m.PracticePage),
   },
+  {
+    path: 'tutorial',
+    loadComponent: () =>
+      import('./pages/tutorial/tutorial.page').then(m => m.TutorialPage),
+  },
+  {
+    path: 'tutorial/case/:caseId',
+    loadComponent: () =>
+      import('./pages/tutorial-case/tutorial-case.page').then(
+        m => m.TutorialCasePage,
+      ),
+  },
   { path: '**', redirectTo: '' },
 ];
