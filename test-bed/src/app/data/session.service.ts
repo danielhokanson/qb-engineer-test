@@ -34,7 +34,11 @@ export class SessionService {
   constructor() {
     liveQuery(() =>
       db.sessions.orderBy('updated_at').reverse().toArray(),
-    ).subscribe(rows => this.sessions.set(rows));
+    ).subscribe(rows =>
+      this.sessions.set(
+        rows.map(r => ({ ...r, enabled_modules: r.enabled_modules ?? [] })),
+      ),
+    );
     liveQuery(() => db.results.toArray()).subscribe(rows =>
       this.allResults.set(rows),
     );
@@ -48,6 +52,7 @@ export class SessionService {
     storyId?: string;
     suiteId?: string;
     selectedCaseIds?: string[];
+    enabledModules?: string[];
   }): Promise<Session> {
     const session: Session = {
       id: uid(),
@@ -64,19 +69,33 @@ export class SessionService {
       branch_choices: {},
       tutorial_completed: false,
       current_case_id: null,
+      enabled_modules: input.enabledModules ?? [],
     };
     await db.sessions.put(session);
     return session;
   }
 
+  /** Defensive normalizer so older sessions written before
+   * `enabled_modules` existed don't surface as `undefined` to consumers.
+   * Always returns a fresh object — callers can safely use it as-is. */
+  private hydrateSession(raw: Session | undefined): Session | undefined {
+    if (!raw) return raw;
+    return { ...raw, enabled_modules: raw.enabled_modules ?? [] };
+  }
+
   async getSession(id: string): Promise<Session | undefined> {
-    return db.sessions.get(id);
+    return this.hydrateSession(await db.sessions.get(id));
   }
 
   async touchSession(id: string, patch: Partial<Session> = {}): Promise<void> {
     const current = await db.sessions.get(id);
     if (!current) return;
-    await db.sessions.put({ ...current, ...patch, updated_at: nowIso() });
+    await db.sessions.put({
+      ...current,
+      enabled_modules: current.enabled_modules ?? [],
+      ...patch,
+      updated_at: nowIso(),
+    });
   }
 
   async deleteSession(id: string): Promise<void> {
@@ -166,6 +185,7 @@ export class SessionService {
     if (!session || session.completed_at) return;
     await db.sessions.put({
       ...session,
+      enabled_modules: session.enabled_modules ?? [],
       completed_at: nowIso(),
       updated_at: nowIso(),
     });
@@ -178,7 +198,7 @@ export class SessionService {
     exported_at: string;
     library_version: string;
   } | null> {
-    const session = await db.sessions.get(sessionId);
+    const session = this.hydrateSession(await db.sessions.get(sessionId));
     if (!session) return null;
     const results = await this.resultsForSession(sessionId);
     return {

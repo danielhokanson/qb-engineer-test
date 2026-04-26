@@ -176,15 +176,16 @@ export class RunPage {
     if (!s) return [];
     // Suite-scoped sessions filter by an explicit list of case IDs and
     // ignore role/flow filtering.
-    if (s.selected_case_ids && s.selected_case_ids.length > 0) {
-      return s.selected_case_ids
-        .map(id => this.catalog.caseById(id))
-        .filter((c): c is Case => Boolean(c));
-    }
-    return this.catalog.casesForRolesAndFlows(
-      s.selected_roles,
-      s.selected_flows ?? [],
-    );
+    const base: Case[] =
+      s.selected_case_ids && s.selected_case_ids.length > 0
+        ? s.selected_case_ids
+            .map(id => this.catalog.caseById(id))
+            .filter((c): c is Case => Boolean(c))
+        : this.catalog.casesForRolesAndFlows(
+            s.selected_roles,
+            s.selected_flows ?? [],
+          );
+    return this.catalog.filterByEnabledModules(base, s.enabled_modules);
   });
 
   readonly scopeLabel = computed(() => {

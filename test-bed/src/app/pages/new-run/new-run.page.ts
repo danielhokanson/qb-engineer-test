@@ -134,6 +134,41 @@ const FLOW_LABELS: Record<string, string> = {
               specific outcome instead of every case for your role. Leave
               empty to run everything for the selected roles.
             </p>
+          </div>
+
+          <div class="field">
+            <div class="field-label-row">
+              <span class="field-label">Optional modules</span>
+              <span class="field-meta">{{ moduleSummary() }}</span>
+            </div>
+            @if (availableModules().length === 0) {
+              <div class="role-empty">
+                No optional modules defined.
+              </div>
+            } @else {
+              <ul class="role-list">
+                @for (mod of availableModules(); track mod.id) {
+                  <li>
+                    <label class="role-row">
+                      <input
+                        type="checkbox"
+                        class="role-check"
+                        [checked]="isModuleSelected(mod.id)"
+                        (change)="toggleModule(mod.id)" />
+                      <span class="role-name">{{ mod.name }}</span>
+                    </label>
+                    <p class="field-hint" style="margin-top: 0.25rem;">
+                      {{ mod.description }}
+                    </p>
+                  </li>
+                }
+              </ul>
+            }
+            <p class="field-hint">
+              Optional modules turn on tests for features the application
+              may or may not implement. Leave everything unchecked unless
+              the application under test specifically supports the module.
+            </p>
             <div class="filter-summary">
               <span class="filter-label">Will surface</span>
               <span class="filter-count">{{ effectiveCaseCount() }}</span>
@@ -167,6 +202,7 @@ export class NewRunPage {
 
   private readonly _selectedRoles = signal<Set<string>>(new Set());
   private readonly _selectedFlows = signal<Set<string>>(new Set());
+  private readonly _selectedModules = signal<Set<string>>(new Set());
 
   private readonly formStatus = toSignal(this.form.statusChanges, {
     initialValue: this.form.status,
@@ -203,12 +239,23 @@ export class NewRunPage {
     return n === 1 ? '1 flow' : `${n} flows`;
   });
 
+  readonly availableModules = computed(() => this.catalog.modules());
+
+  readonly moduleSummary = computed(() => {
+    const n = this._selectedModules().size;
+    if (n === 0) return 'none enabled';
+    return n === 1 ? '1 enabled' : `${n} enabled`;
+  });
+
   /** How many cases will the runner ultimately surface, given current
-   * role + flow selections. Updates live as the user toggles checkboxes. */
+   * role + flow + module selections. Updates live as the user toggles
+   * checkboxes. */
   readonly effectiveCaseCount = computed(() => {
     const roles = this.selectedRolesArray();
     const flows = [...this._selectedFlows()];
-    return this.catalog.casesForRolesAndFlows(roles, flows).length;
+    const modules = [...this._selectedModules()];
+    const byRoleFlow = this.catalog.casesForRolesAndFlows(roles, flows);
+    return this.catalog.filterByEnabledModules(byRoleFlow, modules).length;
   });
 
   readonly canSubmit = computed(() => {
@@ -256,6 +303,19 @@ export class NewRunPage {
     });
   }
 
+  isModuleSelected(moduleId: string): boolean {
+    return this._selectedModules().has(moduleId);
+  }
+
+  toggleModule(moduleId: string): void {
+    this._selectedModules.update(set => {
+      const next = new Set(set);
+      if (next.has(moduleId)) next.delete(moduleId);
+      else next.add(moduleId);
+      return next;
+    });
+  }
+
   async submit(): Promise<void> {
     if (!this.canSubmit()) return;
     const name = this.form.controls.name.value.trim();
@@ -265,6 +325,7 @@ export class NewRunPage {
       fixtureId: fixture?.id ?? 'cascade-components-mid',
       selectedRoles: this.selectedRolesArray(),
       selectedFlows: [...this._selectedFlows()],
+      enabledModules: [...this._selectedModules()],
     });
     await this.router.navigate(['/run', session.id]);
   }

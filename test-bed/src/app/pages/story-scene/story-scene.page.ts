@@ -198,7 +198,21 @@ export class StoryScenePage {
 
   readonly flatScenes = computed(() => {
     const st = this.story();
-    return st ? this.storySvc.flatten(st) : [];
+    if (!st) return [];
+    const all = this.storySvc.flatten(st);
+    // Hide scenes whose case is gated by an optional module the active
+    // session hasn't enabled. Reindex so consumers using the index for
+    // navigation see a contiguous list.
+    const sess = this.activeSession();
+    const enabled = sess?.enabled_modules ?? [];
+    const enabledSet = new Set(enabled);
+    return all
+      .filter(fs => {
+        const c = this.catalog.caseById(fs.scene.case);
+        const mod = c?.optional_module;
+        return !mod || enabledSet.has(mod);
+      })
+      .map((fs, i) => ({ ...fs, index: i }));
   });
 
   readonly totalScenes = computed(() => this.flatScenes().length);

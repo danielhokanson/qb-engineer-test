@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Case, Fixture } from './types';
+import { Case, Fixture, OptionalModule } from './types';
 
 /**
  * Loads compiled catalog data (cases, tutorial, fixture) from /assets/data/*.json.
@@ -14,11 +14,13 @@ export class CatalogService {
   private readonly _cases = signal<Case[]>([]);
   private readonly _tutorial = signal<Case[]>([]);
   private readonly _fixtures = signal<Fixture[]>([]);
+  private readonly _modules = signal<OptionalModule[]>([]);
   private readonly _loaded = signal(false);
 
   readonly cases = this._cases.asReadonly();
   readonly tutorial = this._tutorial.asReadonly();
   readonly fixtures = this._fixtures.asReadonly();
+  readonly modules = this._modules.asReadonly();
   readonly loaded = this._loaded.asReadonly();
 
   /** Unique role names derived from the union of cases.roles. */
@@ -59,14 +61,18 @@ export class CatalogService {
 
   async load(): Promise<void> {
     if (this._loaded()) return;
-    const [cases, tutorial, fixture] = await Promise.all([
+    const [cases, tutorial, fixture, modules] = await Promise.all([
       firstValueFrom(this.http.get<Case[]>('assets/data/cases.json')),
       firstValueFrom(this.http.get<Case[]>('assets/data/tutorial.json')),
       firstValueFrom(this.http.get<Fixture>('assets/data/fixture.json')),
+      firstValueFrom(
+        this.http.get<OptionalModule[]>('assets/data/modules.json'),
+      ),
     ]);
     this._cases.set(cases);
     this._tutorial.set(tutorial);
     this._fixtures.set([fixture]);
+    this._modules.set(modules);
     this._loaded.set(true);
   }
 
@@ -101,5 +107,21 @@ export class CatalogService {
   caseCountForFlow(flow: string, withinRoles: string[] = []): number {
     const pool = withinRoles.length === 0 ? this._cases() : this.casesForRoles(withinRoles);
     return pool.filter(c => (c.flows ?? []).includes(flow)).length;
+  }
+
+  /** Drop cases tagged with an `optional_module` that the session hasn't
+   * enabled. Cases with no `optional_module` field are always kept.
+   * Centralizing this here keeps templates from ever seeing a case the
+   * tester opted out of. */
+  filterByEnabledModules<T extends { optional_module?: string }>(
+    cases: T[],
+    enabledModules: string[] | undefined,
+  ): T[] {
+    const enabled = new Set(enabledModules ?? []);
+    return cases.filter(c => {
+      const mod = c.optional_module;
+      if (!mod) return true;
+      return enabled.has(mod);
+    });
   }
 }

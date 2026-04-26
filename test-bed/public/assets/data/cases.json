@@ -1,5 +1,1675 @@
 [
   {
+    "id": "ACCT-AP-001",
+    "title": "A new vendor bill increases the AP balance for that vendor",
+    "goal": "Verify that when the user records a vendor bill, the vendor's\nbalance owed increases by the bill total and the shop's total\naccounts payable increases by the same amount.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AP Clerk"
+    ],
+    "preconditions": [
+      "The accounting module is set up.",
+      "At least one active vendor exists with a starting balance of zero."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the vendor's current owed balance and the shop's total\naccounts payable on the dashboard.\n",
+        "expected": "Both values are visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Record a new vendor bill for $300.00 with at least one expense\nline, dated within the current open period.\n",
+        "expected": "The bill posts and shows status \"open\" or \"unpaid\".\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the vendor balance and the shop AP total.\n",
+        "expected": "Vendor owed balance increased by exactly $300.00. Shop AP total\nincreased by exactly $300.00.\n"
+      }
+    ],
+    "expected_overall": "Recording the bill raises both the vendor-level and shop-level\npayable balances by the bill total.\n",
+    "pass_criteria": "Vendor owed increased by $300.00 AND shop AP increased by $300.00.\n",
+    "est_minutes": 4
+  },
+  {
+    "id": "ACCT-AP-002",
+    "title": "Recording payment of a vendor bill clears AP and reduces cash",
+    "goal": "Verify that recording a payment in full against an open vendor\nbill marks it paid, decreases the vendor's owed balance by the\npayment amount, and decreases cash by the same amount.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AP Clerk"
+    ],
+    "preconditions": [
+      "At least one open vendor bill with a known total exists (use ACCT-AP-001's $300.00 bill)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-AP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the vendor owed balance and the cash balance.\n",
+        "expected": "Both values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Open the unpaid bill and record a cash payment for the full\nbill total ($300.00).\n",
+        "expected": "The payment is accepted. The bill's status changes to \"paid\".\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the vendor balance and the cash balance.\n",
+        "expected": "Vendor owed decreased by exactly $300.00. Cash balance decreased\nby exactly $300.00.\n"
+      }
+    ],
+    "expected_overall": "Payment clears the bill from AP and reduces cash by the payment\namount.\n",
+    "pass_criteria": "Bill marked paid AND vendor owed decreased by $300.00 AND cash\ndecreased by $300.00.\n",
+    "est_minutes": 4
+  },
+  {
+    "id": "ACCT-AP-003",
+    "title": "Receiving inventory and matching to a vendor bill increases inventory and AP",
+    "goal": "Verify that when the user receives stock from a vendor and then\nrecords the matching bill, inventory value increases by the\nreceived cost, accounts payable increases by the bill total, and\nno double-counting occurs.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AP Clerk",
+      "Receiving Clerk"
+    ],
+    "preconditions": [
+      "At least one stocked item with a known unit cost exists.",
+      "At least one active vendor exists."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Record a goods receipt of 10 units at $20.00 each (total cost\n$200.00) from the vendor.\n",
+        "expected": "The receipt is recorded. Inventory on hand for that item\nincreases by 10 units. Inventory value increases by $200.00.\nA pending liability (\"Goods received, not yet billed\" or\nsimilar plain-language label) of $200.00 is shown.\n"
+      },
+      {
+        "n": 2,
+        "action": "Record the matching vendor bill for $200.00 against that\nreceipt.\n",
+        "expected": "The pending liability is replaced by an open vendor bill of\n$200.00. AP increases by $200.00.\n"
+      },
+      {
+        "n": 3,
+        "action": "Check inventory value, AP, and the pending-liability total.\n",
+        "expected": "Inventory value still up by $200.00 (not double-counted). AP\nshows $200.00. Pending liability is back to zero.\n"
+      }
+    ],
+    "expected_overall": "Receipt creates a pending liability; matching the bill converts it\nto AP without inflating inventory or AP totals.\n",
+    "pass_criteria": "Inventory value up by $200.00 once AND AP up by $200.00 AND no\nduplicate liability remaining.\n",
+    "why_this_matters": "Without a receipt-to-bill match, the shop either pays before\nrecording stock (inventory missing) or records bills twice\n(overstated payables). Either error is expensive to undo.\n",
+    "est_minutes": 7
+  },
+  {
+    "id": "ACCT-AP-004",
+    "title": "A bill for a non-inventory expense routes to the right expense account",
+    "goal": "Verify that the user can record a vendor bill for a non-inventory\nexpense (utilities, rent, supplies), pick the expense category in\nplain language, and have the expense roll into the P&L for the\ncurrent period.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AP Clerk"
+    ],
+    "preconditions": [
+      "The chart of accounts includes at least one expense account."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the period-to-date expense total on the P&L for the\n\"Utilities\" or equivalent expense category.\n",
+        "expected": "Value visible. Record it.\n"
+      },
+      {
+        "n": 2,
+        "action": "Record a vendor bill for $150.00 from the electric company,\ncategorized as \"Utilities\" (or the equivalent plain-language\nexpense category). Date it within the current open period.\n",
+        "expected": "The bill posts. AP increases by $150.00.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the P&L.\n",
+        "expected": "Utilities expense for the period increased by exactly $150.00.\nNo inventory or other unrelated balance moved.\n"
+      }
+    ],
+    "expected_overall": "Non-inventory bill increases AP and lands in the chosen expense\ncategory on the P&L.\n",
+    "pass_criteria": "Bill posted AND AP up by $150.00 AND Utilities expense up by $150.00\nAND inventory unchanged.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-AP-005",
+    "title": "Voiding an unpaid vendor bill reverses AP and the expense without residue",
+    "goal": "Verify that voiding a posted but unpaid vendor bill removes its\nimpact from accounts payable and from the expense account, leaves\nthe original bill visible (marked void) for audit, and does not\ncreate duplicate or orphan entries.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AP Clerk"
+    ],
+    "preconditions": [
+      "At least one posted, unpaid vendor bill exists."
+    ],
+    "prerequisite_cases": [
+      "ACCT-AP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the vendor owed balance and the period-to-date expense\ntotal for the bill's category.\n",
+        "expected": "Both values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Open the unpaid bill and choose \"Void\". Confirm.\n",
+        "expected": "The bill's status changes to \"void\". The bill remains in the\nvendor's bill history with the void label.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the vendor balance and the expense total.\n",
+        "expected": "Vendor owed returned to its pre-bill value. Expense total\ndecreased by the bill's amount.\n"
+      }
+    ],
+    "expected_overall": "Void reverses both AP and the expense; the original bill is preserved\nas void.\n",
+    "pass_criteria": "Bill marked void AND vendor owed back to pre-bill level AND expense\ntotal reduced by the bill amount AND original bill visible in history.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-AR-001",
+    "title": "A new customer invoice increases the AR balance for that customer",
+    "goal": "Verify that when the user creates and posts a customer invoice,\nthe customer's outstanding balance increases by the invoice total\nand the shop's total accounts receivable increases by the same\namount.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AR Clerk"
+    ],
+    "preconditions": [
+      "The accounting module is set up with a chart of accounts.",
+      "At least one active customer exists with a starting balance of zero."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the customer's current outstanding balance and the shop's\ntotal AR figure on the dashboard.\n",
+        "expected": "Both balances are visible. Record their values.\n"
+      },
+      {
+        "n": 2,
+        "action": "Create a new invoice for that customer with at least one line\nitem. Use a total of $500.00 (excluding any tax). Post the\ninvoice.\n",
+        "expected": "The invoice posts with status \"open\" or \"unpaid\". The total is\n$500.00.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-open the customer record and the AR total on the dashboard.\n",
+        "expected": "The customer's outstanding balance has increased by exactly\n$500.00. The shop-wide AR total has also increased by exactly\n$500.00.\n"
+      }
+    ],
+    "expected_overall": "Posting the invoice raises both the customer-level and shop-level\nreceivable balances by the invoice total.\n",
+    "pass_criteria": "Customer outstanding balance increased by $500.00 AND shop AR total\nincreased by $500.00.\n",
+    "why_this_matters": "The owner needs to trust that \"what customers owe\" is accurate.\nAn invoice that posts but does not roll into AR is the most common\nway books drift in small-shop systems.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-AR-002",
+    "title": "Recording full payment on an invoice clears the AR balance and increases cash",
+    "goal": "Verify that when the user records a payment in full against an\nopen invoice, the invoice is marked paid, the customer's\noutstanding balance decreases by the payment amount, and the\nshop's cash balance increases by the same amount.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AR Clerk"
+    ],
+    "preconditions": [
+      "At least one open customer invoice with a known total exists (use ACCT-AR-001's $500.00 invoice)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-AR-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the customer's outstanding balance and the cash balance\nshown on the dashboard.\n",
+        "expected": "Both values are visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Open the unpaid invoice and record a cash payment for the full\ninvoice total ($500.00).\n",
+        "expected": "The payment is accepted. The invoice status changes to \"paid\".\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the customer balance and the shop cash balance.\n",
+        "expected": "Customer outstanding decreased by exactly $500.00. Cash balance\nincreased by exactly $500.00.\n"
+      }
+    ],
+    "expected_overall": "Payment in full clears the invoice from AR and increases cash by\nthe payment amount.\n",
+    "pass_criteria": "Invoice marked paid AND customer outstanding decreased by $500.00\nAND cash increased by $500.00.\n",
+    "est_minutes": 4
+  },
+  {
+    "id": "ACCT-AR-003",
+    "title": "Partial payment reduces the invoice but leaves the remainder due",
+    "goal": "Verify that when the user records a payment less than the invoice\ntotal, the invoice stays open with a remaining balance equal to\nthe difference, and that AR and cash both reflect the partial\namount correctly.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AR Clerk"
+    ],
+    "preconditions": [
+      "At least one open customer invoice with a known total exists (use a $500.00 invoice)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-AR-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the customer's outstanding balance and the cash balance.\n",
+        "expected": "Both values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Record a $200.00 cash payment against the $500.00 invoice.\n",
+        "expected": "The payment is accepted. The invoice remains open with a\nremaining balance of $300.00. Status reads \"partially paid\"\nor equivalent plain-language label.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the customer balance and the cash balance.\n",
+        "expected": "Customer outstanding decreased by exactly $200.00. Cash\nbalance increased by exactly $200.00.\n"
+      }
+    ],
+    "expected_overall": "Partial payment reduces but does not close the invoice; balances\nreflect only the amount actually paid.\n",
+    "pass_criteria": "Invoice still open with $300.00 remaining AND customer outstanding\nreduced by $200.00 AND cash increased by $200.00.\n",
+    "est_minutes": 4
+  },
+  {
+    "id": "ACCT-AR-004",
+    "title": "Customer overpayment lands as a credit balance, not as extra revenue",
+    "goal": "Verify that when the user records a payment greater than the\ninvoice total, the invoice is marked paid in full, the excess is\nrecorded as a credit on the customer's account, and revenue is\nnot overstated by the overpayment amount.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AR Clerk"
+    ],
+    "preconditions": [
+      "At least one open customer invoice for $500.00 exists."
+    ],
+    "prerequisite_cases": [
+      "ACCT-AR-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the customer's outstanding balance, the cash balance,\nand the period-to-date sales figure on the P&L.\n",
+        "expected": "All three values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Record a $600.00 cash payment against the $500.00 invoice.\n",
+        "expected": "The application accepts the payment. The user is prompted (in\nplain language) about how to treat the $100.00 excess — for\nexample, \"leave as a credit on the customer's account\".\n"
+      },
+      {
+        "n": 3,
+        "action": "Choose to leave the excess as a customer credit and confirm.\n",
+        "expected": "The invoice is marked paid. The customer's account shows a\ncredit balance of $100.00 (negative outstanding).\n"
+      },
+      {
+        "n": 4,
+        "action": "Re-check cash and period sales.\n",
+        "expected": "Cash increased by $600.00. Period sales increased by only\n$500.00 — the overpayment was not booked as revenue.\n"
+      }
+    ],
+    "expected_overall": "Overpayment is captured as a customer credit; revenue reflects only\nthe original invoice total.\n",
+    "pass_criteria": "Invoice marked paid AND customer credit of $100.00 visible AND cash\nup by $600.00 AND sales up by only $500.00.\n",
+    "why_this_matters": "Booking the overage as revenue creates a tax liability for money\nthat may need to be refunded — and falsifies the period's income.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "ACCT-AR-005",
+    "title": "Voiding an unpaid invoice reverses AR and revenue without leaving residue",
+    "goal": "Verify that voiding a posted but unpaid invoice removes its impact\nfrom accounts receivable and from revenue, leaves the original\ninvoice visible (marked void) for audit, and does not create\nduplicate or orphaned entries.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AR Clerk"
+    ],
+    "preconditions": [
+      "At least one posted, unpaid invoice exists."
+    ],
+    "prerequisite_cases": [
+      "ACCT-AR-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the customer's outstanding balance and the period sales\nfigure on the P&L.\n",
+        "expected": "Both values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Open the unpaid invoice and choose \"Void\".\n",
+        "expected": "The application asks for confirmation in plain language.\nConfirming changes the invoice status to \"void\". The invoice\nremains in the customer's invoice history with the void label.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the customer balance and period sales.\n",
+        "expected": "Customer outstanding returned to its pre-invoice value. Period\nsales decreased by the invoice's pre-tax total.\n"
+      }
+    ],
+    "expected_overall": "Void reverses both AR and revenue; original record preserved as void.\n",
+    "pass_criteria": "Invoice marked void AND customer outstanding back to pre-invoice\nlevel AND period sales reduced by the invoice total AND original\ninvoice still visible in history.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-BANK-001",
+    "title": "Recording a deposit increases cash by the deposit total",
+    "goal": "Verify that when the user records a bank deposit — combining one\nor more incoming payments — the cash (bank account) balance\nincreases by the total of the deposited items, and each included\nitem is marked as deposited.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AR Clerk"
+    ],
+    "preconditions": [
+      "At least two received customer payments exist that have not yet been deposited (e.g., $200.00 and $300.00)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-AR-002"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the bank account balance and the \"undeposited funds\"\ntotal.\n",
+        "expected": "Both values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Open the deposit screen. Select the two undeposited payments\n($200.00 and $300.00) and record a single deposit of $500.00.\n",
+        "expected": "The deposit is accepted. Each included payment is marked as\n\"deposited\".\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the figures.\n",
+        "expected": "Bank balance increased by exactly $500.00. Undeposited funds\ndecreased by exactly $500.00.\n"
+      }
+    ],
+    "expected_overall": "A deposit moves money from the undeposited-funds holding account\ninto the bank account.\n",
+    "pass_criteria": "Bank balance up by $500.00 AND undeposited funds down by $500.00\nAND both payments flagged as deposited.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-BANK-002",
+    "title": "Reconciling a bank statement matches book entries to bank entries cleanly",
+    "goal": "Verify that the user can enter a bank statement's ending balance\nand date, mark each book entry as cleared or not, and reach a\nzero-difference reconciliation when the cleared book activity\nmatches the statement.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "At least three posted cash transactions exist within a defined statement period (mix of deposits and bill payments)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-BANK-001",
+      "ACCT-AP-002"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the bank reconciliation screen and enter the statement\nending balance and date.\n",
+        "expected": "A list of unreconciled cash transactions in the period is\nshown. A running difference (book minus statement) is visible.\n"
+      },
+      {
+        "n": 2,
+        "action": "Mark each transaction that appears on the statement as cleared.\n",
+        "expected": "Each tick adjusts the running difference. The user can see in\nplain language how close they are to \"balanced\".\n"
+      },
+      {
+        "n": 3,
+        "action": "Confirm the running difference reads zero, then finish the\nreconciliation.\n",
+        "expected": "The reconciliation completes successfully. A reconciled-period\nrecord is created.\n"
+      }
+    ],
+    "expected_overall": "A balanced reconciliation completes and the period's cleared\nactivity is locked from edits.\n",
+    "pass_criteria": "Difference reaches zero AND reconciliation completes AND each cleared\ntransaction is flagged as such.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "ACCT-BANK-003",
+    "title": "After reconciliation, cleared transactions display as cleared in the register",
+    "goal": "Verify that once a transaction has been marked cleared in a\nreconciliation, the cash register (or bank account ledger) shows\nit as cleared with a clear visual indicator, and the cleared\nbalance is calculable separately from the book balance.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "A completed bank reconciliation exists from ACCT-BANK-002 with several cleared transactions."
+    ],
+    "prerequisite_cases": [
+      "ACCT-BANK-002"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the cash register / bank account view.\n",
+        "expected": "Each transaction shows a status indicator that distinguishes\ncleared from outstanding entries (e.g., a checkmark, \"C\" tag,\nor plain-language \"cleared\" label).\n"
+      },
+      {
+        "n": 2,
+        "action": "Find the cleared balance and the book balance figures.\n",
+        "expected": "Both balances are displayed. The cleared balance reflects only\nreconciled transactions; the book balance reflects everything\nposted.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sort or filter the register to view only outstanding (uncleared)\nitems.\n",
+        "expected": "Only uncleared transactions are listed. Cleared items are\nhidden when filtered out.\n"
+      }
+    ],
+    "expected_overall": "Cleared status is clearly displayed and useful for finding what is\nstill outstanding.\n",
+    "pass_criteria": "Cleared status visible per transaction AND cleared balance and book\nbalance both displayed AND filtering works.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-BANK-004",
+    "title": "After reconciliation, the user can list checks and deposits not yet cleared",
+    "goal": "Verify that the user can view a list of outstanding items —\nchecks written but not yet cashed, deposits made but not yet\nposted by the bank — with totals matching the difference between\nthe book balance and the last reconciled cleared balance.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "A completed reconciliation exists with at least one outstanding check and one outstanding deposit."
+    ],
+    "prerequisite_cases": [
+      "ACCT-BANK-002"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the outstanding-items report or view.\n",
+        "expected": "Outstanding checks and outstanding deposits are listed\nseparately, each with date, payee or source, and amount.\n"
+      },
+      {
+        "n": 2,
+        "action": "Add the outstanding-deposits total and subtract the\noutstanding-checks total from the last reconciled cleared\nbalance.\n",
+        "expected": "The result equals the current book balance.\n"
+      }
+    ],
+    "expected_overall": "Outstanding items are listed and reconcile the book balance to the\nlast cleared balance.\n",
+    "pass_criteria": "Outstanding list visible AND totals math out (cleared + outstanding\ndeposits − outstanding checks = book balance).\n",
+    "why_this_matters": "When a check disappears for weeks before the bank cashes it, the\nowner needs to find it without redoing the whole reconciliation.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "ACCT-CLOSE-001",
+    "title": "Closing a month prevents new postings dated in that month",
+    "goal": "Verify that when the shop owner closes a calendar month, the\napplication records the closure and from that point on rejects\nany attempt to post a new transaction (invoice, bill, payment,\nmanual adjustment) with a date in that closed month.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "Activity has been posted in the prior month and reconciled."
+    ],
+    "prerequisite_cases": [
+      "ACCT-RPT-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the period-close screen and choose to close the prior\nmonth.\n",
+        "expected": "The screen lists outstanding tasks (un-reconciled bank\nactivity, unposted drafts) for review. After confirmation, the\nmonth is closed. A close timestamp and actor are recorded.\n"
+      },
+      {
+        "n": 2,
+        "action": "Re-open the period list.\n",
+        "expected": "The closed month is flagged \"closed\".\n"
+      }
+    ],
+    "expected_overall": "Closing a month is auditable and visible, with no postings allowed\nafter close.\n",
+    "pass_criteria": "Month flagged closed AND close actor and timestamp recorded.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-CLOSE-002",
+    "title": "Posting a transaction dated in a closed month is rejected with a clear message",
+    "goal": "Verify that when the user attempts to record an invoice, bill,\npayment, or manual adjustment with a date in a previously closed\nmonth, the application rejects the attempt with a plain-language\nmessage explaining that the month is closed and the post was not\nrecorded.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AR Clerk",
+      "AP Clerk"
+    ],
+    "preconditions": [
+      "At least one closed month exists (use ACCT-CLOSE-001)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-CLOSE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Try to record a new vendor bill with a date in the closed\nmonth.\n",
+        "expected": "The application blocks submission. A plain-language message\nexplains the month is closed and suggests using a current-month\ndate or asking an admin to re-open the period.\n"
+      },
+      {
+        "n": 2,
+        "action": "Try the same with a customer invoice and with a manual\nadjustment.\n",
+        "expected": "Each attempt is rejected with the same clarity. No partial\nposts occur.\n"
+      },
+      {
+        "n": 3,
+        "action": "Confirm the affected balances are unchanged from before the\nattempts.\n",
+        "expected": "Cash, AR, AP, and any expense/income totals all unchanged.\n"
+      }
+    ],
+    "expected_overall": "Closed-month rejection is consistent across all transaction types\nand produces no side effects.\n",
+    "pass_criteria": "All three attempts blocked AND error message is plain-language AND\nno balances moved.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "ACCT-CLOSE-003",
+    "title": "An admin re-opens a closed month and the action is recorded",
+    "goal": "Verify that a user with admin privileges can re-open a previously\nclosed month, that the re-opening is recorded with actor,\ntimestamp, and reason, and that postings dated in that month are\nagain accepted until it is re-closed.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Administrator",
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "At least one closed month exists."
+    ],
+    "prerequisite_cases": [
+      "ACCT-CLOSE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Sign in as an admin. Open the period-close screen and choose\n\"Re-open\" on the closed month. Enter a reason in plain\nlanguage (e.g., \"Missed bill from supplier\").\n",
+        "expected": "The application accepts the re-open and records the actor,\ntimestamp, and reason. The month is flagged re-opened (or\nsimply open again, with re-open history visible).\n"
+      },
+      {
+        "n": 2,
+        "action": "Try to record a vendor bill with a date in that month.\n",
+        "expected": "The bill posts successfully (the month is now open).\n"
+      },
+      {
+        "n": 3,
+        "action": "Open the period's audit / history view.\n",
+        "expected": "Both the original close and the re-open are listed with their\nactors, timestamps, and (for the re-open) reason.\n"
+      }
+    ],
+    "expected_overall": "Admin re-open is supported, gated to admin only, fully audited, and\nrestores normal posting.\n",
+    "pass_criteria": "Re-open succeeded AND post into the period accepted AND audit shows\nboth close and re-open with actor, timestamp, and reason.\n",
+    "why_this_matters": "Closing must be defensible (you closed the books) and re-openable\n(real corrections come in late). Without the audit trail, either\nside gets abused.\n",
+    "est_minutes": 7
+  },
+  {
+    "id": "ACCT-CLOSE-004",
+    "title": "Year-end roll zeroes income and expense and moves the net to retained earnings",
+    "goal": "Verify that when the user runs the year-end roll, all income and\nexpense account balances reset to zero for the new fiscal year\nand the prior year's net profit (or loss) is moved to retained\nearnings — with total equity unchanged across the roll.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "All months in the closing fiscal year are closed.",
+      "A non-zero net profit exists for that year."
+    ],
+    "prerequisite_cases": [
+      "ACCT-CLOSE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the year-to-date P&L's net profit, the retained-earnings\nbalance, and total equity on the balance sheet.\n",
+        "expected": "All three values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Run the year-end roll for the closing year. Confirm.\n",
+        "expected": "The roll completes. A confirmation lists what was moved.\n"
+      },
+      {
+        "n": 3,
+        "action": "Run a P&L for the new year (which has no posted activity yet).\n",
+        "expected": "All income and expense accounts read zero.\n"
+      },
+      {
+        "n": 4,
+        "action": "Run a balance sheet as of the new year's first day.\n",
+        "expected": "Retained earnings increased by the prior year's net profit.\nTotal equity equals the pre-roll total equity to the cent.\n"
+      }
+    ],
+    "expected_overall": "Year-end roll resets P&L accounts, moves net to retained earnings,\nand preserves total equity.\n",
+    "pass_criteria": "Income and expense accounts at zero for the new year AND retained\nearnings up by prior-year net profit AND total equity unchanged\nacross the roll.\n",
+    "why_this_matters": "A year-end roll that drops or duplicates net profit corrupts equity\npermanently. This is the single most consequential close of the year.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "ACCT-INV-001",
+    "title": "Recording a stock receipt increases inventory and accrues a pending vendor liability",
+    "goal": "Verify that when stock is received (before the vendor bill arrives),\ninventory on hand and inventory value increase by the received\ncost, and a \"goods received, not yet billed\" pending liability\nrecords the same value so AP is captured correctly when the bill\nlater arrives.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Receiving Clerk"
+    ],
+    "preconditions": [
+      "At least one stocked item with a known unit cost exists.",
+      "At least one active vendor exists."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note inventory value, on-hand quantity for the item, and the\ncurrent \"goods received, not yet billed\" pending liability.\n",
+        "expected": "All three values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Record a receipt of 5 units at $40.00 each (total $200.00).\nDo not record a vendor bill yet.\n",
+        "expected": "The receipt is accepted. On-hand quantity increases by 5.\nInventory value increases by $200.00. Pending liability\nincreases by $200.00.\n"
+      },
+      {
+        "n": 3,
+        "action": "Confirm the figures.\n",
+        "expected": "Quantity, inventory value, and pending liability all updated\ncorrectly. AP itself has not yet moved — that waits for the\nvendor bill.\n"
+      }
+    ],
+    "expected_overall": "Receipt creates inventory and a pending liability without forcing a\nvendor bill to exist.\n",
+    "pass_criteria": "On-hand up by 5 AND inventory value up by $200.00 AND pending\nliability up by $200.00 AND AP unchanged.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-INV-002",
+    "title": "Issuing parts to a work order moves their value from raw inventory to work-in-process",
+    "goal": "Verify that when the user issues raw material to an open work\norder, the raw inventory value decreases by the issued cost and\nthe work-in-process (WIP) value increases by the same amount,\npreserving total asset value.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Floor Operator"
+    ],
+    "preconditions": [
+      "At least one open work order exists.",
+      "At least one raw-material item with sufficient on-hand stock and a known unit cost exists."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001",
+      "ACCT-INV-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note raw inventory value and WIP value.\n",
+        "expected": "Both values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Issue 5 units of the raw material at $40.00 each (total $200.00)\nto the open work order.\n",
+        "expected": "The issue is accepted. Raw on-hand decreases by 5.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check raw inventory value and WIP value.\n",
+        "expected": "Raw inventory value decreased by exactly $200.00. WIP value\nincreased by exactly $200.00. Total assets unchanged.\n"
+      }
+    ],
+    "expected_overall": "Material issue is a transfer between two asset buckets, not a\nconsumption.\n",
+    "pass_criteria": "Raw inventory down by $200.00 AND WIP up by $200.00 AND total assets\nflat.\n",
+    "why_this_matters": "Issuing material straight to expense (skipping WIP) overstates cost\nof goods on the day of issue rather than on the day of completion.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "ACCT-INV-003",
+    "title": "Completing a work order moves accumulated WIP to finished-goods inventory",
+    "goal": "Verify that when the user marks a work order complete, the\naccumulated WIP cost (materials, plus any labor or overhead\napplied) moves to finished-goods inventory at the same total\nvalue, with no leakage.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Floor Operator"
+    ],
+    "preconditions": [
+      "One open work order with material already issued exists. WIP value attributable to the WO is known (e.g., $200.00 from ACCT-INV-002)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-INV-002"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note WIP value and finished-goods inventory value.\n",
+        "expected": "Both values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Mark the work order complete with the produced quantity that\nconsumes the full WIP balance for that order.\n",
+        "expected": "The work order's status changes to complete. Produced units\nappear in finished-goods on-hand.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the figures.\n",
+        "expected": "WIP attributable to the WO returns to zero. Finished-goods\ninventory value increased by the WIP-consumed amount (e.g.,\n$200.00). Total assets unchanged.\n"
+      }
+    ],
+    "expected_overall": "Completion transfers WIP to finished goods at full value.\n",
+    "pass_criteria": "WIP for the WO returns to zero AND finished-goods value increased\nby the consumed WIP amount AND total assets flat.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "ACCT-INV-004",
+    "title": "Recording scrap reduces inventory and posts the loss to a scrap-expense account",
+    "goal": "Verify that when the user records scrapped material or scrapped\nfinished goods, the corresponding inventory value decreases by\nthe scrapped cost and a scrap-loss (or inventory-adjustment)\nexpense increases by the same amount.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Floor Operator"
+    ],
+    "preconditions": [
+      "At least one item with on-hand stock and a known unit cost exists."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the on-hand quantity and inventory value for the item, and\nthe period scrap-loss expense total.\n",
+        "expected": "All three values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Record scrap of 2 units at $40.00 each (total $80.00) with a\nreason of \"damaged in handling\".\n",
+        "expected": "The scrap entry is accepted. The user can pick a reason in\nplain language. On-hand quantity decreases by 2.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the figures.\n",
+        "expected": "Inventory value decreased by exactly $80.00. Scrap-loss expense\nincreased by exactly $80.00.\n"
+      }
+    ],
+    "expected_overall": "Scrap correctly turns inventory value into recognized expense.\n",
+    "pass_criteria": "On-hand down by 2 AND inventory value down by $80.00 AND scrap-loss\nexpense up by $80.00.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-INV-005",
+    "title": "A cycle count that finds a discrepancy posts the variance to an inventory-adjustment account",
+    "goal": "Verify that when the user enters a cycle-count result that differs\nfrom the system on-hand quantity, the inventory value adjusts to\nmatch the counted quantity (at the item's unit cost) and the\nvariance — positive or negative — posts to an inventory-adjustment\nexpense (or income) account.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Floor Operator"
+    ],
+    "preconditions": [
+      "At least one item with system on-hand of 10 at unit cost $40.00 exists."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note inventory value for the item and the period\ninventory-adjustment expense total.\n",
+        "expected": "Both values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Enter a cycle count of 8 (a $80.00 shortfall versus system).\n",
+        "expected": "The user is shown the variance in plain language (\"counted 8,\nsystem showed 10, shortage of 2 units worth $80.00\"). The user\nconfirms the count.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the figures.\n",
+        "expected": "On-hand is now 8. Inventory value decreased by $80.00.\nInventory-adjustment expense increased by $80.00.\n"
+      },
+      {
+        "n": 4,
+        "action": "Repeat with a cycle count of 11 (a $40.00 overage versus\nsystem) on a different item.\n",
+        "expected": "Variance treated as an income or contra-expense to the\ninventory-adjustment account. Inventory value up by $40.00,\nadjustment expense down by $40.00 (or adjustment income up).\n"
+      }
+    ],
+    "expected_overall": "Both shortfall and overage variances post correctly with full\nvisibility.\n",
+    "pass_criteria": "Shortfall posts $80.00 to adjustment expense AND overage posts\n$40.00 in the opposite direction AND inventory values match counts.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "ACCT-JE-001",
+    "title": "Manual adjustment with equal additions and subtractions posts cleanly",
+    "goal": "Verify that when the user enters a manual adjustment (the\nunderlying journal entry, but presented as \"manual adjustment\"\nin the UI) with at least one account amount added and one\nsubtracted, posting succeeds only when the additions equal the\nsubtractions to the cent.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "The accounting module is set up with a chart of accounts.",
+      "The user has permission to record manual adjustments."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the manual-adjustment screen and enter two lines that\nbalance — for example, $50.00 added to \"Office supplies\"\nexpense and $50.00 subtracted from \"Cash\". Add a memo\nexplaining the reason.\n",
+        "expected": "The form shows the additions and subtractions totals; both\nread $50.00. A running \"out of balance\" indicator reads zero.\n"
+      },
+      {
+        "n": 2,
+        "action": "Save and post the adjustment.\n",
+        "expected": "The adjustment posts. A confirmation appears with the entry\nreference number.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the affected account balances.\n",
+        "expected": "Office supplies expense increased by $50.00. Cash decreased by\n$50.00. No other balances moved.\n"
+      }
+    ],
+    "expected_overall": "A balanced adjustment posts and updates exactly the affected accounts.\n",
+    "pass_criteria": "Adjustment posted AND office-supplies expense up by $50.00 AND cash\ndown by $50.00 AND nothing else changed.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "ACCT-JE-002",
+    "title": "Reversing a posted manual adjustment cleanly undoes the original entry",
+    "goal": "Verify that when the user reverses a previously posted manual\nadjustment, the application creates a counter-entry of the same\ntotal in the opposite direction so the affected account balances\nreturn to their pre-adjustment values, and both entries remain\nvisible for audit.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "At least one posted manual adjustment exists (use ACCT-JE-001's)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-JE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the affected account balances before reversal.\n",
+        "expected": "Values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Open the original adjustment and choose \"Reverse\". Confirm and\npick a reversal date within the current open period.\n",
+        "expected": "A new entry is created with the same lines but in the opposite\ndirection. The original entry remains in history; the reversal\nis linked to it.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the affected account balances.\n",
+        "expected": "Each balance returned exactly to the value it held before the\noriginal adjustment.\n"
+      }
+    ],
+    "expected_overall": "Reversal nets the original adjustment to zero impact and preserves\nfull history.\n",
+    "pass_criteria": "Reversal entry posted AND each affected balance back to pre-original\nlevel AND both entries visible in history with a link between them.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-JE-003",
+    "title": "A correction dated in a prior open period posts to that period, not the current one",
+    "goal": "Verify that when the user records a manual correction with a\nposting date in a prior period that is still open (not yet\nclosed), the correction lands in that prior period — affecting\nthe prior month's reports — rather than being silently rolled\nforward to the current period.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "The current period is open.",
+      "The immediately prior period is also still open (not yet closed)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the prior period's P&L total (e.g., total expenses for\nthat period) and the current period's running expense total.\n",
+        "expected": "Both visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Record a balanced manual correction of $25.00 (added to a\nchosen expense category, subtracted from cash) dated within\nthe prior open period.\n",
+        "expected": "The application accepts the prior-period date because that\nperiod is still open. The user is warned in plain language\nthat they are posting to a prior period.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check both periods' P&Ls.\n",
+        "expected": "The prior period's expense total increased by $25.00. The\ncurrent period's expense total is unchanged.\n"
+      }
+    ],
+    "expected_overall": "Posting date governs which period is affected; prior-open-period\npostings are accepted with a warning.\n",
+    "pass_criteria": "Correction posted to the prior period AND prior-period P&L moved\nAND current-period P&L unchanged AND user was warned.\n",
+    "est_minutes": 7
+  },
+  {
+    "id": "ACCT-PAY-001",
+    "title": "Running payroll records gross wages, net pay, and withholding owed",
+    "goal": "Verify that a basic pay run for one or more employees records\ngross wages as a payroll expense, net pay as a cash decrease,\nand the difference (income tax, FICA, or equivalent withholdings)\nas separate liabilities owed to the relevant authorities.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Payroll Clerk"
+    ],
+    "preconditions": [
+      "At least one active employee exists with a configured pay rate.",
+      "Withholding rates are configured at a basic level."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the period payroll expense, the cash balance, and the\npayroll-tax-owed liability balance.\n",
+        "expected": "All three values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Run a pay run for one employee with $1,000.00 gross. Apply\n$200.00 in total withholdings. Net pay is $800.00.\n",
+        "expected": "The pay run posts. The employee's pay statement shows gross\n$1,000.00, withholdings $200.00, net $800.00.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the three figures.\n",
+        "expected": "Payroll expense increased by $1,000.00 (the full gross). Cash\ndecreased by $800.00 (the net paid out). Payroll-tax-owed\nliability increased by $200.00.\n"
+      }
+    ],
+    "expected_overall": "Pay run splits gross wages into cash out and a withholding liability\nto be remitted later.\n",
+    "pass_criteria": "Payroll expense up by $1,000.00 AND cash down by $800.00 AND\nwithholding liability up by $200.00.\n",
+    "why_this_matters": "Booking the entire gross as cash out — or skipping the withholding\nliability — leaves the shop owing taxes off-book. This is one of\nthe most common ways small shops get into trouble at year end.\n",
+    "est_minutes": 7
+  },
+  {
+    "id": "ACCT-PAY-002",
+    "title": "Reimbursing an employee expense increases the right expense and decreases cash",
+    "goal": "Verify that the user can record an expense reimbursement to an\nemployee — for items the employee paid out of pocket — and that\nthe expense lands in the correct expense category while cash\ndecreases by the reimbursed amount.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Payroll Clerk"
+    ],
+    "preconditions": [
+      "At least one active employee exists.",
+      "The chart of accounts includes at least one expense category suitable for the reimbursed item (e.g., \"Office supplies\")."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the period expense total for the chosen category and the\ncash balance.\n",
+        "expected": "Both values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Record a $75.00 reimbursement to an employee for office supplies\nthey purchased.\n",
+        "expected": "The reimbursement is recorded and tied to the employee. It is\nnot treated as wages and does not generate withholdings.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the figures.\n",
+        "expected": "Office-supplies expense increased by $75.00. Cash decreased by\n$75.00. Payroll expense and withholding liabilities unchanged.\n"
+      }
+    ],
+    "expected_overall": "Reimbursement is treated as a normal expense, not as compensation.\n",
+    "pass_criteria": "Office-supplies expense up by $75.00 AND cash down by $75.00 AND\nno impact on payroll figures.\n",
+    "est_minutes": 4
+  },
+  {
+    "id": "ACCT-PAY-003",
+    "title": "Recording an owner draw decreases cash and reduces owner's equity",
+    "goal": "Verify that the user can record an owner's draw — money the owner\ntakes out of the business that is not wages — and that cash\ndecreases while owner's equity decreases by the same amount,\nwith no impact on payroll, expense, or withholding accounts.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "The chart of accounts includes an owner's-equity (or owner-draw) account."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the cash balance, the owner's-equity balance, and the\nperiod payroll expense.\n",
+        "expected": "All three values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Record an owner draw of $1,500.00.\n",
+        "expected": "The draw is accepted. The user is offered owner-equity (or\nowner-draw) as the destination, in plain language — not \"debit\naccount\", not \"journal entry\".\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the three figures.\n",
+        "expected": "Cash decreased by $1,500.00. Owner's equity decreased by\n$1,500.00. Payroll expense unchanged.\n"
+      }
+    ],
+    "expected_overall": "Owner draw is correctly modeled as equity withdrawal, not as wages\nor expense.\n",
+    "pass_criteria": "Cash down by $1,500.00 AND owner equity down by $1,500.00 AND no\npayroll or expense movement.\n",
+    "why_this_matters": "Booking owner draws as wages or expenses overstates costs and\nunderstates equity — and creates phantom payroll-tax liability the\nshop does not actually owe.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-PAY-004",
+    "title": "Year-end W-2 and 1099 summaries can be generated from posted activity",
+    "goal": "Verify that at year end the user can generate per-employee wage\nsummaries (W-2 equivalent) and per-contractor payment summaries\n(1099 equivalent) from the year's posted payroll and AP activity,\nwith totals that tie out to the GL.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Payroll Clerk"
+    ],
+    "preconditions": [
+      "At least one employee with posted pay-run activity for the year exists.",
+      "At least one contractor (1099-eligible vendor) with posted bills for the year exists."
+    ],
+    "prerequisite_cases": [
+      "ACCT-PAY-001",
+      "ACCT-AP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the year-end summaries area.\n",
+        "expected": "Two reports are offered — one for employee wages, one for\ncontractor payments — with the year-to-date totals as the\ndefault range.\n"
+      },
+      {
+        "n": 2,
+        "action": "Generate the employee wage summary for the closed-out year.\n",
+        "expected": "Each employee shows year-to-date gross wages, total\nwithholdings, and net paid. The sum of gross across employees\nties to the year's payroll-expense balance in the GL.\n"
+      },
+      {
+        "n": 3,
+        "action": "Generate the contractor payment summary.\n",
+        "expected": "Each 1099-eligible vendor shows total payments for the year.\nThe sum ties to the corresponding payment activity in the GL.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm both reports complete without errors and without empty\nor \"[object]\" rows.\n",
+        "expected": "Both reports render cleanly. Any vendor or employee with zero\nactivity is listed as zero or omitted, not shown as broken.\n"
+      }
+    ],
+    "expected_overall": "Year-end summaries are generatable, tie out to the GL, and render\ncleanly.\n",
+    "pass_criteria": "Both reports generated without error AND totals tie out to GL.\n",
+    "why_this_matters": "Year-end forms are a hard regulatory deadline. A summary that does\nnot tie out to the books forces the owner to redo the math by hand.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "ACCT-RPT-001",
+    "title": "P&L for a chosen date range shows correct income, expenses, and net",
+    "goal": "Verify that the profit-and-loss report for a chosen date range\ntotals income from posted invoices (less voids), totals expenses\nfrom posted bills and payroll, and reports net profit equal to\nincome minus expenses to the cent.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "Activity exists in the period — at least one posted invoice, one posted vendor bill, and one pay run."
+    ],
+    "prerequisite_cases": [
+      "ACCT-AR-001",
+      "ACCT-AP-001",
+      "ACCT-PAY-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the P&L for the current period.\n",
+        "expected": "The report shows income, expenses by category, and net profit.\nEach section's subtotal matches the sum of its line items.\n"
+      },
+      {
+        "n": 2,
+        "action": "Manually total the period's posted (non-void) invoice amounts\nand compare to the report's income total.\n",
+        "expected": "The two totals match exactly.\n"
+      },
+      {
+        "n": 3,
+        "action": "Manually total the period's posted bills and payroll expense\nand compare to the report's expense total.\n",
+        "expected": "The two totals match exactly.\n"
+      },
+      {
+        "n": 4,
+        "action": "Compare net profit to (income − expenses).\n",
+        "expected": "Net profit equals income minus expenses to the cent.\n"
+      }
+    ],
+    "expected_overall": "The P&L ties out to the underlying invoice, bill, and pay-run\nactivity.\n",
+    "pass_criteria": "Income matches manual sum AND expenses match manual sum AND net\nprofit equals the difference exactly.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "ACCT-RPT-002",
+    "title": "Balance sheet as-of any date has assets equal to liabilities plus equity",
+    "goal": "Verify that for any chosen as-of date, the balance sheet's total\nassets equals the sum of total liabilities and total equity to\nthe cent — the fundamental accounting equation must hold.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "Some activity (invoices, bills, payments, pay runs) has been posted across at least two periods."
+    ],
+    "prerequisite_cases": [
+      "ACCT-RPT-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the balance sheet as of today.\n",
+        "expected": "The report displays assets, liabilities, and equity sections\nwith subtotals and a grand total for each.\n"
+      },
+      {
+        "n": 2,
+        "action": "Confirm total assets equals total liabilities plus total\nequity exactly.\n",
+        "expected": "Assets = liabilities + equity, no rounding off, to the cent.\n"
+      },
+      {
+        "n": 3,
+        "action": "Run the balance sheet as of an earlier date (e.g., end of\nlast month).\n",
+        "expected": "The earlier date's report also balances. Activity dated after\nthe as-of date is excluded.\n"
+      }
+    ],
+    "expected_overall": "Balance sheet balances at every chosen date and excludes\nlater-dated activity.\n",
+    "pass_criteria": "Today's balance sheet balances AND a prior-date balance sheet\nbalances AND post-as-of activity is excluded.\n",
+    "why_this_matters": "A balance sheet that does not balance is useless — it indicates\nthe GL is out of sync with itself.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "ACCT-RPT-003",
+    "title": "Account-detail report lists every transaction posted to a chosen account",
+    "goal": "Verify that for a chosen account and date range, the\naccount-detail report lists every transaction posting to that\naccount with date, source (invoice / bill / payment / manual\nadjustment), reference, amount, and a running balance — and the\nending running balance matches the account balance shown on the\nbalance sheet.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "At least five posted transactions affect the chosen account (e.g., cash) within the chosen date range."
+    ],
+    "prerequisite_cases": [
+      "ACCT-RPT-002"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the account-detail report. Choose \"Cash\" and the current\nperiod.\n",
+        "expected": "Each cash-affecting transaction is listed with date, source,\nreference, amount, and running balance.\n"
+      },
+      {
+        "n": 2,
+        "action": "Confirm that the count of rows equals the count of cash-affecting\ntransactions you know to be posted in the period.\n",
+        "expected": "Counts match.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare the ending running balance to the cash balance shown on\nthe balance sheet for the same as-of date.\n",
+        "expected": "The two balances match exactly.\n"
+      }
+    ],
+    "expected_overall": "Account-detail report enumerates every posting and its running balance\nties to the balance sheet.\n",
+    "pass_criteria": "All posted cash transactions listed AND ending running balance equals\nbalance-sheet cash balance.\n",
+    "est_minutes": 7
+  },
+  {
+    "id": "ACCT-RPT-004",
+    "title": "AR aging totals to the same amount as the sum of all open invoices",
+    "goal": "Verify that the AR aging report's grand total — across all aging\nbuckets (current / 1-30 / 31-60 / 61-90 / 90+) — equals the sum\nof every open (unpaid or partially paid) invoice in the system,\nand equals the AR balance on the balance sheet.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AR Clerk"
+    ],
+    "preconditions": [
+      "At least four open invoices exist with varying ages."
+    ],
+    "prerequisite_cases": [
+      "ACCT-AR-001",
+      "ACCT-AR-003"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the AR aging report as of today.\n",
+        "expected": "The report groups open invoices by age bucket. Each bucket\nshows a subtotal. A grand total is shown.\n"
+      },
+      {
+        "n": 2,
+        "action": "Open the list of all open invoices. Sum their remaining\nbalances manually.\n",
+        "expected": "Manual sum equals the aging report's grand total.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare to the AR balance on the balance sheet.\n",
+        "expected": "Balance-sheet AR equals the aging total exactly.\n"
+      }
+    ],
+    "expected_overall": "AR aging total ties to the open-invoice list and to the balance\nsheet.\n",
+    "pass_criteria": "Aging total = open-invoice manual sum = balance-sheet AR, all to\nthe cent.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "ACCT-RPT-005",
+    "title": "AP aging totals to the same amount as the sum of all open vendor bills",
+    "goal": "Verify that the AP aging report's grand total — across all aging\nbuckets — equals the sum of every open (unpaid or partially paid)\nvendor bill, and equals the AP balance on the balance sheet.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AP Clerk"
+    ],
+    "preconditions": [
+      "At least three open vendor bills exist with varying ages."
+    ],
+    "prerequisite_cases": [
+      "ACCT-AP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the AP aging report as of today.\n",
+        "expected": "The report groups open bills by age bucket with subtotals and\na grand total.\n"
+      },
+      {
+        "n": 2,
+        "action": "Open the list of all open bills. Sum their remaining balances\nmanually.\n",
+        "expected": "Manual sum equals the aging report's grand total.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare to the AP balance on the balance sheet.\n",
+        "expected": "Balance-sheet AP equals the aging total exactly.\n"
+      }
+    ],
+    "expected_overall": "AP aging ties to the open-bill list and to the balance sheet.\n",
+    "pass_criteria": "Aging total = open-bill manual sum = balance-sheet AP, all to the\ncent.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "ACCT-RPT-006",
+    "title": "Sales-tax summary for a period equals the sum of tax lines on posted invoices",
+    "goal": "Verify that the sales-tax summary report for a chosen period\nreports total tax collected per jurisdiction, and that the sum\nacross jurisdictions equals the sum of every tax line on every\nposted (non-void) invoice in the period — and equals the\nsales-tax-payable liability on the balance sheet less prior\nremittances.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "At least three posted invoices in the period collected sales tax at the home jurisdiction's rate."
+    ],
+    "prerequisite_cases": [
+      "ACCT-AR-001",
+      "ACCT-SETUP-004"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the sales-tax summary for the current period.\n",
+        "expected": "Tax collected by jurisdiction is shown, with a grand total.\n"
+      },
+      {
+        "n": 2,
+        "action": "Open each posted invoice in the period and sum its tax-line\namounts.\n",
+        "expected": "Manual sum equals the report's grand total.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare to the sales-tax-payable balance on the balance sheet\n(less any prior period remittances).\n",
+        "expected": "Liability matches the period's collected tax (net of remittances).\n"
+      }
+    ],
+    "expected_overall": "Sales-tax summary ties to invoice tax lines and to the\nsales-tax-payable liability.\n",
+    "pass_criteria": "Report grand total = manual invoice tax-line sum = sales-tax-payable\non balance sheet (net of remittances), all to the cent.\n",
+    "why_this_matters": "The number reported on this summary becomes the figure remitted to\nthe tax authority. If it does not tie to invoices, the shop either\nunderpays (penalty) or overpays (lost cash).\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "ACCT-SETUP-001",
+    "title": "First-time setup creates a shop-appropriate chart of accounts",
+    "goal": "Verify that on first use of the built-in accounting module, the\nshop owner is offered a default chart of accounts (cash, accounts\nreceivable, inventory, accounts payable, sales, cost of goods sold,\npayroll expense, owner's equity, retained earnings) and that\naccepting the defaults makes those accounts immediately usable.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Administrator"
+    ],
+    "preconditions": [
+      "The built-in accounting module is enabled at session start.",
+      "No accounting transactions have been recorded yet."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the accounting setup area for a new tenant.\n",
+        "expected": "A first-time setup screen offers a default chart of accounts\ntailored to a small manufacturing or trade shop.\n"
+      },
+      {
+        "n": 2,
+        "action": "Review the default account list. Accept the defaults.\n",
+        "expected": "A standard set of accounts is created — at minimum cash,\naccounts receivable, inventory, accounts payable, sales,\ncost of goods sold, payroll expense, owner's equity, and\nretained earnings — each with a plain-language name and a\ncategory (asset / liability / equity / income / expense).\n"
+      },
+      {
+        "n": 3,
+        "action": "Open the account list.\n",
+        "expected": "The accepted accounts are listed and active. None are flagged\nas draft or pending.\n"
+      }
+    ],
+    "expected_overall": "After accepting defaults, a usable chart of accounts exists with\nno further setup required.\n",
+    "pass_criteria": "All default accounts are present, active, and categorized correctly.\n",
+    "why_this_matters": "A shop owner without an accountant cannot design a chart of accounts\nfrom scratch. The defaults must be sensible enough that accepting\nthem yields correct books out of the gate.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-SETUP-002",
+    "title": "Configure when the shop's fiscal year begins",
+    "goal": "Verify that the shop owner can set the fiscal year start month,\nand that monthly and yearly reports honor that choice.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Administrator"
+    ],
+    "preconditions": [
+      "The chart of accounts has been initialized (ACCT-SETUP-001).",
+      "No periods have been closed yet."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the accounting settings area and find the fiscal year\nstart setting.\n",
+        "expected": "Fiscal year start is configurable as a calendar month. The\ncurrent value (default January) is shown.\n"
+      },
+      {
+        "n": 2,
+        "action": "Change fiscal year start to July and save.\n",
+        "expected": "The change is accepted and confirmed.\n"
+      },
+      {
+        "n": 3,
+        "action": "Open the period list or the year-end close screen.\n",
+        "expected": "The current fiscal year is shown as running July through June.\nPeriod names reflect the new fiscal calendar.\n"
+      }
+    ],
+    "expected_overall": "Fiscal year start is configurable; downstream reports and period\nlabels respect it.\n",
+    "pass_criteria": "Fiscal year start changed to July AND period boundaries shift\naccordingly across the application.\n",
+    "why_this_matters": "Many small shops do not run on a calendar year. Hard-coding January\nforces them to keep parallel books — defeating the point of a\nbuilt-in accounting module.\n",
+    "est_minutes": 4
+  },
+  {
+    "id": "ACCT-SETUP-003",
+    "title": "Pick cash basis or accrual basis at setup",
+    "goal": "Verify that the shop owner can choose between cash-basis and\naccrual-basis accounting, that the choice is explained in plain\nlanguage, and that reports honor the choice.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Administrator"
+    ],
+    "preconditions": [
+      "The chart of accounts has been initialized (ACCT-SETUP-001)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the accounting basis setting.\n",
+        "expected": "Two options are offered — cash and accrual — each with a\none-sentence plain-language explanation. No jargon (\"realized\",\n\"matching principle\") is required to make the choice.\n"
+      },
+      {
+        "n": 2,
+        "action": "Select cash basis and save.\n",
+        "expected": "The selection is accepted.\n"
+      },
+      {
+        "n": 3,
+        "action": "Run a profit-and-loss report covering the current period.\n",
+        "expected": "The report header indicates cash basis. Income reflects only\ncash actually received; expenses reflect only cash actually paid.\n"
+      }
+    ],
+    "expected_overall": "Basis choice is selectable in plain language and drives report\nbehavior.\n",
+    "pass_criteria": "Cash basis selected AND P&L explicitly identifies itself as cash\nbasis AND figures match cash-basis treatment.\n",
+    "why_this_matters": "Most small shops file taxes on a cash basis. Forcing accrual\nbookkeeping creates a mismatch between books and tax return.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-SETUP-004",
+    "title": "Configure the shop's home tax jurisdiction",
+    "goal": "Verify that the shop owner can set a primary tax jurisdiction\n(state / province / region and the corresponding default sales\ntax rate) and that new customer invoices default to that rate\nunless the customer is exempt or the destination overrides it.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Administrator"
+    ],
+    "preconditions": [
+      "The chart of accounts has been initialized (ACCT-SETUP-001)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the tax setup area.\n",
+        "expected": "A field for primary jurisdiction and a default rate are visible\nand editable.\n"
+      },
+      {
+        "n": 2,
+        "action": "Enter the home jurisdiction and a default rate (for example,\n\"Ohio, 7.25%\") and save.\n",
+        "expected": "The entry is accepted; the jurisdiction and rate are recorded.\n"
+      },
+      {
+        "n": 3,
+        "action": "Create a new customer invoice for a non-exempt customer with\nno destination override.\n",
+        "expected": "The invoice's tax line picks up the home jurisdiction's rate\nautomatically and labels it (e.g., \"Ohio sales tax 7.25%\").\n"
+      }
+    ],
+    "expected_overall": "Primary jurisdiction is set once and drives invoice tax defaults.\n",
+    "pass_criteria": "Default rate applied to new invoice with correct label AND amount.\n",
+    "why_this_matters": "Shop owners should not have to type the tax rate on every invoice.\nA default that matches the home jurisdiction is the lowest-effort\ncorrect behavior.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-SETUP-005",
+    "title": "Set the default payment terms used on new invoices and bills",
+    "goal": "Verify that a default set of payment terms (for example, \"Due on\nreceipt\", \"Net 15\", \"Net 30\") can be configured, that one is\nmarked as the default, and that new invoices and vendor bills\npick it up automatically.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Administrator"
+    ],
+    "preconditions": [
+      "The chart of accounts has been initialized (ACCT-SETUP-001)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the payment terms setup area.\n",
+        "expected": "A list of payment terms options is visible. Each shows its\nname and the number of days until due.\n"
+      },
+      {
+        "n": 2,
+        "action": "Mark \"Net 30\" as the default payment term and save.\n",
+        "expected": "\"Net 30\" is flagged as the default. Other terms remain available\nfor selection per transaction.\n"
+      },
+      {
+        "n": 3,
+        "action": "Create a new customer invoice without overriding the term.\n",
+        "expected": "The invoice's term reads \"Net 30\" and the due date is calculated\nas 30 days from the invoice date.\n"
+      },
+      {
+        "n": 4,
+        "action": "Create a new vendor bill without overriding the term.\n",
+        "expected": "The bill's term also defaults to \"Net 30\" with a 30-day-out\ndue date.\n"
+      }
+    ],
+    "expected_overall": "Default payment term is configurable and applies to both AR and AP\ntransactions.\n",
+    "pass_criteria": "Default term set AND new invoice + new bill both inherit it AND due\ndates calculated correctly.\n",
+    "est_minutes": 4
+  },
+  {
+    "id": "ACCT-SETUP-006",
+    "title": "Restrict the shop to a single home currency",
+    "goal": "Verify that the built-in accounting module operates in a single\nhome currency only, that the home currency is set at first-time\nsetup, and that no transaction or report exposes a multi-currency\nsurface that could confuse the user.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "Administrator"
+    ],
+    "preconditions": [
+      "The chart of accounts has been initialized (ACCT-SETUP-001)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the accounting setup area and find the currency setting.\n",
+        "expected": "A single home currency is shown (default USD or the locale\ndefault). It is editable at setup time.\n"
+      },
+      {
+        "n": 2,
+        "action": "Confirm the home currency.\n",
+        "expected": "The currency is locked. A message indicates that the built-in\naccounting module supports one currency per shop.\n"
+      },
+      {
+        "n": 3,
+        "action": "Open a new customer invoice and a new vendor bill.\n",
+        "expected": "Neither offers a currency selector. Amounts are entered and\nshown only in the home currency.\n"
+      }
+    ],
+    "expected_overall": "Home currency is set once and consistently applied; no multi-currency\nsurface appears anywhere in the built-in accounting flows.\n",
+    "pass_criteria": "Home currency locked AND no currency picker visible on any invoice,\nbill, payment, or report.\n",
+    "why_this_matters": "This module is for shops too small to handle FX. Surfacing a currency\npicker invites bugs without giving the user any benefit.\n",
+    "est_minutes": 4
+  },
+  {
+    "id": "ACCT-TAX-001",
+    "title": "A taxable customer invoice adds sales tax and increases sales-tax-payable",
+    "goal": "Verify that when the user creates an invoice for a non-exempt\ncustomer, the home jurisdiction's tax rate is applied to the\ntaxable subtotal, the invoice total includes the tax, and the\nsales-tax-payable liability increases by the collected tax\namount.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AR Clerk"
+    ],
+    "preconditions": [
+      "Home tax jurisdiction is set with a known rate (use ACCT-SETUP-004's 7.25%).",
+      "At least one non-exempt customer exists."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-004"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the sales-tax-payable liability balance.\n",
+        "expected": "Value visible. Record it.\n"
+      },
+      {
+        "n": 2,
+        "action": "Create an invoice for the non-exempt customer with a $100.00\ntaxable line.\n",
+        "expected": "The invoice's subtotal is $100.00, tax is $7.25 (7.25% of\n$100.00), and total is $107.25. Tax line is labeled with the\njurisdiction's name.\n"
+      },
+      {
+        "n": 3,
+        "action": "Post the invoice and re-check the sales-tax-payable balance.\n",
+        "expected": "Sales-tax-payable increased by exactly $7.25.\n"
+      }
+    ],
+    "expected_overall": "Tax is computed correctly per the home rate and accrued as a\nliability owed to the authority.\n",
+    "pass_criteria": "Invoice tax = $7.25 AND invoice total = $107.25 AND\nsales-tax-payable up by $7.25.\n",
+    "est_minutes": 5
+  },
+  {
+    "id": "ACCT-TAX-002",
+    "title": "Recording a sales-tax remittance reduces the sales-tax-payable liability and cash",
+    "goal": "Verify that when the user records a sales-tax remittance to the\njurisdiction's authority, the sales-tax-payable liability\ndecreases by the remitted amount, cash decreases by the same\namount, and the period's sales-tax summary reflects the\nremittance.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner"
+    ],
+    "preconditions": [
+      "A sales-tax-payable liability exists from prior collection activity (e.g., $7.25 from ACCT-TAX-001)."
+    ],
+    "prerequisite_cases": [
+      "ACCT-TAX-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the sales-tax-payable balance and the cash balance.\n",
+        "expected": "Both values visible. Record them.\n"
+      },
+      {
+        "n": 2,
+        "action": "Open the sales-tax remittance area. Record a remittance for the\nfull payable balance to the home jurisdiction.\n",
+        "expected": "The remittance posts. A confirmation appears.\n"
+      },
+      {
+        "n": 3,
+        "action": "Re-check the figures.\n",
+        "expected": "Sales-tax-payable decreased by exactly the remitted amount\n(e.g., $7.25). Cash decreased by exactly the remitted amount.\n"
+      },
+      {
+        "n": 4,
+        "action": "Run the sales-tax summary report.\n",
+        "expected": "The report shows the remittance separately from collected tax,\nso the user can see at a glance what is collected, what is\nremitted, and what still owes.\n"
+      }
+    ],
+    "expected_overall": "Remittance reduces the liability, reduces cash, and is visible on the\ntax summary.\n",
+    "pass_criteria": "Sales-tax-payable down by remitted amount AND cash down by remitted\namount AND tax summary shows the remittance.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "ACCT-TAX-003",
+    "title": "An invoice for a tax-exempt customer collects no sales tax",
+    "goal": "Verify that when the user creates an invoice for a customer flagged\nas tax-exempt, the application does not add a sales tax line, the\ninvoice total equals the taxable subtotal, and the\nsales-tax-payable liability is unchanged.\n",
+    "optional_module": "builtin-accounting",
+    "roles": [
+      "Shop Owner",
+      "AR Clerk"
+    ],
+    "preconditions": [
+      "Home tax jurisdiction is set with a known rate.",
+      "At least one customer is flagged as tax-exempt with an exemption reason or certificate reference recorded."
+    ],
+    "prerequisite_cases": [
+      "ACCT-SETUP-004"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Note the sales-tax-payable balance.\n",
+        "expected": "Value visible. Record it.\n"
+      },
+      {
+        "n": 2,
+        "action": "Create an invoice for the tax-exempt customer with a $100.00\nline.\n",
+        "expected": "No tax line is added. Subtotal = $100.00 and total = $100.00.\nThe invoice or customer record displays the exemption reason\n(or certificate reference) clearly.\n"
+      },
+      {
+        "n": 3,
+        "action": "Post the invoice and re-check the sales-tax-payable balance.\n",
+        "expected": "Sales-tax-payable balance unchanged.\n"
+      }
+    ],
+    "expected_overall": "Tax-exempt customer flag suppresses tax computation and tax\nliability accrual, with the exemption reason visible.\n",
+    "pass_criteria": "No tax on invoice AND total = $100.00 AND sales-tax-payable unchanged\nAND exemption reason / certificate visible.\n",
+    "why_this_matters": "Charging tax to an exempt customer breaks the customer relationship\nand forces a credit-and-rebill. Failing to record the exemption\nreason fails an audit.\n",
+    "est_minutes": 5
+  },
+  {
     "id": "AUDIT-BOM-CREATE-001",
     "title": "Creating the first BOM for a part records actor and full structure",
     "goal": "Verify that creating the initial BOM for a finished part records\nactor, timestamp, parent part, and the full set of components and\nquantities as the initial \"after\" state.\n",

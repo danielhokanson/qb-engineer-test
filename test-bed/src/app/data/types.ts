@@ -55,6 +55,18 @@ export interface Case {
   negative_variants?: NegativeVariant[];
   est_minutes?: number;
   uses_practice_app?: boolean;
+  /** When set, this case only applies if the named optional module is
+   * enabled on the session. Tests for features the application may or
+   * may not implement (e.g. a built-in accounting module). */
+  optional_module?: string;
+}
+
+/** Catalog entry from /assets/data/modules.json — the canonical list of
+ * optional modules a tester can opt in to at session start. */
+export interface OptionalModule {
+  id: string;
+  name: string;
+  description: string;
 }
 
 export interface Fixture {
@@ -140,6 +152,11 @@ export interface Session {
   branch_choices: Record<string, string>;
   tutorial_completed: boolean;
   current_case_id: string | null;
+  /** Optional modules the tester opted in to at session start. Cases tagged
+   * with an `optional_module` not in this list are filtered out of the
+   * session's case lists. Empty (default) means "no optional modules
+   * enabled" — only cases without an optional_module tag are surfaced. */
+  enabled_modules: string[];
 }
 
 export interface CaseResult {

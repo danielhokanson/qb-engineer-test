@@ -1,0 +1,7 @@
+[
+  {
+    "id": "builtin-accounting",
+    "name": "Built-in accounting module",
+    "description": "Lightweight ledger for small shops who don't want a separate accounting system. Substitutes for external accounting integration. Tests in this module are only actionable if the application implements the built-in accounting feature."
+  }
+]

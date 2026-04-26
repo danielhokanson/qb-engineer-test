@@ -1,5 +1,14 @@
 [
   {
+    "id": "accounting",
+    "directory": "accounting",
+    "title": "Built-in lightweight accounting module — math correctness behind a plain-language UI",
+    "description": "Optional suite gated on the built-in accounting module being enabled\nfor the run. Verifies that AR, AP, payroll, inventory, bank, manual\nadjustments, reports, period close, and sales tax all keep correct\nbooks while presenting a plain-language surface to a non-accountant\nshop owner. Excludes multi-currency, multi-entity, audit-grade\nattestation, complex payroll-tax depth, and inventory costing methods\nbeyond Average and Standard.\n",
+    "estimated_total_minutes": 270,
+    "case_count": 45,
+    "planned_count": 45
+  },
+  {
     "id": "audit",
     "directory": "audit",
     "title": "Audit log captures every consequential state change",

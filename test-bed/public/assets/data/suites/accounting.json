@@ -1,0 +1,252 @@
+{
+  "id": "accounting",
+  "directory": "accounting",
+  "title": "Built-in lightweight accounting module — math correctness behind a plain-language UI",
+  "description": "Optional suite gated on the built-in accounting module being enabled\nfor the run. Verifies that AR, AP, payroll, inventory, bank, manual\nadjustments, reports, period close, and sales tax all keep correct\nbooks while presenting a plain-language surface to a non-accountant\nshop owner. Excludes multi-currency, multi-entity, audit-grade\nattestation, complex payroll-tax depth, and inventory costing methods\nbeyond Average and Standard.\n",
+  "estimated_total_minutes": 270,
+  "case_ids": [
+    "ACCT-SETUP-001",
+    "ACCT-SETUP-002",
+    "ACCT-SETUP-003",
+    "ACCT-SETUP-004",
+    "ACCT-SETUP-005",
+    "ACCT-SETUP-006",
+    "ACCT-AR-001",
+    "ACCT-AR-002",
+    "ACCT-AR-003",
+    "ACCT-AR-004",
+    "ACCT-AR-005",
+    "ACCT-AP-001",
+    "ACCT-AP-002",
+    "ACCT-AP-003",
+    "ACCT-AP-004",
+    "ACCT-AP-005",
+    "ACCT-PAY-001",
+    "ACCT-PAY-002",
+    "ACCT-PAY-003",
+    "ACCT-PAY-004",
+    "ACCT-INV-001",
+    "ACCT-INV-002",
+    "ACCT-INV-003",
+    "ACCT-INV-004",
+    "ACCT-INV-005",
+    "ACCT-BANK-001",
+    "ACCT-BANK-002",
+    "ACCT-BANK-003",
+    "ACCT-BANK-004",
+    "ACCT-JE-001",
+    "ACCT-JE-002",
+    "ACCT-JE-003",
+    "ACCT-RPT-001",
+    "ACCT-RPT-002",
+    "ACCT-RPT-003",
+    "ACCT-RPT-004",
+    "ACCT-RPT-005",
+    "ACCT-RPT-006",
+    "ACCT-CLOSE-001",
+    "ACCT-CLOSE-002",
+    "ACCT-CLOSE-003",
+    "ACCT-CLOSE-004",
+    "ACCT-TAX-001",
+    "ACCT-TAX-002",
+    "ACCT-TAX-003"
+  ],
+  "planned_case_ids": [
+    "ACCT-SETUP-001",
+    "ACCT-SETUP-002",
+    "ACCT-SETUP-003",
+    "ACCT-SETUP-004",
+    "ACCT-SETUP-005",
+    "ACCT-SETUP-006",
+    "ACCT-AR-001",
+    "ACCT-AR-002",
+    "ACCT-AR-003",
+    "ACCT-AR-004",
+    "ACCT-AR-005",
+    "ACCT-AP-001",
+    "ACCT-AP-002",
+    "ACCT-AP-003",
+    "ACCT-AP-004",
+    "ACCT-AP-005",
+    "ACCT-PAY-001",
+    "ACCT-PAY-002",
+    "ACCT-PAY-003",
+    "ACCT-PAY-004",
+    "ACCT-INV-001",
+    "ACCT-INV-002",
+    "ACCT-INV-003",
+    "ACCT-INV-004",
+    "ACCT-INV-005",
+    "ACCT-BANK-001",
+    "ACCT-BANK-002",
+    "ACCT-BANK-003",
+    "ACCT-BANK-004",
+    "ACCT-JE-001",
+    "ACCT-JE-002",
+    "ACCT-JE-003",
+    "ACCT-RPT-001",
+    "ACCT-RPT-002",
+    "ACCT-RPT-003",
+    "ACCT-RPT-004",
+    "ACCT-RPT-005",
+    "ACCT-RPT-006",
+    "ACCT-CLOSE-001",
+    "ACCT-CLOSE-002",
+    "ACCT-CLOSE-003",
+    "ACCT-CLOSE-004",
+    "ACCT-TAX-001",
+    "ACCT-TAX-002",
+    "ACCT-TAX-003"
+  ],
+  "missing_case_ids": [],
+  "raw": {
+    "suite": "accounting",
+    "title": "Built-in lightweight accounting module — math correctness behind a plain-language UI",
+    "optional_module": "builtin-accounting",
+    "description": "Optional suite gated on the built-in accounting module being enabled\nfor the run. Verifies that AR, AP, payroll, inventory, bank, manual\nadjustments, reports, period close, and sales tax all keep correct\nbooks while presenting a plain-language surface to a non-accountant\nshop owner. Excludes multi-currency, multi-entity, audit-grade\nattestation, complex payroll-tax depth, and inventory costing methods\nbeyond Average and Standard.\n",
+    "estimated_total_minutes": 270,
+    "cases": [
+      {
+        "id": "ACCT-SETUP-001"
+      },
+      {
+        "id": "ACCT-SETUP-002"
+      },
+      {
+        "id": "ACCT-SETUP-003"
+      },
+      {
+        "id": "ACCT-SETUP-004"
+      },
+      {
+        "id": "ACCT-SETUP-005"
+      },
+      {
+        "id": "ACCT-SETUP-006"
+      },
+      {
+        "id": "ACCT-AR-001"
+      },
+      {
+        "id": "ACCT-AR-002"
+      },
+      {
+        "id": "ACCT-AR-003"
+      },
+      {
+        "id": "ACCT-AR-004"
+      },
+      {
+        "id": "ACCT-AR-005"
+      },
+      {
+        "id": "ACCT-AP-001"
+      },
+      {
+        "id": "ACCT-AP-002"
+      },
+      {
+        "id": "ACCT-AP-003"
+      },
+      {
+        "id": "ACCT-AP-004"
+      },
+      {
+        "id": "ACCT-AP-005"
+      },
+      {
+        "id": "ACCT-PAY-001"
+      },
+      {
+        "id": "ACCT-PAY-002"
+      },
+      {
+        "id": "ACCT-PAY-003"
+      },
+      {
+        "id": "ACCT-PAY-004"
+      },
+      {
+        "id": "ACCT-INV-001"
+      },
+      {
+        "id": "ACCT-INV-002"
+      },
+      {
+        "id": "ACCT-INV-003"
+      },
+      {
+        "id": "ACCT-INV-004"
+      },
+      {
+        "id": "ACCT-INV-005"
+      },
+      {
+        "id": "ACCT-BANK-001"
+      },
+      {
+        "id": "ACCT-BANK-002"
+      },
+      {
+        "id": "ACCT-BANK-003"
+      },
+      {
+        "id": "ACCT-BANK-004"
+      },
+      {
+        "id": "ACCT-JE-001"
+      },
+      {
+        "id": "ACCT-JE-002"
+      },
+      {
+        "id": "ACCT-JE-003"
+      },
+      {
+        "id": "ACCT-RPT-001"
+      },
+      {
+        "id": "ACCT-RPT-002"
+      },
+      {
+        "id": "ACCT-RPT-003"
+      },
+      {
+        "id": "ACCT-RPT-004"
+      },
+      {
+        "id": "ACCT-RPT-005"
+      },
+      {
+        "id": "ACCT-RPT-006"
+      },
+      {
+        "id": "ACCT-CLOSE-001"
+      },
+      {
+        "id": "ACCT-CLOSE-002"
+      },
+      {
+        "id": "ACCT-CLOSE-003"
+      },
+      {
+        "id": "ACCT-CLOSE-004"
+      },
+      {
+        "id": "ACCT-TAX-001"
+      },
+      {
+        "id": "ACCT-TAX-002"
+      },
+      {
+        "id": "ACCT-TAX-003"
+      }
+    ],
+    "completion_criteria": [
+      "Every case in the suite has a recorded pass / fail.",
+      "Every report tied out to its underlying transactions to the cent.",
+      "Year-end roll preserved total equity exactly.",
+      "No silent posting into a closed period was observed."
+    ]
+  }
+}
