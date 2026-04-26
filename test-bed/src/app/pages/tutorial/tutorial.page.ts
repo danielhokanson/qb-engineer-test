@@ -32,6 +32,26 @@ import { CaseStatus } from '../../data/types';
         </p>
       </header>
 
+      <aside class="practice-link">
+        <div class="practice-link-text">
+          <span class="label-mono">step 1 — open the practice app</span>
+          <p class="practice-link-body">
+            Open the Practice App in a new tab and keep it visible. You'll
+            switch to it for every tutorial case below, then come back here
+            to record what happened — the same flow you'll use with the real
+            application later.
+          </p>
+        </div>
+        <a
+          href="/practice"
+          target="_blank"
+          rel="noopener"
+          class="btn-primary">
+          Open Practice App
+          <span aria-hidden="true">↗</span>
+        </a>
+      </aside>
+
       @if (catalog.loaded() && tutorialCases().length === 0) {
         <div class="surface-card empty-state">
           No tutorial cases are defined.
