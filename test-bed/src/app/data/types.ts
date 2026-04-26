@@ -64,6 +64,26 @@ export interface Fixture {
   values: Record<string, string | number | boolean>;
 }
 
+export interface StoryScene {
+  case: string;
+  role: string;
+  note?: string;
+}
+
+export interface StoryChapter {
+  title: string;
+  intro?: string;
+  scenes: StoryScene[];
+}
+
+export interface Story {
+  id: string;
+  name: string;
+  description?: string;
+  estimated_total_minutes?: number;
+  chapters: StoryChapter[];
+}
+
 /**
  * Session state — written to IndexedDB.
  */
@@ -82,6 +102,9 @@ export interface Session {
   /** Optional. When non-empty, filters cases to those that match at
    * least one of these flows in addition to matching a selected role. */
   selected_flows: string[];
+  /** When set, this session is a story walk-through rather than a
+   * role-filtered run. selected_roles/flows are unused. */
+  story_id?: string;
   branch_choices: Record<string, string>;
   tutorial_completed: boolean;
   current_case_id: string | null;

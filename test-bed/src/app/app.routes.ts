@@ -39,5 +39,22 @@ export const routes: Routes = [
         m => m.TutorialCasePage,
       ),
   },
+  {
+    path: 'stories',
+    loadComponent: () =>
+      import('./pages/stories/stories.page').then(m => m.StoriesPage),
+  },
+  {
+    path: 'stories/:storyId',
+    loadComponent: () =>
+      import('./pages/story/story.page').then(m => m.StoryPage),
+  },
+  {
+    path: 'stories/:storyId/scene/:sceneIndex',
+    loadComponent: () =>
+      import('./pages/story-scene/story-scene.page').then(
+        m => m.StoryScenePage,
+      ),
+  },
   { path: '**', redirectTo: '' },
 ];

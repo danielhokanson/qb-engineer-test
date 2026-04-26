@@ -1,0 +1,125 @@
+.page {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.breadcrumbs {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.8125rem;
+}
+
+.breadcrumbs a { color: var(--color-text-muted); }
+.breadcrumbs .sep { color: var(--color-text-dim); }
+.breadcrumbs .current { color: var(--color-text); }
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.875rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.sub {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  max-width: 42rem;
+}
+
+.empty-state {
+  padding: 1.25rem;
+  color: var(--color-text-muted);
+}
+
+.loading {
+  padding: 3rem;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.story-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.story-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.story-card-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem 1.5rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.story-card-link:hover {
+  background-color: var(--color-bg-elevated);
+  text-decoration: none;
+}
+
+.story-name {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.story-desc {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  max-width: 42rem;
+}
+
+.story-meta {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.meta-item.active .meta-label,
+.meta-item.active .meta-value {
+  color: var(--color-accent);
+}
+
+.meta-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-dim);
+}
+
+.meta-value {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}

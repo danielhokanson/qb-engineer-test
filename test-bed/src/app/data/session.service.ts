@@ -45,6 +45,7 @@ export class SessionService {
     fixtureId: string;
     selectedRoles: string[];
     selectedFlows?: string[];
+    storyId?: string;
   }): Promise<Session> {
     const session: Session = {
       id: uid(),
@@ -55,6 +56,7 @@ export class SessionService {
       language: 'en-US',
       selected_roles: input.selectedRoles,
       selected_flows: input.selectedFlows ?? [],
+      story_id: input.storyId,
       branch_choices: {},
       tutorial_completed: false,
       current_case_id: null,

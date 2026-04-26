@@ -120,6 +120,26 @@ function main() {
     console.log(`  + manifests/${phaseId}.json`);
   }
 
+  // Stories (optional file)
+  const storiesFile = docFiles.find(f => f === 'stories.md');
+  const stories = [];
+  if (storiesFile) {
+    const blocks = parseBlocks(join(docsDir, storiesFile));
+    for (const story of blocks) {
+      // Light validation — every scene must reference a real case
+      const knownIds = new Set([...allCases, ...tutorial].map(c => c.id));
+      const sceneCases = (story.chapters ?? []).flatMap(ch => ch.scenes ?? []).map(s => s.case);
+      for (const cid of sceneCases) {
+        if (!knownIds.has(cid)) {
+          throw new Error(`Story "${story.id}" references unknown case "${cid}".`);
+        }
+      }
+      stories.push(story);
+    }
+    writeFileSync(join(outDir, 'stories.json'), JSON.stringify(stories, null, 2));
+    console.log(`✓ stories.json — ${stories.length} stories`);
+  }
+
   // Cross-cutting summary
   const roleSet = new Set();
   const flowSet = new Set();
@@ -129,10 +149,11 @@ function main() {
   }
 
   const summary = {
-    library_version: '0.2.0',
+    library_version: '0.3.0',
     built_at: new Date().toISOString(),
     case_count: allCases.length,
     tutorial_count: tutorial.length,
+    story_count: stories.length,
     roles: [...roleSet].sort(),
     flows: [...flowSet].sort(),
     phase_files: phaseContentFiles,

@@ -1,0 +1,326 @@
+[
+  {
+    "id": "lead-to-cash",
+    "name": "Lead to cash from an empty system",
+    "description": "The canonical end-to-end test of qb-engineer. Start with a brand-new\nempty tenant and walk through every role's contribution to taking a\ncustomer from initial inquiry to cash applied. Each chapter marks a\nrole handoff — sign out and back in as the named role to verify the\nsystem routes work correctly across users.\n",
+    "estimated_total_minutes": 240,
+    "chapters": [
+      {
+        "title": "Bootstrap",
+        "intro": "You are the company's first administrator. The system is brand\nnew — nobody has signed in, no records exist. Your job for this\nchapter is to get the tenant configured to the point where other\nroles can join you.\n",
+        "scenes": [
+          {
+            "case": "P0-INSTALL-001",
+            "role": "Administrator"
+          },
+          {
+            "case": "P0-ADMIN-001",
+            "role": "Administrator"
+          },
+          {
+            "case": "P0-ADMIN-002",
+            "role": "Administrator"
+          },
+          {
+            "case": "P0-TENANT-001",
+            "role": "Administrator"
+          },
+          {
+            "case": "P0-TENANT-002",
+            "role": "Administrator"
+          },
+          {
+            "case": "P0-TENANT-005",
+            "role": "Administrator"
+          },
+          {
+            "case": "P0-INTEG-001",
+            "role": "Administrator"
+          },
+          {
+            "case": "P0-INTEG-002",
+            "role": "Administrator"
+          },
+          {
+            "case": "P0-INTEG-003",
+            "role": "Administrator"
+          }
+        ]
+      },
+      {
+        "title": "User and role setup",
+        "intro": "Still as the administrator, create the role taxonomy and invite\nthe first non-admin user — the person you'll hand off to next.\n",
+        "scenes": [
+          {
+            "case": "P0-USER-001",
+            "role": "Administrator"
+          },
+          {
+            "case": "P0-USER-002",
+            "role": "Administrator"
+          },
+          {
+            "case": "P0-USER-003",
+            "role": "Administrator"
+          }
+        ]
+      },
+      {
+        "title": "Foundational records (admin)",
+        "intro": "Configure the records that the rest of the lifecycle will\nreference: locations, work centers, units, accounts, taxes,\nemployees, calendar, asset.\n",
+        "scenes": [
+          {
+            "case": "P1-LOC-001",
+            "role": "Administrator"
+          },
+          {
+            "case": "P1-WC-001",
+            "role": "Administrator"
+          },
+          {
+            "case": "P1-UOM-001",
+            "role": "Administrator"
+          },
+          {
+            "case": "P1-CAL-001",
+            "role": "Administrator"
+          }
+        ]
+      },
+      {
+        "title": "Foundational records (Controller hands off)",
+        "intro": "Hand off from Administrator to Controller. Sign out, then sign\nin as the Controller. (In a small shop the admin and controller\nmay be the same person — the case still applies.)\n",
+        "scenes": [
+          {
+            "case": "P1-GL-001",
+            "role": "Controller"
+          },
+          {
+            "case": "P1-TAX-001",
+            "role": "Controller"
+          }
+        ]
+      },
+      {
+        "title": "Foundational records (HR hands off)",
+        "intro": "Hand off to HR. The HR user creates the first employee, links\nthem to a system user, and sets up additional employees so the\nproduction floor isn't a one-person show.\n",
+        "scenes": [
+          {
+            "case": "P1-EMP-001",
+            "role": "HR"
+          },
+          {
+            "case": "P1-EMP-002",
+            "role": "HR"
+          },
+          {
+            "case": "P1-EMP-003",
+            "role": "HR"
+          }
+        ]
+      },
+      {
+        "title": "Foundational records (Maintenance hands off)",
+        "intro": "Hand off to Maintenance Manager. They register the first piece\nof equipment as a fixed asset.\n",
+        "scenes": [
+          {
+            "case": "P1-ASSET-001",
+            "role": "Maintenance Manager"
+          }
+        ]
+      },
+      {
+        "title": "Master data — Procurement",
+        "intro": "Hand off to Procurement. Set up the first vendor and the\nfoundation of the parts catalog.\n",
+        "scenes": [
+          {
+            "case": "P2-VENDOR-001",
+            "role": "Procurement"
+          },
+          {
+            "case": "P2-VENDOR-003",
+            "role": "Procurement"
+          }
+        ]
+      },
+      {
+        "title": "Master data — Engineering",
+        "intro": "Hand off to Engineer / R&D. Define the parts, BOM, and routing\nthat production will execute against.\n",
+        "scenes": [
+          {
+            "case": "P2-PART-001",
+            "role": "Engineer / R&D"
+          },
+          {
+            "case": "P2-PART-002",
+            "role": "Engineer / R&D"
+          },
+          {
+            "case": "P2-PART-003",
+            "role": "Engineer / R&D"
+          },
+          {
+            "case": "P2-BOM-001",
+            "role": "Engineer / R&D"
+          },
+          {
+            "case": "P2-ROUTE-001",
+            "role": "Engineer / R&D"
+          }
+        ]
+      },
+      {
+        "title": "Master data — Sales",
+        "intro": "Hand off to Sales / Account Manager. Capture the customer that\nwill drive the entire production cycle.\n",
+        "scenes": [
+          {
+            "case": "P2-CUST-001",
+            "role": "Sales / Account Manager"
+          },
+          {
+            "case": "P2-PRICE-001",
+            "role": "Sales / Account Manager"
+          }
+        ]
+      },
+      {
+        "title": "First inbound — Procurement and warehouse",
+        "intro": "Hand back to Procurement. Issue the first purchase order so\nraw material is on the way. The warehouse will receive it.\n",
+        "scenes": [
+          {
+            "case": "P3-PO-001",
+            "role": "Procurement"
+          },
+          {
+            "case": "P3-RECV-001",
+            "role": "Warehouse / Logistics"
+          },
+          {
+            "case": "P3-AP-001",
+            "role": "Controller"
+          },
+          {
+            "case": "P3-PAY-001",
+            "role": "Controller"
+          }
+        ]
+      },
+      {
+        "title": "Sales — capture and qualify the lead",
+        "intro": "Hand off to Sales / Account Manager. A lead has come in. Capture,\nqualify, and turn it into an active opportunity tied to the\ncustomer you set up earlier.\n",
+        "scenes": [
+          {
+            "case": "P2-LEAD-001",
+            "role": "Sales / Account Manager"
+          },
+          {
+            "case": "P2-LEAD-002",
+            "role": "Sales / Account Manager"
+          }
+        ]
+      },
+      {
+        "title": "Quote to sales order",
+        "intro": "Still Sales. Build a quote, get acceptance, convert to a sales\norder.\n",
+        "scenes": [
+          {
+            "case": "P4-QUOTE-001",
+            "role": "Sales / Account Manager"
+          },
+          {
+            "case": "P4-QUOTE-003",
+            "role": "Sales / Account Manager"
+          }
+        ]
+      },
+      {
+        "title": "Production — release and execute",
+        "intro": "Hand off to Production Manager (release) and Floor Operator\n(execute). The work order is generated from the SO, released to\nthe floor, and worked through every operation.\n",
+        "scenes": [
+          {
+            "case": "P4-WO-001",
+            "role": "Production Manager"
+          },
+          {
+            "case": "P4-WO-002",
+            "role": "Production Manager"
+          },
+          {
+            "case": "P4-WO-START",
+            "role": "Floor Operator"
+          },
+          {
+            "case": "P4-MATL-ISSUE",
+            "role": "Floor Operator"
+          },
+          {
+            "case": "P4-LABOR",
+            "role": "Floor Operator"
+          },
+          {
+            "case": "P4-COMP",
+            "role": "Floor Operator"
+          },
+          {
+            "case": "P4-COMP-FINAL",
+            "role": "Floor Operator"
+          }
+        ]
+      },
+      {
+        "title": "Fulfillment — pick, pack, ship",
+        "intro": "Hand off to Warehouse / Logistics. Goods come off the floor,\nget put away, picked for the order, packed, and shipped.\n",
+        "scenes": [
+          {
+            "case": "P4-PUTAWAY",
+            "role": "Warehouse / Logistics"
+          },
+          {
+            "case": "P4-PICK",
+            "role": "Warehouse / Logistics"
+          },
+          {
+            "case": "P4-PACK",
+            "role": "Warehouse / Logistics"
+          },
+          {
+            "case": "P4-SHIP",
+            "role": "Warehouse / Logistics"
+          }
+        ]
+      },
+      {
+        "title": "Cash cycle close — Controller",
+        "intro": "Hand back to Controller. The shipped order generates a customer\ninvoice, the customer pays, cash is applied, AR clears.\n",
+        "scenes": [
+          {
+            "case": "P4-INV-001",
+            "role": "Controller"
+          },
+          {
+            "case": "P4-CASH",
+            "role": "Controller"
+          }
+        ]
+      },
+      {
+        "title": "New hire pickup",
+        "intro": "Optional but realistic: while the production cycle was running,\nHR onboarded a new floor operator. Run through their day-1\nexperience to verify the user-creation, role-assignment, and\nfirst-assignment flow work end-to-end.\n",
+        "scenes": [
+          {
+            "case": "P4-HIRE-001",
+            "role": "HR"
+          },
+          {
+            "case": "P4-HIRE-002",
+            "role": "IT Admin"
+          },
+          {
+            "case": "P4-HIRE-003",
+            "role": "Production Planner"
+          }
+        ]
+      }
+    ]
+  }
+]

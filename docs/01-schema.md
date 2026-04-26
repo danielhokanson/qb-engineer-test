@@ -166,6 +166,69 @@ negative_variants:
       language switch.
 ```
 
+## Stories
+
+A **story** is a third entry point to the runner alongside roles+flows and the tutorial. It's a named, ordered sequence of cases — a guided narrative walk-through that takes a tester from an empty system through the complete lifecycle, with explicit role handoffs between scenes.
+
+Stories live in `docs/stories.md` (or `docs/stories/{story-id}.md` when there are multiple). Each story is a single YAML block:
+
+```yaml
+id: lead-to-cash
+name: Lead to cash from an empty system
+description: |
+  The canonical end-to-end test of qb-engineer. Start with a brand-new
+  empty tenant and walk through every role's contribution to taking a
+  customer from initial inquiry to cash applied.
+chapters:
+  - title: Bootstrap
+    intro: |
+      You are the company's first administrator. Get the tenant
+      configured before anyone else can do useful work.
+    scenes:
+      - case: P0-INSTALL-001
+        role: Administrator
+      - case: P0-ADMIN-001
+        role: Administrator
+  - title: Sales
+    intro: |
+      Hand off from Administrator to Sales. Sign out and sign back in
+      as a Sales / Account Manager (or stay signed in as the admin if
+      your shop wears multiple hats).
+    scenes:
+      - case: P2-LEAD-001
+        role: Sales / Account Manager
+      - case: P2-LEAD-002
+        role: Sales / Account Manager
+```
+
+### Scene fields
+
+| Field | Notes |
+|---|---|
+| `case` | The case ID this scene runs. Must reference a real case in the library. |
+| `role` | Who the tester should be signed in as for this scene. The runner detects role transitions and surfaces a logout/login prompt between scenes. |
+| `note` | Optional. Scene-specific context shown above the case. |
+
+### Chapter fields
+
+A chapter groups consecutive scenes that share a context. The first scene of a chapter typically marks a role handoff.
+
+| Field | Notes |
+|---|---|
+| `title` | Short chapter name (e.g., "Sales", "Procurement"). |
+| `intro` | Plain-English context. Often includes the role-handoff instruction. |
+| `scenes` | Ordered list of scene objects. |
+
+### Skip-ahead in stories
+
+A tester can jump into any scene of a story. The story-overview page lists every scene with its current pass/fail status and the chapter it lives in. Picking a scene mid-story skips the runner forward; the precondition text on the underlying case applies (the tester is responsible for being in the right state, same rule as skip-ahead in a regular run).
+
+### Stories vs. flows
+
+Flows (`docs/flows.md`) are *tags* on cases — a case can be part of several flows. Flows enable filtering ("show me only the cases for the vendor-to-asset flow"). Stories are *ordered sequences* of cases with explicit role handoffs and a chaptered narrative — they're a presentation layer, not a tag.
+
+A story typically chains several flows together as one continuous experience: tenant-onboarding → foundational-records → vendor-to-asset → part-to-inventory → quote-to-cash.
+
 ## What's deliberately not in the schema
 
 - **Automation hooks.** No selectors, XPath, or DOM references. These are manual cases. Adding automation hooks later is a non-breaking schema extension.

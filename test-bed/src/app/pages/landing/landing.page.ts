@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { Router, RouterLink } from '@angular/router';
 import { CatalogService } from '../../data/catalog.service';
 import { SessionService } from '../../data/session.service';
+import { StoryService } from '../../data/story.service';
 import { TutorialService } from '../../data/tutorial.service';
 import { CaseResult, Session } from '../../data/types';
 
@@ -35,26 +36,39 @@ interface SessionCounts {
         </div>
       </section>
 
-      <section class="tutorial-card-section">
-        <a routerLink="/tutorial" class="surface-card surface-card-hover tutorial-card">
-          <div class="tutorial-text">
+      <section class="entry-cards">
+        <a routerLink="/tutorial" class="surface-card surface-card-hover entry-card">
+          <div class="entry-text">
             <span class="label-mono">tutorial</span>
-            <div class="tutorial-title">
+            <div class="entry-title">
               {{ tutorialAllComplete() ? 'Review the tutorial' : 'Take the tutorial first' }}
             </div>
-            <div class="tutorial-body">
+            <div class="entry-body">
               @if (tutorialAllComplete()) {
                 Tutorial complete. Open it any time to review or reset.
               } @else if (tutorialStarted()) {
                 You started the tutorial — finish it before doing real runs.
               } @else {
                 A short walk-through of how to read cases and record
-                results. Built around a fake practice app, so nothing you
-                do affects your real test data.
+                results. Built around a fake practice app — nothing you
+                do affects real test data.
               }
             </div>
           </div>
-          <span class="tutorial-arrow" aria-hidden="true">→</span>
+          <span class="entry-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a routerLink="/stories" class="surface-card surface-card-hover entry-card">
+          <div class="entry-text">
+            <span class="label-mono">stories</span>
+            <div class="entry-title">Walk through a guided narrative</div>
+            <div class="entry-body">
+              An ordered tour of the system from empty database through to
+              cash applied, with explicit role handoffs at every chapter.
+              Jump in at any scene if you only want to test a piece.
+            </div>
+          </div>
+          <span class="entry-arrow" aria-hidden="true">→</span>
         </a>
       </section>
 
@@ -141,7 +155,10 @@ export class LandingPage {
   private readonly tutorial = inject(TutorialService);
   private readonly router = inject(Router);
 
-  readonly sessions = this.sessionSvc.sessions;
+  /** Regular role-based runs only — story sessions surface under /stories. */
+  readonly sessions = computed(() =>
+    this.sessionSvc.sessions().filter(s => !s.story_id),
+  );
   private readonly allResults = this.sessionSvc.allResults;
 
   readonly tutorialStarted = this.tutorial.started;
