@@ -50,7 +50,8 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - The application is bootstrapped: company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)
+  - |
+    The application is bootstrapped: company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)
   - You are signed in as an administrator.
   - No locations have been created yet.
 steps:
@@ -145,6 +146,26 @@ why_this_matters: |
   location," reports that don't filter by location). Catching this
   early saves a lot of rework.
 est_minutes: 4
+negative_variants:
+  - id: P1-LOC-002-N1
+    title: Reject duplicate location name
+    action: |
+      Try to create a third location with the same name as the
+      primary.
+    expected: |
+      Save is blocked with a clear "name must be unique" message.
+    pass_criteria: |
+      Duplicate name rejected AND existing record is identified.
+  - id: P1-LOC-002-N2
+    title: Cannot demote the only primary
+    action: |
+      Try to remove the primary flag from the primary location while
+      no other location is flagged primary.
+    expected: |
+      The change is blocked or warns that exactly one primary
+      location must exist.
+    pass_criteria: |
+      Tenant is never left with zero primary locations.
 ```
 
 ---
@@ -204,6 +225,29 @@ negative_variants:
       required.
     pass_criteria: |
       Submission blocked AND error names the location field.
+  - id: P1-WC-001-N2
+    title: Reject negative capacity or labor rate
+    action: |
+      Try to create a work center with capacity = -8 hours/day, then
+      again with labor rate = -$25.
+    expected: |
+      Each submission is blocked with a plain-English error explaining
+      that the value must be non-negative. The application does NOT
+      silently accept a negative number that would later corrupt
+      capacity calculations.
+    pass_criteria: |
+      Both submissions blocked AND error wording is clear AND no
+      record was created.
+  - id: P1-WC-001-N3
+    title: Reject work center pointing at an inactive location
+    action: |
+      Deactivate a location (or attempt to point a new work center at
+      a known-deactivated location).
+    expected: |
+      Selection is either filtered out or rejected with a clear
+      message that the destination location is inactive.
+    pass_criteria: |
+      No work center created against an inactive location.
 ```
 
 ---
@@ -246,6 +290,17 @@ expected_overall: |
 pass_criteria: |
   Six work centers exist AND each links to the primary location.
 est_minutes: 8
+negative_variants:
+  - id: P1-WC-002-N1
+    title: Reject duplicate work center name within location
+    action: |
+      Try to create a second "Weld" work center at the primary
+      location.
+    expected: |
+      Save is blocked with a clear "name must be unique within the
+      location" message.
+    pass_criteria: |
+      Duplicate work center name within the same location is refused.
 ```
 
 ---
@@ -297,6 +352,18 @@ pass_criteria: |
   Paint shows the override calendar AND another work center confirms
   the default is still in place.
 est_minutes: 5
+negative_variants:
+  - id: P1-WC-003-N1
+    title: Reject calendar override pointing at deleted calendar
+    action: |
+      Delete (or deactivate) a calendar that a work center is using
+      as an override, then reload the work center.
+    expected: |
+      The application prevents deletion of an in-use calendar OR
+      explicitly resets the work center to the default with a clear
+      warning. No silent dangling reference.
+    pass_criteria: |
+      No work center carries a reference to a non-existent calendar.
 ```
 
 ---
@@ -315,7 +382,8 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - The application is bootstrapped: company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)
+  - |
+    The application is bootstrapped: company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)
 steps:
   - n: 1
     action: |
@@ -340,6 +408,17 @@ why_this_matters: |
   Inventing missing units one-by-one as parts are added is slow and
   inconsistent. Confirming the standard set exists early avoids that.
 est_minutes: 4
+negative_variants:
+  - id: P1-UOM-001-N1
+    title: Cannot delete a built-in unit that is in use
+    action: |
+      Try to delete the "each" unit (a default that other records
+      will reference once parts exist).
+    expected: |
+      Deletion is blocked or warns that the unit is built-in /
+      referenced. No silent removal that breaks downstream forms.
+    pass_criteria: |
+      Built-in unit deletion is refused with a clear reason.
 ```
 
 ---
@@ -377,6 +456,17 @@ expected_overall: |
 pass_criteria: |
   Custom unit is created AND visible in the list.
 est_minutes: 3
+negative_variants:
+  - id: P1-UOM-002-N1
+    title: Reject duplicate UoM abbreviation
+    action: |
+      Try to add another custom unit with the same abbreviation as an
+      existing unit (e.g., "ea" if "each" already uses "ea").
+    expected: |
+      Submission is blocked with a clear message that the abbreviation
+      is already in use.
+    pass_criteria: |
+      Submission blocked AND duplicate is named.
 ```
 
 ---
@@ -426,6 +516,37 @@ why_this_matters: |
   unit than they purchase it (buy coil by the foot, consume by the
   pound). Wrong conversions are a top source of inventory variance.
 est_minutes: 5
+negative_variants:
+  - id: P1-UOM-003-N1
+    title: Reject zero or negative conversion factor
+    action: |
+      Try to define "1 sheet = 0 square feet" or "1 sheet = -32
+      square feet."
+    expected: |
+      Save is blocked with a plain-English message that conversion
+      factors must be positive.
+    pass_criteria: |
+      Non-positive factor is rejected.
+  - id: P1-UOM-003-N2
+    title: Reject conversion across incompatible categories
+    action: |
+      Try to define "1 hour = 5 kilograms" (time to mass).
+    expected: |
+      The application either blocks or warns clearly that a
+      conversion across categories is meaningless.
+    pass_criteria: |
+      Cross-category conversion is refused or surfaces an explicit
+      warning.
+  - id: P1-UOM-003-N3
+    title: Reject conflicting reverse conversion
+    action: |
+      After saving "1 sheet = 32 sqft", try to save "1 sheet = 50
+      sqft" (a contradicting factor).
+    expected: |
+      The save is blocked or asks the user to confirm overwriting
+      the prior conversion.
+    pass_criteria: |
+      Conflicting conversion is detected and surfaced.
 ```
 
 ---
@@ -443,7 +564,8 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - The application is bootstrapped: company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)
+  - |
+    The application is bootstrapped: company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)
   - The costing model and currency are configured (P0-TENANT-005).
 steps:
   - n: 1
@@ -480,6 +602,28 @@ why_this_matters: |
   every account by hand. That's a 1–2 day setup task that's easy to
   get wrong. A seeded chart prevents the mistake.
 est_minutes: 6
+negative_variants:
+  - id: P1-GL-001-N1
+    title: Re-seeding chart does not duplicate existing accounts
+    action: |
+      After seeding once, attempt to seed the chart again from the
+      same template.
+    expected: |
+      The application warns that the chart is already populated and
+      either skips, merges with explicit confirmation, or refuses.
+      No silent duplicates appear in the account list.
+    pass_criteria: |
+      No duplicate accounts created on re-seed.
+  - id: P1-GL-001-N2
+    title: Cannot delete a system-required account
+    action: |
+      Try to delete the system "Cash" or "Accounts Receivable"
+      account.
+    expected: |
+      Deletion is blocked with a clear "this is a system-required
+      account" message.
+    pass_criteria: |
+      System-required accounts cannot be removed.
 ```
 
 ---
@@ -498,7 +642,8 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - The chart of accounts is initialized with standard accounts: cash, accounts receivable, inventory, accounts payable, sales, cost of goods sold, and wages — at minimum. (Established by P1-GL-001.)
+  - |
+    The chart of accounts is initialized with standard accounts: cash, accounts receivable, inventory, accounts payable, sales, cost of goods sold, and wages — at minimum. (Established by P1-GL-001.)
 steps:
   - n: 1
     action: |
@@ -550,7 +695,8 @@ roles:
 flows:
   - foundational-records
 preconditions:
-  - Tax calculation has been configured: a tax provider has been chosen (integrated provider or manual rates) and the choice persists across tenant settings. (Established by P0-INTEG-003.)
+  - |
+    Tax calculation has been configured: a tax provider has been chosen (integrated provider or manual rates) and the choice persists across tenant settings. (Established by P0-INTEG-003.)
   - The chart of accounts is initialized.
 steps:
   - n: 1
@@ -582,6 +728,35 @@ pass_criteria: |
   Tax code is created AND has a non-error posting account AND is
   selectable on customer / order records.
 est_minutes: 5
+negative_variants:
+  - id: P1-TAX-001-N1
+    title: Reject tax code without a posting account
+    action: |
+      Try to save a tax code with the GL posting account left blank.
+    expected: |
+      Save is blocked with a clear "posting account is required"
+      message.
+    pass_criteria: |
+      Save blocked AND missing field is named.
+  - id: P1-TAX-001-N2
+    title: Reject tax code with rate above 100%
+    action: |
+      Try to save a tax code with a rate of 250%.
+    expected: |
+      Save is blocked or warns; the rate must fall within a sensible
+      bound.
+    pass_criteria: |
+      Out-of-range rate refused.
+  - id: P1-TAX-001-N3
+    title: Posting account must be a liability
+    action: |
+      Try to set the posting account to a Revenue or Expense account.
+    expected: |
+      The application either filters the dropdown to liability
+      accounts or rejects the save with a clear "tax must post to a
+      liability account" message.
+    pass_criteria: |
+      Tax cannot post to a non-liability account.
 ```
 
 ---
@@ -624,6 +799,18 @@ why_this_matters: |
   Tax authorities expect exempt sales to be reported as exempt, not as
   "we charged 0%." Conflating the two is a common audit finding.
 est_minutes: 3
+negative_variants:
+  - id: P1-TAX-002-N1
+    title: Exempt classification requires exemption reason
+    action: |
+      Try to save a tax-exempt code without selecting or entering an
+      exemption reason / category.
+    expected: |
+      Save is blocked or warns that an exemption reason is required
+      for audit purposes.
+    pass_criteria: |
+      Exempt code without reason is rejected or surfaces an explicit
+      warning.
 ```
 
 ---
@@ -681,6 +868,25 @@ why_this_matters: |
   has employee records but no system access. A consultant has a
   system user but no employee record. ERPs that conflate the two
   break in subtle ways when this distinction matters.
+negative_variants:
+  - id: P1-EMP-001-N1
+    title: Reject hire date far in the future
+    action: |
+      Try to set hire date to one year from today and save.
+    expected: |
+      Submission is blocked or warns. The application does not
+      silently accept a hire date that would distort labor reports.
+    pass_criteria: |
+      Future-dated hire is blocked or surfaces a warning that
+      requires explicit override.
+  - id: P1-EMP-001-N2
+    title: Reject negative pay rate
+    action: |
+      Try to set pay rate to a negative value.
+    expected: |
+      Submission is blocked with a clear error.
+    pass_criteria: |
+      Negative pay rate rejected.
 ```
 
 ---
@@ -730,6 +936,27 @@ pass_criteria: |
   Both directions of the link are visible AND removing one removes
   the other (or at least surfaces a warning).
 est_minutes: 4
+negative_variants:
+  - id: P1-EMP-002-N1
+    title: Cannot link the same user to multiple employees
+    action: |
+      Create a second employee record. Try to link the first
+      administrator's user account to it as well.
+    expected: |
+      The link is blocked with a clear message that this user is
+      already linked to another employee.
+    pass_criteria: |
+      Many-to-one is refused; user-employee link is one-to-one.
+  - id: P1-EMP-002-N2
+    title: Cannot link an employee to a deactivated user
+    action: |
+      Deactivate a user (per P1-USER-003), then try to link a new
+      employee record to it.
+    expected: |
+      The link is blocked or warns that the target user is
+      deactivated.
+    pass_criteria: |
+      Linking to deactivated users is refused or surfaces a warning.
 ```
 
 ---
@@ -779,6 +1006,25 @@ why_this_matters: |
   Many ERPs handle hourly and salaried but get exempt vs. non-exempt
   classification wrong, which leads to overtime miscalculations.
   Verifying both options exist and stick is worth the extra minute.
+negative_variants:
+  - id: P1-EMP-003-N1
+    title: Reject duplicate employee identifier
+    action: |
+      Try to create a second employee with the same employee number
+      / identifier as an existing one.
+    expected: |
+      Save is blocked with a clear "ID already in use" message.
+    pass_criteria: |
+      Duplicate employee identifier rejected.
+  - id: P1-EMP-003-N2
+    title: Salary value cannot be zero on a salaried employee
+    action: |
+      Try to save a salaried employee with $0 salary.
+    expected: |
+      Save is blocked or warns; salaried employees must have a
+      non-zero pay rate.
+    pass_criteria: |
+      Zero-salary salaried employee refused or flagged.
 ```
 
 ---
@@ -827,6 +1073,25 @@ pass_criteria: |
   User exists with the assigned role AND can sign in (verify in
   P1-USER-002) AND, if linked, the employee linkage is visible.
 est_minutes: 6
+negative_variants:
+  - id: P1-USER-001-N1
+    title: Reject invitation to deactivated role
+    action: |
+      Deactivate or delete a non-admin role, then try to invite a
+      user assigned to that role.
+    expected: |
+      The save is blocked with a clear message that the chosen role
+      is unavailable.
+    pass_criteria: |
+      Invitation to a non-active role is refused.
+  - id: P1-USER-001-N2
+    title: Reject invite without email
+    action: |
+      Try to send an invite with the email field empty.
+    expected: |
+      Save is blocked with a clear "email is required" error.
+    pass_criteria: |
+      Invite without email is refused.
 ```
 
 ---
@@ -948,6 +1213,28 @@ why_this_matters: |
   impossible to reconstruct who did what. Deactivation preserves
   the trail while preventing further access.
 est_minutes: 5
+negative_variants:
+  - id: P1-USER-003-N1
+    title: Cannot deactivate the last administrator
+    action: |
+      As the only remaining administrator, try to deactivate
+      yourself.
+    expected: |
+      The action is blocked with a clear message that at least one
+      active administrator must exist.
+    pass_criteria: |
+      Last-admin deactivation is refused.
+  - id: P1-USER-003-N2
+    title: Deactivation revokes active sessions
+    action: |
+      While Sam Rivera is signed in (in another browser), have the
+      admin deactivate Sam Rivera. Wait briefly and have Sam Rivera
+      try any action.
+    expected: |
+      Sam Rivera's session is invalidated. Their next action returns
+      a sign-in prompt or "session ended" message.
+    pass_criteria: |
+      Existing sessions of deactivated users do not continue to act.
 ```
 
 ---
@@ -1002,6 +1289,31 @@ pass_criteria: |
   Calendar saved successfully AND work centers default to it AND
   configured holidays are observed in the visible schedule.
 est_minutes: 8
+negative_variants:
+  - id: P1-CAL-001-N1
+    title: Reject shift end-time before start-time
+    action: |
+      Try to configure a shift with start 3:00 PM and end 7:00 AM the
+      same day (i.e., end-before-start, not crossing midnight).
+    expected: |
+      Submission is blocked with a clear "end must be after start"
+      message. Cross-midnight shifts (e.g., 11:00 PM to 7:00 AM) are
+      configured via an explicit "crosses midnight" flag, not implied.
+    pass_criteria: |
+      End-before-start blocked AND cross-midnight has explicit
+      handling.
+  - id: P1-CAL-001-N2
+    title: Reject overlapping shifts on the same day
+    action: |
+      Try to add a second shift overlapping the existing first shift
+      (e.g., add 12:00 PM-8:00 PM when the existing shift is 7:00 AM-
+      3:30 PM).
+    expected: |
+      Application either blocks the overlap or warns clearly,
+      requiring explicit confirmation.
+    pass_criteria: |
+      Overlap is blocked or flagged for explicit confirmation, not
+      silently accepted.
 ```
 
 ---
@@ -1049,6 +1361,15 @@ pass_criteria: |
   Second-shift calendar exists AND its shift times differ from the
   plant default AND it can be selected on a work center record.
 est_minutes: 5
+negative_variants:
+  - id: P1-CAL-002-N1
+    title: Reject duplicate calendar name
+    action: |
+      Try to save a second calendar named "Second Shift."
+    expected: |
+      Save is blocked with a clear "name must be unique" message.
+    pass_criteria: |
+      Duplicate calendar name is refused.
 ```
 
 ---
@@ -1101,6 +1422,27 @@ why_this_matters: |
   Treating planned downtime as a first-class concept on calendars
   prevents over-promising delivery dates.
 est_minutes: 5
+negative_variants:
+  - id: P1-CAL-003-N1
+    title: Reject downtime block ending before it starts
+    action: |
+      Try to add a downtime block whose end is earlier than its
+      start.
+    expected: |
+      Save is blocked with a clear "end must be after start" error.
+    pass_criteria: |
+      Inverted-time downtime is refused.
+  - id: P1-CAL-003-N2
+    title: Reject downtime block in the past with scheduled work
+    action: |
+      Add a downtime block in the past on a day where production was
+      already scheduled. (May be deferred until a later phase has
+      scheduled work.)
+    expected: |
+      The application warns that retroactive downtime conflicts with
+      already-scheduled work and requires explicit confirmation.
+    pass_criteria: |
+      Retroactive downtime surfaces conflicts before applying.
 ```
 
 ---
@@ -1157,6 +1499,33 @@ pass_criteria: |
   Asset record exists AND links to the correct work center AND
   shows a depreciation schedule (or offers to generate one).
 est_minutes: 8
+negative_variants:
+  - id: P1-ASSET-001-N1
+    title: Reject negative or zero acquisition cost
+    action: |
+      Try to save an asset with acquisition cost of $0 or -$5,000.
+    expected: |
+      Save is blocked with a plain-language error explaining cost
+      must be positive.
+    pass_criteria: |
+      Non-positive acquisition cost is refused.
+  - id: P1-ASSET-001-N2
+    title: Reject zero or negative useful life
+    action: |
+      Try to save with useful life of 0 years or -10 years.
+    expected: |
+      Save is blocked. Useful life must be a positive integer.
+    pass_criteria: |
+      Invalid useful life is refused.
+  - id: P1-ASSET-001-N3
+    title: Reject duplicate asset tag
+    action: |
+      Try to create a second asset with the same asset tag / serial
+      as an existing asset.
+    expected: |
+      Save is blocked with a clear "asset tag already in use" message.
+    pass_criteria: |
+      Duplicate asset tag is refused.
 ```
 
 ---
@@ -1204,6 +1573,18 @@ pass_criteria: |
   Four assets total AND filter by work center returns the right
   subset for each.
 est_minutes: 6
+negative_variants:
+  - id: P1-ASSET-002-N1
+    title: Cannot link asset to a deleted work center
+    action: |
+      Delete (or deactivate) a work center that an asset references,
+      then reload the asset.
+    expected: |
+      The application either prevents deletion of an in-use work
+      center OR clearly flags the asset as needing reassignment. No
+      silent dangling reference.
+    pass_criteria: |
+      No asset references a non-existent work center.
 ```
 
 ---
@@ -1227,7 +1608,8 @@ scale_tags:
   - mid-market
   - enterprise
 preconditions:
-  - The chart of accounts is initialized with standard accounts: cash, accounts receivable, inventory, accounts payable, sales, cost of goods sold, and wages — at minimum. (Established by P1-GL-001.)
+  - |
+    The chart of accounts is initialized with standard accounts: cash, accounts receivable, inventory, accounts payable, sales, cost of goods sold, and wages — at minimum. (Established by P1-GL-001.)
   - At least one vendor exists (covered in Phase 2 — for now, this
     case can be deferred or run with a placeholder vendor).
 prerequisite_cases:
@@ -1274,4 +1656,26 @@ notes: |
   including vendors). Run as far as you can and stop at the first
   step that needs a vendor or part record that doesn't exist yet.
   Re-run after Phase 2 if needed.
+negative_variants:
+  - id: P1-ASSET-003-N1
+    title: Fixed-asset line requires capitalization account
+    action: |
+      Add a fixed-asset line item to a PO with the capitalization
+      account left blank. Try to save.
+    expected: |
+      Save is blocked with a clear "fixed-asset line requires a
+      capitalization account" message.
+    pass_criteria: |
+      Save is refused until a valid asset account is selected.
+  - id: P1-ASSET-003-N2
+    title: Cannot reclassify line type after PO is approved
+    action: |
+      Approve the PO. Then try to switch a line from inventory to
+      fixed-asset.
+    expected: |
+      The change is blocked or requires a documented amendment
+      process; silent reclassification post-approval is not
+      acceptable.
+    pass_criteria: |
+      Reclassification post-approval is gated.
 ```

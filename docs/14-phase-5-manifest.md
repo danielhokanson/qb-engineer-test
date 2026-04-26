@@ -71,6 +71,64 @@ sequence:
     required: false
     note: Floor stoppage tracking. Pairs naturally with an in-progress WO.
 
+  # Quality (added during expansion sweep)
+  - id: P5-QC-INSPECT-001
+    required: false
+    note: Inspection plan applied to incoming receipts.
+  - id: P5-QC-NCR-001
+    required: false
+    note: Non-conformance report and disposition.
+    prerequisite_cases:
+      - P5-QC-INSPECT-001
+  - id: P5-QC-CAPA-001
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: Corrective and preventive action workflow.
+    prerequisite_cases:
+      - P5-QC-NCR-001
+  - id: P5-QC-GAGE-001
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: Gage / measurement device calibration tracking.
+  - id: P5-QC-COA-001
+    required: false
+    note: Certificate of analysis for shipped lot.
+    prerequisite_cases:
+      - P5-QC-INSPECT-001
+      - P4-SHIP
+
+  # Asset extensions (added during expansion sweep)
+  - id: P5-ASSET-XFER-001
+    required: false
+    note: Transfer a fixed asset between locations / work centers.
+    prerequisite_cases:
+      - P1-ASSET-001
+      - P1-LOC-002
+  - id: P5-ASSET-RETIRE-001
+    required: false
+    note: Retire / dispose of a fixed asset.
+    prerequisite_cases:
+      - P5-CLOSE-003
+  - id: P5-ASSET-DEPMETHOD-001
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: Alternate depreciation method (declining balance).
+
+  # Manual / recurring / reversing JEs (added during expansion sweep)
+  - id: P5-JE-001
+    required: true
+    note: Manual journal entry — required to verify GL posting basics.
+  - id: P5-JE-002
+    required: false
+    note: Recurring JE.
+    prerequisite_cases:
+      - P5-JE-001
+  - id: P5-JE-003
+    required: false
+    note: Auto-reversing JE.
+    prerequisite_cases:
+      - P5-JE-001
+
   # Period close
   - id: P5-CLOSE-001
     required: true
@@ -89,6 +147,57 @@ sequence:
       - P5-CLOSE-001
       - P5-CLOSE-002
       - P5-CLOSE-003
+  - id: P5-BANK-001
+    required: false
+    note: Bank reconciliation as part of close.
+    prerequisite_cases:
+      - P3-PAY-001
+      - P4-CASH
+  - id: P5-FX-REVAL-001
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: FX revaluation at period end.
+  - id: P5-VAT-001
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: VAT collection, recoverable, and return.
+  - id: P5-WHTAX-001
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: Withholding tax on a vendor payment.
+  - id: P5-CLOSE-005
+    required: false
+    note: Year-end close and roll to retained earnings.
+    prerequisite_cases:
+      - P5-CLOSE-004
+
+  # HR exception flows (added during expansion sweep)
+  - id: P5-HR-TERM-001
+    required: false
+    note: Employee termination + offboarding.
+    prerequisite_cases:
+      - P4-HIRE-002
+  - id: P5-HR-PTO-001
+    required: false
+    note: PTO request and approval.
+  - id: P5-HR-TRAIN-001
+    required: false
+    note: Training and certification tracking.
+    prerequisite_cases:
+      - P1-EMP-001
+  - id: P5-HR-PAYROLL-001
+    required: false
+    note: Time approval and payroll feed.
+    prerequisite_cases:
+      - P4-LABOR
+      - P1-EMP-003
+  - id: P5-HR-SHIFT-001
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: Shift management and assignment.
+    prerequisite_cases:
+      - P1-CAL-001
+      - P1-CAL-002
 
   # Routine cycle count
   - id: P5-CYCLE-001

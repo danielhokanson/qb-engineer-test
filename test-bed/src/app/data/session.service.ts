@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { liveQuery } from 'dexie';
 import { db } from './db';
-import { CaseResult, CaseStatus, Session } from './types';
+import { CaseResult, CaseStatus, Session, VariantResult } from './types';
 
 function uid(): string {
   return crypto.randomUUID();
@@ -46,6 +46,8 @@ export class SessionService {
     selectedRoles: string[];
     selectedFlows?: string[];
     storyId?: string;
+    suiteId?: string;
+    selectedCaseIds?: string[];
   }): Promise<Session> {
     const session: Session = {
       id: uid(),
@@ -57,6 +59,8 @@ export class SessionService {
       selected_roles: input.selectedRoles,
       selected_flows: input.selectedFlows ?? [],
       story_id: input.storyId,
+      suite_id: input.suiteId,
+      selected_case_ids: input.selectedCaseIds,
       branch_choices: {},
       tutorial_completed: false,
       current_case_id: null,
@@ -104,6 +108,52 @@ export class SessionService {
       started_at: existing?.started_at ?? nowIso(),
       completed_at: nowIso(),
       failure_note: input.failureNote,
+      // Preserve any variant results the user already recorded against this case.
+      variant_results: existing?.variant_results,
+      step_results: existing?.step_results,
+    };
+    await db.results.put(result);
+    await this.touchSession(input.sessionId, { current_case_id: input.caseId });
+    return result;
+  }
+
+  /** Record a single negative-variant outcome on the parent case's CaseResult.
+   * If no parent CaseResult exists yet, creates one with status='pending' so
+   * the variant has somewhere to live; the user can still record the parent
+   * status separately afterward. Multiple calls for the same variant_id
+   * overwrite. */
+  async recordVariantResult(input: {
+    sessionId: string;
+    caseId: string;
+    variantId: string;
+    status: CaseStatus;
+    failureNote?: string;
+  }): Promise<CaseResult> {
+    const existing = await db.results
+      .where('[session_id+case_id]')
+      .equals([input.sessionId, input.caseId])
+      .first();
+    const variantEntry: VariantResult = {
+      variant_id: input.variantId,
+      status: input.status,
+      failure_note: input.failureNote,
+      recorded_at: nowIso(),
+    };
+    const priorVariants = existing?.variant_results ?? [];
+    const merged = [
+      ...priorVariants.filter(v => v.variant_id !== input.variantId),
+      variantEntry,
+    ];
+    const result: CaseResult = {
+      id: existing?.id ?? uid(),
+      session_id: input.sessionId,
+      case_id: input.caseId,
+      status: existing?.status ?? 'pending',
+      started_at: existing?.started_at ?? nowIso(),
+      completed_at: existing?.completed_at,
+      failure_note: existing?.failure_note,
+      step_results: existing?.step_results,
+      variant_results: merged,
     };
     await db.results.put(result);
     await this.touchSession(input.sessionId, { current_case_id: input.caseId });

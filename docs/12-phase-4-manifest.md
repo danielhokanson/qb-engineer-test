@@ -23,6 +23,16 @@ sequence:
     note: Blocking. SO depends on a converted quote.
     prerequisite_cases:
       - P4-QUOTE-001
+  - id: P4-QUOTE-004
+    required: false
+    note: Quote revision with version history.
+    prerequisite_cases:
+      - P4-QUOTE-001
+  - id: P4-QUOTE-005
+    required: false
+    note: Quote expiration handling.
+    prerequisite_cases:
+      - P4-QUOTE-001
 
   # Work order
   - id: P4-WO-001
@@ -53,6 +63,19 @@ sequence:
     required: true
     prerequisite_cases:
       - P4-COMP
+  - id: P4-WO-BACKFLUSH-001
+    required: false
+    note: Backflush completion (alternate to step-by-step issue).
+    prerequisite_cases:
+      - P4-WO-001
+  - id: P4-CLOCK-001
+    required: false
+    note: Operator clock-in / clock-out independent of WO start.
+  - id: P4-WOVAR-001
+    required: false
+    note: WO variance review at close.
+    prerequisite_cases:
+      - P4-COMP-FINAL
 
   # Warehouse
   - id: P4-PUTAWAY
@@ -77,6 +100,11 @@ sequence:
     scale_tags: [mid-market, enterprise]
     prerequisite_cases:
       - P2-CUST-004
+  - id: P4-SHIP-SPLIT-001
+    required: false
+    note: Split shipment / partial ship across two deliveries.
+    prerequisite_cases:
+      - P4-PICK
 
   # Invoice
   - id: P4-INV-001
@@ -94,6 +122,20 @@ sequence:
   - id: P4-OVERPAY
     required: false
     scale_tags: [mid-market, enterprise]
+  - id: P4-CASH-LOCKBOX-001
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: Lockbox / batch cash receipt application.
+  - id: P4-COLL-001
+    required: false
+    note: AR collections / dunning workflow.
+    prerequisite_cases:
+      - P4-INV-001
+  - id: P4-CM-001
+    required: false
+    note: Standalone customer credit memo (non-RMA).
+    prerequisite_cases:
+      - P4-INV-001
 
   # Hire
   - id: P4-HIRE-001

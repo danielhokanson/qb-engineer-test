@@ -67,6 +67,16 @@ pass_criteria: |
   Maintenance WO created AND linked to the asset AND visible in the
   maintenance queue.
 est_minutes: 5
+negative_variants:
+  - id: P5-DAMAGE-001-N1
+    title: Reject damage report on a retired asset
+    action: |
+      Retire an asset (per P5-ASSET-RETIRE-001). Try to file a damage
+      report against it.
+    expected: |
+      Report is blocked with a clear "asset is retired" message.
+    pass_criteria: |
+      No report created against retired asset.
 ```
 
 ---
@@ -105,6 +115,17 @@ expected_overall: |
 pass_criteria: |
   Priority set AND tech assigned AND tech sees the ticket.
 est_minutes: 4
+negative_variants:
+  - id: P5-DAMAGE-002-N1
+    title: Cannot assign ticket to a deactivated tech
+    action: |
+      Try to assign the ticket to a maintenance tech who has been
+      deactivated.
+    expected: |
+      The user is filtered out or the assignment is blocked with a
+      "user inactive" message.
+    pass_criteria: |
+      Inactive tech cannot be assigned.
 ```
 
 ---
@@ -123,7 +144,8 @@ roles:
 flows:
   - damage-to-completion
 preconditions:
-  - A maintenance ticket has been triaged: priority is set, a tech is assigned, and the ticket is scheduled for execution. (Established by P5-DAMAGE-002.)
+  - |
+    A maintenance ticket has been triaged: priority is set, a tech is assigned, and the ticket is scheduled for execution. (Established by P5-DAMAGE-002.)
 modality:
   - scanner
   - manual-entry
@@ -156,6 +178,25 @@ expected_overall: |
 pass_criteria: |
   Ticket closed AND parts and labor recorded AND asset back online.
 est_minutes: 10
+negative_variants:
+  - id: P5-DAMAGE-003-N1
+    title: Cannot close ticket without recording any labor or parts
+    action: |
+      Try to close the maintenance ticket with no labor entries and
+      no parts consumed.
+    expected: |
+      Save is blocked or warns; closure with empty work record is
+      almost always a data-entry omission.
+    pass_criteria: |
+      Empty closure refused or surfaces an explicit warning.
+  - id: P5-DAMAGE-003-N2
+    title: Cannot consume parts not on hand
+    action: |
+      Try to issue 5 hydraulic fittings when only 2 are on hand.
+    expected: |
+      Save is blocked with a clear "insufficient on-hand" message.
+    pass_criteria: |
+      Over-issue refused.
 ```
 
 ---
@@ -205,6 +246,16 @@ pass_criteria: |
   Schedule exists AND next-due is visible AND scheduled trigger
   is in place.
 est_minutes: 8
+negative_variants:
+  - id: P5-PM-001-N1
+    title: Reject PM schedule with zero or negative interval
+    action: |
+      Try to configure a PM schedule with interval = 0 days or
+      runtime hours = -100.
+    expected: |
+      Submission is blocked with a clear error.
+    pass_criteria: |
+      Zero / negative intervals rejected.
 ```
 
 ---
@@ -244,6 +295,17 @@ expected_overall: |
 pass_criteria: |
   PM WO closed AND parts/labor recorded AND next-due date advanced.
 est_minutes: 8
+negative_variants:
+  - id: P5-PM-002-N1
+    title: Cannot trigger duplicate PM while one is open
+    action: |
+      Trigger a PM. Before it is closed, try to trigger the same PM
+      again.
+    expected: |
+      The action is blocked or warns; only one open PM per schedule
+      should be active.
+    pass_criteria: |
+      Duplicate active PM refused.
 ```
 
 ---
@@ -294,6 +356,26 @@ pass_criteria: |
   Failed units flagged AND routed to rework AND traceable AND main
   WO continues for the good units.
 est_minutes: 8
+negative_variants:
+  - id: P5-QC-FAIL-N1
+    title: Reject QC fail without reason code
+    action: |
+      Mark units failed with the reason code blank.
+    expected: |
+      Save is blocked with a clear "QC fail reason is required"
+      message.
+    pass_criteria: |
+      Failure without reason refused.
+  - id: P5-QC-FAIL-N2
+    title: Failed units cannot move to finished goods
+    action: |
+      After marking units failed, try to manually move them into
+      finished goods inventory.
+    expected: |
+      The action is blocked with a "failed units cannot enter FG"
+      message.
+    pass_criteria: |
+      Failed units stay isolated from sellable inventory.
 ```
 
 ---
@@ -340,6 +422,24 @@ pass_criteria: |
   RMA exists AND has a stable number AND the customer document
   includes return shipping instructions.
 est_minutes: 6
+negative_variants:
+  - id: P5-RMA-001-N1
+    title: Reject RMA quantity exceeding shipped quantity
+    action: |
+      Try to RMA 200 units when the original shipment was 100.
+    expected: |
+      Save is blocked with a clear "exceeds shipped quantity"
+      message.
+    pass_criteria: |
+      Over-RMA refused.
+  - id: P5-RMA-001-N2
+    title: RMA outside warranty / return window requires override
+    action: |
+      Reference an invoice older than the documented return window.
+    expected: |
+      The save is blocked or warns and requires explicit override.
+    pass_criteria: |
+      Out-of-window RMA is gated.
 ```
 
 ---
@@ -387,6 +487,25 @@ pass_criteria: |
   All units accounted for AND each routed to its disposition AND
   inventory not contaminated with bad stock.
 est_minutes: 8
+negative_variants:
+  - id: P5-RMA-002-N1
+    title: Reject return quantity exceeding RMA quantity
+    action: |
+      Receive 15 units against an RMA authorizing 10.
+    expected: |
+      Save is blocked or surfaces an explicit prompt to amend the
+      RMA before accepting the overage.
+    pass_criteria: |
+      Over-return is gated.
+  - id: P5-RMA-002-N2
+    title: Return-to-stock disposition requires QC pass
+    action: |
+      Try to route units to return-to-stock without recording any
+      QC outcome.
+    expected: |
+      Save is blocked with a clear "QC outcome required" message.
+    pass_criteria: |
+      RTS without QC refused.
 ```
 
 ---
@@ -431,6 +550,26 @@ pass_criteria: |
   Credit memo posted AND applied or held as credit AND AR/revenue
   postings correct.
 est_minutes: 6
+negative_variants:
+  - id: P5-RMA-003-N1
+    title: Reject credit memo exceeding original invoice amount
+    action: |
+      Try to post a credit memo for $10,000 against an invoice with
+      a $5,000 total.
+    expected: |
+      Save is blocked or warns; over-credit must be explicit.
+    pass_criteria: |
+      Over-credit gated.
+  - id: P5-RMA-003-N2
+    title: Cannot apply credit memo to a different customer
+    action: |
+      Try to apply ACME's credit memo against another customer's
+      invoice.
+    expected: |
+      Save is blocked with a clear "credit applies only to the
+      issuing customer" message.
+    pass_criteria: |
+      Cross-customer credit refused.
 ```
 
 ---
@@ -478,6 +617,26 @@ expected_overall: |
 pass_criteria: |
   RTV created AND quarantine cleared AND vendor expected to issue credit.
 est_minutes: 6
+negative_variants:
+  - id: P5-VENDOR-RETURN-N1
+    title: Reject RTV quantity exceeding quarantined inventory
+    action: |
+      Try to RTV 100 ft when only 50 ft is quarantined.
+    expected: |
+      Save is blocked with a clear "exceeds quarantined quantity"
+      message.
+    pass_criteria: |
+      Over-RTV refused.
+  - id: P5-VENDOR-RETURN-N2
+    title: Cannot ship RTV without vendor authorization number
+    action: |
+      Try to ship the RTV without entering the vendor-issued RMA /
+      authorization number.
+    expected: |
+      Save is blocked or warns; vendors typically require an
+      authorization number to accept the return.
+    pass_criteria: |
+      RTV without vendor authorization is gated.
 ```
 
 ---
@@ -519,6 +678,33 @@ pass_criteria: |
   Inventory adjusted AND reason captured AND GL postings reflect the
   reason.
 est_minutes: 5
+negative_variants:
+  - id: P5-INV-ADJ-N1
+    title: Reject adjustment that would drive on-hand negative
+    action: |
+      Try to adjust out 200 units when only 50 are on hand.
+    expected: |
+      Save is blocked with a clear "would drive on-hand negative"
+      message.
+    pass_criteria: |
+      Negative on-hand prevention.
+  - id: P5-INV-ADJ-N2
+    title: Reject adjustment without reason code
+    action: |
+      Try to save an adjustment with the reason field blank.
+    expected: |
+      Save is blocked with a clear "reason is required" message.
+    pass_criteria: |
+      Adjustment without reason refused.
+  - id: P5-INV-ADJ-N3
+    title: Large adjustments require controller approval
+    action: |
+      Try to adjust out a value above the documented self-approval
+      threshold.
+    expected: |
+      Save is blocked or routes for controller approval.
+    pass_criteria: |
+      Large adjustments are gated by an approval workflow.
 ```
 
 ---
@@ -620,6 +806,24 @@ pass_criteria: |
   Stoppage time captured AND reason coded AND labor / stoppage time
   separable in reports.
 est_minutes: 5
+negative_variants:
+  - id: P5-STOPPAGE-N1
+    title: Reject stoppage with no reason chosen
+    action: |
+      Try to start a stoppage without selecting a reason code.
+    expected: |
+      Save is blocked with a clear "reason required" message.
+    pass_criteria: |
+      Reason-less stoppage refused.
+  - id: P5-STOPPAGE-N2
+    title: Cannot end a stoppage that was never started
+    action: |
+      Try to end a stoppage on an operation with no open stoppage.
+    expected: |
+      The action is unavailable or surfaces a clear "no active
+      stoppage" message.
+    pass_criteria: |
+      End-without-start refused.
 ```
 
 ---
@@ -639,7 +843,8 @@ roles:
 flows:
   - period-close
 preconditions:
-  - Phase 4 has run at least one full quote-to-cash cycle: a work order has consumed material, finished goods went to inventory, an order was shipped, an invoice was posted, and cash was applied. (Phase 4 outcomes.)
+  - |
+    Phase 4 has run at least one full quote-to-cash cycle: a work order has consumed material, finished goods went to inventory, an order was shipped, an invoice was posted, and cash was applied. (Phase 4 outcomes.)
 steps:
   - n: 1
     action: |
@@ -659,6 +864,16 @@ expected_overall: |
 pass_criteria: |
   Reconciliation runs AND variance (if any) is explainable.
 est_minutes: 8
+negative_variants:
+  - id: P5-CLOSE-001-N1
+    title: Reject reconciliation report run as of a future date
+    action: |
+      Try to run the reconciliation as of a date in the future.
+    expected: |
+      The action is blocked or warns; the report only meaningfully
+      runs at past or current period end.
+    pass_criteria: |
+      Future-dated reconciliation refused.
 ```
 
 ---
@@ -677,7 +892,8 @@ roles:
 flows:
   - period-close
 preconditions:
-  - AR and AP both have transaction history: at least one customer invoice exists in AR (from Phase 4) and at least one vendor invoice and payment exist in AP (from Phase 3). (Phase 3 + Phase 4 outcomes.)
+  - |
+    AR and AP both have transaction history: at least one customer invoice exists in AR (from Phase 4) and at least one vendor invoice and payment exist in AP (from Phase 3). (Phase 3 + Phase 4 outcomes.)
 steps:
   - n: 1
     action: |
@@ -739,6 +955,27 @@ pass_criteria: |
   Depreciation posted AND amounts match expected straight-line
   calculations AND book values updated.
 est_minutes: 6
+negative_variants:
+  - id: P5-CLOSE-003-N1
+    title: Cannot run depreciation twice for same period
+    action: |
+      After posting depreciation for the period, attempt to run it
+      again for the same period.
+    expected: |
+      The action is blocked or surfaces a clear "already run for
+      this period" warning.
+    pass_criteria: |
+      Double-run depreciation refused.
+  - id: P5-CLOSE-003-N2
+    title: Reject depreciation for an asset retired before the period
+    action: |
+      Run depreciation for a period that begins after an asset's
+      retirement date.
+    expected: |
+      The retired asset is excluded from the run; depreciation does
+      not continue past retirement.
+    pass_criteria: |
+      Retired assets do not depreciate.
 ```
 
 ---
@@ -999,7 +1236,8 @@ roles:
 flows:
   - quote-to-cash
 preconditions:
-  - A sub-assembly has been shipped out for subcontract processing: a shipper / pack list was generated and the material is flagged offsite-with-vendor (no longer in available inventory). (Established by P5-OFFSITE-SEND.)
+  - |
+    A sub-assembly has been shipped out for subcontract processing: a shipper / pack list was generated and the material is flagged offsite-with-vendor (no longer in available inventory). (Established by P5-OFFSITE-SEND.)
 modality:
   - scanner
   - manual-entry

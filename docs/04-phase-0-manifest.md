@@ -77,6 +77,54 @@ sequence:
     required: true
   - id: P0-USER-003
     required: true
+  - id: P0-USER-004
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: |
+      Bulk user provisioning. Skip in single-admin small-shop runs.
+
+  # Authentication hardening (added during expansion sweep)
+  - id: P0-AUTH-001
+    required: true
+    note: |
+      MFA on the first admin. Required everywhere — high-privilege
+      accounts without MFA are a default no-go for any serious
+      security review.
+    prerequisite_cases:
+      - P0-ADMIN-001
+  - id: P0-AUTH-002
+    required: true
+    note: |
+      Self-service password reset. Required to verify the canonical
+      account-recovery path is safe.
+    prerequisite_cases:
+      - P0-USER-003
+  - id: P0-AUTH-003
+    required: true
+    note: |
+      Account lockout after failed attempts. Required to verify
+      brute-force defenses exist.
+    prerequisite_cases:
+      - P0-USER-003
+  - id: P0-AUTH-004
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: |
+      API tokens. Skip if the application has no documented API.
+  - id: P0-AUTH-005
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: |
+      SSO. Run when an external IdP test tenant is available.
+  - id: P0-AUDIT-001
+    required: true
+    note: |
+      Verify the admin audit log captures Phase 0 actions. Required
+      before continuing — an unaudited tenant configuration is a
+      compliance liability.
+    prerequisite_cases:
+      - P0-USER-003
+
   - id: P0-INFRA-001
     required: true
     note: |

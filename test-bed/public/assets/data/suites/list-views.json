@@ -1,0 +1,54 @@
+{
+  "id": "list-views",
+  "directory": "list-views",
+  "title": "Per-entity list view UX (search, filter, sort, paginate)",
+  "description": "For each major list view, verify partial search, status filter,\ndate range filter, multi-column sort, pagination at scale, and\nsaved-view persistence.\n",
+  "estimated_total_minutes": 35,
+  "case_ids": [
+    "LIST-CUST-001",
+    "LIST-VENDOR-001",
+    "LIST-PART-001",
+    "LIST-WO-001",
+    "LIST-PO-001",
+    "LIST-INV-001"
+  ],
+  "planned_case_ids": [
+    "LIST-CUST-001",
+    "LIST-VENDOR-001",
+    "LIST-PART-001",
+    "LIST-WO-001",
+    "LIST-PO-001",
+    "LIST-INV-001"
+  ],
+  "missing_case_ids": [],
+  "raw": {
+    "suite": "list-views",
+    "title": "Per-entity list view UX (search, filter, sort, paginate)",
+    "description": "For each major list view, verify partial search, status filter,\ndate range filter, multi-column sort, pagination at scale, and\nsaved-view persistence.\n",
+    "estimated_total_minutes": 35,
+    "cases": [
+      {
+        "id": "LIST-CUST-001"
+      },
+      {
+        "id": "LIST-VENDOR-001"
+      },
+      {
+        "id": "LIST-PART-001"
+      },
+      {
+        "id": "LIST-WO-001"
+      },
+      {
+        "id": "LIST-PO-001"
+      },
+      {
+        "id": "LIST-INV-001"
+      }
+    ],
+    "completion_criteria": [
+      "Every list view supports partial search, sort, filter, and pagination.",
+      "No silent truncation or missing records."
+    ]
+  }
+}

@@ -90,6 +90,65 @@
       "required": true
     },
     {
+      "id": "P0-USER-004",
+      "required": false,
+      "scale_tags": [
+        "mid-market",
+        "enterprise"
+      ],
+      "note": "Bulk user provisioning. Skip in single-admin small-shop runs.\n"
+    },
+    {
+      "id": "P0-AUTH-001",
+      "required": true,
+      "note": "MFA on the first admin. Required everywhere — high-privilege\naccounts without MFA are a default no-go for any serious\nsecurity review.\n",
+      "prerequisite_cases": [
+        "P0-ADMIN-001"
+      ]
+    },
+    {
+      "id": "P0-AUTH-002",
+      "required": true,
+      "note": "Self-service password reset. Required to verify the canonical\naccount-recovery path is safe.\n",
+      "prerequisite_cases": [
+        "P0-USER-003"
+      ]
+    },
+    {
+      "id": "P0-AUTH-003",
+      "required": true,
+      "note": "Account lockout after failed attempts. Required to verify\nbrute-force defenses exist.\n",
+      "prerequisite_cases": [
+        "P0-USER-003"
+      ]
+    },
+    {
+      "id": "P0-AUTH-004",
+      "required": false,
+      "scale_tags": [
+        "mid-market",
+        "enterprise"
+      ],
+      "note": "API tokens. Skip if the application has no documented API.\n"
+    },
+    {
+      "id": "P0-AUTH-005",
+      "required": false,
+      "scale_tags": [
+        "mid-market",
+        "enterprise"
+      ],
+      "note": "SSO. Run when an external IdP test tenant is available.\n"
+    },
+    {
+      "id": "P0-AUDIT-001",
+      "required": true,
+      "note": "Verify the admin audit log captures Phase 0 actions. Required\nbefore continuing — an unaudited tenant configuration is a\ncompliance liability.\n",
+      "prerequisite_cases": [
+        "P0-USER-003"
+      ]
+    },
+    {
       "id": "P0-INFRA-001",
       "required": true,
       "note": "Final sanity check. Should always be the last case in the\nphase.\n"

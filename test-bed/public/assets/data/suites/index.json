@@ -1,0 +1,92 @@
+[
+  {
+    "id": "audit",
+    "directory": "audit",
+    "title": "Audit log captures every consequential state change",
+    "description": "For each major state-changing action, verify the audit log records\nthe action with actor, timestamp, target record, and before/after\nstate. Tampering checks live alongside.\n",
+    "estimated_total_minutes": 50,
+    "case_count": 9,
+    "planned_count": 9
+  },
+  {
+    "id": "bulk-ops",
+    "directory": "bulk-ops",
+    "title": "Bulk operations beyond import",
+    "description": "Mass update, mass status change, mass reassign, mass deactivate.\nEach operation must report which records succeeded, which failed,\nand why — never silent partial outcomes.\n",
+    "estimated_total_minutes": 40,
+    "case_count": 4,
+    "planned_count": 4
+  },
+  {
+    "id": "concurrency",
+    "directory": "concurrency",
+    "title": "Concurrency — two-user races and optimistic locking",
+    "description": "Verify that the application detects and handles concurrent edits,\nreservation races, and period-close vs. late-posting races without\nsilent data loss or double-spend.\n",
+    "estimated_total_minutes": 50,
+    "case_count": 5,
+    "planned_count": 5
+  },
+  {
+    "id": "documents",
+    "directory": "documents",
+    "title": "Document generation, email, print, and attach",
+    "description": "Verify each canonical business document generates correctly,\nemails reliably, prints to PDF, and arbitrary files attach to\nrecords.\n",
+    "estimated_total_minutes": 35,
+    "case_count": 6,
+    "planned_count": 6
+  },
+  {
+    "id": "edge-cases",
+    "directory": "edge-cases",
+    "title": "Date, currency, decimal, tax, and scale edge cases",
+    "description": "Bugs that surface only at boundaries: fiscal year end, DST, leap\nyear, decimal-precision rounding, FX rate movement, tax-rate change\nmid-period, list views over five thousand rows. The bar is that\nthe application handles each cleanly without silent corruption.\n",
+    "estimated_total_minutes": 80,
+    "case_count": 10,
+    "planned_count": 10
+  },
+  {
+    "id": "integrations",
+    "directory": "integrations",
+    "title": "Accounting sync, file-based import/export, EDI document classes",
+    "description": "Verify outbound accounting sync, file-based round-trips, and EDI\ninbound / outbound flows for the four canonical EDI document\nclasses used in B2B manufacturing.\n",
+    "estimated_total_minutes": 50,
+    "case_count": 7,
+    "planned_count": 7
+  },
+  {
+    "id": "list-views",
+    "directory": "list-views",
+    "title": "Per-entity list view UX (search, filter, sort, paginate)",
+    "description": "For each major list view, verify partial search, status filter,\ndate range filter, multi-column sort, pagination at scale, and\nsaved-view persistence.\n",
+    "estimated_total_minutes": 35,
+    "case_count": 6,
+    "planned_count": 6
+  },
+  {
+    "id": "notifications",
+    "directory": "notifications",
+    "title": "Notifications and alerts fire under the right conditions",
+    "description": "Verify each notification type fires when its trigger condition\nis met, surfaces in the right channel(s), and clears appropriately\nwhen the condition resolves.\n",
+    "estimated_total_minutes": 35,
+    "case_count": 5,
+    "planned_count": 5
+  },
+  {
+    "id": "permissions",
+    "directory": "permissions",
+    "title": "Permissions matrix — every role × consequential capability",
+    "description": "Per-cell verification that role-based access actually allows or\ndenies what it claims to. Covers the highest-stakes capabilities\nwhere a wrong permission grant is a real risk.\n",
+    "estimated_total_minutes": 540,
+    "case_count": 144,
+    "planned_count": 144
+  },
+  {
+    "id": "reports",
+    "directory": "reports",
+    "title": "Standard reports tie out to source transactions",
+    "description": "For each canonical report, verify it reconciles to the underlying\nrecords that produced it. The bar is not \"the report runs without\nerror\" but \"the totals match the source data within rounding.\"\n",
+    "estimated_total_minutes": 100,
+    "case_count": 14,
+    "planned_count": 14
+  }
+]

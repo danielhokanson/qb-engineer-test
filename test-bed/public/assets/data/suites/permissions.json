@@ -1,0 +1,933 @@
+{
+  "id": "permissions",
+  "directory": "permissions",
+  "title": "Permissions matrix — every role × consequential capability",
+  "description": "Per-cell verification that role-based access actually allows or\ndenies what it claims to. Covers the highest-stakes capabilities\nwhere a wrong permission grant is a real risk.\n",
+  "estimated_total_minutes": 540,
+  "case_ids": [
+    "PERM-CONTROLLER-PostJE-001",
+    "PERM-ADMIN-PostJE-001",
+    "PERM-ITADMIN-PostJE-001",
+    "PERM-FLOOR-PostJE-001",
+    "PERM-PRODMGR-PostJE-001",
+    "PERM-PROCUREMENT-PostJE-001",
+    "PERM-SALES-PostJE-001",
+    "PERM-HR-PostJE-001",
+    "PERM-ENGINEER-PostJE-001",
+    "PERM-CONTROLLER-ClosePeriod-001",
+    "PERM-ADMIN-ClosePeriod-001",
+    "PERM-ITADMIN-ClosePeriod-001",
+    "PERM-FLOOR-ClosePeriod-001",
+    "PERM-PRODMGR-ClosePeriod-001",
+    "PERM-PROCUREMENT-ClosePeriod-001",
+    "PERM-SALES-ClosePeriod-001",
+    "PERM-HR-ClosePeriod-001",
+    "PERM-PRODMGR-ReleaseWO-001",
+    "PERM-PRODPLAN-ReleaseWO-001",
+    "PERM-FLOOR-ReleaseWO-001",
+    "PERM-PROCUREMENT-ReleaseWO-001",
+    "PERM-SALES-ReleaseWO-001",
+    "PERM-ENGINEER-ReleaseWO-001",
+    "PERM-MAINTMGR-ReleaseWO-001",
+    "PERM-QC-ReleaseWO-001",
+    "PERM-PROCUREMENT-ApprovePO-001",
+    "PERM-CONTROLLER-ApprovePO-001",
+    "PERM-WAREHOUSE-ApprovePO-001",
+    "PERM-PRODMGR-ApprovePO-001",
+    "PERM-SALES-ApprovePO-001",
+    "PERM-FLOOR-ApprovePO-001",
+    "PERM-ENGINEER-ApprovePO-001",
+    "PERM-HR-ApprovePO-001",
+    "PERM-CONTROLLER-VoidInvoice-001",
+    "PERM-ADMIN-VoidInvoice-001",
+    "PERM-SALES-VoidInvoice-001",
+    "PERM-PROCUREMENT-VoidInvoice-001",
+    "PERM-FLOOR-VoidInvoice-001",
+    "PERM-PRODMGR-VoidInvoice-001",
+    "PERM-WAREHOUSE-VoidInvoice-001",
+    "PERM-HR-VoidInvoice-001",
+    "PERM-ENGINEER-ModifyBOM-001",
+    "PERM-CONTROLLER-ModifyBOM-001",
+    "PERM-PRODMGR-ModifyBOM-001",
+    "PERM-FLOOR-ModifyBOM-001",
+    "PERM-PROCUREMENT-ModifyBOM-001",
+    "PERM-SALES-ModifyBOM-001",
+    "PERM-QC-ModifyBOM-001",
+    "PERM-WAREHOUSE-ModifyBOM-001",
+    "PERM-ADMIN-ModifyTenant-001",
+    "PERM-FLOOR-ModifyTenant-001",
+    "PERM-ITADMIN-ModifyTenant-001",
+    "PERM-CONTROLLER-ModifyTenant-001",
+    "PERM-PRODMGR-ModifyTenant-001",
+    "PERM-PROCUREMENT-ModifyTenant-001",
+    "PERM-SALES-ModifyTenant-001",
+    "PERM-HR-ModifyTenant-001",
+    "PERM-ITADMIN-CreateUser-001",
+    "PERM-ADMIN-CreateUser-001",
+    "PERM-PROCUREMENT-CreateUser-001",
+    "PERM-CONTROLLER-CreateUser-001",
+    "PERM-HR-CreateUser-001",
+    "PERM-PRODMGR-CreateUser-001",
+    "PERM-FLOOR-CreateUser-001",
+    "PERM-SALES-CreateUser-001",
+    "PERM-CONTROLLER-ModifyCreditLimit-001",
+    "PERM-SALES-ModifyCreditLimit-001",
+    "PERM-ADMIN-ModifyCreditLimit-001",
+    "PERM-ITADMIN-ModifyCreditLimit-001",
+    "PERM-PROCUREMENT-ModifyCreditLimit-001",
+    "PERM-PRODMGR-ModifyCreditLimit-001",
+    "PERM-FLOOR-ModifyCreditLimit-001",
+    "PERM-WAREHOUSE-ModifyCreditLimit-001",
+    "PERM-SALES-OverridePricing-001",
+    "PERM-FLOOR-OverridePricing-001",
+    "PERM-PROCUREMENT-OverridePricing-001",
+    "PERM-PRODMGR-OverridePricing-001",
+    "PERM-WAREHOUSE-OverridePricing-001",
+    "PERM-ENGINEER-OverridePricing-001",
+    "PERM-HR-OverridePricing-001",
+    "PERM-ADMIN-DeleteCustomer-001",
+    "PERM-CONTROLLER-DeleteCustomer-001",
+    "PERM-SALES-DeleteCustomer-001",
+    "PERM-PROCUREMENT-DeleteCustomer-001",
+    "PERM-PRODMGR-DeleteCustomer-001",
+    "PERM-FLOOR-DeleteCustomer-001",
+    "PERM-WAREHOUSE-DeleteCustomer-001",
+    "PERM-HR-DeleteCustomer-001",
+    "PERM-HR-PostPayroll-001",
+    "PERM-CONTROLLER-PostPayroll-001",
+    "PERM-ADMIN-PostPayroll-001",
+    "PERM-ITADMIN-PostPayroll-001",
+    "PERM-PRODMGR-PostPayroll-001",
+    "PERM-SALES-PostPayroll-001",
+    "PERM-PROCUREMENT-PostPayroll-001",
+    "PERM-FLOOR-PostPayroll-001",
+    "PERM-CONTROLLER-ModifyTaxCodes-001",
+    "PERM-ADMIN-ModifyTaxCodes-001",
+    "PERM-ITADMIN-ModifyTaxCodes-001",
+    "PERM-SALES-ModifyTaxCodes-001",
+    "PERM-PROCUREMENT-ModifyTaxCodes-001",
+    "PERM-PRODMGR-ModifyTaxCodes-001",
+    "PERM-HR-ModifyTaxCodes-001",
+    "PERM-FLOOR-ModifyTaxCodes-001",
+    "PERM-ENGINEER-ApproveECR-001",
+    "PERM-PRODMGR-ApproveECR-001",
+    "PERM-FLOOR-ApproveECR-001",
+    "PERM-PROCUREMENT-ApproveECR-001",
+    "PERM-SALES-ApproveECR-001",
+    "PERM-CONTROLLER-ApproveECR-001",
+    "PERM-WAREHOUSE-ApproveECR-001",
+    "PERM-HR-ApproveECR-001",
+    "PERM-CONTROLLER-ApproveJE-001",
+    "PERM-ADMIN-ApproveJE-001",
+    "PERM-ITADMIN-ApproveJE-001",
+    "PERM-PRODMGR-ApproveJE-001",
+    "PERM-SALES-ApproveJE-001",
+    "PERM-PROCUREMENT-ApproveJE-001",
+    "PERM-HR-ApproveJE-001",
+    "PERM-FLOOR-ApproveJE-001",
+    "PERM-CONTROLLER-IssueCreditMemo-001",
+    "PERM-SALES-IssueCreditMemo-001",
+    "PERM-ADMIN-IssueCreditMemo-001",
+    "PERM-PROCUREMENT-IssueCreditMemo-001",
+    "PERM-FLOOR-IssueCreditMemo-001",
+    "PERM-WAREHOUSE-IssueCreditMemo-001",
+    "PERM-PRODMGR-IssueCreditMemo-001",
+    "PERM-HR-IssueCreditMemo-001",
+    "PERM-ITADMIN-ConfigureRoles-001",
+    "PERM-ADMIN-ConfigureRoles-001",
+    "PERM-CONTROLLER-ConfigureRoles-001",
+    "PERM-HR-ConfigureRoles-001",
+    "PERM-PRODMGR-ConfigureRoles-001",
+    "PERM-SALES-ConfigureRoles-001",
+    "PERM-PROCUREMENT-ConfigureRoles-001",
+    "PERM-FLOOR-ConfigureRoles-001",
+    "PERM-ITADMIN-ManageAPI-001",
+    "PERM-ADMIN-ManageAPI-001",
+    "PERM-CONTROLLER-ManageAPI-001",
+    "PERM-PRODMGR-ManageAPI-001",
+    "PERM-SALES-ManageAPI-001",
+    "PERM-PROCUREMENT-ManageAPI-001",
+    "PERM-ENGINEER-ManageAPI-001",
+    "PERM-FLOOR-ManageAPI-001"
+  ],
+  "planned_case_ids": [
+    "PERM-CONTROLLER-PostJE-001",
+    "PERM-ADMIN-PostJE-001",
+    "PERM-ITADMIN-PostJE-001",
+    "PERM-FLOOR-PostJE-001",
+    "PERM-PRODMGR-PostJE-001",
+    "PERM-PROCUREMENT-PostJE-001",
+    "PERM-SALES-PostJE-001",
+    "PERM-HR-PostJE-001",
+    "PERM-ENGINEER-PostJE-001",
+    "PERM-CONTROLLER-ClosePeriod-001",
+    "PERM-ADMIN-ClosePeriod-001",
+    "PERM-ITADMIN-ClosePeriod-001",
+    "PERM-FLOOR-ClosePeriod-001",
+    "PERM-PRODMGR-ClosePeriod-001",
+    "PERM-PROCUREMENT-ClosePeriod-001",
+    "PERM-SALES-ClosePeriod-001",
+    "PERM-HR-ClosePeriod-001",
+    "PERM-PRODMGR-ReleaseWO-001",
+    "PERM-PRODPLAN-ReleaseWO-001",
+    "PERM-FLOOR-ReleaseWO-001",
+    "PERM-PROCUREMENT-ReleaseWO-001",
+    "PERM-SALES-ReleaseWO-001",
+    "PERM-ENGINEER-ReleaseWO-001",
+    "PERM-MAINTMGR-ReleaseWO-001",
+    "PERM-QC-ReleaseWO-001",
+    "PERM-PROCUREMENT-ApprovePO-001",
+    "PERM-CONTROLLER-ApprovePO-001",
+    "PERM-WAREHOUSE-ApprovePO-001",
+    "PERM-PRODMGR-ApprovePO-001",
+    "PERM-SALES-ApprovePO-001",
+    "PERM-FLOOR-ApprovePO-001",
+    "PERM-ENGINEER-ApprovePO-001",
+    "PERM-HR-ApprovePO-001",
+    "PERM-CONTROLLER-VoidInvoice-001",
+    "PERM-ADMIN-VoidInvoice-001",
+    "PERM-SALES-VoidInvoice-001",
+    "PERM-PROCUREMENT-VoidInvoice-001",
+    "PERM-FLOOR-VoidInvoice-001",
+    "PERM-PRODMGR-VoidInvoice-001",
+    "PERM-WAREHOUSE-VoidInvoice-001",
+    "PERM-HR-VoidInvoice-001",
+    "PERM-ENGINEER-ModifyBOM-001",
+    "PERM-CONTROLLER-ModifyBOM-001",
+    "PERM-PRODMGR-ModifyBOM-001",
+    "PERM-FLOOR-ModifyBOM-001",
+    "PERM-PROCUREMENT-ModifyBOM-001",
+    "PERM-SALES-ModifyBOM-001",
+    "PERM-QC-ModifyBOM-001",
+    "PERM-WAREHOUSE-ModifyBOM-001",
+    "PERM-ADMIN-ModifyTenant-001",
+    "PERM-FLOOR-ModifyTenant-001",
+    "PERM-ITADMIN-ModifyTenant-001",
+    "PERM-CONTROLLER-ModifyTenant-001",
+    "PERM-PRODMGR-ModifyTenant-001",
+    "PERM-PROCUREMENT-ModifyTenant-001",
+    "PERM-SALES-ModifyTenant-001",
+    "PERM-HR-ModifyTenant-001",
+    "PERM-ITADMIN-CreateUser-001",
+    "PERM-ADMIN-CreateUser-001",
+    "PERM-PROCUREMENT-CreateUser-001",
+    "PERM-CONTROLLER-CreateUser-001",
+    "PERM-HR-CreateUser-001",
+    "PERM-PRODMGR-CreateUser-001",
+    "PERM-FLOOR-CreateUser-001",
+    "PERM-SALES-CreateUser-001",
+    "PERM-CONTROLLER-ModifyCreditLimit-001",
+    "PERM-SALES-ModifyCreditLimit-001",
+    "PERM-ADMIN-ModifyCreditLimit-001",
+    "PERM-ITADMIN-ModifyCreditLimit-001",
+    "PERM-PROCUREMENT-ModifyCreditLimit-001",
+    "PERM-PRODMGR-ModifyCreditLimit-001",
+    "PERM-FLOOR-ModifyCreditLimit-001",
+    "PERM-WAREHOUSE-ModifyCreditLimit-001",
+    "PERM-SALES-OverridePricing-001",
+    "PERM-FLOOR-OverridePricing-001",
+    "PERM-PROCUREMENT-OverridePricing-001",
+    "PERM-PRODMGR-OverridePricing-001",
+    "PERM-WAREHOUSE-OverridePricing-001",
+    "PERM-ENGINEER-OverridePricing-001",
+    "PERM-HR-OverridePricing-001",
+    "PERM-ADMIN-DeleteCustomer-001",
+    "PERM-CONTROLLER-DeleteCustomer-001",
+    "PERM-SALES-DeleteCustomer-001",
+    "PERM-PROCUREMENT-DeleteCustomer-001",
+    "PERM-PRODMGR-DeleteCustomer-001",
+    "PERM-FLOOR-DeleteCustomer-001",
+    "PERM-WAREHOUSE-DeleteCustomer-001",
+    "PERM-HR-DeleteCustomer-001",
+    "PERM-HR-PostPayroll-001",
+    "PERM-CONTROLLER-PostPayroll-001",
+    "PERM-ADMIN-PostPayroll-001",
+    "PERM-ITADMIN-PostPayroll-001",
+    "PERM-PRODMGR-PostPayroll-001",
+    "PERM-SALES-PostPayroll-001",
+    "PERM-PROCUREMENT-PostPayroll-001",
+    "PERM-FLOOR-PostPayroll-001",
+    "PERM-CONTROLLER-ModifyTaxCodes-001",
+    "PERM-ADMIN-ModifyTaxCodes-001",
+    "PERM-ITADMIN-ModifyTaxCodes-001",
+    "PERM-SALES-ModifyTaxCodes-001",
+    "PERM-PROCUREMENT-ModifyTaxCodes-001",
+    "PERM-PRODMGR-ModifyTaxCodes-001",
+    "PERM-HR-ModifyTaxCodes-001",
+    "PERM-FLOOR-ModifyTaxCodes-001",
+    "PERM-ENGINEER-ApproveECR-001",
+    "PERM-PRODMGR-ApproveECR-001",
+    "PERM-FLOOR-ApproveECR-001",
+    "PERM-PROCUREMENT-ApproveECR-001",
+    "PERM-SALES-ApproveECR-001",
+    "PERM-CONTROLLER-ApproveECR-001",
+    "PERM-WAREHOUSE-ApproveECR-001",
+    "PERM-HR-ApproveECR-001",
+    "PERM-CONTROLLER-ApproveJE-001",
+    "PERM-ADMIN-ApproveJE-001",
+    "PERM-ITADMIN-ApproveJE-001",
+    "PERM-PRODMGR-ApproveJE-001",
+    "PERM-SALES-ApproveJE-001",
+    "PERM-PROCUREMENT-ApproveJE-001",
+    "PERM-HR-ApproveJE-001",
+    "PERM-FLOOR-ApproveJE-001",
+    "PERM-CONTROLLER-IssueCreditMemo-001",
+    "PERM-SALES-IssueCreditMemo-001",
+    "PERM-ADMIN-IssueCreditMemo-001",
+    "PERM-PROCUREMENT-IssueCreditMemo-001",
+    "PERM-FLOOR-IssueCreditMemo-001",
+    "PERM-WAREHOUSE-IssueCreditMemo-001",
+    "PERM-PRODMGR-IssueCreditMemo-001",
+    "PERM-HR-IssueCreditMemo-001",
+    "PERM-ITADMIN-ConfigureRoles-001",
+    "PERM-ADMIN-ConfigureRoles-001",
+    "PERM-CONTROLLER-ConfigureRoles-001",
+    "PERM-HR-ConfigureRoles-001",
+    "PERM-PRODMGR-ConfigureRoles-001",
+    "PERM-SALES-ConfigureRoles-001",
+    "PERM-PROCUREMENT-ConfigureRoles-001",
+    "PERM-FLOOR-ConfigureRoles-001",
+    "PERM-ITADMIN-ManageAPI-001",
+    "PERM-ADMIN-ManageAPI-001",
+    "PERM-CONTROLLER-ManageAPI-001",
+    "PERM-PRODMGR-ManageAPI-001",
+    "PERM-SALES-ManageAPI-001",
+    "PERM-PROCUREMENT-ManageAPI-001",
+    "PERM-ENGINEER-ManageAPI-001",
+    "PERM-FLOOR-ManageAPI-001"
+  ],
+  "missing_case_ids": [],
+  "raw": {
+    "suite": "permissions",
+    "title": "Permissions matrix — every role × consequential capability",
+    "description": "Per-cell verification that role-based access actually allows or\ndenies what it claims to. Covers the highest-stakes capabilities\nwhere a wrong permission grant is a real risk.\n",
+    "estimated_total_minutes": 540,
+    "prerequisites": {
+      "phase_completed": "P1",
+      "required_users": [
+        {
+          "role": "Administrator (always exists from P0)"
+        },
+        {
+          "role": "Controller"
+        },
+        {
+          "role": "Sales / Account Manager"
+        },
+        {
+          "role": "Procurement"
+        },
+        {
+          "role": "Production Manager"
+        },
+        {
+          "role": "Production Planner"
+        },
+        {
+          "role": "Floor Operator"
+        },
+        {
+          "role": "Warehouse / Logistics"
+        },
+        {
+          "role": "HR"
+        },
+        {
+          "role": "IT Admin"
+        },
+        {
+          "role": "Engineer / R&D"
+        },
+        {
+          "role": "QC Inspector"
+        },
+        {
+          "role": "Maintenance Manager"
+        }
+      ]
+    },
+    "cases": [
+      {
+        "id": "PERM-CONTROLLER-PostJE-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-ADMIN-PostJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ITADMIN-PostJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-PostJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-PostJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-PostJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-PostJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-PostJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ENGINEER-PostJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-CONTROLLER-ClosePeriod-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-ADMIN-ClosePeriod-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ITADMIN-ClosePeriod-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-ClosePeriod-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-ClosePeriod-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-ClosePeriod-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-ClosePeriod-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-ClosePeriod-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-ReleaseWO-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-PRODPLAN-ReleaseWO-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-FLOOR-ReleaseWO-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-ReleaseWO-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-ReleaseWO-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ENGINEER-ReleaseWO-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-MAINTMGR-ReleaseWO-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-QC-ReleaseWO-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-ApprovePO-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-CONTROLLER-ApprovePO-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-WAREHOUSE-ApprovePO-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-ApprovePO-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-ApprovePO-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-ApprovePO-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ENGINEER-ApprovePO-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-ApprovePO-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-CONTROLLER-VoidInvoice-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-ADMIN-VoidInvoice-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-VoidInvoice-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-VoidInvoice-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-VoidInvoice-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-VoidInvoice-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-WAREHOUSE-VoidInvoice-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-VoidInvoice-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ENGINEER-ModifyBOM-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-CONTROLLER-ModifyBOM-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-ModifyBOM-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-ModifyBOM-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-ModifyBOM-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-ModifyBOM-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-QC-ModifyBOM-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-WAREHOUSE-ModifyBOM-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ADMIN-ModifyTenant-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-FLOOR-ModifyTenant-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ITADMIN-ModifyTenant-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-CONTROLLER-ModifyTenant-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-ModifyTenant-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-ModifyTenant-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-ModifyTenant-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-ModifyTenant-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ITADMIN-CreateUser-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-ADMIN-CreateUser-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-PROCUREMENT-CreateUser-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-CONTROLLER-CreateUser-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-CreateUser-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-CreateUser-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-CreateUser-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-CreateUser-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-CONTROLLER-ModifyCreditLimit-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-SALES-ModifyCreditLimit-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ADMIN-ModifyCreditLimit-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ITADMIN-ModifyCreditLimit-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-ModifyCreditLimit-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-ModifyCreditLimit-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-ModifyCreditLimit-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-WAREHOUSE-ModifyCreditLimit-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-OverridePricing-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-FLOOR-OverridePricing-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-OverridePricing-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-OverridePricing-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-WAREHOUSE-OverridePricing-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ENGINEER-OverridePricing-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-OverridePricing-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ADMIN-DeleteCustomer-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-CONTROLLER-DeleteCustomer-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-DeleteCustomer-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-DeleteCustomer-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-DeleteCustomer-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-DeleteCustomer-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-WAREHOUSE-DeleteCustomer-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-DeleteCustomer-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-PostPayroll-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-CONTROLLER-PostPayroll-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ADMIN-PostPayroll-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ITADMIN-PostPayroll-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-PostPayroll-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-PostPayroll-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-PostPayroll-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-PostPayroll-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-CONTROLLER-ModifyTaxCodes-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-ADMIN-ModifyTaxCodes-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ITADMIN-ModifyTaxCodes-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-ModifyTaxCodes-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-ModifyTaxCodes-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-ModifyTaxCodes-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-ModifyTaxCodes-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-ModifyTaxCodes-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ENGINEER-ApproveECR-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-PRODMGR-ApproveECR-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-ApproveECR-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-ApproveECR-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-ApproveECR-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-CONTROLLER-ApproveECR-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-WAREHOUSE-ApproveECR-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-ApproveECR-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-CONTROLLER-ApproveJE-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-ADMIN-ApproveJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ITADMIN-ApproveJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-ApproveJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-ApproveJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-ApproveJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-ApproveJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-ApproveJE-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-CONTROLLER-IssueCreditMemo-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-SALES-IssueCreditMemo-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ADMIN-IssueCreditMemo-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-IssueCreditMemo-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-IssueCreditMemo-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-WAREHOUSE-IssueCreditMemo-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-IssueCreditMemo-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-IssueCreditMemo-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ITADMIN-ConfigureRoles-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-ADMIN-ConfigureRoles-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-CONTROLLER-ConfigureRoles-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-HR-ConfigureRoles-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-ConfigureRoles-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-ConfigureRoles-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-ConfigureRoles-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-ConfigureRoles-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ITADMIN-ManageAPI-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-ADMIN-ManageAPI-001",
+        "intent": "allow"
+      },
+      {
+        "id": "PERM-CONTROLLER-ManageAPI-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PRODMGR-ManageAPI-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-SALES-ManageAPI-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-PROCUREMENT-ManageAPI-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-ENGINEER-ManageAPI-001",
+        "intent": "deny"
+      },
+      {
+        "id": "PERM-FLOOR-ManageAPI-001",
+        "intent": "deny"
+      }
+    ],
+    "completion_criteria": [
+      "Every case in the suite has a recorded pass/fail.",
+      "For deny cases, both UI access AND direct-URL / API access were blocked.",
+      "For allow cases, the action succeeded AND was recorded in the audit log with user and timestamp."
+    ]
+  }
+}

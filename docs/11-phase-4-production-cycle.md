@@ -74,6 +74,26 @@ expected_overall: |
 pass_criteria: |
   Quote saved AND priced from the right list AND sent to the customer.
 est_minutes: 8
+negative_variants:
+  - id: P4-QUOTE-001-N1
+    title: Reject zero-quantity line on a quote
+    action: |
+      Try to add a quote line with quantity = 0.
+    expected: |
+      Save is blocked or the line is removed automatically with a
+      clear message.
+    pass_criteria: |
+      Zero-quantity line not silently saved.
+  - id: P4-QUOTE-001-N2
+    title: Reject quote referencing a deactivated customer
+    action: |
+      Deactivate ACME Industrial. Try to create a quote referencing
+      them.
+    expected: |
+      Customer is filtered out, or selection is blocked with a clear
+      "customer inactive" message.
+    pass_criteria: |
+      No quote created against inactive customer.
 ```
 
 ---
@@ -114,6 +134,24 @@ pass_criteria: |
   Override visible AND price reflected on the quote AND override
   flag visible to reviewers.
 est_minutes: 4
+negative_variants:
+  - id: P4-QUOTE-002-N1
+    title: Override below cost requires controller approval
+    action: |
+      Override the price to a value below the part's standard cost.
+    expected: |
+      Save is blocked or routes for controller approval. The
+      below-cost condition is named explicitly.
+    pass_criteria: |
+      Below-cost override is gated.
+  - id: P4-QUOTE-002-N2
+    title: Reject override with no documented reason
+    action: |
+      Override the price without entering an override reason.
+    expected: |
+      Save is blocked or warns that overrides require a reason.
+    pass_criteria: |
+      Reason-less override refused.
 ```
 
 ---
@@ -158,6 +196,36 @@ pass_criteria: |
   SO is open AND links to the original quote AND carries all the
   quote's pricing.
 est_minutes: 6
+negative_variants:
+  - id: P4-QUOTE-003-N1
+    title: Cannot convert an expired quote
+    action: |
+      Set the quote's validity to a date in the past, then try to
+      convert.
+    expected: |
+      The convert action is blocked or warns; expired quotes require
+      explicit re-issue or extension.
+    pass_criteria: |
+      Expired quote conversion is gated.
+  - id: P4-QUOTE-003-N2
+    title: Cannot convert the same quote twice
+    action: |
+      Convert the quote, then attempt to convert it again.
+    expected: |
+      The action is unavailable or surfaces a clear "already
+      converted" message linking to the SO.
+    pass_criteria: |
+      Double conversion refused.
+  - id: P4-QUOTE-003-N3
+    title: Reject SO without a customer PO number when required
+    action: |
+      Confirm the SO without entering the customer's PO number on a
+      customer that requires PO references.
+    expected: |
+      Save is blocked or warns; PO reference is enforced per
+      customer setting.
+    pass_criteria: |
+      Missing required PO is surfaced before SO confirmation.
 ```
 
 ---
@@ -208,6 +276,28 @@ pass_criteria: |
   WO released AND links to its source SO AND its BOM/routing
   revisions match what was active at release.
 est_minutes: 8
+negative_variants:
+  - id: P4-WO-001-N1
+    title: Warn on insufficient material at release
+    action: |
+      Reduce on-hand of a BOM component below what the WO would need.
+      Attempt to release the WO.
+    expected: |
+      Application warns about projected material shortage, and either
+      blocks release until material is on order, or releases with a
+      clear "shortage" flag visible to the floor and planner.
+    pass_criteria: |
+      Shortage was surfaced AND release outcome is explicit (blocked
+      or flagged), not silent.
+  - id: P4-WO-001-N2
+    title: Reject release without an active routing
+    action: |
+      Mark the part's routing as draft / inactive (or pick a part
+      without a routing). Try to release.
+    expected: |
+      Release is blocked with a clear "no active routing" message.
+    pass_criteria: |
+      Release blocked AND error names missing routing.
 ```
 
 ---
@@ -248,6 +338,17 @@ pass_criteria: |
   WO is visible on the board AND card has identifying details AND
   state matches the WO's released status.
 est_minutes: 3
+negative_variants:
+  - id: P4-WO-002-N1
+    title: Closed WOs do not appear on the active kanban board
+    action: |
+      Close (or cancel) a WO. Open the kanban board for that
+      production area.
+    expected: |
+      The closed WO is not shown on the active board; it appears
+      only in a "completed" or filtered view.
+    pass_criteria: |
+      Active board does not show closed WOs.
 ```
 
 ---
@@ -298,6 +399,36 @@ pass_criteria: |
   Status changed AND operator recorded AND labor time accumulating
   AND kanban moved.
 est_minutes: 5
+negative_variants:
+  - id: P4-WO-START-N1
+    title: Cannot start an operation already in progress on another operator
+    action: |
+      As a second operator, scan the same operation that another
+      operator has already started.
+    expected: |
+      The action is blocked or warns; the operation cannot have two
+      simultaneous owners (or requires explicit handoff).
+    pass_criteria: |
+      Duplicate start is refused or routed through a handoff flow.
+  - id: P4-WO-START-N2
+    title: Cannot start an operation out of routing order
+    action: |
+      Try to start the second routing operation while the first is
+      still released.
+    expected: |
+      The action is blocked with a clear "previous operation must
+      complete first" message.
+    pass_criteria: |
+      Out-of-order start refused.
+  - id: P4-WO-START-N3
+    title: Cannot start without scanning operator badge
+    action: |
+      Try to scan the WO and start without first identifying the
+      operator.
+    expected: |
+      The start action is blocked until an operator is identified.
+    pass_criteria: |
+      Anonymous start refused.
 ```
 
 ---
@@ -317,7 +448,8 @@ roles:
 flows:
   - quote-to-cash
 preconditions:
-  - A work-order operation is in progress: an operator scanned the WO and the start action, the operation transitioned from Released to In Progress, labor time is tracking, and the kanban card has moved accordingly. (Established by P4-WO-START.)
+  - |
+    A work-order operation is in progress: an operator scanned the WO and the start action, the operation transitioned from Released to In Progress, labor time is tracking, and the kanban card has moved accordingly. (Established by P4-WO-START.)
   - Inventory exists for the BOM components (from P3 receipt).
 modality:
   - scanner
@@ -379,7 +511,8 @@ roles:
 flows:
   - quote-to-cash
 preconditions:
-  - A work-order operation is in progress: an operator scanned the WO and the start action, the operation transitioned from Released to In Progress, labor time is tracking, and the kanban card has moved accordingly. (Established by P4-WO-START.)
+  - |
+    A work-order operation is in progress: an operator scanned the WO and the start action, the operation transitioned from Released to In Progress, labor time is tracking, and the kanban card has moved accordingly. (Established by P4-WO-START.)
 modality:
   - scanner
   - manual-entry
@@ -403,6 +536,26 @@ pass_criteria: |
   Labor entry closed AND cost calculated AND WO labor cost increased
   by the entry.
 est_minutes: 4
+negative_variants:
+  - id: P4-LABOR-N1
+    title: Reject overlapping labor entries for same operator
+    action: |
+      Try to clock the same operator into a second operation while
+      they are still clocked in to the first.
+    expected: |
+      Save is blocked or surfaces a clear "operator already clocked
+      in" prompt requiring explicit reassignment.
+    pass_criteria: |
+      Operator cannot be in two operations simultaneously.
+  - id: P4-LABOR-N2
+    title: Reject negative or zero labor duration
+    action: |
+      Manually edit a closed labor entry so the end time precedes
+      the start.
+    expected: |
+      Save is blocked with a clear "end must be after start" error.
+    pass_criteria: |
+      Inverted labor times refused.
 ```
 
 ---
@@ -421,7 +574,8 @@ roles:
 flows:
   - quote-to-cash
 preconditions:
-  - A work-order operation is in progress: an operator scanned the WO and the start action, the operation transitioned from Released to In Progress, labor time is tracking, and the kanban card has moved accordingly. (Established by P4-WO-START.)
+  - |
+    A work-order operation is in progress: an operator scanned the WO and the start action, the operation transitioned from Released to In Progress, labor time is tracking, and the kanban card has moved accordingly. (Established by P4-WO-START.)
 modality:
   - scanner
   - manual-entry
@@ -449,6 +603,26 @@ pass_criteria: |
   Quantities recorded AND scrap reason captured AND next operation
   ready.
 est_minutes: 5
+negative_variants:
+  - id: P4-COMP-N1
+    title: Reject completion exceeding remaining target
+    action: |
+      Try to record good quantity 200 on a WO with target 100 and
+      no prior completions.
+    expected: |
+      Save is blocked or warns; over-completion requires explicit
+      override.
+    pass_criteria: |
+      Over-completion gated.
+  - id: P4-COMP-N2
+    title: Reject scrap entry without reason
+    action: |
+      Try to record any scrap quantity with the reason field blank.
+    expected: |
+      Save is blocked with a clear "scrap reason is required"
+      message.
+    pass_criteria: |
+      Scrap without reason refused.
 ```
 
 ---
@@ -493,6 +667,26 @@ expected_overall: |
 pass_criteria: |
   FG inventory increased AND WIP cleared AND any serials recorded.
 est_minutes: 6
+negative_variants:
+  - id: P4-COMP-FINAL-N1
+    title: Cannot final-complete with serials skipped on serial-tracked part
+    action: |
+      Skip serial entry on a serial-tracked finished good and try
+      to confirm completion.
+    expected: |
+      Completion is blocked with a clear "serial numbers required"
+      message naming each missing unit.
+    pass_criteria: |
+      Final completion gated by serial entry.
+  - id: P4-COMP-FINAL-N2
+    title: Reject duplicate serial across this and prior runs
+    action: |
+      Enter a serial number that already exists on a previously
+      shipped unit of the same part.
+    expected: |
+      Save is blocked with a clear "serial already used" message.
+    pass_criteria: |
+      Duplicate serial refused.
 ```
 
 ---
@@ -511,7 +705,8 @@ roles:
 flows:
   - quote-to-cash
 preconditions:
-  - The final routing operation is complete: WO is closed, finished goods are in inventory, WIP is cleared, and any required serial numbers have been recorded. (Established by P4-COMP-FINAL.)
+  - |
+    The final routing operation is complete: WO is closed, finished goods are in inventory, WIP is cleared, and any required serial numbers have been recorded. (Established by P4-COMP-FINAL.)
 modality:
   - scanner
   - manual-entry
@@ -536,6 +731,16 @@ expected_overall: |
 pass_criteria: |
   Goods at correct bin AND available for downstream allocation.
 est_minutes: 4
+negative_variants:
+  - id: P4-PUTAWAY-N1
+    title: Reject put-away to bin restricted to a different part
+    action: |
+      Try to put away FG-BRACKET-A1 to a bin restricted to raw
+      material storage.
+    expected: |
+      Save is blocked with a clear "bin restriction" message.
+    pass_criteria: |
+      Restricted bin assignment refused.
 ```
 
 ---
@@ -585,6 +790,24 @@ pass_criteria: |
   All pick lines complete AND inventory location updated AND SO
   allocated.
 est_minutes: 8
+negative_variants:
+  - id: P4-PICK-N1
+    title: Reject pick of wrong serial when serials are required
+    action: |
+      Scan a serial number not on the SO's allocation list.
+    expected: |
+      Pick is blocked with a clear "this serial is not allocated to
+      the order" message.
+    pass_criteria: |
+      Wrong serial refused.
+  - id: P4-PICK-N2
+    title: Reject pick exceeding allocated quantity
+    action: |
+      Try to pick 110 when the SO line allocates 100.
+    expected: |
+      Save is blocked or warns; over-pick must be explicit.
+    pass_criteria: |
+      Over-pick gated.
 ```
 
 ---
@@ -626,6 +849,24 @@ expected_overall: |
 pass_criteria: |
   Packing complete AND packing slip generated AND items match the SO.
 est_minutes: 6
+negative_variants:
+  - id: P4-PACK-N1
+    title: Reject pack scan of item not on the SO
+    action: |
+      Scan a part not present on the SO into the shipping container.
+    expected: |
+      The scan is rejected with a clear "item not on order" message.
+    pass_criteria: |
+      Out-of-order item refused at pack.
+  - id: P4-PACK-N2
+    title: Reject completion of packing with missing items
+    action: |
+      Try to mark the order packed while one SO line still has items
+      unscanned.
+    expected: |
+      Save is blocked with a list of remaining lines.
+    pass_criteria: |
+      Pack incomplete refused until short-ship is documented.
 ```
 
 ---
@@ -674,6 +915,26 @@ expected_overall: |
 pass_criteria: |
   Shipment created AND tracking number recorded AND invoice triggered.
 est_minutes: 8
+negative_variants:
+  - id: P4-SHIP-N1
+    title: Reject ship without packing complete
+    action: |
+      Try to ship before the order has been packed.
+    expected: |
+      The ship action is unavailable or blocked with a "pack first"
+      message.
+    pass_criteria: |
+      Ship-before-pack refused.
+  - id: P4-SHIP-N2
+    title: Reject ship to address with no postal validation
+    action: |
+      Try to ship to an address missing postal code or with a
+      malformed one.
+    expected: |
+      Save is blocked or warns; the carrier cannot accept the
+      shipment without a valid postal code.
+    pass_criteria: |
+      Bad ship-to address surfaces a clear validation error.
 ```
 
 ---
@@ -717,6 +978,26 @@ pass_criteria: |
   Commercial invoice generated AND harmonized codes captured AND
   incoterm recorded.
 est_minutes: 7
+negative_variants:
+  - id: P4-SHIP-INTL-N1
+    title: Reject international shipment without harmonized code
+    action: |
+      Try to confirm the shipment leaving the harmonized tariff code
+      blank on at least one line.
+    expected: |
+      Save is blocked with a clear list of lines missing the code.
+    pass_criteria: |
+      Missing tariff codes refused at ship.
+  - id: P4-SHIP-INTL-N2
+    title: Reject incoterm not in the supported list
+    action: |
+      Try to free-text an incoterm value (e.g., "DDPish") rather
+      than picking from the controlled list.
+    expected: |
+      Save is blocked or restricts input to the supported set
+      (EXW, FOB, DAP, DDP, etc.).
+    pass_criteria: |
+      Invalid incoterm refused.
 ```
 
 ---
@@ -769,6 +1050,28 @@ pass_criteria: |
   Invoice posted AND AR increased AND invoice sent AND GL postings
   correct.
 est_minutes: 8
+negative_variants:
+  - id: P4-INV-001-N1
+    title: Reject invoice with no ship-to address resolved
+    action: |
+      Clear or break the ship-to on the SO (e.g., the address is
+      flagged invalid). Try to generate the invoice.
+    expected: |
+      Invoice generation is blocked with a clear "ship-to required for
+      taxation" message. Or, if a default ship-to fallback is used,
+      the fallback is named explicitly to the user — not silent.
+    pass_criteria: |
+      Missing ship-to is surfaced AND invoice does not silently use a
+      wrong default.
+  - id: P4-INV-001-N2
+    title: Reject invoice in a closed period
+    action: |
+      Close the period, then try to post an invoice dated in that
+      closed period.
+    expected: |
+      Posting is blocked with a clear "period closed" message.
+    pass_criteria: |
+      Posting blocked AND message is plain.
 ```
 
 ---
@@ -816,6 +1119,27 @@ pass_criteria: |
   Payment applied AND invoice marked paid AND GL postings correct
   AND AR balance for customer reduced.
 est_minutes: 6
+negative_variants:
+  - id: P4-CASH-N1
+    title: Reject duplicate check / reference number for same customer
+    action: |
+      Apply a payment, then try to apply a second payment with the
+      same check number for the same customer.
+    expected: |
+      Save is blocked or warns; duplicate check numbers are typically
+      data-entry errors.
+    pass_criteria: |
+      Duplicate reference refused or surfaces an explicit warning.
+  - id: P4-CASH-N2
+    title: Reject payment to a different customer's invoice
+    action: |
+      Try to apply ACME's payment against an invoice issued to
+      another customer.
+    expected: |
+      Save is blocked with a clear "payer does not match invoice
+      customer" message.
+    pass_criteria: |
+      Cross-customer application refused.
 ```
 
 ---
@@ -852,6 +1176,17 @@ expected_overall: |
 pass_criteria: |
   Balance reduced by payment AND invoice still open AND aging unchanged.
 est_minutes: 4
+negative_variants:
+  - id: P4-CASH-PARTIAL-N1
+    title: Reject partial payment exceeding invoice balance
+    action: |
+      Try to apply a partial payment that exceeds the remaining
+      invoice balance.
+    expected: |
+      Save is blocked or surfaces overpayment-handling options;
+      silent over-application is refused.
+    pass_criteria: |
+      Over-application is gated.
 ```
 
 ---
@@ -891,6 +1226,17 @@ expected_overall: |
 pass_criteria: |
   Invoice closed AND credit recorded AND visible on customer record.
 est_minutes: 4
+negative_variants:
+  - id: P4-OVERPAY-N1
+    title: Cannot refund overpayment without controller approval
+    action: |
+      As a Sales user, try to convert the customer credit to a
+      cash refund.
+    expected: |
+      The action is unavailable to the role; refunds require
+      controller approval.
+    pass_criteria: |
+      Self-service refund refused for non-authorized roles.
 ```
 
 ---
@@ -952,6 +1298,25 @@ why_this_matters: |
   Missing I-9 paperwork on day-1 is a real fineable offense. The
   system needs to be the source of truth for this, not a folder of
   scanned PDFs.
+negative_variants:
+  - id: P4-HIRE-001-N1
+    title: Cannot complete onboarding with I-9 unsigned
+    action: |
+      Skip the I-9 signature and try to mark onboarding complete.
+    expected: |
+      Save is blocked with a clear "I-9 signature required" message
+      naming each missing compliance gate.
+    pass_criteria: |
+      Onboarding completion gated by I-9 signoff.
+  - id: P4-HIRE-001-N2
+    title: Reject hire date before person's earliest valid work date
+    action: |
+      Set the hire date to a date earlier than the I-9 work-
+      authorization start date.
+    expected: |
+      Save is blocked or warns; hire cannot precede authorization.
+    pass_criteria: |
+      Pre-authorization hire date refused.
 ```
 
 ---
@@ -996,6 +1361,17 @@ pass_criteria: |
   User created AND linked to employee AND role assigned AND access
   appropriately scoped.
 est_minutes: 6
+negative_variants:
+  - id: P4-HIRE-002-N1
+    title: Cannot grant access before onboarding compliance complete
+    action: |
+      For an employee with incomplete I-9 / W-4, try to issue a
+      system user account.
+    expected: |
+      The action is blocked with a clear list of missing compliance
+      items.
+    pass_criteria: |
+      Access provisioning gated by compliance.
 ```
 
 ---
@@ -1043,6 +1419,17 @@ pass_criteria: |
   Assignment visible to the operator AND any required training is
   validated or flagged.
 est_minutes: 6
+negative_variants:
+  - id: P4-HIRE-003-N1
+    title: Cannot assign operation requiring missing certification
+    action: |
+      Assign the new hire to a work center that requires a forklift
+      cert they do not have on file.
+    expected: |
+      Assignment is blocked or warns; certification gating must be
+      explicit.
+    pass_criteria: |
+      Uncertified assignment refused or surfaces an explicit warning.
 ```
 
 ---

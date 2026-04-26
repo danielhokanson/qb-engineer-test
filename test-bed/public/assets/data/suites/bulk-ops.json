@@ -1,0 +1,44 @@
+{
+  "id": "bulk-ops",
+  "directory": "bulk-ops",
+  "title": "Bulk operations beyond import",
+  "description": "Mass update, mass status change, mass reassign, mass deactivate.\nEach operation must report which records succeeded, which failed,\nand why — never silent partial outcomes.\n",
+  "estimated_total_minutes": 40,
+  "case_ids": [
+    "BULK-VENDOR-TERMS-001",
+    "BULK-WO-CLOSE-001",
+    "BULK-CUST-REASSIGN-001",
+    "BULK-CUST-DEACT-001"
+  ],
+  "planned_case_ids": [
+    "BULK-VENDOR-TERMS-001",
+    "BULK-WO-CLOSE-001",
+    "BULK-CUST-REASSIGN-001",
+    "BULK-CUST-DEACT-001"
+  ],
+  "missing_case_ids": [],
+  "raw": {
+    "suite": "bulk-ops",
+    "title": "Bulk operations beyond import",
+    "description": "Mass update, mass status change, mass reassign, mass deactivate.\nEach operation must report which records succeeded, which failed,\nand why — never silent partial outcomes.\n",
+    "estimated_total_minutes": 40,
+    "cases": [
+      {
+        "id": "BULK-VENDOR-TERMS-001"
+      },
+      {
+        "id": "BULK-WO-CLOSE-001"
+      },
+      {
+        "id": "BULK-CUST-REASSIGN-001"
+      },
+      {
+        "id": "BULK-CUST-DEACT-001"
+      }
+    ],
+    "completion_criteria": [
+      "Every bulk operation reports success / failure per row.",
+      "No partial-state corruption in any case."
+    ]
+  }
+}

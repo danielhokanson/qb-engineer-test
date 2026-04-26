@@ -56,5 +56,15 @@ export const routes: Routes = [
         m => m.StoryScenePage,
       ),
   },
+  {
+    path: 'suites',
+    loadComponent: () =>
+      import('./pages/suites/suites.page').then(m => m.SuitesPage),
+  },
+  {
+    path: 'suites/:suiteId',
+    loadComponent: () =>
+      import('./pages/suite/suite.page').then(m => m.SuitePage),
+  },
   { path: '**', redirectTo: '' },
 ];

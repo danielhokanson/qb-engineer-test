@@ -1,0 +1,74 @@
+{
+  "id": "edge-cases",
+  "directory": "edge-cases",
+  "title": "Date, currency, decimal, tax, and scale edge cases",
+  "description": "Bugs that surface only at boundaries: fiscal year end, DST, leap\nyear, decimal-precision rounding, FX rate movement, tax-rate change\nmid-period, list views over five thousand rows. The bar is that\nthe application handles each cleanly without silent corruption.\n",
+  "estimated_total_minutes": 80,
+  "case_ids": [
+    "EDGE-DATE-FYBOUNDARY-001",
+    "EDGE-DATE-DST-001",
+    "EDGE-DATE-LEAP-001",
+    "EDGE-DATE-TZBOUNDARY-001",
+    "EDGE-FX-ROUNDING-001",
+    "EDGE-FX-RATEMOVE-001",
+    "EDGE-DECIMAL-PRECISION-001",
+    "EDGE-TAX-RATECHANGE-001",
+    "EDGE-SCALE-LARGELIST-001",
+    "EDGE-SCALE-LARGEEXPORT-001"
+  ],
+  "planned_case_ids": [
+    "EDGE-DATE-FYBOUNDARY-001",
+    "EDGE-DATE-DST-001",
+    "EDGE-DATE-LEAP-001",
+    "EDGE-DATE-TZBOUNDARY-001",
+    "EDGE-FX-ROUNDING-001",
+    "EDGE-FX-RATEMOVE-001",
+    "EDGE-DECIMAL-PRECISION-001",
+    "EDGE-TAX-RATECHANGE-001",
+    "EDGE-SCALE-LARGELIST-001",
+    "EDGE-SCALE-LARGEEXPORT-001"
+  ],
+  "missing_case_ids": [],
+  "raw": {
+    "suite": "edge-cases",
+    "title": "Date, currency, decimal, tax, and scale edge cases",
+    "description": "Bugs that surface only at boundaries: fiscal year end, DST, leap\nyear, decimal-precision rounding, FX rate movement, tax-rate change\nmid-period, list views over five thousand rows. The bar is that\nthe application handles each cleanly without silent corruption.\n",
+    "estimated_total_minutes": 80,
+    "cases": [
+      {
+        "id": "EDGE-DATE-FYBOUNDARY-001"
+      },
+      {
+        "id": "EDGE-DATE-DST-001"
+      },
+      {
+        "id": "EDGE-DATE-LEAP-001"
+      },
+      {
+        "id": "EDGE-DATE-TZBOUNDARY-001"
+      },
+      {
+        "id": "EDGE-FX-ROUNDING-001"
+      },
+      {
+        "id": "EDGE-FX-RATEMOVE-001"
+      },
+      {
+        "id": "EDGE-DECIMAL-PRECISION-001"
+      },
+      {
+        "id": "EDGE-TAX-RATECHANGE-001"
+      },
+      {
+        "id": "EDGE-SCALE-LARGELIST-001"
+      },
+      {
+        "id": "EDGE-SCALE-LARGEEXPORT-001"
+      }
+    ],
+    "completion_criteria": [
+      "Every case in the suite has a recorded pass/fail.",
+      "No silent data corruption occurred in any case."
+    ]
+  }
+}

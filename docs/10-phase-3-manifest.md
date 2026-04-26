@@ -63,6 +63,80 @@ sequence:
     note: Required to close the AP cycle.
     prerequisite_cases:
       - P3-AP-001
+  - id: P3-PAY-002
+    required: false
+    note: Batch / payment-run flow.
+    prerequisite_cases:
+      - P3-AP-001
+  - id: P3-AP-CM-001
+    required: false
+    note: Vendor credit memo (paired with vendor return / dispute).
+    prerequisite_cases:
+      - P3-AP-001
+
+  # Procurement extensions
+  - id: P3-RFQ-001
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: Multi-vendor RFQ flow.
+  - id: P3-RECV-004
+    required: false
+    note: Over-receipt tolerance handling.
+    prerequisite_cases:
+      - P3-PO-001
+  - id: P3-PO-SHORTCLOSE-001
+    required: false
+    note: Short-close partially received PO.
+    prerequisite_cases:
+      - P3-RECV-002
+
+  # Planning
+  - id: P3-SS-001
+    required: false
+    note: |
+      Configure safety stock / reorder point. Recommended before
+      P3-MRP-001 to make the MRP run produce meaningful output.
+  - id: P3-MRP-001
+    required: false
+    note: |
+      Run MRP and inspect recommendations. Useful once demand and
+      supply both exist (post-P4-QUOTE-003 and P3-RECV-001).
+    prerequisite_cases:
+      - P3-SS-001
+  - id: P3-MPS-001
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: Master production schedule feeding MRP.
+  - id: P3-FCST-001
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: Demand forecast consumed by actuals.
+  - id: P3-CAP-001
+    required: false
+    note: Finite capacity check on a scheduled work center.
+  - id: P3-ATP-001
+    required: false
+    note: Available-to-promise on a quote line.
+  - id: P3-DROPSHIP-001
+    required: false
+    scale_tags: [mid-market, enterprise]
+    note: Drop-ship from vendor direct to customer.
+
+  # Inventory extensions
+  - id: P3-PHYS-001
+    required: false
+    note: Annual physical inventory.
+  - id: P3-RESERVE-001
+    required: false
+    note: Reservation against a confirmed SO.
+  - id: P3-LOTEXP-001
+    required: false
+    note: Lot expiry tracking and FEFO consumption.
+    prerequisite_cases:
+      - P3-RECV-001
+  - id: P3-HAZMAT-001
+    required: false
+    note: Hazmat-flagged part requires SDS + shipping classification.
 
 checkpoints:
   - after: P3-PO-001

@@ -70,6 +70,20 @@ interface SessionCounts {
           </div>
           <span class="entry-arrow" aria-hidden="true">→</span>
         </a>
+
+        <a routerLink="/suites" class="surface-card surface-card-hover entry-card">
+          <div class="entry-text">
+            <span class="label-mono">suites</span>
+            <div class="entry-title">Run a cross-cutting suite</div>
+            <div class="entry-body">
+              Curated sets of cases that exercise one dimension of the
+              system: permissions, reports, edge cases, audit trail,
+              concurrency, and more. Pick a suite to scope a run to
+              just those cases.
+            </div>
+          </div>
+          <span class="entry-arrow" aria-hidden="true">→</span>
+        </a>
       </section>
 
       <section class="runs">

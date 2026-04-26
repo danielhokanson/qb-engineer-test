@@ -174,6 +174,13 @@ export class RunPage {
   readonly filteredCases = computed<Case[]>(() => {
     const s = this.session();
     if (!s) return [];
+    // Suite-scoped sessions filter by an explicit list of case IDs and
+    // ignore role/flow filtering.
+    if (s.selected_case_ids && s.selected_case_ids.length > 0) {
+      return s.selected_case_ids
+        .map(id => this.catalog.caseById(id))
+        .filter((c): c is Case => Boolean(c));
+    }
     return this.catalog.casesForRolesAndFlows(
       s.selected_roles,
       s.selected_flows ?? [],
@@ -183,6 +190,7 @@ export class RunPage {
   readonly scopeLabel = computed(() => {
     const s = this.session();
     if (!s) return '';
+    if (s.suite_id) return `suite · ${s.suite_id}`;
     if (s.selected_roles.length === 0) return 'no roles';
     if (s.selected_roles.length === 1) return s.selected_roles[0];
     return `${s.selected_roles.length} roles`;

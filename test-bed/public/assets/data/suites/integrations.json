@@ -1,0 +1,59 @@
+{
+  "id": "integrations",
+  "directory": "integrations",
+  "title": "Accounting sync, file-based import/export, EDI document classes",
+  "description": "Verify outbound accounting sync, file-based round-trips, and EDI\ninbound / outbound flows for the four canonical EDI document\nclasses used in B2B manufacturing.\n",
+  "estimated_total_minutes": 50,
+  "case_ids": [
+    "INTEG-ACCT-001",
+    "INTEG-FILE-IMP-001",
+    "INTEG-FILE-EXP-001",
+    "INTEG-EDI-850-001",
+    "INTEG-EDI-855-001",
+    "INTEG-EDI-856-001",
+    "INTEG-EDI-810-001"
+  ],
+  "planned_case_ids": [
+    "INTEG-ACCT-001",
+    "INTEG-FILE-IMP-001",
+    "INTEG-FILE-EXP-001",
+    "INTEG-EDI-850-001",
+    "INTEG-EDI-855-001",
+    "INTEG-EDI-856-001",
+    "INTEG-EDI-810-001"
+  ],
+  "missing_case_ids": [],
+  "raw": {
+    "suite": "integrations",
+    "title": "Accounting sync, file-based import/export, EDI document classes",
+    "description": "Verify outbound accounting sync, file-based round-trips, and EDI\ninbound / outbound flows for the four canonical EDI document\nclasses used in B2B manufacturing.\n",
+    "estimated_total_minutes": 50,
+    "cases": [
+      {
+        "id": "INTEG-ACCT-001"
+      },
+      {
+        "id": "INTEG-FILE-IMP-001"
+      },
+      {
+        "id": "INTEG-FILE-EXP-001"
+      },
+      {
+        "id": "INTEG-EDI-850-001"
+      },
+      {
+        "id": "INTEG-EDI-855-001"
+      },
+      {
+        "id": "INTEG-EDI-856-001"
+      },
+      {
+        "id": "INTEG-EDI-810-001"
+      }
+    ],
+    "completion_criteria": [
+      "Each integration push / pull completes without unhandled error.",
+      "Failures surface clearly to the user, not silently dropped."
+    ]
+  }
+}

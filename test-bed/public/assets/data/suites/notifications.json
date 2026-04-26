@@ -1,0 +1,50 @@
+{
+  "id": "notifications",
+  "directory": "notifications",
+  "title": "Notifications and alerts fire under the right conditions",
+  "description": "Verify each notification type fires when its trigger condition\nis met, surfaces in the right channel(s), and clears appropriately\nwhen the condition resolves.\n",
+  "estimated_total_minutes": 35,
+  "case_ids": [
+    "NOTIF-LOWSTOCK-001",
+    "NOTIF-PO-OVERDUE-001",
+    "NOTIF-PM-OVERDUE-001",
+    "NOTIF-AR-AGING-001",
+    "NOTIF-APPROVAL-001"
+  ],
+  "planned_case_ids": [
+    "NOTIF-LOWSTOCK-001",
+    "NOTIF-PO-OVERDUE-001",
+    "NOTIF-PM-OVERDUE-001",
+    "NOTIF-AR-AGING-001",
+    "NOTIF-APPROVAL-001"
+  ],
+  "missing_case_ids": [],
+  "raw": {
+    "suite": "notifications",
+    "title": "Notifications and alerts fire under the right conditions",
+    "description": "Verify each notification type fires when its trigger condition\nis met, surfaces in the right channel(s), and clears appropriately\nwhen the condition resolves.\n",
+    "estimated_total_minutes": 35,
+    "cases": [
+      {
+        "id": "NOTIF-LOWSTOCK-001"
+      },
+      {
+        "id": "NOTIF-PO-OVERDUE-001"
+      },
+      {
+        "id": "NOTIF-PM-OVERDUE-001"
+      },
+      {
+        "id": "NOTIF-AR-AGING-001"
+      },
+      {
+        "id": "NOTIF-APPROVAL-001"
+      }
+    ],
+    "completion_criteria": [
+      "Each notification fires under its documented trigger.",
+      "Each notification clears when condition resolves.",
+      "Channels (in-app, email) deliver as configured."
+    ]
+  }
+}

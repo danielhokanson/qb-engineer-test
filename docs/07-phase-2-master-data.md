@@ -38,7 +38,8 @@ flows:
   - vendor-to-asset
   - part-to-inventory
 preconditions:
-  - Foundational records exist: at least one location, work center, standard UoMs, the chart of accounts, at least one tax code, employees, calendar, and asset records. (Phase 1 outcomes.)
+  - |
+    Foundational records exist: at least one location, work center, standard UoMs, the chart of accounts, at least one tax code, employees, calendar, and asset records. (Phase 1 outcomes.)
   - You are signed in as a user with permission to manage vendors.
 steps:
   - n: 1
@@ -69,6 +70,25 @@ expected_overall: |
 pass_criteria: |
   Vendor exists AND has a unique ID AND saved values match what was entered.
 est_minutes: 6
+negative_variants:
+  - id: P2-VENDOR-001-N1
+    title: Reject vendor without required address fields
+    action: |
+      Try to save a vendor with name only (no address, no contact).
+    expected: |
+      Save is blocked with a list of missing required fields in plain
+      language.
+    pass_criteria: |
+      Save blocked AND missing fields are named.
+  - id: P2-VENDOR-001-N2
+    title: Reject invalid email on contact
+    action: |
+      Enter "not-an-email" in the contact email field. Try to save.
+    expected: |
+      Save is blocked or warns with a clear "valid email required"
+      message.
+    pass_criteria: |
+      Save blocked or warned AND error message is plain.
 ```
 
 ---
@@ -117,6 +137,27 @@ pass_criteria: |
   Two or more contacts exist AND each has a distinct role AND the
   defaults can be set per-purpose.
 est_minutes: 4
+negative_variants:
+  - id: P2-VENDOR-002-N1
+    title: Cannot demote the only default contact for a purpose
+    action: |
+      Remove the "AR contact" flag from the only contact carrying
+      it, leaving no AR default.
+    expected: |
+      The change is blocked or warns; an explicit reassignment is
+      required to leave a vendor without an AR contact.
+    pass_criteria: |
+      Vendor never silently ends up with no default for a required
+      contact role.
+  - id: P2-VENDOR-002-N2
+    title: Reject duplicate contact email on same vendor
+    action: |
+      Add a second contact with the same email as an existing one.
+    expected: |
+      Save is blocked or warns; duplicate emails are surfaced before
+      they confuse routing.
+    pass_criteria: |
+      Duplicate contact email refused or flagged.
 ```
 
 ---
@@ -168,6 +209,36 @@ why_this_matters: |
   often deal with multi-currency. ERPs that hard-code a single
   currency or single terms break this from day one.
 est_minutes: 6
+negative_variants:
+  - id: P2-VENDOR-003-N1
+    title: Reject malformed payment terms
+    action: |
+      Try to enter terms in an unparseable format ("pay whenever",
+      "Net negative-30").
+    expected: |
+      Save is blocked with a clear error explaining the expected
+      format options.
+    pass_criteria: |
+      Bad terms refused AND format guidance is given.
+  - id: P2-VENDOR-003-N2
+    title: Cannot change vendor currency once a PO exists
+    action: |
+      After at least one PO references this vendor (in a later
+      phase), return and try to change the vendor's currency.
+    expected: |
+      The change is blocked or requires explicit migration of open
+      transactions. Silent currency change must not affect existing
+      records.
+    pass_criteria: |
+      Currency change post-transactions is gated.
+  - id: P2-VENDOR-003-N3
+    title: Reject discount percent above 100
+    action: |
+      Try to save terms "150/10 Net 30" (150% discount).
+    expected: |
+      Save is blocked with a clear out-of-range error.
+    pass_criteria: |
+      Discount above 100% refused.
 ```
 
 ---
@@ -222,6 +293,26 @@ notes: |
   This case is US-specific. International deployments may track
   equivalent per-jurisdiction info (W-8BEN for foreign vendors,
   GST/VAT registration, etc.).
+negative_variants:
+  - id: P2-VENDOR-004-N1
+    title: Reject malformed EIN
+    action: |
+      Enter an EIN with the wrong digit count (e.g., "12-345" or
+      "1234567890").
+    expected: |
+      Save is blocked with a clear "EIN must be 9 digits" message.
+    pass_criteria: |
+      Malformed EIN refused.
+  - id: P2-VENDOR-004-N2
+    title: 1099-eligible vendor cannot save without TIN
+    action: |
+      Mark a vendor 1099-eligible but leave the EIN/SSN blank. Save.
+    expected: |
+      Save is blocked or warns that 1099 reporting requires a TIN
+      on file.
+    pass_criteria: |
+      1099-eligible without TIN is refused or surfaces an explicit
+      warning.
 ```
 
 ---
@@ -265,6 +356,25 @@ expected_overall: |
 pass_criteria: |
   New POs blocked AND historical records preserved.
 est_minutes: 4
+negative_variants:
+  - id: P2-VENDOR-005-N1
+    title: Cannot deactivate vendor with open POs
+    action: |
+      Once an open PO exists for the vendor, try to deactivate them.
+    expected: |
+      Deactivation is blocked or warns, naming the open POs that
+      must be closed or reassigned first.
+    pass_criteria: |
+      Deactivation gated by open transactions.
+  - id: P2-VENDOR-005-N2
+    title: Reactivation restores selectability
+    action: |
+      Reactivate the deactivated vendor. Try to create a new PO.
+    expected: |
+      Vendor is selectable again. No phantom "deactivated" flag
+      remains on the record.
+    pass_criteria: |
+      Reactivation is clean and complete.
 ```
 
 ---
@@ -285,7 +395,8 @@ flows:
   - lead-to-customer
   - quote-to-cash
 preconditions:
-  - Foundational records exist: at least one location, one work center, standard units of measure, the chart of accounts, at least one tax code, the first employee, a default calendar, and at least one fixed asset. (Phase 1 outcomes.)
+  - |
+    Foundational records exist: at least one location, one work center, standard units of measure, the chart of accounts, at least one tax code, the first employee, a default calendar, and at least one fixed asset. (Phase 1 outcomes.)
   - Tax codes from P1-TAX-001 exist.
 steps:
   - n: 1
@@ -316,6 +427,26 @@ expected_overall: |
 pass_criteria: |
   Customer exists AND saved values match AND credit limit is set.
 est_minutes: 5
+negative_variants:
+  - id: P2-CUST-001-N1
+    title: Reject negative credit limit
+    action: |
+      Try to save a customer with credit limit = -$5,000.
+    expected: |
+      Submission is blocked with a clear error.
+    pass_criteria: |
+      Negative credit limit rejected.
+  - id: P2-CUST-001-N2
+    title: Reject duplicate customer name without confirmation
+    action: |
+      Try to create a second customer with the same name as the first.
+    expected: |
+      Either the application blocks (if names are unique by rule), or
+      surfaces a duplicate-detection warning that lists the existing
+      match and requires explicit confirmation. Silent creation of a
+      duplicate is the failure mode.
+    pass_criteria: |
+      No silent duplicate AND user gets a chance to merge or cancel.
 ```
 
 ---
@@ -362,6 +493,26 @@ expected_overall: |
 pass_criteria: |
   Multiple addresses exist AND default is selectable.
 est_minutes: 4
+negative_variants:
+  - id: P2-CUST-002-N1
+    title: Reject ship-to address with missing required fields
+    action: |
+      Try to add a ship-to address with no street or postal code.
+    expected: |
+      Save is blocked with a per-field error listing the missing
+      required parts.
+    pass_criteria: |
+      Missing required address fields are individually identified.
+  - id: P2-CUST-002-N2
+    title: Cannot delete a ship-to referenced by an open order
+    action: |
+      Once an open sales order ships to a given address, try to
+      delete that address.
+    expected: |
+      Deletion is blocked or warns, naming the order that depends
+      on the address.
+    pass_criteria: |
+      Address deletion gated by open references.
 ```
 
 ---
@@ -420,6 +571,27 @@ why_this_matters: |
   with no enforcement at all expose the business to bad debt.
   Both extremes are bugs.
 est_minutes: 8
+negative_variants:
+  - id: P2-CUST-003-N1
+    title: Sales rep cannot self-approve own over-limit order
+    action: |
+      As the same Sales / Account Manager who created the over-limit
+      order, attempt to apply the controller override.
+    expected: |
+      The override is unavailable to the same user who created the
+      order. A Controller (or other authorized user) must apply it.
+    pass_criteria: |
+      Self-approval of own over-limit orders is refused.
+  - id: P2-CUST-003-N2
+    title: Override requires a documented reason
+    action: |
+      As the Controller, attempt to override without entering a
+      reason in the comments / justification field.
+    expected: |
+      Save is blocked or warns; the override requires a recorded
+      justification for audit.
+    pass_criteria: |
+      Override without reason is refused.
 ```
 
 ---
@@ -465,6 +637,28 @@ expected_overall: |
 pass_criteria: |
   Customer carries EUR currency AND derived order amounts respect it.
 est_minutes: 5
+negative_variants:
+  - id: P2-CUST-004-N1
+    title: Reject malformed VAT ID
+    action: |
+      Enter a VAT ID that does not match the country's published
+      format (e.g., a German VAT ID without the "DE" prefix).
+    expected: |
+      Save is blocked or warns; the VAT ID format is validated per
+      country.
+    pass_criteria: |
+      Malformed VAT ID is refused or flagged with country-specific
+      guidance.
+  - id: P2-CUST-004-N2
+    title: Cannot mix currencies on a single sales order
+    action: |
+      On a draft sales order for the EUR customer, try to add a line
+      priced in USD.
+    expected: |
+      The application either converts to the order currency at the
+      configured rate or blocks the mix with a clear error.
+    pass_criteria: |
+      Currency consistency is enforced on the order.
 ```
 
 ---
@@ -516,6 +710,36 @@ pass_criteria: |
   Part record exists AND default vendor links correctly AND UoM
   is what was entered.
 est_minutes: 5
+negative_variants:
+  - id: P2-PART-001-N1
+    title: Reject duplicate part number
+    action: |
+      Try to create a second part with part number
+      "RM-STEEL-1018-3X3".
+    expected: |
+      Save is blocked with a clear "part number already exists"
+      message identifying the existing record.
+    pass_criteria: |
+      Duplicate part number refused.
+  - id: P2-PART-001-N2
+    title: Reject part with no unit of measure
+    action: |
+      Try to save a part with the UoM field cleared.
+    expected: |
+      Save is blocked with a clear "unit of measure is required"
+      error.
+    pass_criteria: |
+      Save refused without UoM.
+  - id: P2-PART-001-N3
+    title: Reject part pointing at deactivated vendor
+    action: |
+      Deactivate Pacific Steel Supply, then try to save a new part
+      using it as the default vendor.
+    expected: |
+      The vendor is filtered out of the dropdown OR the save is
+      blocked with a clear "vendor is inactive" message.
+    pass_criteria: |
+      No part references an inactive vendor as its default.
 ```
 
 ---
@@ -560,6 +784,25 @@ pass_criteria: |
   Part exists AND has a list price AND is classified as finished
   goods (not raw material).
 est_minutes: 4
+negative_variants:
+  - id: P2-PART-002-N1
+    title: Reject negative list price
+    action: |
+      Try to set the list price to -$45.00.
+    expected: |
+      Save is blocked with a "price must be non-negative" message.
+    pass_criteria: |
+      Negative price refused.
+  - id: P2-PART-002-N2
+    title: Reject finished goods with no sales GL account
+    action: |
+      Try to save a finished goods part with the sales GL account
+      blank.
+    expected: |
+      Save is blocked or warns that finished goods require a sales
+      account.
+    pass_criteria: |
+      FG without sales account refused.
 ```
 
 ---
@@ -604,6 +847,18 @@ why_this_matters: |
   every product that might have used that material rather than
   the specific products that did.
 est_minutes: 4
+negative_variants:
+  - id: P2-PART-003-N1
+    title: Cannot disable lot tracking once on-hand inventory exists
+    action: |
+      Once any lot-tracked inventory has been received for the part,
+      try to disable lot tracking.
+    expected: |
+      The change is blocked with a clear message that historical
+      inventory still requires lot context, or requires explicit
+      acknowledgment of breaking traceability.
+    pass_criteria: |
+      Lot tracking cannot be silently disabled with on-hand stock.
 ```
 
 ---
@@ -647,6 +902,27 @@ pass_criteria: |
   Serial tracking is enabled AND the format (if configured) is
   applied on the next completion.
 est_minutes: 4
+negative_variants:
+  - id: P2-PART-004-N1
+    title: Reject malformed serial format pattern
+    action: |
+      Enter a serial format pattern with mismatched braces or
+      unsupported tokens (e.g., "BRA-{ZZZZ}-{nnnn").
+    expected: |
+      Save is blocked with a clear message identifying the bad
+      token / unmatched delimiter.
+    pass_criteria: |
+      Malformed format pattern is refused with actionable detail.
+  - id: P2-PART-004-N2
+    title: Reject duplicate serial number on completion
+    action: |
+      In a later phase, try to complete two units with the same
+      serial number.
+    expected: |
+      The second completion is blocked with a clear "serial number
+      already in use" message.
+    pass_criteria: |
+      Duplicate serial refused at completion.
 ```
 
 ---
@@ -756,6 +1032,28 @@ pass_criteria: |
   BOM exists AND lists all three components AND quantities are
   per-finished-unit.
 est_minutes: 8
+negative_variants:
+  - id: P2-BOM-001-N1
+    title: Reject BOM line with same component twice
+    action: |
+      Try to add the same component (e.g., RM-STEEL-1018-3X3) on two
+      separate BOM lines without an explicit "alternate" relationship.
+    expected: |
+      Application blocks the duplicate with a clear message OR merges
+      the lines automatically. Silent acceptance of two independent
+      lines for the same component is the failure mode.
+    pass_criteria: |
+      Duplicate handled cleanly with no silent acceptance.
+  - id: P2-BOM-001-N2
+    title: Reject BOM with circular reference
+    action: |
+      Try to set up a sub-assembly where BOM(A) contains B, and BOM(B)
+      contains A.
+    expected: |
+      Application detects the cycle and blocks the save with a clear
+      error.
+    pass_criteria: |
+      Cycle detected AND save blocked.
 ```
 
 ---
@@ -804,6 +1102,27 @@ pass_criteria: |
   Exploded view shows all levels AND raw material totals are correct
   (rolled up across the hierarchy).
 est_minutes: 10
+negative_variants:
+  - id: P2-BOM-002-N1
+    title: Reject sub-assembly with no BOM of its own
+    action: |
+      Try to add SA-FRAME-A1 as a component before its own BOM has
+      been defined.
+    expected: |
+      Save is blocked or warns; sub-assemblies cannot be referenced
+      until they are built.
+    pass_criteria: |
+      Empty-BOM sub-assembly cannot be referenced as a component.
+  - id: P2-BOM-002-N2
+    title: Cycle detection across multiple levels
+    action: |
+      Configure FG-CART-A1 → SA-FRAME-A1 → FG-CART-A1 (a 3-level
+      cycle).
+    expected: |
+      The application detects the cycle even across multiple levels
+      and blocks the save with a clear error.
+    pass_criteria: |
+      Multi-level cycles are caught.
 ```
 
 ---
@@ -853,6 +1172,28 @@ why_this_matters: |
   was active when the work order was released — not the latest. Without
   revision tracking, this is impossible to enforce.
 est_minutes: 6
+negative_variants:
+  - id: P2-BOM-003-N1
+    title: Cannot edit a released BOM revision in place
+    action: |
+      Open the previously active BOM revision and try to edit it
+      directly.
+    expected: |
+      Edits are blocked; the user must create a new revision.
+      Released history is immutable.
+    pass_criteria: |
+      Old revisions cannot be retroactively modified.
+  - id: P2-BOM-003-N2
+    title: Reject revision with future effective date that overlaps current
+    action: |
+      Save a revision effective today while the prior revision was
+      effective from yesterday with no end date.
+    expected: |
+      Application either auto-closes the prior revision at today, or
+      blocks the save with a clear "overlapping effective dates"
+      error.
+    pass_criteria: |
+      No two revisions are simultaneously effective.
 ```
 
 ---
@@ -891,6 +1232,17 @@ expected_overall: |
 pass_criteria: |
   Alternate is recorded AND can be selected at issue time.
 est_minutes: 5
+negative_variants:
+  - id: P2-BOM-004-N1
+    title: Reject alternate with mismatched UoM
+    action: |
+      Try to add an alternate component whose UoM differs from the
+      primary's.
+    expected: |
+      Save is blocked or warns; alternates must share the BOM line's
+      UoM (or the system must explicitly handle conversion).
+    pass_criteria: |
+      UoM mismatch is surfaced before issue time.
 ```
 
 ---
@@ -941,6 +1293,35 @@ pass_criteria: |
   All 4 operations exist in correct order AND each links to its work
   center AND time values match what was entered.
 est_minutes: 10
+negative_variants:
+  - id: P2-ROUTE-001-N1
+    title: Reject negative setup or run time
+    action: |
+      Try to save an operation with setup of -10 minutes or run of
+      -2 minutes.
+    expected: |
+      Save is blocked with a "times must be non-negative" message.
+    pass_criteria: |
+      Negative time values refused.
+  - id: P2-ROUTE-001-N2
+    title: Reject operation pointing at deleted work center
+    action: |
+      Try to save a routing operation referencing a work center that
+      has been deactivated.
+    expected: |
+      The dropdown excludes inactive work centers, or the save is
+      blocked with a clear message.
+    pass_criteria: |
+      Routing cannot point at an inactive work center.
+  - id: P2-ROUTE-001-N3
+    title: Reject routing with no operations
+    action: |
+      Try to save a routing with zero operations.
+    expected: |
+      Save is blocked with a clear "at least one operation is
+      required" message.
+    pass_criteria: |
+      Empty routing refused.
 ```
 
 ---
@@ -1000,6 +1381,25 @@ why_this_matters: |
   natively understand "this part leaves the building, comes back,
   and continues" or every subcontract becomes a manual one-off.
 est_minutes: 10
+negative_variants:
+  - id: P2-ROUTE-002-N1
+    title: Reject subcontract op without vendor
+    action: |
+      Try to save a subcontract operation with no vendor selected.
+    expected: |
+      Save is blocked with a clear "vendor is required for
+      subcontract operations" message.
+    pass_criteria: |
+      Subcontract op without vendor refused.
+  - id: P2-ROUTE-002-N2
+    title: Reject subcontract turn-time of zero
+    action: |
+      Set the subcontract operation's turn-time to 0 days.
+    expected: |
+      Save is blocked or warns; subcontracts that take no time are
+      almost always a misconfiguration.
+    pass_criteria: |
+      Zero turn-time refused or flagged.
 ```
 
 ---
@@ -1047,6 +1447,18 @@ notes: |
   Some ERPs implement only sequential routings. If parallel routing
   doesn't work, that's a real limitation worth documenting; flag it
   as a bug rather than working around it.
+negative_variants:
+  - id: P2-ROUTE-003-N1
+    title: Parallel branches must merge before downstream operations
+    action: |
+      Try to save a routing where one branch has a downstream
+      operation that does not wait for the other branch to complete.
+    expected: |
+      Save is blocked or warns; downstream operations must explicitly
+      depend on the merge of all parallel branches.
+    pass_criteria: |
+      Branches merge cleanly before downstream operations are
+      released.
 ```
 
 ---
@@ -1100,6 +1512,30 @@ expected_overall: |
 pass_criteria: |
   Order line shows $35.00, not $45.00.
 est_minutes: 8
+negative_variants:
+  - id: P2-PRICE-001-N1
+    title: Reject price list with effective date in the past requiring re-pricing
+    action: |
+      Save a price list with an effective date earlier than today
+      while open quotes exist.
+    expected: |
+      The application surfaces affected open quotes and asks how to
+      handle them (re-price, leave as-is) rather than silently
+      changing pricing.
+    pass_criteria: |
+      Backdated price list cannot silently retroactively change open
+      quotes.
+  - id: P2-PRICE-001-N2
+    title: Customer assigned to multiple price lists picks one deterministically
+    action: |
+      Assign two price lists to the same customer with conflicting
+      lines for the same part.
+    expected: |
+      The application either rejects the dual assignment or applies
+      a documented precedence (e.g., most-recent effective date)
+      visible to the user.
+    pass_criteria: |
+      Conflict resolution is explicit and documented.
 ```
 
 ---
@@ -1139,6 +1575,27 @@ expected_overall: |
 pass_criteria: |
   All three lines show the expected price per their quantity tier.
 est_minutes: 5
+negative_variants:
+  - id: P2-PRICE-002-N1
+    title: Reject overlapping quantity break tiers
+    action: |
+      Try to save tiers "1-10 at $45" and "5-25 at $40" (overlapping
+      ranges).
+    expected: |
+      Save is blocked with a clear "ranges must not overlap" error.
+    pass_criteria: |
+      Overlapping tiers refused.
+  - id: P2-PRICE-002-N2
+    title: Reject ascending price across ascending quantity
+    action: |
+      Try to save tiers where higher quantity costs more per unit
+      (e.g., 1-9 at $35, 50+ at $45).
+    expected: |
+      Save is blocked or surfaces an explicit warning that quantity
+      breaks are typically descending. The user must confirm the
+      unusual configuration.
+    pass_criteria: |
+      Inverted price-per-quantity surfaces an explicit warning.
 ```
 
 ---
@@ -1183,6 +1640,25 @@ pass_criteria: |
   PO line cost matches the vendor pricing record AND lead time and MOQ
   are visible.
 est_minutes: 5
+negative_variants:
+  - id: P2-PRICE-003-N1
+    title: Reject negative lead time or MOQ
+    action: |
+      Try to save vendor pricing with lead time of -7 days or MOQ
+      of -50.
+    expected: |
+      Save is blocked with a "must be non-negative" error per field.
+    pass_criteria: |
+      Negative lead time and MOQ refused.
+  - id: P2-PRICE-003-N2
+    title: PO below MOQ is flagged
+    action: |
+      Create a draft PO line for 50 feet (below MOQ of 100).
+    expected: |
+      The application warns or blocks at submission, naming the MOQ
+      requirement.
+    pass_criteria: |
+      Below-MOQ order surfaces a clear warning before submission.
 ```
 
 ---
@@ -1225,6 +1701,18 @@ why_this_matters: |
   Real bugs in this area: a salesperson finds a part in search and
   quotes it without realizing it's pre-release. The deal closes,
   the customer expects shipment, and there's no production-ready BOM.
+negative_variants:
+  - id: P2-RD-001-N1
+    title: Prototype cannot be added to a customer-facing quote
+    action: |
+      Open a quote for ACME Industrial and try to add the prototype
+      part as a quote line.
+    expected: |
+      The application either filters out prototype parts from quote
+      search OR rejects the line with a clear "not approved for sale"
+      message.
+    pass_criteria: |
+      Prototype part cannot be quoted to a customer.
 ```
 
 ---
@@ -1274,6 +1762,26 @@ pass_criteria: |
   ECR was submitted AND went through approval AND resulted in a
   trackable BOM change.
 est_minutes: 10
+negative_variants:
+  - id: P2-RD-002-N1
+    title: ECR submitter cannot self-approve
+    action: |
+      As the same user who submitted the ECR, attempt to approve it.
+    expected: |
+      The approve action is unavailable to the submitter. A
+      separate authorized user must approve.
+    pass_criteria: |
+      Self-approval of own ECR is refused.
+  - id: P2-RD-002-N2
+    title: Reject ECR with no proposed change description
+    action: |
+      Try to submit an ECR with the description / change field
+      blank.
+    expected: |
+      Submission is blocked with a clear "description is required"
+      error.
+    pass_criteria: |
+      Empty ECR refused.
 ```
 
 ---
@@ -1325,6 +1833,16 @@ notes: |
   Customer-feedback-to-prototype traceability is the foundation for
   reporting on R&D ROI by customer / segment. Without it, leadership
   can't answer "which customers are driving our product roadmap?"
+negative_variants:
+  - id: P2-RD-003-N1
+    title: Cannot link prototype to deactivated customer
+    action: |
+      Deactivate ACME Industrial and try to create a prototype
+      linked to its feedback.
+    expected: |
+      The link is blocked or warns that the customer is inactive.
+    pass_criteria: |
+      Inactive customer cannot be referenced.
 ```
 
 ---
@@ -1365,6 +1883,24 @@ expected_overall: |
 pass_criteria: |
   Type changed AND sellable AND prototype history retained.
 est_minutes: 5
+negative_variants:
+  - id: P2-RD-004-N1
+    title: Reject promotion of prototype without released BOM and routing
+    action: |
+      Try to promote a prototype that has either no BOM or no
+      routing.
+    expected: |
+      Promotion is blocked with a clear list of missing prerequisites.
+    pass_criteria: |
+      Promotion gated by complete BOM and routing.
+  - id: P2-RD-004-N2
+    title: Promotion requires approver signoff
+    action: |
+      Attempt to promote without an approval signature recorded.
+    expected: |
+      Promotion is blocked or warns that approval is required.
+    pass_criteria: |
+      Promotion without signoff refused.
 ```
 
 ---
@@ -1383,7 +1919,8 @@ roles:
 flows:
   - lead-to-customer
 preconditions:
-  - Foundational records exist: at least one location, one work center, standard units of measure, the chart of accounts, at least one tax code, the first employee, a default calendar, and at least one fixed asset. (Phase 1 outcomes.)
+  - |
+    Foundational records exist: at least one location, one work center, standard units of measure, the chart of accounts, at least one tax code, the first employee, a default calendar, and at least one fixed asset. (Phase 1 outcomes.)
 steps:
   - n: 1
     action: |
@@ -1406,6 +1943,24 @@ expected_overall: |
 pass_criteria: |
   Lead exists AND has a source AND has a contact.
 est_minutes: 4
+negative_variants:
+  - id: P2-LEAD-001-N1
+    title: Reject lead with no contact information
+    action: |
+      Try to save a lead with no email and no phone number.
+    expected: |
+      Save is blocked with a clear "at least one contact method is
+      required" error.
+    pass_criteria: |
+      Lead without contact info refused.
+  - id: P2-LEAD-001-N2
+    title: Reject negative estimated deal size
+    action: |
+      Try to save a lead with estimated deal size of -$10,000.
+    expected: |
+      Save is blocked with a "must be non-negative" error.
+    pass_criteria: |
+      Negative deal size refused.
 ```
 
 ---
@@ -1453,6 +2008,27 @@ pass_criteria: |
   Customer exists AND original lead source visible AND lead notes
   preserved.
 est_minutes: 6
+negative_variants:
+  - id: P2-LEAD-002-N1
+    title: Cannot convert an already-converted lead twice
+    action: |
+      After converting Northwest Conveyors, try to convert the same
+      lead again.
+    expected: |
+      The action is unavailable or surfaces a clear "already
+      converted" message linking to the resulting customer.
+    pass_criteria: |
+      Double-conversion is refused.
+  - id: P2-LEAD-002-N2
+    title: Conversion requires the customer-side required fields
+    action: |
+      Attempt to confirm conversion with the new customer's billing
+      address blank.
+    expected: |
+      Save is blocked with a per-field error naming each missing
+      required value.
+    pass_criteria: |
+      Conversion without required customer fields is refused.
 ```
 
 ---

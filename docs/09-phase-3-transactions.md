@@ -39,7 +39,8 @@ scale_tags:
   - mid-market
   - enterprise
 preconditions:
-  - Phase 2 master data exists: at least one vendor, one customer, raw and finished parts, a BOM, a routing, and pricing — all with their supporting fields populated. (Phase 2 outcomes.)
+  - |
+    Phase 2 master data exists: at least one vendor, one customer, raw and finished parts, a BOM, a routing, and pricing — all with their supporting fields populated. (Phase 2 outcomes.)
   - At least one part and one vendor exist.
 steps:
   - n: 1
@@ -68,6 +69,35 @@ expected_overall: |
 pass_criteria: |
   Requisition was submitted AND approved AND linked to a downstream PO.
 est_minutes: 6
+negative_variants:
+  - id: P3-REQ-001-N1
+    title: Submitter cannot self-approve own requisition
+    action: |
+      As the same user who submitted the requisition, attempt to
+      approve it.
+    expected: |
+      The approve action is unavailable to the submitter.
+    pass_criteria: |
+      Self-approval refused.
+  - id: P3-REQ-001-N2
+    title: Reject requisition with needed-by in the past
+    action: |
+      Submit a requisition with a needed-by date one week before
+      today.
+    expected: |
+      Save is blocked or warns; past-dated need is almost always a
+      data entry error.
+    pass_criteria: |
+      Past needed-by surfaces a clear warning before submission.
+  - id: P3-REQ-001-N3
+    title: Reject requisition with no justification
+    action: |
+      Submit a requisition with the justification field empty.
+    expected: |
+      Save is blocked with a clear "justification is required"
+      message.
+    pass_criteria: |
+      Empty justification refused.
 ```
 
 ---
@@ -121,6 +151,27 @@ pass_criteria: |
   PO issued with stable number AND lines reflect entered values
   AND it appears in the open-PO list.
 est_minutes: 8
+negative_variants:
+  - id: P3-PO-001-N1
+    title: Reject PO line with negative or zero quantity
+    action: |
+      Try to add a PO line with quantity = -10, then again with
+      quantity = 0.
+    expected: |
+      Both submissions are blocked with clear errors. PO does not
+      issue.
+    pass_criteria: |
+      Both rejected AND error messages plain.
+  - id: P3-PO-001-N2
+    title: Reject PO to deactivated vendor
+    action: |
+      Deactivate the vendor (per P2-VENDOR-005) and then try to issue
+      a PO referencing them.
+    expected: |
+      Vendor is filtered out of the picker, OR submission is blocked
+      with a clear "vendor inactive" message.
+    pass_criteria: |
+      No PO issued to inactive vendor.
 ```
 
 ---
@@ -169,6 +220,26 @@ why_this_matters: |
   POs to the same vendor for the same delivery — that's friction
   that real shops don't accept.
 est_minutes: 8
+negative_variants:
+  - id: P3-PO-002-N1
+    title: Fixed-asset line cannot post to inventory account
+    action: |
+      Try to set a fixed-asset line's GL account to an inventory
+      account.
+    expected: |
+      Save is blocked with a clear "fixed-asset line must post to
+      a capitalization account" message.
+    pass_criteria: |
+      Account-class mismatch refused.
+  - id: P3-PO-002-N2
+    title: Reject fixed-asset line without estimated useful life
+    action: |
+      Try to save a fixed-asset line without entering useful life.
+    expected: |
+      Save is blocked with a clear "useful life is required for
+      capitalization" message.
+    pass_criteria: |
+      Useful life is mandatory on fixed-asset lines.
 ```
 
 ---
@@ -214,6 +285,36 @@ pass_criteria: |
   Old version preserved AND new version active AND change history
   visible.
 est_minutes: 6
+negative_variants:
+  - id: P3-PO-003-N1
+    title: Cannot reduce PO line below quantity already received
+    action: |
+      After 100 of 500 ft has been received, try to amend the line
+      down to 50 ft total.
+    expected: |
+      Save is blocked with a clear "amount already received exceeds
+      new quantity" message.
+    pass_criteria: |
+      Amendment below received quantity is refused.
+  - id: P3-PO-003-N2
+    title: Reject amendment with no change reason
+    action: |
+      Try to save the amendment without entering a reason / change
+      note.
+    expected: |
+      Save is blocked or warns that amendments require a recorded
+      reason for audit.
+    pass_criteria: |
+      Reason-less amendment refused.
+  - id: P3-PO-003-N3
+    title: Cannot amend a fully closed PO
+    action: |
+      Close the PO (or fully receive it) and try to amend.
+    expected: |
+      Amendment is unavailable on closed POs; the user must reopen
+      with explicit authority.
+    pass_criteria: |
+      Closed-PO amendment refused.
 ```
 
 ---
@@ -331,6 +432,24 @@ pass_criteria: |
   Inventory matches partial quantity AND PO line still open AND
   remaining quantity correct.
 est_minutes: 5
+negative_variants:
+  - id: P3-RECV-002-N1
+    title: Reject negative or zero receipt quantity
+    action: |
+      Try to record a receipt of 0 or -10 units.
+    expected: |
+      Save is blocked with a clear "quantity must be positive"
+      message.
+    pass_criteria: |
+      Non-positive receipt refused.
+  - id: P3-RECV-002-N2
+    title: Reject receipt against a cancelled PO
+    action: |
+      Cancel a PO, then try to receive against it.
+    expected: |
+      The receipt is blocked with a clear "PO is cancelled" message.
+    pass_criteria: |
+      Receipt against cancelled PO refused.
 ```
 
 ---
@@ -377,6 +496,27 @@ pass_criteria: |
   Accepted quantity in regular inventory AND rejected quantity
   isolated AND RTV document created.
 est_minutes: 8
+negative_variants:
+  - id: P3-RECV-003-N1
+    title: Reject damage entry without reason or quantity detail
+    action: |
+      Mark units as damaged but leave the damage reason blank.
+    expected: |
+      Save is blocked or warns; quality rejection requires a recorded
+      reason.
+    pass_criteria: |
+      Damage entry without reason refused.
+  - id: P3-RECV-003-N2
+    title: Rejected material does not enter sellable inventory
+    action: |
+      After splitting accepted vs. rejected, query stock-on-hand for
+      the part.
+    expected: |
+      Sellable on-hand reflects only the accepted quantity. The
+      rejected portion appears under quarantine / non-nettable
+      status.
+    pass_criteria: |
+      No rejected material is selectable for picks or shipments.
 ```
 
 ---
@@ -433,6 +573,25 @@ why_this_matters: |
   doing journal-entry corrections at month-end. Catching this at
   commissioning time saves real time.
 est_minutes: 10
+negative_variants:
+  - id: P3-ASSET-COMM-001-N1
+    title: Reject in-service date in the future
+    action: |
+      Try to set the in-service date one year from today and
+      complete commissioning.
+    expected: |
+      Save is blocked or warns; depreciation cannot start before the
+      asset is in service.
+    pass_criteria: |
+      Future in-service date is refused or surfaces a warning.
+  - id: P3-ASSET-COMM-001-N2
+    title: Reject duplicate asset tag at commissioning
+    action: |
+      Use an asset tag already assigned to another asset.
+    expected: |
+      Save is blocked with a clear "asset tag already in use" error.
+    pass_criteria: |
+      Duplicate tag refused.
 ```
 
 ---
@@ -454,7 +613,8 @@ flows:
   - part-to-inventory
 preconditions:
   - A purchase order has been issued to a vendor, has a stable PO number, and has at least one line for a part with quantity and price. (Established by P3-PO-001.)
-  - First inventory exists from a vendor receipt: the PO is in Received or Closed status, lot numbers have been recorded for lot-tracked items, and GR/IR is pending the vendor invoice. (Established by P3-RECV-001.)
+  - |
+    First inventory exists from a vendor receipt: the PO is in Received or Closed status, lot numbers have been recorded for lot-tracked items, and GR/IR is pending the vendor invoice. (Established by P3-RECV-001.)
 steps:
   - n: 1
     action: |
@@ -490,6 +650,25 @@ negative_variants:
       routes to controller for tolerance approval.
     pass_criteria: |
       Mismatch flagged AND requires extra approval to proceed.
+  - id: P3-AP-001-N2
+    title: Reject invoice dated before the PO date
+    action: |
+      Enter a vendor invoice dated one week before the PO's issue date.
+    expected: |
+      System flags the date mismatch. Either blocks the entry or
+      requires controller override with reason.
+    pass_criteria: |
+      Backdate vs. PO is flagged AND override is auditable.
+  - id: P3-AP-001-N3
+    title: Reject duplicate vendor invoice number
+    action: |
+      Enter a second invoice with the same vendor invoice number for
+      the same vendor.
+    expected: |
+      Submission is blocked with a clear "duplicate invoice number for
+      vendor" message.
+    pass_criteria: |
+      Duplicate blocked AND existing invoice referenced in the error.
 ```
 
 ---
@@ -540,6 +719,35 @@ pass_criteria: |
   All 5 parts have correct opening quantity AND a corresponding
   equity GL entry exists.
 est_minutes: 12
+negative_variants:
+  - id: P3-OB-001-N1
+    title: Reject opening balance with negative quantity
+    action: |
+      Try to post an opening line with quantity = -50.
+    expected: |
+      Save is blocked with a "must be non-negative" error.
+    pass_criteria: |
+      Negative opening balance refused.
+  - id: P3-OB-001-N2
+    title: Reject opening balance posting after first transaction
+    action: |
+      After any post-cutover transaction is recorded, try to post
+      additional opening balances.
+    expected: |
+      The action is blocked or requires explicit override; opening
+      balances are intended to be a single-time event at cutover.
+    pass_criteria: |
+      Late opening-balance entries are gated and audited.
+  - id: P3-OB-001-N3
+    title: Reject opening balance with zero unit cost
+    action: |
+      Try to post an opening line with unit cost of $0.
+    expected: |
+      Save is blocked or warns; zero-cost opening inventory distorts
+      reports.
+    pass_criteria: |
+      Zero-cost opening balance refused or surfaces an explicit
+      warning.
 ```
 
 ---
@@ -589,6 +797,27 @@ expected_overall: |
 pass_criteria: |
   AR and AP totals match what was entered AND aging is correct.
 est_minutes: 10
+negative_variants:
+  - id: P3-OB-002-N1
+    title: Reject opening AR with future invoice date
+    action: |
+      Enter an opening AR line with original invoice date in the
+      future.
+    expected: |
+      Save is blocked with a clear "invoice date cannot be after
+      today" error.
+    pass_criteria: |
+      Future-dated opening AR refused.
+  - id: P3-OB-002-N2
+    title: Reject opening AP without vendor invoice number
+    action: |
+      Try to save an opening AP entry with the original vendor
+      invoice number blank.
+    expected: |
+      Save is blocked or warns; opening AP requires the source
+      invoice reference.
+    pass_criteria: |
+      Opening AP without source reference refused.
 ```
 
 ---
@@ -607,7 +836,8 @@ roles:
 flows:
   - cycle-count
 preconditions:
-  - Opening inventory balances have been posted: at least five parts have starting quantities and unit costs as of a cutover date, with the offsetting equity / opening-balance GL entry. (Established by P3-OB-001.)
+  - |
+    Opening inventory balances have been posted: at least five parts have starting quantities and unit costs as of a cutover date, with the offsetting equity / opening-balance GL entry. (Established by P3-OB-001.)
 modality:
   - scanner
   - manual-entry
@@ -639,6 +869,36 @@ expected_overall: |
 pass_criteria: |
   Counts entered AND variance flagged AND adjustment posted.
 est_minutes: 12
+negative_variants:
+  - id: P3-COUNT-001-N1
+    title: Reject negative count quantity
+    action: |
+      Try to enter a count of -5 for a part.
+    expected: |
+      Save is blocked with a clear "count must be non-negative"
+      message.
+    pass_criteria: |
+      Negative count refused.
+  - id: P3-COUNT-001-N2
+    title: Variance approval requires reason
+    action: |
+      Try to approve a variance adjustment without entering a
+      reason / explanation.
+    expected: |
+      Save is blocked or warns; variance write-offs must be
+      auditable.
+    pass_criteria: |
+      Variance approval without reason refused.
+  - id: P3-COUNT-001-N3
+    title: Cannot approve own count and own variance
+    action: |
+      As the same user who entered the count, try to approve the
+      resulting variance adjustment.
+    expected: |
+      The approve action is unavailable to the counter; segregation
+      of duties is enforced.
+    pass_criteria: |
+      Self-approval of own variance refused.
 ```
 
 ---
@@ -684,6 +944,25 @@ pass_criteria: |
   Source quantity decreased AND dest quantity increased AND total
   unchanged AND no GL postings.
 est_minutes: 4
+negative_variants:
+  - id: P3-COUNT-002-N1
+    title: Reject transfer exceeding on-hand at source bin
+    action: |
+      Try to move 9,999 ft from a bin holding only 100 ft.
+    expected: |
+      Save is blocked with a clear "insufficient quantity at source
+      bin" message.
+    pass_criteria: |
+      Over-transfer refused.
+  - id: P3-COUNT-002-N2
+    title: Reject transfer to same bin
+    action: |
+      Try to transfer from bin A to bin A.
+    expected: |
+      Save is blocked with a "source and destination must differ"
+      error.
+    pass_criteria: |
+      Same-bin transfer refused.
 ```
 
 ---
@@ -728,6 +1007,35 @@ expected_overall: |
 pass_criteria: |
   Invoice marked paid AND cash and AP postings are correct.
 est_minutes: 6
+negative_variants:
+  - id: P3-PAY-001-N1
+    title: Reject payment exceeding invoice balance
+    action: |
+      Try to record payment of $5,000 on an invoice with a $2,250
+      balance remaining.
+    expected: |
+      Save is blocked or warns; over-payment requires explicit
+      handling (credit-on-account) and confirmation.
+    pass_criteria: |
+      Over-payment is gated and explicit.
+  - id: P3-PAY-001-N2
+    title: Reject double payment of same invoice
+    action: |
+      After the invoice is marked paid, try to issue a second
+      payment for the same invoice.
+    expected: |
+      The invoice is filtered out of the payable list, or the second
+      payment is blocked with a "already paid" error.
+    pass_criteria: |
+      Double payment refused.
+  - id: P3-PAY-001-N3
+    title: Reject payment from a closed period
+    action: |
+      Set the payment date to a date in a closed accounting period.
+    expected: |
+      Save is blocked with a clear "period is closed" message.
+    pass_criteria: |
+      Payment in closed period refused.
 ```
 
 ---

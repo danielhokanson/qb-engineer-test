@@ -1,0 +1,69 @@
+{
+  "id": "audit",
+  "directory": "audit",
+  "title": "Audit log captures every consequential state change",
+  "description": "For each major state-changing action, verify the audit log records\nthe action with actor, timestamp, target record, and before/after\nstate. Tampering checks live alongside.\n",
+  "estimated_total_minutes": 50,
+  "case_ids": [
+    "AUDIT-LOGIN-001",
+    "AUDIT-USER-CHANGE-001",
+    "AUDIT-PERIOD-LOCK-001",
+    "AUDIT-BOM-REV-001",
+    "AUDIT-PO-AMEND-001",
+    "AUDIT-PRICE-OVR-001",
+    "AUDIT-PERMS-CHG-001",
+    "AUDIT-DEACT-001",
+    "AUDIT-IMMUTABLE-001"
+  ],
+  "planned_case_ids": [
+    "AUDIT-LOGIN-001",
+    "AUDIT-USER-CHANGE-001",
+    "AUDIT-PERIOD-LOCK-001",
+    "AUDIT-BOM-REV-001",
+    "AUDIT-PO-AMEND-001",
+    "AUDIT-PRICE-OVR-001",
+    "AUDIT-PERMS-CHG-001",
+    "AUDIT-DEACT-001",
+    "AUDIT-IMMUTABLE-001"
+  ],
+  "missing_case_ids": [],
+  "raw": {
+    "suite": "audit",
+    "title": "Audit log captures every consequential state change",
+    "description": "For each major state-changing action, verify the audit log records\nthe action with actor, timestamp, target record, and before/after\nstate. Tampering checks live alongside.\n",
+    "estimated_total_minutes": 50,
+    "cases": [
+      {
+        "id": "AUDIT-LOGIN-001"
+      },
+      {
+        "id": "AUDIT-USER-CHANGE-001"
+      },
+      {
+        "id": "AUDIT-PERIOD-LOCK-001"
+      },
+      {
+        "id": "AUDIT-BOM-REV-001"
+      },
+      {
+        "id": "AUDIT-PO-AMEND-001"
+      },
+      {
+        "id": "AUDIT-PRICE-OVR-001"
+      },
+      {
+        "id": "AUDIT-PERMS-CHG-001"
+      },
+      {
+        "id": "AUDIT-DEACT-001"
+      },
+      {
+        "id": "AUDIT-IMMUTABLE-001"
+      }
+    ],
+    "completion_criteria": [
+      "Every consequential state change in the cycle is captured.",
+      "The audit log itself cannot be edited or deleted by any non-admin role (verified by AUDIT-IMMUTABLE-001)."
+    ]
+  }
+}

@@ -1,9 +1,10 @@
 {
-  "library_version": "0.3.0",
-  "built_at": "2026-04-26T04:50:04.066Z",
-  "case_count": 127,
+  "library_version": "0.4.0",
+  "built_at": "2026-04-26T07:35:14.820Z",
+  "case_count": 390,
   "tutorial_count": 6,
   "story_count": 1,
+  "suite_count": 10,
   "roles": [
     "Administrator",
     "Controller",

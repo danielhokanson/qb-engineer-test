@@ -223,6 +223,18 @@ why_this_matters: |
   other users or configure anything. That's an unacceptable bug at
   this point in setup.
 est_minutes: 3
+negative_variants:
+  - id: P0-ADMIN-002-N1
+    title: Sign-in URL bypasses admin gate
+    action: |
+      Sign out, then attempt to reach an admin-only configuration page
+      by typing its URL directly while signed out.
+    expected: |
+      You are redirected to sign-in. The admin page does not render
+      and no privileged data appears in the response.
+    pass_criteria: |
+      Direct URL access while signed out returns a sign-in prompt with
+      no privileged content leaked.
 ```
 
 ---
@@ -289,6 +301,28 @@ negative_variants:
       is required.
     pass_criteria: |
       Save was blocked AND the message was clear.
+  - id: P0-TENANT-001-N2
+    title: Reject malformed federal tax ID
+    action: |
+      Enter "abcd" in the federal tax ID field and try to save.
+    expected: |
+      The form blocks the save with a plain-language error explaining
+      the expected format (e.g., 9 digits, optional dash).
+    pass_criteria: |
+      Save blocked AND error names the tax ID field with format
+      guidance.
+  - id: P0-TENANT-001-N3
+    title: Reject implausibly long company name
+    action: |
+      Paste a 5,000-character string into the company name field and
+      try to save.
+    expected: |
+      Either the field caps input at a sensible limit and explains the
+      cap, or the form rejects the save with a length error. The
+      application does NOT silently truncate without notice.
+    pass_criteria: |
+      Oversize input is rejected or capped with a clear message; no
+      silent truncation.
 ```
 
 ---
@@ -358,6 +392,28 @@ notes: |
   This case is intentionally a representative i18n check. The
   dedicated i18n suite goes deeper. For this case, three pages worth
   of spot-checking is enough.
+negative_variants:
+  - id: P0-TENANT-002-N1
+    title: Language switch must not corrupt entered data
+    action: |
+      Switch to Spanish, then back to English. Open the company
+      identity record from P0-TENANT-001.
+    expected: |
+      Entered values (company name, address, phone) are unchanged.
+      No characters are mangled or re-encoded.
+    pass_criteria: |
+      All previously entered text matches what was saved, byte for
+      byte.
+  - id: P0-TENANT-002-N2
+    title: Reject unsupported locale value
+    action: |
+      Try to set the locale to one the application does not list as
+      supported (e.g., bypass the dropdown via a direct API or URL).
+    expected: |
+      The application either filters the option out entirely or
+      rejects the save with a clear "locale not supported" message.
+    pass_criteria: |
+      Unsupported locale is not saved AND the rejection is explicit.
 ```
 
 ---
@@ -418,6 +474,30 @@ why_this_matters: |
   some arbitrary server time. Getting this wrong silently is one of
   the most expensive bug classes in any business application.
 est_minutes: 5
+negative_variants:
+  - id: P0-TENANT-003-N1
+    title: Reject invalid time zone value
+    action: |
+      Attempt to save the time zone field with a free-text value that
+      is not a recognized IANA zone (e.g., "Pacific Time-ish").
+    expected: |
+      The save is blocked with a clear "select a valid time zone"
+      message, or the field only accepts values from a controlled list.
+    pass_criteria: |
+      Invalid zone is not persisted AND the rejection is in plain
+      language.
+  - id: P0-TENANT-003-N2
+    title: Time zone change preserves stored UTC moments
+    action: |
+      Note the displayed timestamp on the admin profile. Switch the
+      time zone from Pacific to Eastern. Reload.
+    expected: |
+      The displayed clock face shifts by the correct offset, but the
+      underlying moment does not move. Switching back returns to the
+      original display.
+    pass_criteria: |
+      Display shifts by the correct offset AND the round trip back
+      restores the original display exactly.
 ```
 
 ---
@@ -476,6 +556,29 @@ notes: |
   Per design, the costing model setting (also fiscal/financial) is
   set later in this phase. It deserves its own case because the
   consequences of changing it later are severe.
+negative_variants:
+  - id: P0-TENANT-004-N1
+    title: Reject invalid fiscal year start
+    action: |
+      Try to set fiscal year start to "Bluemonth 32" or an out-of-
+      range date.
+    expected: |
+      The form blocks the save with a plain-English error naming the
+      problem. The field constrains input to valid month/day pairs.
+    pass_criteria: |
+      Invalid fiscal start is not saved AND the error is clear.
+  - id: P0-TENANT-004-N2
+    title: Currency change blocked once transactions exist
+    action: |
+      After this case completes, in a later phase once any monetary
+      record exists, return here and try to change the primary
+      currency.
+    expected: |
+      The application either blocks the change with a clear "cannot
+      change currency after transactions exist" message, or requires
+      an explicit migration confirmation that names the consequences.
+    pass_criteria: |
+      Silent currency change is impossible once transactions exist.
 ```
 
 ---
@@ -552,6 +655,30 @@ why_this_matters: |
   historical number has a different meaning before and after the
   change. This setting deserves protection.
 est_minutes: 6
+negative_variants:
+  - id: P0-TENANT-005-N1
+    title: Reject save with no costing model selected
+    action: |
+      Clear the costing model selection (no option chosen) and try
+      to save.
+    expected: |
+      The form blocks the save with a clear message that a costing
+      model is required.
+    pass_criteria: |
+      Save is blocked AND the missing selection is named.
+  - id: P0-TENANT-005-N2
+    title: Costing model change requires deliberate confirmation
+    action: |
+      After saving Standard Cost, attempt to switch to FIFO and
+      confirm the change immediately without reading the warning.
+    expected: |
+      The application interrupts with an explicit "this changes how
+      every existing item is valued" confirmation that requires a
+      typed phrase or second click. Single-click silent change is not
+      acceptable.
+    pass_criteria: |
+      Costing model change requires explicit, deliberate confirmation
+      beyond a single click.
 ```
 
 ---
@@ -705,6 +832,29 @@ notes: |
   who chose "manual entry" here can later test that shipping cases
   work even without a connected carrier — that is itself an
   important capability.
+negative_variants:
+  - id: P0-INTEG-002-N1
+    title: Save shipping config with no carrier and no manual mode
+    action: |
+      Try to save shipping configuration with neither a carrier
+      selected nor manual mode chosen.
+    expected: |
+      The save is blocked with a clear message that at least one
+      shipping option must be selected, or manual mode is the
+      explicit fallback.
+    pass_criteria: |
+      Save is blocked AND the requirement is named in plain English.
+  - id: P0-INTEG-002-N2
+    title: Carrier credential failure surfaces a usable error
+    action: |
+      If you attempted a carrier connection: enter intentionally
+      wrong credentials.
+    expected: |
+      The application reports the failure in plain English and
+      offers a way to retry. No stack trace, no raw HTTP status code
+      shown to the user.
+    pass_criteria: |
+      Failure is reported clearly AND retry is available.
 ```
 
 ---
@@ -753,6 +903,35 @@ expected_overall: |
 pass_criteria: |
   A tax configuration is saved and visible.
 est_minutes: 4
+negative_variants:
+  - id: P0-INTEG-003-N1
+    title: Reject negative or implausible tax rate
+    action: |
+      Try to save a rate of -5% or 250%.
+    expected: |
+      The form blocks the save with a plain-language explanation that
+      tax rates must be between 0 and 100 (or another sensible cap).
+    pass_criteria: |
+      Out-of-range rate is rejected AND the bounds are explained.
+  - id: P0-INTEG-003-N2
+    title: Reject save with no jurisdiction
+    action: |
+      Try to save a tax rate with the jurisdiction field blank.
+    expected: |
+      The save is blocked with a clear "jurisdiction is required"
+      message.
+    pass_criteria: |
+      Save blocked AND the missing field is named.
+  - id: P0-INTEG-003-N3
+    title: Reject overlapping effective-date rates for same jurisdiction
+    action: |
+      Add a second Oregon rate with the same effective date as the
+      first.
+    expected: |
+      The save is blocked or warns that two rates cannot be effective
+      simultaneously for the same jurisdiction.
+    pass_criteria: |
+      Overlap is detected and surfaced; user must resolve before save.
 ```
 
 ---
@@ -827,6 +1006,36 @@ notes: |
   might have only "Owner" and "Worker." An enterprise fixture might
   have fifteen named roles. The principle being tested is: can the
   company define whatever roles it needs without friction?
+negative_variants:
+  - id: P0-USER-001-N1
+    title: Reject duplicate role name
+    action: |
+      Try to create a second role named "Floor Operator."
+    expected: |
+      The save is blocked with a clear message that the role name is
+      already in use.
+    pass_criteria: |
+      Duplicate role rejected AND existing role is named.
+  - id: P0-USER-001-N2
+    title: Reject empty role name
+    action: |
+      Try to save a role with no name.
+    expected: |
+      The form blocks the save with a clear "name is required" error.
+    pass_criteria: |
+      Save blocked AND missing field is named.
+  - id: P0-USER-001-N3
+    title: Block deletion of in-use role
+    action: |
+      After P0-USER-002 assigns Floor Operator some permissions and
+      P0-USER-003 assigns it to a user, return here and try to delete
+      the Floor Operator role.
+    expected: |
+      Deletion is blocked or warns that the role is in use, naming
+      the dependent users. No silent cascade-delete.
+    pass_criteria: |
+      Deletion blocked or explicitly confirmed; dependent users
+      remain assigned to a valid role.
 ```
 
 ---
@@ -888,6 +1097,28 @@ pass_criteria: |
   Permissions are saved AND the permission labels are
   understandable to a non-technical person.
 est_minutes: 10
+negative_variants:
+  - id: P0-USER-002-N1
+    title: Permission change requires save to take effect
+    action: |
+      Toggle a permission on the Floor Operator role but navigate
+      away without saving.
+    expected: |
+      The application warns about unsaved changes or discards them
+      explicitly. Returning to the role shows the original permissions.
+    pass_criteria: |
+      No silent persistence of unsaved permission edits.
+  - id: P0-USER-002-N2
+    title: Cannot revoke own admin permissions to lock self out
+    action: |
+      As the only administrator, try to remove the "manage users" or
+      "manage roles" permission from your own role.
+    expected: |
+      The application blocks the change or warns that this would
+      orphan tenant administration. At minimum, one user must retain
+      admin capability.
+    pass_criteria: |
+      Self-lockout is prevented AND the warning explains why.
 ```
 
 ---
@@ -975,6 +1206,33 @@ negative_variants:
       email is already in use.
     pass_criteria: |
       Creation was blocked AND the message was clear.
+  - id: P0-USER-003-N2
+    title: Reject user creation without a role
+    action: |
+      Try to create a third user with no role assigned.
+    expected: |
+      The save is blocked with a clear "role is required" message.
+    pass_criteria: |
+      User creation blocked when role is unset.
+  - id: P0-USER-003-N3
+    title: Reject malformed email at user creation
+    action: |
+      Try to create a new user with email "not-an-email".
+    expected: |
+      The save is blocked with a plain-English message that the
+      email address is invalid.
+    pass_criteria: |
+      Malformed email is rejected with a clear, non-technical message.
+  - id: P0-USER-003-N4
+    title: Invitation link is single-use
+    action: |
+      After Sam Rivera completes their first sign-in, attempt to use
+      the original invitation link a second time (in another browser).
+    expected: |
+      The link is rejected as expired or already used. It does NOT
+      grant a second session or reset the password silently.
+    pass_criteria: |
+      Reused invitation link is refused AND the rejection is clear.
 ```
 
 ---
@@ -1041,6 +1299,19 @@ why_this_matters: |
   in the application instantly. Catching it now, before any business
   data has been entered, prevents a much worse loss later.
 est_minutes: 8
+negative_variants:
+  - id: P0-INFRA-001-N1
+    title: Sessions do not survive browser data clear
+    action: |
+      After clearing site cookies and local storage, refresh the
+      application page without signing back in.
+    expected: |
+      You see the sign-in screen. No prior session is automatically
+      restored, no privileged content renders, and no user data is
+      visible until you sign in again.
+    pass_criteria: |
+      Cleared browser produces sign-in prompt with no leaked session
+      state.
 ```
 
 ---

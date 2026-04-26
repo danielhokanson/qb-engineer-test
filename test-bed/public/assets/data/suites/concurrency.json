@@ -1,0 +1,49 @@
+{
+  "id": "concurrency",
+  "directory": "concurrency",
+  "title": "Concurrency — two-user races and optimistic locking",
+  "description": "Verify that the application detects and handles concurrent edits,\nreservation races, and period-close vs. late-posting races without\nsilent data loss or double-spend.\n",
+  "estimated_total_minutes": 50,
+  "case_ids": [
+    "CONC-EDIT-CUSTOMER-001",
+    "CONC-RESERVE-INV-001",
+    "CONC-PERIOD-CLOSE-RACE-001",
+    "CONC-WO-START-001",
+    "CONC-OPTIMISTIC-LOCK-001"
+  ],
+  "planned_case_ids": [
+    "CONC-EDIT-CUSTOMER-001",
+    "CONC-RESERVE-INV-001",
+    "CONC-PERIOD-CLOSE-RACE-001",
+    "CONC-WO-START-001",
+    "CONC-OPTIMISTIC-LOCK-001"
+  ],
+  "missing_case_ids": [],
+  "raw": {
+    "suite": "concurrency",
+    "title": "Concurrency — two-user races and optimistic locking",
+    "description": "Verify that the application detects and handles concurrent edits,\nreservation races, and period-close vs. late-posting races without\nsilent data loss or double-spend.\n",
+    "estimated_total_minutes": 50,
+    "cases": [
+      {
+        "id": "CONC-EDIT-CUSTOMER-001"
+      },
+      {
+        "id": "CONC-RESERVE-INV-001"
+      },
+      {
+        "id": "CONC-PERIOD-CLOSE-RACE-001"
+      },
+      {
+        "id": "CONC-WO-START-001"
+      },
+      {
+        "id": "CONC-OPTIMISTIC-LOCK-001"
+      }
+    ],
+    "completion_criteria": [
+      "No silent overwrites in any case.",
+      "Every conflict produces a clear, recoverable user-facing error."
+    ]
+  }
+}
