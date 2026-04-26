@@ -85,8 +85,8 @@
     "directory": "reports",
     "title": "Standard reports tie out to source transactions",
     "description": "For each canonical report, verify it reconciles to the underlying\nrecords that produced it. The bar is not \"the report runs without\nerror\" but \"the totals match the source data within rounding.\"\n",
-    "estimated_total_minutes": 100,
-    "case_count": 14,
-    "planned_count": 14
+    "estimated_total_minutes": 720,
+    "case_count": 80,
+    "planned_count": 80
   }
 ]

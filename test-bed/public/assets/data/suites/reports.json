@@ -3,97 +3,427 @@
   "directory": "reports",
   "title": "Standard reports tie out to source transactions",
   "description": "For each canonical report, verify it reconciles to the underlying\nrecords that produced it. The bar is not \"the report runs without\nerror\" but \"the totals match the source data within rounding.\"\n",
-  "estimated_total_minutes": 100,
+  "estimated_total_minutes": 720,
   "case_ids": [
     "RPT-PNL-001",
+    "RPT-PNL-002",
+    "RPT-PNL-003",
+    "RPT-PNL-004",
+    "RPT-PNL-005",
     "RPT-BALSHEET-001",
+    "RPT-BALSHEET-002",
+    "RPT-BALSHEET-003",
+    "RPT-BALSHEET-004",
     "RPT-CASHFLOW-001",
+    "RPT-CASHFLOW-002",
+    "RPT-CASHFLOW-003",
     "RPT-TRIALBAL-001",
+    "RPT-TRIALBAL-002",
+    "RPT-TRIALBAL-003",
     "RPT-INVVAL-001",
+    "RPT-INVVAL-002",
+    "RPT-INVVAL-003",
+    "RPT-INVVAL-004",
     "RPT-WOVAR-001",
+    "RPT-WOVAR-002",
+    "RPT-WOVAR-003",
     "RPT-MRPEX-001",
+    "RPT-MRPEX-002",
+    "RPT-MRPEX-003",
     "RPT-CAPUTIL-001",
+    "RPT-CAPUTIL-002",
+    "RPT-CAPUTIL-003",
     "RPT-SALESCUST-001",
+    "RPT-SALESCUST-002",
+    "RPT-SALESCUST-003",
+    "RPT-SALESCUST-004",
     "RPT-SALESPROD-001",
+    "RPT-SALESPROD-002",
+    "RPT-SALESPROD-003",
+    "RPT-SALESPROD-004",
     "RPT-VENDORPERF-001",
+    "RPT-VENDORPERF-002",
+    "RPT-VENDORPERF-003",
+    "RPT-VENDORPERF-004",
     "RPT-EMPLABOR-001",
+    "RPT-EMPLABOR-002",
+    "RPT-EMPLABOR-003",
     "RPT-OEE-001",
-    "RPT-DEPSCH-001"
+    "RPT-OEE-002",
+    "RPT-OEE-003",
+    "RPT-DEPSCH-001",
+    "RPT-DEPSCH-002",
+    "RPT-DEPSCH-003",
+    "RPT-ARAGE-001",
+    "RPT-ARAGE-002",
+    "RPT-ARAGE-003",
+    "RPT-APAGE-001",
+    "RPT-APAGE-002",
+    "RPT-APAGE-003",
+    "RPT-GRIRAGE-001",
+    "RPT-FAROLL-001",
+    "RPT-LOTTRACE-001",
+    "RPT-LOTTRACE-002",
+    "RPT-SCRAPRWK-001",
+    "RPT-CUSTSTMT-001",
+    "RPT-VENDSTMT-001",
+    "RPT-SALESTAX-001",
+    "RPT-WHHOLD-001",
+    "RPT-CYCLECNT-001",
+    "RPT-STOCKOUT-001",
+    "RPT-KITVAR-001",
+    "RPT-BBB-001",
+    "RPT-BBB-002",
+    "RPT-QUOTECONV-001",
+    "RPT-LEADFUN-001",
+    "RPT-HEADCNT-001",
+    "RPT-BUDGET-001",
+    "RPT-MARGIN-001",
+    "RPT-POOPEN-001",
+    "RPT-SOBACK-001",
+    "RPT-SCHEDATT-001",
+    "RPT-INVTURN-001",
+    "RPT-EANDO-001",
+    "RPT-PMSUM-001"
   ],
   "planned_case_ids": [
     "RPT-PNL-001",
+    "RPT-PNL-002",
+    "RPT-PNL-003",
+    "RPT-PNL-004",
+    "RPT-PNL-005",
     "RPT-BALSHEET-001",
+    "RPT-BALSHEET-002",
+    "RPT-BALSHEET-003",
+    "RPT-BALSHEET-004",
     "RPT-CASHFLOW-001",
+    "RPT-CASHFLOW-002",
+    "RPT-CASHFLOW-003",
     "RPT-TRIALBAL-001",
+    "RPT-TRIALBAL-002",
+    "RPT-TRIALBAL-003",
     "RPT-INVVAL-001",
+    "RPT-INVVAL-002",
+    "RPT-INVVAL-003",
+    "RPT-INVVAL-004",
     "RPT-WOVAR-001",
+    "RPT-WOVAR-002",
+    "RPT-WOVAR-003",
     "RPT-MRPEX-001",
+    "RPT-MRPEX-002",
+    "RPT-MRPEX-003",
     "RPT-CAPUTIL-001",
+    "RPT-CAPUTIL-002",
+    "RPT-CAPUTIL-003",
     "RPT-SALESCUST-001",
+    "RPT-SALESCUST-002",
+    "RPT-SALESCUST-003",
+    "RPT-SALESCUST-004",
     "RPT-SALESPROD-001",
+    "RPT-SALESPROD-002",
+    "RPT-SALESPROD-003",
+    "RPT-SALESPROD-004",
     "RPT-VENDORPERF-001",
+    "RPT-VENDORPERF-002",
+    "RPT-VENDORPERF-003",
+    "RPT-VENDORPERF-004",
     "RPT-EMPLABOR-001",
+    "RPT-EMPLABOR-002",
+    "RPT-EMPLABOR-003",
     "RPT-OEE-001",
-    "RPT-DEPSCH-001"
+    "RPT-OEE-002",
+    "RPT-OEE-003",
+    "RPT-DEPSCH-001",
+    "RPT-DEPSCH-002",
+    "RPT-DEPSCH-003",
+    "RPT-ARAGE-001",
+    "RPT-ARAGE-002",
+    "RPT-ARAGE-003",
+    "RPT-APAGE-001",
+    "RPT-APAGE-002",
+    "RPT-APAGE-003",
+    "RPT-GRIRAGE-001",
+    "RPT-FAROLL-001",
+    "RPT-LOTTRACE-001",
+    "RPT-LOTTRACE-002",
+    "RPT-SCRAPRWK-001",
+    "RPT-CUSTSTMT-001",
+    "RPT-VENDSTMT-001",
+    "RPT-SALESTAX-001",
+    "RPT-WHHOLD-001",
+    "RPT-CYCLECNT-001",
+    "RPT-STOCKOUT-001",
+    "RPT-KITVAR-001",
+    "RPT-BBB-001",
+    "RPT-BBB-002",
+    "RPT-QUOTECONV-001",
+    "RPT-LEADFUN-001",
+    "RPT-HEADCNT-001",
+    "RPT-BUDGET-001",
+    "RPT-MARGIN-001",
+    "RPT-POOPEN-001",
+    "RPT-SOBACK-001",
+    "RPT-SCHEDATT-001",
+    "RPT-INVTURN-001",
+    "RPT-EANDO-001",
+    "RPT-PMSUM-001"
   ],
   "missing_case_ids": [],
   "raw": {
     "suite": "reports",
     "title": "Standard reports tie out to source transactions",
     "description": "For each canonical report, verify it reconciles to the underlying\nrecords that produced it. The bar is not \"the report runs without\nerror\" but \"the totals match the source data within rounding.\"\n",
-    "estimated_total_minutes": 100,
+    "estimated_total_minutes": 720,
     "prerequisites": {
       "phase_completed": "P5",
-      "state_summary": "At least one full quote-to-cash cycle has run (Phase 4), opening\nbalances and a vendor cycle have been posted (Phase 3), period\ndepreciation has run (P5-CLOSE-003), and the period has been\nclosed (P5-CLOSE-004). Reports run as of the closed period\nboundary.\n"
+      "state_summary": "At least one full quote-to-cash cycle has run (Phase 4), opening\nbalances and a vendor cycle have been posted (Phase 3), period\ndepreciation has run (P5-CLOSE-003), and the period has been\nclosed (P5-CLOSE-004). Reports run as of the closed period\nboundary. Multi-period variants (comparative P&L, BBB trend,\nbacklog continuity) require two consecutive closed periods.\n"
     },
     "cases": [
       {
         "id": "RPT-PNL-001"
       },
       {
+        "id": "RPT-PNL-002"
+      },
+      {
+        "id": "RPT-PNL-003"
+      },
+      {
+        "id": "RPT-PNL-004"
+      },
+      {
+        "id": "RPT-PNL-005"
+      },
+      {
         "id": "RPT-BALSHEET-001"
+      },
+      {
+        "id": "RPT-BALSHEET-002"
+      },
+      {
+        "id": "RPT-BALSHEET-003"
+      },
+      {
+        "id": "RPT-BALSHEET-004"
       },
       {
         "id": "RPT-CASHFLOW-001"
       },
       {
+        "id": "RPT-CASHFLOW-002"
+      },
+      {
+        "id": "RPT-CASHFLOW-003"
+      },
+      {
         "id": "RPT-TRIALBAL-001"
+      },
+      {
+        "id": "RPT-TRIALBAL-002"
+      },
+      {
+        "id": "RPT-TRIALBAL-003"
       },
       {
         "id": "RPT-INVVAL-001"
       },
       {
+        "id": "RPT-INVVAL-002"
+      },
+      {
+        "id": "RPT-INVVAL-003"
+      },
+      {
+        "id": "RPT-INVVAL-004"
+      },
+      {
         "id": "RPT-WOVAR-001"
+      },
+      {
+        "id": "RPT-WOVAR-002"
+      },
+      {
+        "id": "RPT-WOVAR-003"
       },
       {
         "id": "RPT-MRPEX-001"
       },
       {
+        "id": "RPT-MRPEX-002"
+      },
+      {
+        "id": "RPT-MRPEX-003"
+      },
+      {
         "id": "RPT-CAPUTIL-001"
+      },
+      {
+        "id": "RPT-CAPUTIL-002"
+      },
+      {
+        "id": "RPT-CAPUTIL-003"
       },
       {
         "id": "RPT-SALESCUST-001"
       },
       {
+        "id": "RPT-SALESCUST-002"
+      },
+      {
+        "id": "RPT-SALESCUST-003"
+      },
+      {
+        "id": "RPT-SALESCUST-004"
+      },
+      {
         "id": "RPT-SALESPROD-001"
+      },
+      {
+        "id": "RPT-SALESPROD-002"
+      },
+      {
+        "id": "RPT-SALESPROD-003"
+      },
+      {
+        "id": "RPT-SALESPROD-004"
       },
       {
         "id": "RPT-VENDORPERF-001"
       },
       {
+        "id": "RPT-VENDORPERF-002"
+      },
+      {
+        "id": "RPT-VENDORPERF-003"
+      },
+      {
+        "id": "RPT-VENDORPERF-004"
+      },
+      {
         "id": "RPT-EMPLABOR-001"
+      },
+      {
+        "id": "RPT-EMPLABOR-002"
+      },
+      {
+        "id": "RPT-EMPLABOR-003"
       },
       {
         "id": "RPT-OEE-001"
       },
       {
+        "id": "RPT-OEE-002"
+      },
+      {
+        "id": "RPT-OEE-003"
+      },
+      {
         "id": "RPT-DEPSCH-001"
+      },
+      {
+        "id": "RPT-DEPSCH-002"
+      },
+      {
+        "id": "RPT-DEPSCH-003"
+      },
+      {
+        "id": "RPT-ARAGE-001"
+      },
+      {
+        "id": "RPT-ARAGE-002"
+      },
+      {
+        "id": "RPT-ARAGE-003"
+      },
+      {
+        "id": "RPT-APAGE-001"
+      },
+      {
+        "id": "RPT-APAGE-002"
+      },
+      {
+        "id": "RPT-APAGE-003"
+      },
+      {
+        "id": "RPT-GRIRAGE-001"
+      },
+      {
+        "id": "RPT-FAROLL-001"
+      },
+      {
+        "id": "RPT-LOTTRACE-001"
+      },
+      {
+        "id": "RPT-LOTTRACE-002"
+      },
+      {
+        "id": "RPT-SCRAPRWK-001"
+      },
+      {
+        "id": "RPT-CUSTSTMT-001"
+      },
+      {
+        "id": "RPT-VENDSTMT-001"
+      },
+      {
+        "id": "RPT-SALESTAX-001"
+      },
+      {
+        "id": "RPT-WHHOLD-001"
+      },
+      {
+        "id": "RPT-CYCLECNT-001"
+      },
+      {
+        "id": "RPT-STOCKOUT-001"
+      },
+      {
+        "id": "RPT-KITVAR-001"
+      },
+      {
+        "id": "RPT-BBB-001"
+      },
+      {
+        "id": "RPT-BBB-002"
+      },
+      {
+        "id": "RPT-QUOTECONV-001"
+      },
+      {
+        "id": "RPT-LEADFUN-001"
+      },
+      {
+        "id": "RPT-HEADCNT-001"
+      },
+      {
+        "id": "RPT-BUDGET-001"
+      },
+      {
+        "id": "RPT-MARGIN-001"
+      },
+      {
+        "id": "RPT-POOPEN-001"
+      },
+      {
+        "id": "RPT-SOBACK-001"
+      },
+      {
+        "id": "RPT-SCHEDATT-001"
+      },
+      {
+        "id": "RPT-INVTURN-001"
+      },
+      {
+        "id": "RPT-EANDO-001"
+      },
+      {
+        "id": "RPT-PMSUM-001"
       }
     ],
     "completion_criteria": [
       "Every report runs to completion without errors.",
-      "Each report's totals reconcile to the source data within rounding tolerance documented per case.",
-      "Drill-through (where supported) lands on the underlying transaction."
+      "Each report's totals reconcile to the source data within the rounding tolerance documented in the case's pass_criteria.",
+      "Drill-through (where supported) lands on the correct underlying transaction and per-level sums reconcile to the parent line."
     ]
   }
 }

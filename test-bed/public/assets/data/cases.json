@@ -15096,6 +15096,260 @@
     "est_minutes": 4
   },
   {
+    "id": "RPT-APAGE-001",
+    "title": "AP aging detail buckets reconcile to open vendor-invoice balances",
+    "goal": "Run the AP aging detail (current, 1-30, 31-60, 61-90, 90+).\nVerify each bucket equals the sum of open vendor invoices whose\nage (as of the report date) falls in that bucket, and the grand\ntotal equals the AP control balance.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one open vendor invoice exists in each of three buckets (current, 1-30, 60+) so bucket cuts are exercised.",
+      "The AP control account balance is visible from the trial balance."
+    ],
+    "prerequisite_cases": [
+      "P3-AP-001",
+      "P5-CLOSE-002"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the AP aging detail report as of the close date.\n",
+        "expected": "Report renders with per-vendor rows, per-invoice detail, and\nbucket columns.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pull the open vendor-invoice register as of the same date.\nCompute age = (report date - due date) per invoice and bucket.\n",
+        "expected": "Per-bucket totals computed.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare to the report's bucket totals.\n",
+        "expected": "Match within $0.01 per bucket.\n"
+      },
+      {
+        "n": 4,
+        "action": "Sum all buckets. Compare to AP control balance.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 5,
+        "action": "Spot-check an invoice on a bucket boundary (e.g., due 60 days\nago). Confirm correct bucket placement per the documented\nrule.\n",
+        "expected": "Boundary placement correct.\n"
+      }
+    ],
+    "expected_overall": "Aging buckets reconcile to invoice ages and grand total equals\nAP control.\n",
+    "pass_criteria": "Per-bucket totals match within $0.01 AND grand total = AP control\nwithin $0.01 AND boundary invoice placed correctly.\n",
+    "why_this_matters": "Cash-flow forecasting starts from AP aging. Mis-bucketed invoices\ndistort which payments are due when, leading to either late fees\nor unnecessary borrowing.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-APAGE-002",
+    "title": "AP aging drill-through opens the underlying vendor invoice with matching balance",
+    "goal": "From AP aging detail, drill into one vendor invoice. Verify it\nopens with matching vendor, original amount, applied payments\nand credit memos, and remaining balance.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one partially paid vendor invoice exists or a credit memo has been applied (P3-AP-CM-001)."
+    ],
+    "prerequisite_cases": [
+      "P3-AP-001",
+      "P3-AP-CM-001",
+      "RPT-APAGE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run AP aging detail.\n",
+        "expected": "Renders.\n"
+      },
+      {
+        "n": 2,
+        "action": "Drill into a vendor invoice with a credit memo applied.\n",
+        "expected": "Vendor invoice opens.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare original - payments - credit memos to the aging row's\nbalance.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm a fully paid vendor invoice does NOT appear on aging.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "Drill opens the right vendor invoice and aging reflects credit\nmemos and payments correctly.\n",
+    "pass_criteria": "Aging balance = original - payments - credit memos within $0.01\nAND fully paid invoices are absent.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "RPT-APAGE-003",
+    "title": "AP aging grouped by GL expense category reconciles per category",
+    "goal": "Run the AP aging grouped by GL expense / cost category. Verify\neach category subtotal equals the sum of open vendor invoices\ncoded to GL accounts in that category, and category sums roll up\nto the AP control balance.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "Open vendor invoices span at least two distinct GL expense categories (e.g., \"Materials\" and \"Operating Expenses\")."
+    ],
+    "prerequisite_cases": [
+      "P3-AP-001",
+      "RPT-APAGE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run AP aging grouped by GL category.\n",
+        "expected": "Report shows per-category subtotals.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one category, sum the open vendor-invoice balances coded\nto GL accounts in it. Compare to the subtotal.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum all category subtotals. Compare to AP control balance.\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Per-category aging reconciles and rolls up to AP.\n",
+    "pass_criteria": "Category subtotal matches hand sum within $0.01 AND sum of\ncategories equals AP control within $0.01.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "RPT-ARAGE-001",
+    "title": "AR aging detail buckets reconcile to open-invoice balances and bucket-level cuts",
+    "goal": "Run the AR aging detail report (current, 1-30, 31-60, 61-90, 90+).\nVerify each bucket equals the sum of open invoices whose age (as\nof the report date) falls in that bucket, and the grand total\nequals the AR control balance.\n",
+    "roles": [
+      "Controller",
+      "Sales / Account Manager"
+    ],
+    "preconditions": [
+      "At least one open invoice exists in each of three buckets (current, 1-30, 90+) so bucket cuts are exercised.",
+      "The AR control account balance is visible from the trial balance."
+    ],
+    "prerequisite_cases": [
+      "P4-INV-001",
+      "P5-CLOSE-002"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the AR aging detail report as of the close date.\n",
+        "expected": "Report renders with per-customer rows, per-invoice detail, and\nbucket columns.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pull the open-invoice register as of the same date. For each\nopen invoice, compute age = (report date - invoice due date).\nPlace each invoice in its bucket and sum.\n",
+        "expected": "Per-bucket totals computed.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare to the report's bucket totals.\n",
+        "expected": "Match within $0.01 per bucket.\n"
+      },
+      {
+        "n": 4,
+        "action": "Sum all bucket totals. Compare to the AR control balance from\nthe trial balance.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 5,
+        "action": "Spot-check an invoice exactly on a bucket boundary (e.g., due\ndate = 30 days before report date). Confirm it falls in the\ncorrect bucket per the documented rule (1-30 vs. 31-60).\n",
+        "expected": "Boundary placement matches the documented bucket rule.\n"
+      }
+    ],
+    "expected_overall": "Aging buckets reconcile to invoice ages and grand total equals\nthe AR control balance.\n",
+    "pass_criteria": "Per-bucket totals match within $0.01 AND grand total = AR control\nwithin $0.01 AND boundary invoice placed per the documented rule.\n",
+    "why_this_matters": "Aging is the basis of collections priority and bad-debt reserves.\nMis-bucketed invoices distort both. The boundary check catches\noff-by-one bugs that hide in the middle of a normal aging.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-ARAGE-002",
+    "title": "AR aging drill-through opens the underlying invoice with matching balance",
+    "goal": "From the AR aging detail report, drill into one invoice line.\nVerify the invoice opens with matching customer, original amount,\napplied payments, and remaining balance.\n",
+    "roles": [
+      "Controller",
+      "Sales / Account Manager"
+    ],
+    "preconditions": [
+      "At least one partially paid invoice exists (P4-CASH-PARTIAL)."
+    ],
+    "prerequisite_cases": [
+      "P4-INV-001",
+      "P4-CASH-PARTIAL",
+      "RPT-ARAGE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the AR aging detail.\n",
+        "expected": "Renders.\n"
+      },
+      {
+        "n": 2,
+        "action": "Drill into a partially paid invoice's row.\n",
+        "expected": "The invoice record opens.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare original amount, payments applied, and remaining\nbalance on the invoice to the aging row's balance.\n",
+        "expected": "Aging row balance = original - payments applied within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Drill into a fully paid invoice (should NOT appear on the\naging report). Confirm it doesn't show.\n",
+        "expected": "Excluded from aging.\n"
+      }
+    ],
+    "expected_overall": "Drill-through opens the right invoice and aging balance reflects\npayments correctly.\n",
+    "pass_criteria": "Aging balance = invoice original - payments within $0.01 AND\nfully paid invoices are absent from aging.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "RPT-ARAGE-003",
+    "title": "AR aging filtered by sales rep ties to that rep's customer balances",
+    "goal": "Run the AR aging filtered to one sales rep / collector. Verify the\ntotal equals the sum of open invoices for customers assigned to\nthat rep, and per-rep totals roll up to the consolidated AR.\n",
+    "roles": [
+      "Sales / Account Manager",
+      "Controller"
+    ],
+    "preconditions": [
+      "Customers with open invoices are assigned to at least two distinct sales reps."
+    ],
+    "prerequisite_cases": [
+      "P4-INV-001",
+      "RPT-ARAGE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run AR aging filtered to rep A.\n",
+        "expected": "Report shows only rep A's customers with open balances.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one rep-A customer, sum their open invoices. Compare to\ntheir row total.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Run filtered to rep B. Sum all per-rep totals (A + B + ...\nunassigned). Compare to the unfiltered AR aging grand total.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm a rep-B customer does NOT appear in rep A's filter.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "Rep filter scopes correctly and per-rep sum equals consolidated.\n",
+    "pass_criteria": "Per-rep total reconciles within $0.01 AND per-rep sum equals\nconsolidated within $0.01.\n",
+    "est_minutes": 8
+  },
+  {
     "id": "RPT-BALSHEET-001",
     "title": "Balance sheet ties to AR, AP, inventory, and fixed-asset subledgers",
     "goal": "Run the balance sheet as of the close date and verify that AR, AP,\ninventory, and fixed-asset totals match their respective subledger\nreports — and that the sheet itself balances.\n",
@@ -15146,6 +15400,264 @@
     "est_minutes": 15
   },
   {
+    "id": "RPT-BALSHEET-002",
+    "title": "Comparative balance sheet reconciles each period column to its trial balance",
+    "goal": "Run the balance sheet in comparative mode (current close date vs.\nprior close date). Verify each column balances and ties to its\nrespective trial balance.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "Two sequential periods have been closed (P5-CLOSE-004 run twice).",
+      "Trial balance is runnable for both close dates."
+    ],
+    "prerequisite_cases": [
+      "P5-CLOSE-004",
+      "RPT-TRIALBAL-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the comparative balance sheet showing current period close\ndate and prior period close date.\n",
+        "expected": "Report renders. Both columns show assets, liabilities, equity,\nwith a totals row and (typically) a variance column.\n"
+      },
+      {
+        "n": 2,
+        "action": "For the current column: total assets equal total liabilities +\nequity.\n",
+        "expected": "Equal to the cent.\n"
+      },
+      {
+        "n": 3,
+        "action": "For the prior column: total assets equal total liabilities +\nequity.\n",
+        "expected": "Equal to the cent.\n"
+      },
+      {
+        "n": 4,
+        "action": "Run the trial balance as of the current close date. Each\naccount on the balance sheet ties to the trial balance net.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 5,
+        "action": "Run the trial balance as of the prior close date. Each account\non the prior column ties to that trial balance net.\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Both columns balance and reconcile to the trial balance for their\nrespective close dates.\n",
+    "pass_criteria": "Both columns balance to the cent AND both columns reconcile to\ntheir trial balances within $0.01.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-BALSHEET-003",
+    "title": "Balance sheet drill-through lands on subledger detail",
+    "goal": "From the balance sheet, drill into the AR control account, the\ninventory account, and the fixed-asset account. Verify each\ndrill-through opens the corresponding subledger detail with a\nmatching total.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "Balance sheet runs cleanly (RPT-BALSHEET-001 has passed)."
+    ],
+    "prerequisite_cases": [
+      "RPT-BALSHEET-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the balance sheet as of the close date.\n",
+        "expected": "Report renders.\n"
+      },
+      {
+        "n": 2,
+        "action": "Drill into the AR control account. The drill-through should\nland on AR aging detail or an AR transaction list.\n",
+        "expected": "Subledger opens. Total at the bottom equals the AR control\nbalance within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Drill into the inventory account. Should land on the inventory\nvaluation report.\n",
+        "expected": "Inventory valuation grand total equals the inventory account\nbalance within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Drill into net fixed assets. Should land on the depreciation\nschedule or fixed-asset register.\n",
+        "expected": "Net book value total equals the net fixed-asset balance within\n$0.01.\n"
+      }
+    ],
+    "expected_overall": "Every subledger drill-through lands on the correct detail and the\ndetail total matches the control account.\n",
+    "pass_criteria": "All three drill-throughs land on the right subledger AND each\nsubledger total ties to its control balance within $0.01.\n",
+    "why_this_matters": "Subledger ties are the auditor's first checkpoint. A drill-through\nthat opens the wrong screen — or one with stale totals — burns\naudit hours fast.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-BALSHEET-004",
+    "title": "Per-entity (or per-segment) balance sheet rolls up to consolidated",
+    "goal": "Run the balance sheet filtered by entity or segment dimension.\nVerify each entity's balance sheet balances independently AND the\nper-entity totals roll up to the consolidated balance sheet.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "Postings carry an entity / segment dimension and at least two distinct values exist.",
+      "Each entity has its own AR, inventory, and equity activity."
+    ],
+    "prerequisite_cases": [
+      "P5-CLOSE-004",
+      "RPT-BALSHEET-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the balance sheet filtered to entity A.\n",
+        "expected": "Report renders. Total assets = total liabilities + equity for\nthat entity to the cent.\n"
+      },
+      {
+        "n": 2,
+        "action": "Run the balance sheet filtered to entity B.\n",
+        "expected": "Same — balances to the cent for that entity.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum (entity A assets + entity B assets + any others). Compare\nto the consolidated balance sheet's total assets.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Repeat for total liabilities + equity.\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Each entity's balance sheet balances and per-entity totals roll up\ncleanly to the consolidated.\n",
+    "pass_criteria": "Every per-entity sheet balances AND the per-entity sum equals the\nconsolidated within $0.01.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-BBB-001",
+    "title": "Bookings, billings, and backlog reconcile to SO confirmations, invoices, and open SOs",
+    "goal": "Run the bookings / billings / backlog (BBB) report for the\nperiod. Verify bookings = sum of SOs confirmed in the period,\nbillings = sum of invoices issued in the period, and backlog =\nopen SO value as of the report date.\n",
+    "roles": [
+      "Sales / Account Manager",
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one SO was confirmed in the period (P4-QUOTE-005 or SO confirmation pathway).",
+      "At least one invoice was issued in the period (P4-INV-001).",
+      "At least one SO remains open (not fully shipped/invoiced) as of the report date."
+    ],
+    "prerequisite_cases": [
+      "P4-QUOTE-005",
+      "P4-INV-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the BBB report for the period.\n",
+        "expected": "Report shows three numbers (or trend): bookings, billings,\nbacklog.\n"
+      },
+      {
+        "n": 2,
+        "action": "Bookings: sum SO total of all SOs confirmed within the\nperiod. Compare.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Billings: sum invoice totals issued in the period. Compare.\n",
+        "expected": "Match within $0.01 (and equals revenue from sales-by-customer\ngrand total within $0.01).\n"
+      },
+      {
+        "n": 4,
+        "action": "Backlog: open SO value as of the report date = sum of (SO\ntotal - billed amount) per open SO. Compare.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 5,
+        "action": "Roll-forward identity: opening backlog + bookings - billings\n= ending backlog. Verify (within $0.01).\n",
+        "expected": "Identity holds.\n"
+      }
+    ],
+    "expected_overall": "All three numbers reconcile to source registers and the BBB\nidentity holds.\n",
+    "pass_criteria": "Bookings, billings, backlog each reconcile within $0.01 AND\nthe BBB roll-forward identity holds within $0.01.\n",
+    "why_this_matters": "BBB is the headline sales-pipeline KPI. A wrong backlog leads\nto wrong forecasting, wrong capacity planning, and wrong board\nguidance.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-BBB-002",
+    "title": "Backlog trend over consecutive periods follows opening + bookings - billings = ending",
+    "goal": "Run the BBB report in trend mode for 3+ consecutive periods.\nVerify each period's ending backlog equals the next period's\nopening, and the period-over-period roll-forward identity holds\nfor every period.\n",
+    "roles": [
+      "Sales / Account Manager",
+      "Controller"
+    ],
+    "preconditions": [
+      "SO and invoice activity span at least 3 consecutive periods."
+    ],
+    "prerequisite_cases": [
+      "RPT-BBB-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the BBB report in trend / multi-period mode for 3\nconsecutive periods.\n",
+        "expected": "Report shows opening backlog, bookings, billings, ending\nbacklog per period.\n"
+      },
+      {
+        "n": 2,
+        "action": "For each period, verify opening + bookings - billings =\nending.\n",
+        "expected": "Identity holds within $0.01 per period.\n"
+      },
+      {
+        "n": 3,
+        "action": "Verify period N's ending backlog equals period N+1's opening\nbacklog (continuity).\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Backlog trend is continuous and roll-forward holds period by\nperiod.\n",
+    "pass_criteria": "Identity holds within $0.01 every period AND period-to-period\ncontinuity holds within $0.01.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "RPT-BUDGET-001",
+    "title": "Budget-vs-actual P&L reconciles actuals to postings and variance is computed correctly",
+    "goal": "Run the budget vs. actual P&L for the closed period. Verify the\nactual column ties to the regular P&L (RPT-PNL-001), the budget\ncolumn ties to the loaded budget, and the variance column equals\n(actual - budget) line by line.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "A budget has been loaded for the period across all P&L lines.",
+      "The period has been closed and the regular P&L is runnable."
+    ],
+    "prerequisite_cases": [
+      "P5-CLOSE-004",
+      "RPT-PNL-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run budget vs. actual P&L for the period.\n",
+        "expected": "Report shows budget, actual, variance, and (often) variance %\nper P&L line.\n"
+      },
+      {
+        "n": 2,
+        "action": "Compare actual revenue and expense lines to RPT-PNL-001.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare budget revenue and expense lines to the loaded\nbudget detail.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "For each line, compute (actual - budget). Compare to the\nvariance column.\n",
+        "expected": "Match within $0.01 line-by-line.\n"
+      },
+      {
+        "n": 5,
+        "action": "Variance % = variance / budget × 100 (per the documented\nformula, handling budget = 0). Spot-check one row.\n",
+        "expected": "Match within 0.1 pp.\n"
+      }
+    ],
+    "expected_overall": "Actual ties to P&L, budget ties to loaded budget, variance is\narithmetically correct.\n",
+    "pass_criteria": "Actual column ties to RPT-PNL-001 within $0.01 AND budget column\nties to loaded budget within $0.01 AND variance = actual - budget\nwithin $0.01 line-by-line.\n",
+    "why_this_matters": "Department managers and the CFO live in this report. Reconciling\nactuals to the P&L every period catches mapping errors before\nthey propagate to the board pack.\n",
+    "est_minutes": 12
+  },
+  {
     "id": "RPT-CAPUTIL-001",
     "title": "Capacity utilization report reconciles to scheduled WO load and calendar",
     "goal": "Run the capacity utilization report by work center and verify the\nload-vs-available numbers reconcile to scheduled WO operation\nhours and the calendar's available hours.\n",
@@ -15184,6 +15696,89 @@
     ],
     "expected_overall": "Capacity report reconciles to scheduled load and calendar.\n",
     "pass_criteria": "Load and available hours both match the hand computation.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-CAPUTIL-002",
+    "title": "Multi-week capacity utilization aggregates per-day load to per-week and per-range",
+    "goal": "Run the capacity utilization report for a 4-week range. Verify\nper-week aggregates equal the sum of their per-day load and that\nthe range total equals the sum of weeks.\n",
+    "roles": [
+      "Production Manager"
+    ],
+    "preconditions": [
+      "At least one work center has scheduled WO load on multiple days across a 4-week span."
+    ],
+    "prerequisite_cases": [
+      "P1-CAL-001",
+      "P4-WO-001",
+      "RPT-CAPUTIL-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run capacity utilization for the next 4 weeks, weekly buckets.\n",
+        "expected": "Report shows per-week load and available hours per work center.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one work center / one week, sum the daily load. Compare\nto the weekly bucket.\n",
+        "expected": "Match within 0.01 hours.\n"
+      },
+      {
+        "n": 3,
+        "action": "For the same work center, sum the four weekly buckets. Compare\nto the report's range total.\n",
+        "expected": "Match within 0.01 hours.\n"
+      },
+      {
+        "n": 4,
+        "action": "Verify weeks containing planned-downtime blocks (e.g., a\nholiday) show reduced available hours.\n",
+        "expected": "Available hours dip on the holiday week consistent with the\ncalendar.\n"
+      }
+    ],
+    "expected_overall": "Multi-week roll-up is correct and calendar overrides flow into the\navailable-hours total.\n",
+    "pass_criteria": "Daily-to-weekly and weekly-to-range sums match within 0.01 hours\nAND holiday weeks show reduced available hours.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-CAPUTIL-003",
+    "title": "Capacity utilization filtered to a single work center reflects only that center's load",
+    "goal": "Run the capacity utilization report filtered to one work center.\nVerify the load comes only from operations at that work center —\nno leakage from operations at other centers in the same routing.\n",
+    "roles": [
+      "Production Manager"
+    ],
+    "preconditions": [
+      "At least one routing has operations on multiple work centers (P2-ROUTE-001).",
+      "At least one WO using such a routing is scheduled (P4-WO-001)."
+    ],
+    "prerequisite_cases": [
+      "P2-ROUTE-001",
+      "P4-WO-001",
+      "RPT-CAPUTIL-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run capacity utilization filtered to work center A.\n",
+        "expected": "Report shows load only at WC A.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pick one WO whose routing has operations at both WC A and WC\nB. The load on WC A's report should reflect only the WC A\noperation's hours, not the WC B operation.\n",
+        "expected": "Hours on the WC A report match the WC A operation's hours,\nnot the full routing.\n"
+      },
+      {
+        "n": 3,
+        "action": "Run the report filtered to WC B for the same WO. The hours\nshown should be the WC B operation's hours.\n",
+        "expected": "Match.\n"
+      },
+      {
+        "n": 4,
+        "action": "Sum (WC A operation hours + WC B operation hours) and confirm\nit equals the routing's total scheduled hours for that WO.\n",
+        "expected": "Match.\n"
+      }
+    ],
+    "expected_overall": "Work-center filter splits multi-WC routings correctly per\noperation, with no double-counting and no missed operations.\n",
+    "pass_criteria": "Filtered hours per work center match the operation's hours within\n0.01 AND the per-WC sum equals the routing's total.\n",
     "est_minutes": 10
   },
   {
@@ -15227,6 +15822,175 @@
     "est_minutes": 10
   },
   {
+    "id": "RPT-CASHFLOW-002",
+    "title": "Direct-method cash flow reconciles to cash-account postings",
+    "goal": "Run the cash flow statement in direct-method mode (cash receipts\nfrom customers, cash paid to suppliers, etc.). Verify each line\nequals the actual cash-account postings classified to that source.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "The application supports direct-method cash flow (or both methods).",
+      "The period has been closed and a bank rec is complete."
+    ],
+    "prerequisite_cases": [
+      "P5-CLOSE-004",
+      "P5-BANK-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the cash flow statement in direct-method mode.\n",
+        "expected": "Report shows operating cash inflows / outflows by category\n(receipts from customers, payments to suppliers, payroll,\netc.) instead of the indirect adjustments.\n"
+      },
+      {
+        "n": 2,
+        "action": "Cash receipts from customers: from the bank register, sum\ndeposits coded as customer payments in the period. Compare.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Cash paid to suppliers: sum bank disbursements coded to\nvendor payments in the period. Compare.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Net change in cash = total inflows - total outflows. Compare\nto (ending cash - beginning cash) on the balance sheet.\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Direct-method cash flow ties to actual bank-account postings and\nthe net change reconciles to balance-sheet cash movement.\n",
+    "pass_criteria": "Customer receipts, supplier payments, and net change in cash all\nreconcile within $0.01.\n",
+    "notes": "Skip this case if the application only supports indirect-method\ncash flow; record as N/A rather than a fail.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-CASHFLOW-003",
+    "title": "Cash flow drill-through opens the underlying cash transaction",
+    "goal": "From the cash flow statement, drill into one investing line (e.g.,\na fixed-asset purchase) and one financing line (e.g., a loan\nproceed or repayment). Verify the underlying source transaction\nopens with a matching amount.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one fixed-asset purchase exists in the period (P3-ASSET-COMM-001).",
+      "At least one loan, owner contribution, or other financing transaction exists."
+    ],
+    "prerequisite_cases": [
+      "P5-CLOSE-004",
+      "P3-ASSET-COMM-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the cash flow statement.\n",
+        "expected": "Report renders with operating, investing, and financing\nsections.\n"
+      },
+      {
+        "n": 2,
+        "action": "Drill into the investing-section line for the asset purchase.\n",
+        "expected": "Source transaction (the asset commissioning / capex bill)\nopens.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare its amount to the cash flow line.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Drill into one financing line. Confirm the source loan / equity\ntransaction opens.\n",
+        "expected": "Source opens with a matching amount.\n"
+      }
+    ],
+    "expected_overall": "Both drill-throughs land on real source transactions with matching\namounts.\n",
+    "pass_criteria": "Both drill-throughs open the correct source AND amounts match\nwithin $0.01.\n",
+    "notes": "If the application has no financing activity in the period, sub\nin a second investing line.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "RPT-CUSTSTMT-001",
+    "title": "Customer statement reconciles invoices, payments, credit memos, and ending balance",
+    "goal": "Generate a customer statement for one customer for a defined\nperiod. Verify the statement lists every invoice, payment, and\ncredit memo for that customer in the period and that the ending\nbalance equals the customer's open AR.\n",
+    "roles": [
+      "Sales / Account Manager",
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one customer has period activity — an invoice, a partial payment, and (ideally) a credit memo (P4-CM-001)."
+    ],
+    "prerequisite_cases": [
+      "P4-INV-001",
+      "P4-CASH-PARTIAL",
+      "P4-CM-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Generate the customer statement for one customer covering\nthe period (e.g., the prior month).\n",
+        "expected": "Statement shows opening balance, transactions in date order,\nand ending balance.\n"
+      },
+      {
+        "n": 2,
+        "action": "Compare each line on the statement to the customer's AR\nledger entries for the same dates.\n",
+        "expected": "Every entry matches and there are no missing or extra lines.\n"
+      },
+      {
+        "n": 3,
+        "action": "Verify ending balance = opening + (invoices - payments -\ncredit memos applied).\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Compare the statement's ending balance to the customer's row\non the AR aging detail (RPT-ARAGE-001).\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Statement lists complete activity and the ending balance ties\nto AR aging.\n",
+    "pass_criteria": "Every transaction in the period appears on the statement AND\nending balance ties to AR aging within $0.01.\n",
+    "why_this_matters": "Customer statements are sent externally. A wrong statement\ntriggers a customer dispute and erodes confidence in every\ninvoice that follows.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-CYCLECNT-001",
+    "title": "Cycle count history reconciles count entries to inventory adjustments",
+    "goal": "Run the cycle count history report for the period. Verify each\ncount entry's variance equals (counted qty - system qty) at\ncount time, and that approved variances tie to inventory\nadjustment postings.\n",
+    "roles": [
+      "Warehouse / Logistics",
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one cycle count has been performed in the period (P3-COUNT-001 or P5-CYCLE-001) including one with a non-zero variance."
+    ],
+    "prerequisite_cases": [
+      "P3-COUNT-001",
+      "P5-CYCLE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the cycle count history report for the period.\n",
+        "expected": "Report shows per-count entry: part, location, system qty,\ncounted qty, variance qty, variance value.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one count with variance, hand-compute (counted - system)\nand (variance × unit cost). Compare.\n",
+        "expected": "Match.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum variance value across approved variances. Compare to\nthe period's inventory adjustment postings (P5-INV-ADJ).\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm a count entry with zero variance does NOT generate\nan inventory adjustment posting.\n",
+        "expected": "Zero-variance count: no adjustment.\n"
+      }
+    ],
+    "expected_overall": "Cycle count history ties to per-count variance and approved\nvariances tie to GL adjustments.\n",
+    "pass_criteria": "Variance computation matches per row AND approved variance sum\nties to inventory adjustment postings within $0.01 AND zero-\nvariance counts produce no adjustment.\n",
+    "why_this_matters": "Cycle counting drives inventory accuracy. If the report doesn't\nshow real variances or approved variances skip the GL,\ninventory accuracy degrades silently.\n",
+    "est_minutes": 10
+  },
+  {
     "id": "RPT-DEPSCH-001",
     "title": "Depreciation schedule reconciles to fixed-asset register and GL postings",
     "goal": "Run the depreciation schedule report and verify it ties to the\nfixed-asset register and to the period's GL depreciation postings.\n",
@@ -15263,6 +16027,134 @@
     ],
     "expected_overall": "Depreciation schedule ties to per-asset method, GL expense, and\naccumulated balance.\n",
     "pass_criteria": "All three reconciliations match within $0.01.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-DEPSCH-002",
+    "title": "Depreciation forecast projects future periods consistent with each asset's method",
+    "goal": "Run the depreciation schedule's forecast / projection mode (next\n12 months or full remaining life). Verify projected per-period\ndepreciation per asset matches its method and that cumulative\nforecast equals (cost - salvage) for assets with predictable\nmethods (e.g., straight-line).\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one straight-line asset has been commissioned and has remaining useful life."
+    ],
+    "prerequisite_cases": [
+      "P3-ASSET-COMM-001",
+      "P5-CLOSE-003",
+      "RPT-DEPSCH-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the depreciation forecast for the next 12 months.\n",
+        "expected": "Report shows per-asset projected depreciation by period.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one straight-line asset, hand-compute monthly =\n(cost - salvage) / useful-life-months. Compare to each\nforecast row.\n",
+        "expected": "Match within $0.01 per row.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum all projected depreciation across the asset's remaining\nlife. Compare to (cost - salvage - already-accumulated).\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "For a declining-balance asset, confirm projected depreciation\ndrops period-over-period at the configured rate.\n",
+        "expected": "Pattern matches the method.\n"
+      }
+    ],
+    "expected_overall": "Forecast respects each asset's method and cumulative forecast\nequals (cost - salvage - accumulated) per asset.\n",
+    "pass_criteria": "Straight-line per-period match within $0.01 AND cumulative\nmatches (cost - salvage - accumulated) within $0.01.\n",
+    "why_this_matters": "Capex planning and budgeting depend on this forecast. A wrong\nprojection drives wrong cash and tax planning.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-DEPSCH-003",
+    "title": "Depreciation schedule drill-through opens the asset record",
+    "goal": "From the depreciation schedule, drill into one asset row. Verify\nthe underlying asset record opens with matching cost, useful life,\nmethod, and accumulated depreciation.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one fixed asset has been commissioned and depreciated in at least one period."
+    ],
+    "prerequisite_cases": [
+      "P3-ASSET-COMM-001",
+      "RPT-DEPSCH-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the depreciation schedule.\n",
+        "expected": "Renders.\n"
+      },
+      {
+        "n": 2,
+        "action": "Drill into one asset row.\n",
+        "expected": "The asset record opens with cost, useful life, method, salvage\nvalue, and accumulated depreciation visible.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare cost, useful life, method, and accumulated to the\nschedule row.\n",
+        "expected": "All four match.\n"
+      },
+      {
+        "n": 4,
+        "action": "From the asset record, view depreciation history. Sum the\nperiod postings. Compare to the schedule's accumulated.\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Drill exposes the correct asset and historical postings sum to\naccumulated.\n",
+    "pass_criteria": "All four key fields match between schedule and asset record AND\nhistory sum equals accumulated within $0.01.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "RPT-EANDO-001",
+    "title": "Excess and obsolete (E&O) inventory report reconciles flagged parts to last-activity dates",
+    "goal": "Run the E&O inventory report. Verify each flagged part's last-\nmovement date and on-hand value match the inventory and\ntransaction history, and aging buckets (e.g., 0-90, 91-180,\n181-365, 365+ days) are populated by last-activity date.\n",
+    "roles": [
+      "Controller",
+      "Warehouse / Logistics"
+    ],
+    "preconditions": [
+      "At least one part has had no issue / consumption activity for 180+ days (a slow mover) AND at least one part is actively moving (should NOT be flagged)."
+    ],
+    "prerequisite_cases": [
+      "RPT-INVVAL-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the E&O inventory report.\n",
+        "expected": "Report shows per-part: on-hand qty, on-hand value, last\nmovement date, age in days, aging bucket.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one slow-mover, pull the part's transaction history.\nConfirm last issue / consumption matches the report's last-\nmovement date.\n",
+        "expected": "Match.\n"
+      },
+      {
+        "n": 3,
+        "action": "Verify the part is bucketed by (report date - last movement)\ninto the correct aging bucket per the documented rule.\n",
+        "expected": "Correct bucket.\n"
+      },
+      {
+        "n": 4,
+        "action": "Sum on-hand value for the 365+ bucket. This is the headline\n\"obsolete inventory\" exposure.\n",
+        "expected": "Subtotal available.\n"
+      },
+      {
+        "n": 5,
+        "action": "Confirm an actively moving part (last issue ≤ 30 days ago)\nis NOT in the report (or only in the youngest bucket).\n",
+        "expected": "Either excluded or in the freshest bucket.\n"
+      }
+    ],
+    "expected_overall": "E&O report ties to last-activity dates and aging buckets are\ncorrect.\n",
+    "pass_criteria": "Slow-mover last-movement date matches transaction history AND\nbucket placement matches documented rule AND active part not\nflagged as old.\n",
+    "why_this_matters": "E&O drives reserve provisions and write-down decisions. A wrong\nage makes the company either over-reserve (hitting earnings) or\nunder-reserve (delaying losses).\n",
     "est_minutes": 10
   },
   {
@@ -15307,6 +16199,284 @@
     "est_minutes": 8
   },
   {
+    "id": "RPT-EMPLABOR-002",
+    "title": "Employee labor distribution grouped by department aggregates correctly",
+    "goal": "Run the employee labor distribution report grouped by department.\nVerify each department's hours equal the sum of its employees'\nhours, and per-department totals roll up to the consolidated.\n",
+    "roles": [
+      "HR",
+      "Production Manager"
+    ],
+    "preconditions": [
+      "Employees in at least two departments have recorded labor in the period."
+    ],
+    "prerequisite_cases": [
+      "P4-LABOR",
+      "P1-EMP-001",
+      "RPT-EMPLABOR-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the labor distribution report grouped by department.\n",
+        "expected": "Report shows department subtotals.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one department, sum each member employee's total hours\nfrom the per-employee detail. Compare to the department\nsubtotal.\n",
+        "expected": "Match within 0.01 hours.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum all department subtotals. Compare to the unfiltered\nconsolidated.\n",
+        "expected": "Match within 0.01 hours.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm an employee assigned to a different department does\nNOT appear under the first department.\n",
+        "expected": "Correct attribution.\n"
+      }
+    ],
+    "expected_overall": "Department grouping reflects employee-to-department mapping and\ntotals reconcile.\n",
+    "pass_criteria": "Per-department subtotal matches employee-detail sum within 0.01\nhours AND consolidated equals sum of departments within 0.01.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "RPT-EMPLABOR-003",
+    "title": "Employee labor distribution broken down by work center reconciles to per-WC clocking",
+    "goal": "Run the employee labor distribution report broken down by work\ncenter. Verify each (employee, work center) cell equals the sum\nof that employee's labor entries at that work center.\n",
+    "roles": [
+      "Production Manager",
+      "HR"
+    ],
+    "preconditions": [
+      "At least one employee has logged labor at two or more distinct work centers (P4-LABOR with multiple WO/op entries)."
+    ],
+    "prerequisite_cases": [
+      "P4-LABOR",
+      "RPT-EMPLABOR-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the labor distribution by work center.\n",
+        "expected": "Report shows employee × work center matrix or grouped detail.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pick one employee. For each work center where they logged\ntime, sum the hours. Compare to the cell.\n",
+        "expected": "Match within 0.01 hours per cell.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum that employee's row across all work centers. Compare to\ntheir total hours (from RPT-EMPLABOR-001).\n",
+        "expected": "Match within 0.01 hours.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm a work center the employee never clocked at shows\nzero (or no row), not phantom hours.\n",
+        "expected": "No phantom hours.\n"
+      }
+    ],
+    "expected_overall": "Per-WC employee labor reconciles cell-by-cell and rows sum to\ntotal hours.\n",
+    "pass_criteria": "Each cell matches hand-summed labor entries within 0.01 hours\nAND row sum matches total hours within 0.01.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-FAROLL-001",
+    "title": "Fixed-asset roll-forward reconciles opening, additions, disposals, depreciation, ending",
+    "goal": "Run the fixed-asset roll-forward report (opening cost + additions\n- disposals = ending cost; opening accumulated + depreciation -\ndisposals = ending accumulated). Verify each column ties to the\nunderlying activity in the period.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "The period had at least one asset addition (P3-ASSET-COMM-001), one disposal/retirement (P5-ASSET-RETIRE-001), and one period of depreciation (P5-CLOSE-003)."
+    ],
+    "prerequisite_cases": [
+      "P3-ASSET-COMM-001",
+      "P5-ASSET-RETIRE-001",
+      "P5-CLOSE-003"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the fixed-asset roll-forward for the period.\n",
+        "expected": "Report shows by category (or asset class):\ncost: opening, additions, disposals, ending\naccumulated: opening, depreciation, disposals, ending\nnet book value: opening, ending\n"
+      },
+      {
+        "n": 2,
+        "action": "Cost roll: opening cost + period additions - period disposals\n= ending cost. Verify the math row-by-row.\n",
+        "expected": "Each category row balances to the cent.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum period additions. Compare to capex activity (P3-ASSET-COMM\nevents) for the period.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Period depreciation column equals current-period depreciation\nfrom RPT-DEPSCH-001.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 5,
+        "action": "Ending net book value = opening NBV + additions - disposals -\ndepreciation. Confirm.\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Roll-forward arithmetic holds and each activity column ties to\nunderlying transactions.\n",
+    "pass_criteria": "All three columns (cost, accumulated, NBV) reconcile within\n$0.01 AND additions and depreciation tie to source activity.\n",
+    "why_this_matters": "This report is the auditor's fixed-asset workpaper. Reconciliation\nfailures here cause restatements; getting it right monthly avoids\nyear-end fire drills.\n",
+    "est_minutes": 15
+  },
+  {
+    "id": "RPT-GRIRAGE-001",
+    "title": "GR/IR aging report ties to receipts not yet invoiced and invoices not yet received",
+    "goal": "Run the GR/IR (Goods Received / Invoice Received) aging report.\nVerify the open balances equal the sum of (receipts not matched\nto a vendor invoice) and (vendor invoices not matched to a\nreceipt), bucketed by age. The GR/IR control account on the\ntrial balance should equal the report grand total.\n",
+    "roles": [
+      "Controller",
+      "Procurement"
+    ],
+    "preconditions": [
+      "At least one PO has been received but not yet invoiced (P3-RECV-001 without follow-up P3-AP-001 for that PO).",
+      "The GR/IR clearing account is configured and visible on the trial balance (P1-GL-001)."
+    ],
+    "prerequisite_cases": [
+      "P3-RECV-001",
+      "P3-AP-001",
+      "P5-CLOSE-004"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the GR/IR aging report as of the close date.\n",
+        "expected": "Report shows per-PO open balance with receipt and invoice\nside and aging bucket.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one PO, identify receipt qty × unit price (received-not-\ninvoiced) and any partial vendor-invoice qty already matched.\nCompute open GR/IR = (received × cost) - (invoiced × cost).\n",
+        "expected": "Computed.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare to the report's row.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Sum the report's grand total. Compare to the GR/IR clearing\naccount balance on the trial balance.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 5,
+        "action": "Confirm a fully matched PO (receipt = invoice) does NOT\nappear on the report.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "GR/IR aging ties to per-PO open mismatch and totals reconcile to\nthe clearing account.\n",
+    "pass_criteria": "Per-PO open matches hand computation within $0.01 AND grand\ntotal equals GR/IR clearing balance within $0.01 AND fully\nmatched POs are excluded.\n",
+    "why_this_matters": "GR/IR is one of the most common period-close stuck items. A\nsilently growing clearing account hides duplicate payments,\nmissing invoices, or pricing mismatches.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-HEADCNT-001",
+    "title": "Headcount and turnover report reconciles opening, hires, terms, and ending headcount",
+    "goal": "Run the headcount and turnover report for the period. Verify\nopening + hires - terminations = ending headcount, and turnover\n% = terminations / average headcount over the period.\n",
+    "roles": [
+      "HR",
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one hire (P4-HIRE-001) and one termination (P5-HR-TERM-001) occurred in the period."
+    ],
+    "prerequisite_cases": [
+      "P4-HIRE-001",
+      "P5-HR-TERM-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the headcount and turnover report for the period.\n",
+        "expected": "Report shows opening, hires, terminations, ending, and\nturnover %.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pull the employee register: count active as of opening date\nand as of ending date.\n",
+        "expected": "Compare to opening and ending. Match.\n"
+      },
+      {
+        "n": 3,
+        "action": "Count hires (status change to active) in the period.\nCompare.\n",
+        "expected": "Match.\n"
+      },
+      {
+        "n": 4,
+        "action": "Count terminations (status change from active) in the\nperiod. Compare.\n",
+        "expected": "Match.\n"
+      },
+      {
+        "n": 5,
+        "action": "Verify opening + hires - terminations = ending.\n",
+        "expected": "Identity holds exactly.\n"
+      },
+      {
+        "n": 6,
+        "action": "Turnover % = terminations / average headcount × 100, where\naverage = (opening + ending) / 2 (or per the documented\nformula). Compute and compare.\n",
+        "expected": "Match within 0.1 pp.\n"
+      }
+    ],
+    "expected_overall": "Headcount roll-forward holds and turnover % reflects employee\nstatus changes.\n",
+    "pass_criteria": "Headcount identity holds exactly AND turnover % matches within\n0.1 pp.\n",
+    "why_this_matters": "HR uses this for board reporting and budgeting. A miscount\nhides retention problems and budget pressures.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-INVTURN-001",
+    "title": "Inventory turnover reconciles annualized COGS and average inventory per part",
+    "goal": "Run the inventory turnover report for the period. Verify per-\npart turnover = annualized COGS / average inventory value, and\ndays-on-hand = 365 / turnover. Spot-check inputs against the\nP&L COGS and inventory valuation.\n",
+    "roles": [
+      "Controller",
+      "Warehouse / Logistics"
+    ],
+    "preconditions": [
+      "The closed period has COGS activity and the inventory valuation has been run (RPT-INVVAL-001)."
+    ],
+    "prerequisite_cases": [
+      "P5-CLOSE-004",
+      "RPT-INVVAL-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the inventory turnover report for the period.\n",
+        "expected": "Report shows per-part: COGS, average inventory, turnover,\ndays on hand.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one part, identify period COGS (from completion or\nshipping postings) and annualize: COGS × (12 / period\nmonths). Compute average inventory = (opening + ending) / 2\nfrom inventory valuation.\n",
+        "expected": "Computed.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compute turnover = annualized COGS / average inventory.\nCompare to the report.\n",
+        "expected": "Match within 0.1 turns.\n"
+      },
+      {
+        "n": 4,
+        "action": "Days on hand = 365 / turnover. Compare.\n",
+        "expected": "Match within 1 day.\n"
+      },
+      {
+        "n": 5,
+        "action": "Sum per-part annualized COGS. Compare to (P&L COGS × 12 /\nperiod months) total.\n",
+        "expected": "Match within $0.01 (or document a known reconciling item).\n"
+      }
+    ],
+    "expected_overall": "Per-part turnover and DOH reconcile to source COGS and\ninventory valuation.\n",
+    "pass_criteria": "Spot-checked turnover matches within 0.1 turns AND DOH within\n1 day AND total annualized COGS reconciles to P&L within\n$0.01.\n",
+    "why_this_matters": "Turnover and DOH are the headline working-capital KPIs. A wrong\nnumber drives wrong inventory targets and tied-up cash.\n",
+    "est_minutes": 12
+  },
+  {
     "id": "RPT-INVVAL-001",
     "title": "Inventory valuation report ties to the GL inventory account",
     "goal": "Run the inventory valuation report and verify it equals the GL\ninventory control account balance to the cent. This is the report\nP5-CLOSE-001 leans on.\n",
@@ -15343,6 +16513,364 @@
     "expected_overall": "Inventory valuation ties to GL and lot detail rolls up correctly.\n",
     "pass_criteria": "Grand total = GL inventory balance within $0.01 AND the spot-checked\nlot rollup matches.\n",
     "est_minutes": 10
+  },
+  {
+    "id": "RPT-INVVAL-002",
+    "title": "Inventory valuation filtered by location reconciles to bin-level inventory",
+    "goal": "Run the inventory valuation report filtered to a single location\n(warehouse or plant). Verify the per-location total equals the sum\nof bin-level on-hand × cost at that location, and that all\nper-location totals roll up to the consolidated valuation.\n",
+    "roles": [
+      "Controller",
+      "Warehouse / Logistics"
+    ],
+    "preconditions": [
+      "Inventory exists at two or more distinct locations / warehouses.",
+      "At least one part is stocked at multiple locations to verify the location filter splits the part correctly."
+    ],
+    "prerequisite_cases": [
+      "P1-LOC-001",
+      "RPT-INVVAL-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the inventory valuation filtered to location A.\n",
+        "expected": "Report shows only parts/qty at location A with extended values.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one bin in location A, sum (bin qty × unit cost). Compare\nto the report's part row at location A.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Run the report filtered to location B. Sum its grand total.\n",
+        "expected": "Available.\n"
+      },
+      {
+        "n": 4,
+        "action": "Sum (location A grand total + location B grand total + any\nother locations). Compare to the unfiltered consolidated\nvaluation.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 5,
+        "action": "Pick a part stocked at multiple locations. Confirm the per-\nlocation quantities sum to the consolidated quantity.\n",
+        "expected": "Match exactly (no rounding on quantity).\n"
+      }
+    ],
+    "expected_overall": "Per-location valuation reconciles to bin-level detail and rolls\nup cleanly to the consolidated total.\n",
+    "pass_criteria": "Bin-level spot check matches within $0.01 AND per-location sum\nequals consolidated within $0.01 AND multi-location part qty\nreconciles exactly.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-INVVAL-003",
+    "title": "Inventory valuation reflects the configured cost method per part",
+    "goal": "For a part costed FIFO (or LIFO, weighted average), verify the\nunit cost on the valuation report equals the cost computed from\nthe open-receipt layers (FIFO/LIFO) or the rolling weighted-\naverage cost.\n",
+    "roles": [
+      "Controller",
+      "Warehouse / Logistics"
+    ],
+    "preconditions": [
+      "At least one part is configured for FIFO or weighted-average costing AND has at least two receipts at different unit costs (P3-RECV-001 run twice with different prices)."
+    ],
+    "prerequisite_cases": [
+      "P3-RECV-001",
+      "RPT-INVVAL-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the inventory valuation report. Note the unit cost shown\nfor the part in question.\n",
+        "expected": "Unit cost is displayed.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pull the part's receipt history. For FIFO, the open layers\nare the most recent receipts whose cumulative qty equals\non-hand; compute extended value = sum(layer qty × layer cost).\n",
+        "expected": "Compute and divide by on-hand to get the implied unit cost.\n"
+      },
+      {
+        "n": 3,
+        "action": "For weighted average: weighted avg = sum(receipt qty × receipt\ncost) / sum(receipt qty), adjusted for issues.\n",
+        "expected": "Compute.\n"
+      },
+      {
+        "n": 4,
+        "action": "Compare hand-computed unit cost to the report's unit cost.\n",
+        "expected": "Match within $0.0001 per unit (or $0.01 on the extended).\n"
+      }
+    ],
+    "expected_overall": "Cost method is being applied correctly: report's unit cost\nmatches the hand-computed FIFO / weighted-average cost.\n",
+    "pass_criteria": "Hand-computed unit cost matches the report's unit cost within\n$0.0001 per unit AND extended value matches within $0.01.\n",
+    "why_this_matters": "A wrong cost method silently mis-states inventory and COGS\nevery period. Spot-checking one part per method on every release\nis the cheapest insurance against this class of bug.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-INVVAL-004",
+    "title": "Inventory valuation drill-through opens lot or serial detail",
+    "goal": "From the inventory valuation report, drill into a lot-tracked or\nserial-tracked part. Verify the drill lists the open lots / serials\nand their values sum to the part's row total.\n",
+    "roles": [
+      "Controller",
+      "Warehouse / Logistics"
+    ],
+    "preconditions": [
+      "At least one lot- or serial-tracked part has on-hand stock spanning two or more lots / serials."
+    ],
+    "prerequisite_cases": [
+      "P3-LOTEXP-001",
+      "RPT-INVVAL-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the inventory valuation report.\n",
+        "expected": "Renders.\n"
+      },
+      {
+        "n": 2,
+        "action": "Drill into a lot-tracked part's row.\n",
+        "expected": "A list of open lots opens, each with qty, unit cost, and\nextended value.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum the extended values across the listed lots. Compare to\nthe part's row in the parent report.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Drill into one specific lot. Confirm its expiry date, source\nreceipt PO, and on-hand quantity match the lot detail screen.\n",
+        "expected": "Lot record opens with matching attributes.\n"
+      }
+    ],
+    "expected_overall": "Drill-through opens correct lot / serial detail and sums roll up\nto the part row.\n",
+    "pass_criteria": "Lot list sum matches the part row within $0.01 AND the drilled-in\nlot detail shows correct attributes.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "RPT-KITVAR-001",
+    "title": "Kitting variance reconciles per-kit component-issue variance to BOM standard",
+    "goal": "Run the kitting / sub-assembly variance report. Verify each kit\nWO's variance equals (actual components issued - BOM standard\nqty) × component cost.\n",
+    "roles": [
+      "Production Manager",
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one kit / sub-assembly WO has been completed (P4-WO-BACKFLUSH-001 or a WO with kit/phantom BOM in P2-BOM-002)."
+    ],
+    "prerequisite_cases": [
+      "P2-BOM-002",
+      "P4-WO-BACKFLUSH-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the kitting / sub-assembly variance report for the\nperiod.\n",
+        "expected": "Report shows per-kit WO: BOM standard qty per component,\nactual issued qty, variance qty, variance value.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one closed kit WO, look up the BOM standard quantities\nand the actual issue records. Compute (actual - standard) ×\ncost per component.\n",
+        "expected": "Computed.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare to the report's WO row.\n",
+        "expected": "Match within $0.01 per component AND total variance.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm a finished kit produced exactly to BOM has zero\nvariance.\n",
+        "expected": "Zero-variance kit shows zero.\n"
+      }
+    ],
+    "expected_overall": "Kit variance reflects component-level deviation from BOM\nstandard with correct sign.\n",
+    "pass_criteria": "Per-component variance matches hand computation within $0.01\nAND zero-variance kits show zero.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-LEADFUN-001",
+    "title": "Lead funnel reconciles per-stage lead counts to underlying lead and opportunity records",
+    "goal": "Run the lead funnel report for the period. Verify each stage\ncount (new lead → qualified → opportunity → quote → SO) equals\nthe count of records currently in or converted from that stage,\nand stage-to-stage conversion rates compute correctly.\n",
+    "roles": [
+      "Sales / Account Manager"
+    ],
+    "preconditions": [
+      "At least 5 leads exist with stage history spanning at least 3 funnel stages."
+    ],
+    "prerequisite_cases": [
+      "P2-LEAD-001",
+      "P2-LEAD-002",
+      "P4-QUOTE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the lead funnel report for the period.\n",
+        "expected": "Report shows per-stage counts and stage-to-stage conversion %.\n"
+      },
+      {
+        "n": 2,
+        "action": "Filter the lead register by stage = \"qualified\" entered in\nthe period. Count.\n",
+        "expected": "Compare to the report's qualified count. Match.\n"
+      },
+      {
+        "n": 3,
+        "action": "Repeat for \"opportunity\" and \"quote\" stages.\n",
+        "expected": "Match per stage.\n"
+      },
+      {
+        "n": 4,
+        "action": "Verify stage-to-stage conversion = (next stage count) /\n(prior stage count). Compute and compare.\n",
+        "expected": "Match within 0.1 pp.\n"
+      },
+      {
+        "n": 5,
+        "action": "Confirm a lead marked \"lost\" is excluded from the active\nfunnel counts.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "Funnel counts and conversion rates reflect actual lead stage\nhistory.\n",
+    "pass_criteria": "Per-stage count matches lead-register filter AND stage-to-stage\nconversion matches within 0.1 pp AND lost leads excluded.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-LOTTRACE-001",
+    "title": "Forward lot trace shows full path from raw-material lot to finished goods and customer",
+    "goal": "Run the forward lot trace report starting from a single raw-\nmaterial lot. Verify the report lists every WO that consumed\nthat lot, every finished-good lot/serial produced from those\nWOs, and every shipment that included those finished goods.\n",
+    "roles": [
+      "QC Inspector",
+      "Warehouse / Logistics"
+    ],
+    "preconditions": [
+      "A raw-material lot has been received (P3-RECV-001 with lot enabled) and consumed in at least one WO (P4-MATL-ISSUE).",
+      "That WO has completed and the finished goods have shipped (P4-COMP-FINAL, P4-SHIP)."
+    ],
+    "prerequisite_cases": [
+      "P3-LOTEXP-001",
+      "P4-MATL-ISSUE",
+      "P4-COMP-FINAL",
+      "P4-SHIP"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the lot trace report and select forward direction\nstarting from the raw-material lot.\n",
+        "expected": "Report displays a tree or chain: raw lot → WOs that consumed\nit → finished lots → shipments → customers.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pull the raw lot's transaction history. List the WOs that\nissued from this lot. Compare to the report's WO list.\n",
+        "expected": "Same WOs appear in the report.\n"
+      },
+      {
+        "n": 3,
+        "action": "For one WO in the chain, list the finished lots / serials\nproduced. Compare to the report's downstream nodes.\n",
+        "expected": "Same finished lots appear.\n"
+      },
+      {
+        "n": 4,
+        "action": "For one finished lot, identify the shipment(s) and customer.\nCompare to the report's leaf nodes.\n",
+        "expected": "Same customer / shipment appears.\n"
+      },
+      {
+        "n": 5,
+        "action": "Confirm a WO that did NOT consume this raw lot is absent.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "Forward trace correctly chains raw lot → WOs → finished lots →\nshipments with no missing or extraneous nodes.\n",
+    "pass_criteria": "Every node in the trace matches manual trace through transaction\nhistory AND no unrelated WO/shipment appears.\n",
+    "why_this_matters": "Forward trace drives recall scope. Missing a downstream WO means\ncustomers eat the recall risk; including unrelated WOs creates\nunnecessary recall cost.\n",
+    "est_minutes": 15
+  },
+  {
+    "id": "RPT-LOTTRACE-002",
+    "title": "Backward lot trace from finished serial walks back to all source raw lots",
+    "goal": "Run the backward (genealogy) lot trace report from a finished\nserial number. Verify the trace lists every raw-material lot\nconsumed in the WO that produced it, with quantities matching\nthe issue records.\n",
+    "roles": [
+      "QC Inspector",
+      "Warehouse / Logistics"
+    ],
+    "preconditions": [
+      "A finished serial has been produced from a WO that consumed multiple raw lots (P4-COMP-FINAL with multi-component BOM)."
+    ],
+    "prerequisite_cases": [
+      "P4-MATL-ISSUE",
+      "P4-COMP-FINAL",
+      "RPT-LOTTRACE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Open the lot trace report and select backward direction from\nthe finished serial.\n",
+        "expected": "Report shows the producing WO, then the raw-material lots\nconsumed by that WO with quantities.\n"
+      },
+      {
+        "n": 2,
+        "action": "Compare the listed raw lots to the WO's material issue\nrecords (P4-MATL-ISSUE).\n",
+        "expected": "Same lots, same issue quantities.\n"
+      },
+      {
+        "n": 3,
+        "action": "Pick one raw lot in the trace. Confirm its receipt PO and\nvendor are correct (drill-through if available).\n",
+        "expected": "Receipt info matches the lot record.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm a raw lot that was NOT consumed by this WO does NOT\nappear in the trace.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "Backward trace correctly identifies every source lot for the\nfinished serial with matching quantities.\n",
+    "pass_criteria": "Trace's source lot list matches WO issue records exactly AND\nunrelated lots are excluded.\n",
+    "why_this_matters": "Quality root-cause investigations start here. A backward trace\nthat misses a contaminated source lot wastes investigation time\nand risks more incidents.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-MARGIN-001",
+    "title": "Gross margin by product reconciles per-part revenue, COGS, and margin to source records",
+    "goal": "Run the gross margin by product report. Verify per-part revenue\nequals invoice line revenue (RPT-SALESPROD-001), per-part COGS\nequals the cost component of those invoice lines (or the WO\ncompletion COGS posting), and gross margin = revenue - COGS.\n",
+    "roles": [
+      "Controller",
+      "Sales / Account Manager"
+    ],
+    "preconditions": [
+      "At least one part has invoice line activity in the period AND a corresponding WO completion / standard cost."
+    ],
+    "prerequisite_cases": [
+      "P4-INV-001",
+      "P4-COMP-FINAL",
+      "RPT-SALESPROD-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run gross margin by product for the period.\n",
+        "expected": "Report shows per-part: units sold, revenue, COGS, gross\nmargin $, gross margin %.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one part, compare revenue to its row on\nRPT-SALESPROD-001.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "For the same part, sum the COGS posted at invoicing (or WO\ncompletion) for those invoice lines. Compare to the report's\nCOGS column.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Verify gross margin $ = revenue - COGS and gross margin % =\nmargin $ / revenue × 100 per row.\n",
+        "expected": "Match within $0.01 and 0.1 pp.\n"
+      },
+      {
+        "n": 5,
+        "action": "Sum total revenue and total COGS across the report.\nCompare to the P&L's revenue and COGS.\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Per-part revenue, COGS, and margin reconcile to source records\nand roll up to the P&L.\n",
+    "pass_criteria": "Per-part revenue and COGS each reconcile within $0.01 AND\nmargin computation is correct AND grand totals tie to P&L.\n",
+    "why_this_matters": "Product-level margin drives pricing and rationalization. A\nwrong margin steers the company toward unprofitable products\nand away from profitable ones.\n",
+    "est_minutes": 12
   },
   {
     "id": "RPT-MRPEX-001",
@@ -15388,6 +16916,85 @@
     "est_minutes": 10
   },
   {
+    "id": "RPT-MRPEX-002",
+    "title": "MRP exception filtered by buyer ties to buyer-assigned parts only",
+    "goal": "Run the MRP exception report filtered to a specific buyer or\nplanner. Verify the report shows only parts whose default buyer\nmatches and that all listed shortages reconcile to source demand.\n",
+    "roles": [
+      "Production Planner",
+      "Procurement"
+    ],
+    "preconditions": [
+      "At least two parts have different default buyers configured (P2-PART-001 with buyer assignment).",
+      "Both buyers have at least one part in shortage and one part not in shortage."
+    ],
+    "prerequisite_cases": [
+      "P3-MRP-001",
+      "RPT-MRPEX-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the MRP exception report filtered to buyer A.\n",
+        "expected": "Report lists only buyer-A parts that are short.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pick one buyer-A short part. Hand-compute the shortage\n(demand + safety stock - on-hand - on-order). Compare.\n",
+        "expected": "Match.\n"
+      },
+      {
+        "n": 3,
+        "action": "Confirm a short part assigned to buyer B does NOT appear in\nthe buyer-A filter.\n",
+        "expected": "Excluded.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm a buyer-A part that is fully covered does NOT appear\nin the filter.\n",
+        "expected": "Excluded (the filter doesn't make non-shortages appear).\n"
+      }
+    ],
+    "expected_overall": "Buyer filter correctly scopes the exception list and shortage\ncomputation remains accurate.\n",
+    "pass_criteria": "Buyer-A short part shortage matches hand-computation AND\nbuyer-B parts and non-shortages are correctly excluded.\n",
+    "why_this_matters": "Buyers run their daily list off this filter. A buyer who sees\nparts they don't own — or misses parts they do — manages the\nwrong queue.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "RPT-MRPEX-003",
+    "title": "MRP exception report with longer planning horizon flags later-period shortages",
+    "goal": "Run the MRP exception with a 30-day horizon, then again with a\n90-day horizon. Verify a part that is fine in 30 days but short in\n60 days appears only in the 90-day run, with the right required\ndate.\n",
+    "roles": [
+      "Production Planner"
+    ],
+    "preconditions": [
+      "At least one part has demand 60-90 days out that exceeds on-hand + on-order through that date but is fine within 30 days (P3-FCST-001 has loaded forward demand)."
+    ],
+    "prerequisite_cases": [
+      "P3-MRP-001",
+      "P3-FCST-001",
+      "RPT-MRPEX-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the MRP exception report with horizon = 30 days.\n",
+        "expected": "Report does NOT include the late-shortage part.\n"
+      },
+      {
+        "n": 2,
+        "action": "Run the same report with horizon = 90 days.\n",
+        "expected": "Report DOES include the late-shortage part with a required\ndate in the 60-90 day window.\n"
+      },
+      {
+        "n": 3,
+        "action": "Hand-compute: cumulative demand through 90 days minus on-hand\nminus on-order arriving in that window. Confirm shortage qty\nand required date.\n",
+        "expected": "Match.\n"
+      }
+    ],
+    "expected_overall": "Horizon parameter correctly extends the look-ahead and the late-\nperiod shortage is identified at the right date.\n",
+    "pass_criteria": "Late shortage is absent at 30-day horizon AND present at 90-day\nhorizon AND required date matches hand-computation.\n",
+    "est_minutes": 10
+  },
+  {
     "id": "RPT-OEE-001",
     "title": "OEE report reconciles to availability, performance, and quality records",
     "goal": "Run the OEE (Overall Equipment Effectiveness) report for a work\ncenter and verify the three component metrics reconcile to source\ndata: availability from stoppage records, performance from cycle\ntimes, and quality from QC pass / scrap records.\n",
@@ -15428,6 +17035,138 @@
     "pass_criteria": "Each component matches the report within 0.5 percentage points.\n",
     "why_this_matters": "OEE is the headline manufacturing metric. If it's wrong, plant\nmanagers either chase ghosts or miss real problems.\n",
     "est_minutes": 12
+  },
+  {
+    "id": "RPT-OEE-002",
+    "title": "OEE per shift reconciles to that shift's stoppage and completion records",
+    "goal": "Run OEE per shift (e.g., 1st shift vs. 2nd shift) for one work\ncenter. Verify each shift's availability, performance, and quality\nreconcile to that shift's stoppage and completion records.\n",
+    "roles": [
+      "Production Manager"
+    ],
+    "preconditions": [
+      "At least two shifts have run the same work center on the same day with distinct stoppage and completion records."
+    ],
+    "prerequisite_cases": [
+      "P5-STOPPAGE",
+      "P5-HR-SHIFT-001",
+      "RPT-OEE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run OEE per shift for the work center.\n",
+        "expected": "Report shows availability %, performance %, quality %, and\ncomposite OEE % per shift.\n"
+      },
+      {
+        "n": 2,
+        "action": "For shift 1: planned production time minus shift-1 stoppage\ntime, divided by planned. Compute and compare to shift 1's\navailability.\n",
+        "expected": "Match within 0.5 percentage points.\n"
+      },
+      {
+        "n": 3,
+        "action": "Repeat performance and quality for shift 1 from shift-1\nrecords.\n",
+        "expected": "Match within 0.5 pp.\n"
+      },
+      {
+        "n": 4,
+        "action": "Repeat for shift 2.\n",
+        "expected": "Match within 0.5 pp.\n"
+      },
+      {
+        "n": 5,
+        "action": "Confirm a stoppage event tagged to shift 1 does NOT count\nagainst shift 2.\n",
+        "expected": "No cross-shift leakage.\n"
+      }
+    ],
+    "expected_overall": "Per-shift OEE reflects only that shift's records.\n",
+    "pass_criteria": "All three components per shift match hand computation within\n0.5 pp AND no cross-shift leakage.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-OEE-003",
+    "title": "OEE across a multi-day range respects the date filter and rolls up",
+    "goal": "Run OEE for a 7-day range (or longer) and verify the daily OEE\nvalues compose correctly into the range OEE — and that\nout-of-range stoppages don't leak in.\n",
+    "roles": [
+      "Production Manager"
+    ],
+    "preconditions": [
+      "Stoppage and completion records span 7+ days at one work center."
+    ],
+    "prerequisite_cases": [
+      "P5-STOPPAGE",
+      "RPT-OEE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run OEE for the 7-day range with a daily breakdown.\n",
+        "expected": "Report shows per-day OEE plus a range total.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one day, hand-compute OEE from that day's stoppage and\ncompletion. Compare to the daily row.\n",
+        "expected": "Match within 0.5 pp.\n"
+      },
+      {
+        "n": 3,
+        "action": "Range OEE: aggregate availability across the 7 days = (sum\nplanned time - sum stoppage) / sum planned time. Performance\nand quality similarly aggregated. Compute composite.\n",
+        "expected": "Match the report's range OEE within 0.5 pp.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm a stoppage from 1 day before the range start does\nNOT influence the range OEE.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "OEE respects the date range and per-day numbers aggregate\ncorrectly.\n",
+    "pass_criteria": "Per-day OEE matches hand computation within 0.5 pp AND range\nOEE matches aggregated computation within 0.5 pp AND boundary\nstoppages excluded.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-PMSUM-001",
+    "title": "Preventive maintenance summary reconciles scheduled, completed, and overdue PMs",
+    "goal": "Run the preventive maintenance summary for the period. Verify\nscheduled PM count, completed-on-time count, and overdue count\nreflect actual PM work-order history, and PM compliance % =\n(completed on time) / (scheduled in period) × 100.\n",
+    "roles": [
+      "Production Manager"
+    ],
+    "preconditions": [
+      "At least one PM was scheduled and completed on time (P5-PM-001) and at least one is overdue (or completed late)."
+    ],
+    "prerequisite_cases": [
+      "P5-PM-001",
+      "P5-PM-002"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the PM summary for the period.\n",
+        "expected": "Report shows scheduled, completed on-time, completed late,\noverdue, and compliance %.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pull PM work orders scheduled to be due in the period.\nCount.\n",
+        "expected": "Compare to scheduled count. Match.\n"
+      },
+      {
+        "n": 3,
+        "action": "Of those, count completed on or before due date. Compare to\non-time count. Match.\n",
+        "expected": "Match.\n"
+      },
+      {
+        "n": 4,
+        "action": "Compliance % = on-time / scheduled × 100.\n",
+        "expected": "Match within 0.1 pp.\n"
+      },
+      {
+        "n": 5,
+        "action": "Confirm an asset's overdue PM appears in the overdue\nbucket, not in completed.\n",
+        "expected": "Correct bucket.\n"
+      }
+    ],
+    "expected_overall": "PM summary reflects scheduled, completion, and overdue status\naccurately.\n",
+    "pass_criteria": "Counts match hand-summed PM history AND compliance % matches\nwithin 0.1 pp AND overdue PMs are in the overdue bucket.\n",
+    "why_this_matters": "PM compliance is regulatory in some industries and operational\nin all. A wrong overdue count masks safety and uptime risk.\n",
+    "est_minutes": 10
   },
   {
     "id": "RPT-PNL-001",
@@ -15478,6 +17217,274 @@
     "est_minutes": 12
   },
   {
+    "id": "RPT-PNL-002",
+    "title": "P&L for a custom date range ties to postings dated within that range",
+    "goal": "Run the P&L for a date range that does not align with the closed\nfiscal period (e.g., a single week or a partial month). Verify the\ntotals reconcile to the postings whose effective dates fall within\nthat exact range — no leakage in or out at the boundaries.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one customer invoice and one vendor invoice have been posted in the closed period (P5-CLOSE-004).",
+      "Postings exist on multiple dates so a sub-period range is meaningful."
+    ],
+    "prerequisite_cases": [
+      "P5-CLOSE-004"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the P&L with a custom range starting after the period's\nfirst posting and ending before the period's last posting.\n",
+        "expected": "Report renders. Revenue, COGS, expense, and net income are\nshown for the chosen range only.\n"
+      },
+      {
+        "n": 2,
+        "action": "Sum customer-invoice revenue dated within (and only within) the\nchosen range. Compare to the report's revenue.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Pick one invoice dated one day before the start date. Confirm\nits revenue is NOT in the report total.\n",
+        "expected": "Excluded.\n"
+      },
+      {
+        "n": 4,
+        "action": "Pick one invoice dated one day after the end date. Confirm\nits revenue is NOT in the report total.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "P&L respects the date filter at both boundaries and totals match\nthe date-filtered source sum.\n",
+    "pass_criteria": "Revenue total matches the date-filtered invoice sum within $0.01\nAND boundary postings are correctly included/excluded.\n",
+    "why_this_matters": "Off-by-one date filters are a classic reporting bug, especially at\nmidnight / time-zone boundaries. A controller running ad-hoc ranges\nfor a board pack must trust the filter.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-PNL-003",
+    "title": "P&L filtered by department or dimension ties to dimension-tagged postings",
+    "goal": "Run the P&L filtered to a single department, location, or other\nGL dimension. Verify the totals equal the sum of postings tagged\nwith that dimension only.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "Postings in the closed period carry at least two distinct department/dimension tags (so filtering is meaningful).",
+      "Each tag has at least one revenue and one expense posting."
+    ],
+    "prerequisite_cases": [
+      "P5-CLOSE-004",
+      "P1-GL-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the P&L for the closed period filtered to one department\n/ dimension value (e.g., \"Operations\" or location \"Plant 1\").\n",
+        "expected": "Report renders showing only the chosen dimension's revenue,\nCOGS, and expense.\n"
+      },
+      {
+        "n": 2,
+        "action": "From the JE / invoice register, sum revenue postings tagged\nto that dimension. Compare to the filtered report.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Run the P&L with no dimension filter. The unfiltered total\nshould equal the sum of every per-dimension P&L.\n",
+        "expected": "Sum of dimension P&Ls = unfiltered P&L within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm a posting tagged to a different dimension does NOT\nappear in the filtered report's revenue total.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "Dimension-filtered P&L reconciles to dimension-tagged source\npostings and per-dimension P&Ls roll up to the consolidated total.\n",
+    "pass_criteria": "Filtered total matches dimension-tagged source within $0.01 AND\nper-dimension sum equals the consolidated P&L within $0.01.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-PNL-004",
+    "title": "P&L drill-through lands on the underlying source transaction",
+    "goal": "Click drill-through on a P&L revenue line and a P&L expense line.\nVerify each opens the exact source transaction (invoice or vendor\nbill / JE) for the same amount.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one customer invoice and one vendor invoice (or expense JE) are posted in the closed period."
+    ],
+    "prerequisite_cases": [
+      "P5-CLOSE-004",
+      "RPT-PNL-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the P&L for the closed period.\n",
+        "expected": "Report renders.\n"
+      },
+      {
+        "n": 2,
+        "action": "Click into the revenue line. Drill down progressively (revenue\n→ account detail → transaction list → individual invoice).\n",
+        "expected": "Each drill level shows totals that sum to the parent level.\nThe deepest level lists individual invoices.\n"
+      },
+      {
+        "n": 3,
+        "action": "Open one invoice from the deepest list. Confirm its amount,\ndate, and customer match the system invoice record.\n",
+        "expected": "Match.\n"
+      },
+      {
+        "n": 4,
+        "action": "Repeat for an operating-expense line. Drill down to the source\nvendor bill or JE.\n",
+        "expected": "Source transaction opens with matching amount.\n"
+      },
+      {
+        "n": 5,
+        "action": "Sum all transactions in the deepest drill list. Compare to the\nP&L line total.\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Drill-through paths land on real source transactions and the\ndrill-level sums match the parent line.\n",
+    "pass_criteria": "Both drill-throughs (revenue and expense) open the correct source\nAND the drill-list sum reconciles to the parent line within $0.01.\n",
+    "why_this_matters": "A drill-through that lands on the wrong record — or just summary\ndata — destroys auditor trust. Each level must reconcile.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-PNL-005",
+    "title": "Comparative P&L (current vs. prior period) reconciles each column",
+    "goal": "Run the P&L in comparative mode showing current period vs. prior\nperiod. Verify each column independently ties to its underlying\npostings, and the variance column equals (current - prior) line by\nline.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "At least two consecutive fiscal periods have been closed (P5-CLOSE-004 has run twice for sequential periods).",
+      "Both periods have revenue, COGS, and expense postings."
+    ],
+    "prerequisite_cases": [
+      "P5-CLOSE-004"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the comparative P&L (current period vs. prior period).\n",
+        "expected": "Report renders with current, prior, and variance columns.\n"
+      },
+      {
+        "n": 2,
+        "action": "Sum revenue postings in the current period only. Compare to\nthe current column's revenue.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum revenue postings in the prior period only. Compare to the\nprior column's revenue.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "For each line, compute (current - prior). Compare to the\nreport's variance column.\n",
+        "expected": "Match within $0.01 line-by-line.\n"
+      },
+      {
+        "n": 5,
+        "action": "Confirm that postings dated in the period before \"prior\" do\nNOT bleed into the prior column.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "Both columns tie to their period-bounded postings and the variance\nis computed correctly line-by-line.\n",
+    "pass_criteria": "Both columns reconcile within $0.01 AND every variance row equals\ncurrent - prior within $0.01.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-POOPEN-001",
+    "title": "Open PO commitments report reconciles to PO line value not yet received",
+    "goal": "Run the open PO commitments report. Verify the total open\ncommitment equals the sum of (PO line qty - received qty -\nshort-closed qty) × unit price across all open POs, and the\nvendor breakdown sums to the grand total.\n",
+    "roles": [
+      "Procurement",
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one PO is open with partial receipt (P3-RECV-002 partial) and at least one is fully open (no receipts yet)."
+    ],
+    "prerequisite_cases": [
+      "P3-PO-001",
+      "P3-RECV-002",
+      "P3-PO-SHORTCLOSE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the open PO commitments report.\n",
+        "expected": "Report shows per-PO and per-vendor: open qty, open value.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one partially received PO, compute open value = (line\nqty - received qty - short-closed qty) × unit price. Sum\nacross lines.\n",
+        "expected": "Match within $0.01 to the report's PO row.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum vendor subtotals. Compare to the grand total.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm a fully received PO does NOT appear (zero open).\n",
+        "expected": "Excluded.\n"
+      },
+      {
+        "n": 5,
+        "action": "Confirm a short-closed PO line is treated as zero remaining\nopen (not as a backorder).\n",
+        "expected": "Short-close excludes the line from open commitments.\n"
+      }
+    ],
+    "expected_overall": "Open commitment ties to per-PO open value and short-close /\nreceipt status are honored.\n",
+    "pass_criteria": "Per-PO open value matches hand computation within $0.01 AND\nfully received and short-closed are excluded AND vendor sums\nmatch grand total within $0.01.\n",
+    "why_this_matters": "Cash forecasting and inventory budgeting both depend on this\nnumber. A wrong open commitment causes either cash surprises\nor inventory shortages.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-QUOTECONV-001",
+    "title": "Quote conversion rate reconciles to issued quotes vs. quotes that became SOs",
+    "goal": "Run the quote conversion rate report for the period. Verify the\nnumerator (quotes converted to SOs) and denominator (quotes\nissued) reflect actual quote history, and the conversion % is\ncomputed correctly.\n",
+    "roles": [
+      "Sales / Account Manager",
+      "Controller"
+    ],
+    "preconditions": [
+      "At least 5 quotes were issued in the period, with at least one converted to an SO and one explicitly lost / expired."
+    ],
+    "prerequisite_cases": [
+      "P4-QUOTE-001",
+      "P4-QUOTE-005"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the quote conversion report for the period.\n",
+        "expected": "Report shows: quotes issued, quotes converted, quotes lost,\nquotes pending, conversion %.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pull the quote register filtered to the period. Count\nissued.\n",
+        "expected": "Compare to the report's denominator. Match.\n"
+      },
+      {
+        "n": 3,
+        "action": "Filter to converted (linked to an SO). Count.\n",
+        "expected": "Compare to the numerator. Match.\n"
+      },
+      {
+        "n": 4,
+        "action": "Verify conversion % = converted / issued × 100, rounded as\ndocumented.\n",
+        "expected": "Match within 0.1 pp.\n"
+      },
+      {
+        "n": 5,
+        "action": "Confirm a still-pending quote is counted in \"pending,\" not\nconverted or lost.\n",
+        "expected": "Correct status bucket.\n"
+      }
+    ],
+    "expected_overall": "Quote conversion ratio reflects real quote history with correct\nstatus bucketing.\n",
+    "pass_criteria": "Numerator and denominator match hand counts AND conversion %\nmatches within 0.1 pp AND status buckets are correct.\n",
+    "why_this_matters": "Sales pipeline metrics drive forecasting. Wrong conversion rate\ndistorts pipeline coverage analysis and quota planning.\n",
+    "est_minutes": 10
+  },
+  {
     "id": "RPT-SALESCUST-001",
     "title": "Sales by customer report reconciles to invoice register",
     "goal": "Run the sales-by-customer report for the period and verify each\ncustomer's total equals the sum of their posted invoices in the\nperiod.\n",
@@ -15513,6 +17520,135 @@
     "est_minutes": 8
   },
   {
+    "id": "RPT-SALESCUST-002",
+    "title": "Sales-by-customer for a custom date range ties only to invoices in that range",
+    "goal": "Run the sales-by-customer report for a date range that doesn't\nalign with the fiscal period. Verify the totals respect the start\nand end dates exactly — no leakage at the boundary.\n",
+    "roles": [
+      "Controller",
+      "Sales / Account Manager"
+    ],
+    "preconditions": [
+      "Customer invoices exist on multiple dates spanning more than a fiscal period."
+    ],
+    "prerequisite_cases": [
+      "P4-INV-001",
+      "RPT-SALESCUST-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run sales-by-customer for a custom range (e.g., a single\nweek mid-period).\n",
+        "expected": "Report renders for the requested range only.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pull the invoice register filtered to the same dates and one\ncustomer. Sum invoice totals.\n",
+        "expected": "Match the customer's row in the report within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Pick an invoice dated one day before the start. Confirm it\nis excluded.\n",
+        "expected": "Excluded.\n"
+      },
+      {
+        "n": 4,
+        "action": "Pick an invoice dated one day after the end. Confirm it is\nexcluded.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "Date filter is exact at both boundaries and per-customer totals\nreconcile to the date-filtered invoice register.\n",
+    "pass_criteria": "Per-customer total matches the date-filtered invoice sum within\n$0.01 AND boundary invoices are correctly included/excluded.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "RPT-SALESCUST-003",
+    "title": "Sales-by-customer with sales-rep breakdown ties to per-rep invoice attribution",
+    "goal": "Run the sales-by-customer report broken down (or filtered) by\nsales rep. Verify each rep's total equals the sum of invoices\nattributed to that rep, and per-rep totals roll up to the\nunfiltered grand total.\n",
+    "roles": [
+      "Controller",
+      "Sales / Account Manager"
+    ],
+    "preconditions": [
+      "Invoices exist with at least two distinct sales rep attributions."
+    ],
+    "prerequisite_cases": [
+      "P4-INV-001",
+      "RPT-SALESCUST-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run sales-by-customer grouped by sales rep, or filtered to\nrep A.\n",
+        "expected": "Report shows revenue attributed to rep A.\n"
+      },
+      {
+        "n": 2,
+        "action": "From the invoice register, sum invoices attributed to rep A\nin the period. Compare.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Run filtered to rep B. Sum.\n",
+        "expected": "Available.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm (rep A + rep B + ... unassigned) total equals the\nunfiltered grand total.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 5,
+        "action": "Spot-check: a customer invoice attributed to rep A appears in\nrep A's column, not rep B's.\n",
+        "expected": "Correct attribution.\n"
+      }
+    ],
+    "expected_overall": "Rep attribution on each invoice flows through to the report and\nper-rep sums equal the consolidated.\n",
+    "pass_criteria": "Per-rep total matches invoice register within $0.01 AND per-rep\nsum equals consolidated within $0.01.\n",
+    "why_this_matters": "Commissions and quota attainment use this report. Mis-attributed\ninvoices lead to underpaid reps or paying the wrong rep — both\ncause friction.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-SALESCUST-004",
+    "title": "Sales-by-customer drill-through opens the customer's invoice list",
+    "goal": "From the sales-by-customer report, drill into one customer. Verify\nthe drill opens the list of invoices in scope, with totals matching\nthe parent row.\n",
+    "roles": [
+      "Controller",
+      "Sales / Account Manager"
+    ],
+    "preconditions": [
+      "At least one customer has multiple invoices in the period."
+    ],
+    "prerequisite_cases": [
+      "P4-INV-001",
+      "RPT-SALESCUST-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run sales-by-customer for the period.\n",
+        "expected": "Renders.\n"
+      },
+      {
+        "n": 2,
+        "action": "Drill into one customer's row.\n",
+        "expected": "An invoice list opens, scoped to that customer and date range.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum the invoice totals in the drill list. Compare to the\nparent row.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Open one invoice from the drill list. Confirm customer,\namount, and date match the system invoice.\n",
+        "expected": "Match.\n"
+      }
+    ],
+    "expected_overall": "Drill list contains the right invoices and totals reconcile.\n",
+    "pass_criteria": "Drill list sum matches parent row within $0.01 AND a spot-checked\ninvoice opens correctly from the drill.\n",
+    "est_minutes": 6
+  },
+  {
     "id": "RPT-SALESPROD-001",
     "title": "Sales by product report reconciles to invoice lines",
     "goal": "Run the sales-by-product report for the period and verify each\npart's revenue equals the sum of that part's invoice lines.\n",
@@ -15546,6 +17682,356 @@
     "expected_overall": "Sales-by-product ties to invoice line detail and to other revenue\nreports.\n",
     "pass_criteria": "Per-part revenue matches invoice line sum AND grand total\nreconciles to the P&L.\n",
     "est_minutes": 8
+  },
+  {
+    "id": "RPT-SALESPROD-002",
+    "title": "Sales-by-product grouped by category reconciles per category and grand total",
+    "goal": "Run the sales-by-product report grouped by product category.\nVerify each category's subtotal equals the sum of its parts, and\nthe categories' grand total matches the ungrouped grand total.\n",
+    "roles": [
+      "Controller",
+      "Sales / Account Manager"
+    ],
+    "preconditions": [
+      "Parts in the invoice register fall into at least two categories (P2-PART-001 with category assigned)."
+    ],
+    "prerequisite_cases": [
+      "P4-INV-001",
+      "RPT-SALESPROD-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run sales-by-product grouped by category.\n",
+        "expected": "Report shows category subtotals.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pick one category. Sum the parts within that category in the\nreport's detail. Compare to the category subtotal.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum all category subtotals. Compare to the report's grand\ntotal.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Run the ungrouped sales-by-product report. Confirm the grand\ntotal matches.\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Category grouping reconciles bottom-up and the grand total is\ninvariant under grouping.\n",
+    "pass_criteria": "Per-category subtotal matches its parts within $0.01 AND grouped\ngrand total equals ungrouped grand total within $0.01.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "RPT-SALESPROD-003",
+    "title": "Sales-by-product drill-through opens the part's invoice line detail",
+    "goal": "From the sales-by-product report, drill into one part. Verify the\ndrill opens the invoice lines that contributed to the row, with\nqty × price - discount summing to the parent row.\n",
+    "roles": [
+      "Controller",
+      "Sales / Account Manager"
+    ],
+    "preconditions": [
+      "At least one part has multiple invoice lines in the period (sold to multiple customers or on multiple dates)."
+    ],
+    "prerequisite_cases": [
+      "P4-INV-001",
+      "RPT-SALESPROD-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run sales-by-product for the period.\n",
+        "expected": "Renders.\n"
+      },
+      {
+        "n": 2,
+        "action": "Drill into one part's row.\n",
+        "expected": "Invoice line list opens for that part across all customers in\nthe date range.\n"
+      },
+      {
+        "n": 3,
+        "action": "For each line, compute (qty × unit price) - discount. Sum.\nCompare to the part's row revenue.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Click into one line. Confirm the parent invoice opens with the\nsame customer and totals.\n",
+        "expected": "Match.\n"
+      }
+    ],
+    "expected_overall": "Drill exposes correct lines and reconciles to the parent row.\n",
+    "pass_criteria": "Sum of (qty × price - discount) on the drill list matches the\nparent row within $0.01 AND the parent invoice opens correctly.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "RPT-SALESPROD-004",
+    "title": "Top-N sales-by-product reflects actual revenue ranking",
+    "goal": "Run the sales-by-product report sorted by revenue descending and\nlimited to top 10 (or top N). Verify the listed parts are the\nactual top revenue earners and that #11+ parts are correctly\nexcluded.\n",
+    "roles": [
+      "Sales / Account Manager",
+      "Controller"
+    ],
+    "preconditions": [
+      "At least 12 parts have revenue in the period (so a top-10 cutoff is meaningful)."
+    ],
+    "prerequisite_cases": [
+      "P4-INV-001",
+      "RPT-SALESPROD-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the sales-by-product report unfiltered, sorted by revenue\ndescending. Note the top 10 parts and their revenue.\n",
+        "expected": "Top 10 list available.\n"
+      },
+      {
+        "n": 2,
+        "action": "Run the report with \"top 10\" or limit-10 applied. Compare the\nlist and per-row revenue.\n",
+        "expected": "Same 10 parts, same revenue per row.\n"
+      },
+      {
+        "n": 3,
+        "action": "Confirm the part ranked #11 in the unfiltered report does\nNOT appear in the top-10 view.\n",
+        "expected": "Excluded.\n"
+      },
+      {
+        "n": 4,
+        "action": "Verify the sort is strictly descending (no ties causing\ndrop-outs).\n",
+        "expected": "Order matches the ranked unfiltered list.\n"
+      }
+    ],
+    "expected_overall": "Top-N filter is a clean ranking with the correct cutoff.\n",
+    "pass_criteria": "Listed top-10 matches the unfiltered top-10 exactly AND #11 is\nexcluded AND ordering is descending by revenue.\n",
+    "est_minutes": 6
+  },
+  {
+    "id": "RPT-SALESTAX-001",
+    "title": "Sales tax / VAT return reconciles to taxable invoice lines and tax payable account",
+    "goal": "Run the sales tax (or VAT) return report for the period. Verify\neach tax-rate row equals the sum of taxable invoice lines at that\nrate × rate, and the total tax due equals the tax payable account\nbalance on the trial balance.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "The period has invoices spanning at least two tax rates / tax jurisdictions.",
+      "At least one invoice has tax-exempt lines.",
+      "VAT/tax codes are configured (P1-TAX-001)."
+    ],
+    "prerequisite_cases": [
+      "P1-TAX-001",
+      "P4-INV-001",
+      "P5-VAT-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the sales tax / VAT return for the period.\n",
+        "expected": "Report shows per-rate / per-jurisdiction taxable base and\ntax due, plus a total.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one rate, sum invoice lines coded to that rate. Multiply\nby the rate. Compare to the report's tax line.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Verify tax-exempt lines are excluded from the taxable base.\n",
+        "expected": "Excluded.\n"
+      },
+      {
+        "n": 4,
+        "action": "Sum tax due across all rates. Compare to the tax payable\naccount balance for the period (from trial balance).\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Tax return ties to taxable invoice lines and to the tax payable\nGL balance.\n",
+    "pass_criteria": "Per-rate tax matches (taxable base × rate) within $0.01 AND\ntotal ties to tax payable GL within $0.01 AND exempt lines\nexcluded.\n",
+    "why_this_matters": "This report is filed with tax authorities. Underreporting risks\npenalties; overreporting wastes cash. Either is a common audit\nfinding when source data and report don't reconcile.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-SCHEDATT-001",
+    "title": "Production schedule attainment reconciles to scheduled and completed WO history",
+    "goal": "Run the schedule attainment report for the period. Verify\nattainment % = (WOs completed on or before scheduled finish) /\n(WOs scheduled to finish in the period), and that on-time and\nlate WO counts reflect actual completion timestamps.\n",
+    "roles": [
+      "Production Manager"
+    ],
+    "preconditions": [
+      "At least one WO was scheduled to finish in the period and completed on time, and at least one was completed late (or is still open past its scheduled finish)."
+    ],
+    "prerequisite_cases": [
+      "P4-WO-001",
+      "P4-COMP-FINAL"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the schedule attainment report for the period.\n",
+        "expected": "Report shows: scheduled WOs, on-time completions, late\ncompletions, attainment %.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pull WOs scheduled to finish in the period. Count.\n",
+        "expected": "Compare to denominator. Match.\n"
+      },
+      {
+        "n": 3,
+        "action": "For each, compare actual completion date to scheduled\nfinish. Count on-time (completed ≤ scheduled).\n",
+        "expected": "Compare to numerator. Match.\n"
+      },
+      {
+        "n": 4,
+        "action": "Verify attainment % = on-time / scheduled × 100.\n",
+        "expected": "Match within 0.1 pp.\n"
+      },
+      {
+        "n": 5,
+        "action": "Confirm a WO scheduled outside the period does NOT influence\nthe attainment metric.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "Schedule attainment reflects actual on-time vs. late\ncompletions within the scheduling window.\n",
+    "pass_criteria": "Numerator and denominator match hand counts AND attainment %\nmatches within 0.1 pp AND outside-window WOs excluded.\n",
+    "why_this_matters": "Schedule attainment is a primary plant-floor KPI. A wrong\nnumber either masks delivery problems or creates phantom ones,\nboth eroding ops manager credibility.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-SCRAPRWK-001",
+    "title": "Scrap and rework summary reconciles to WO scrap reports and NCR detail",
+    "goal": "Run the scrap and rework summary for the period. Verify scrap\nquantity × cost equals the sum of WO scrap entries, and rework\nquantity × cost equals the sum of NCR rework dispositions.\n",
+    "roles": [
+      "Production Manager",
+      "QC Inspector",
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one WO recorded scrap (P4-COMP with reject qty) and at least one NCR was dispositioned to rework (P5-QC-NCR-001)."
+    ],
+    "prerequisite_cases": [
+      "P4-COMP",
+      "P5-QC-NCR-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the scrap and rework summary for the period.\n",
+        "expected": "Report shows scrap qty, scrap cost, rework qty, rework cost,\nand totals.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pull the WO scrap entries for the period. Sum (scrap qty ×\nstandard cost) per WO. Compare to the report's scrap cost.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Pull NCRs dispositioned to rework. Sum (rework qty × rework\nlabor cost). Compare to the report's rework cost.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm the period's scrap GL postings (scrap variance\naccount) tie to the report's scrap cost.\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Scrap and rework totals reconcile to the floor and quality\nrecords that produced them.\n",
+    "pass_criteria": "Scrap cost matches WO entries within $0.01 AND rework cost\nmatches NCR dispositions within $0.01 AND scrap GL ties.\n",
+    "why_this_matters": "Scrap and rework are the headline waste KPIs. If the report\nunderstates them, improvement programs miss the real opportunity.\n",
+    "est_minutes": 12
+  },
+  {
+    "id": "RPT-SOBACK-001",
+    "title": "Open SO backlog reconciles to unshipped / unbilled SO line value",
+    "goal": "Run the open SO backlog report. Verify the total open backlog\nequals the sum of (SO line qty - shipped qty) × unit price\nacross all open SOs, and that the report's backlog ties to the\nbacklog figure on the BBB report (RPT-BBB-001).\n",
+    "roles": [
+      "Sales / Account Manager",
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one SO is partially shipped (P4-SHIP-SPLIT-001) and at least one is fully open (no shipments yet)."
+    ],
+    "prerequisite_cases": [
+      "P4-SHIP-SPLIT-001",
+      "RPT-BBB-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the open SO backlog report.\n",
+        "expected": "Report shows per-SO and per-customer: open qty, open value,\nrequested ship date.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one partially shipped SO, compute open value = (line qty\n- shipped qty) × unit price. Sum across lines.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum customer subtotals. Compare to grand total.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Compare the grand total to RPT-BBB-001's backlog figure.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 5,
+        "action": "Confirm a fully shipped SO does NOT appear (zero open).\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "Backlog ties to per-SO open value and reconciles to the BBB\nbacklog figure.\n",
+    "pass_criteria": "Per-SO open value matches hand computation within $0.01 AND\nfully shipped SOs excluded AND grand total ties to BBB backlog.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-STOCKOUT-001",
+    "title": "Stockout / backorder report lists unfulfilled SO demand and ties to open backorder lines",
+    "goal": "Run the stockout / backorder report. Verify it lists every SO\nline that could not be fulfilled from on-hand stock as of the\nreport date, with shortage qty and required date matching the\nSO and inventory state.\n",
+    "roles": [
+      "Warehouse / Logistics",
+      "Sales / Account Manager"
+    ],
+    "preconditions": [
+      "At least one SO has a line whose qty exceeds on-hand at the fulfilling location (a backorder).",
+      "At least one SO line has been fully fulfilled (should NOT appear in the report)."
+    ],
+    "prerequisite_cases": [
+      "P3-RESERVE-001",
+      "P4-SHIP-SPLIT-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the stockout / backorder report.\n",
+        "expected": "Report lists SO lines with backorder qty, required date,\nand customer.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one SO line on the report, hand-verify: SO qty - shipped\nqty - reserved qty available = backorder qty.\n",
+        "expected": "Match.\n"
+      },
+      {
+        "n": 3,
+        "action": "Confirm a fully shipped SO line does NOT appear.\n",
+        "expected": "Excluded.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm an SO line with stock on hand and reserved (but not\nyet shipped) does NOT appear (it's not a stockout).\n",
+        "expected": "Excluded.\n"
+      },
+      {
+        "n": 5,
+        "action": "Sort the report by required date ascending. Verify the\nearliest required-date row is the most urgent backorder.\n",
+        "expected": "Sort order correct.\n"
+      }
+    ],
+    "expected_overall": "Backorder report identifies real shortages with the right\nshortage qty and date.\n",
+    "pass_criteria": "Hand-computed shortage qty matches AND fully shipped / fully\nreserved lines are excluded AND sort by required date works.\n",
+    "why_this_matters": "Customer service uses this list to communicate delivery dates.\nFalse positives (saying we're short when we're not) cause lost\nsales; false negatives (missing real shortages) cause silent\nlate shipments.\n",
+    "est_minutes": 10
   },
   {
     "id": "RPT-TRIALBAL-001",
@@ -15584,6 +18070,84 @@
     ],
     "expected_overall": "Trial balance is balanced and each account ties to its postings.\n",
     "pass_criteria": "Debits = credits AND spot-checked accounts reconcile to JE\npostings.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-TRIALBAL-002",
+    "title": "Adjusted trial balance differs from preliminary only by closing entries",
+    "goal": "Run the preliminary (pre-close) trial balance and the adjusted\n(post-close) trial balance for the same period. The difference per\naccount should equal the sum of closing/adjusting JEs posted to\nthat account.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "The period has both pre-close and post-close states available (closing JEs were posted as part of P5-CLOSE-004).",
+      "At least one closing/adjusting JE was posted."
+    ],
+    "prerequisite_cases": [
+      "P5-CLOSE-004",
+      "P5-JE-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the preliminary trial balance (pre-close, or \"as posted\").\n",
+        "expected": "Report renders showing accounts before closing JEs.\n"
+      },
+      {
+        "n": 2,
+        "action": "Run the adjusted (post-close) trial balance for the same\nperiod end date.\n",
+        "expected": "Report renders. Account balances may differ for accounts\naffected by closing JEs.\n"
+      },
+      {
+        "n": 3,
+        "action": "Pick one account that had a closing JE (e.g., revenue moving\nto retained earnings). Compute (preliminary - adjusted).\n",
+        "expected": "Equals the sum of closing JE postings to that account within\n$0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Both versions still have debits = credits.\n",
+        "expected": "Equal to the cent on both versions.\n"
+      }
+    ],
+    "expected_overall": "Adjusted - preliminary equals the closing JE activity per account,\nand both versions remain in balance.\n",
+    "pass_criteria": "Spot-checked account difference equals closing JE sum within $0.01\nAND both trial balances remain debit = credit.\n",
+    "why_this_matters": "Misposted closing entries are easy to introduce and tedious to\ncatch. Comparing pre/post views is the auditor's standard check.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-TRIALBAL-003",
+    "title": "Per-dimension trial balance stays in balance for each dimension value",
+    "goal": "Run the trial balance filtered to one dimension value (e.g.,\ndepartment, location, or class). Verify it still has debits =\ncredits — i.e., postings tagged to a single dimension are also\ninternally balanced.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "Postings carry a department / location / class dimension and at least two values exist with their own activity."
+    ],
+    "prerequisite_cases": [
+      "P5-CLOSE-004",
+      "P1-GL-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the trial balance filtered to dimension value A.\n",
+        "expected": "Report renders. Total debits = total credits for that slice.\n"
+      },
+      {
+        "n": 2,
+        "action": "Run the trial balance filtered to dimension value B.\n",
+        "expected": "Same — debits = credits for that slice.\n"
+      },
+      {
+        "n": 3,
+        "action": "Run the unfiltered trial balance. Sum (A trial balance debits +\nB debits + any other slices). Compare to unfiltered debits.\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Per-dimension trial balance is balanced for every slice and the\nper-slice sum equals the consolidated.\n",
+    "pass_criteria": "Every per-dimension slice has debits = credits AND the per-slice\nsum equals the consolidated within $0.01.\n",
+    "why_this_matters": "A common bug: a one-sided posting tagged to a dimension. The\nconsolidated trial balance still balances (offset elsewhere) but\nthe per-dimension view exposes the error.\n",
     "est_minutes": 10
   },
   {
@@ -15629,6 +18193,217 @@
     "est_minutes": 10
   },
   {
+    "id": "RPT-VENDORPERF-002",
+    "title": "Vendor performance for a custom date range respects boundaries",
+    "goal": "Run the vendor performance report for a date range that excludes\nsome historical receipts. Verify on-time %, defect %, and fill\n% are computed only from receipts dated within the range.\n",
+    "roles": [
+      "Procurement"
+    ],
+    "preconditions": [
+      "One vendor has receipts spanning multiple periods (some good, some late, some with rejected qty), enough to make a date- bounded slice meaningful."
+    ],
+    "prerequisite_cases": [
+      "P3-RECV-001",
+      "P3-RECV-003",
+      "RPT-VENDORPERF-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run vendor performance for a 60-day window.\n",
+        "expected": "Report renders for that window.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pull only the receipts within that 60-day window. Hand-\ncompute on-time %, defect %, fill %.\n",
+        "expected": "Compute.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare to the report.\n",
+        "expected": "Match within rounding.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm a receipt from outside the window does NOT influence\nthe metrics.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "Performance metrics correctly bound to the date range with no\nleakage.\n",
+    "pass_criteria": "All three metrics match the date-windowed hand computation within\nrounding AND outside-window receipts are excluded.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "RPT-VENDORPERF-003",
+    "title": "Vendor performance grouped by commodity category aggregates correctly",
+    "goal": "Run the vendor performance report grouped by vendor commodity /\ncategory. Verify the per-category averages reflect only vendors\nin that category and that per-vendor numbers don't double-count\nacross categories.\n",
+    "roles": [
+      "Procurement"
+    ],
+    "preconditions": [
+      "At least two vendor categories (e.g., \"Steel,\" \"Electronics\") each have multiple vendors with receipt history."
+    ],
+    "prerequisite_cases": [
+      "P3-RECV-001",
+      "RPT-VENDORPERF-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run vendor performance grouped by category.\n",
+        "expected": "Report shows category headers with aggregated metrics.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one category, list the vendors in it. Compute the\nreceipt-weighted average on-time %.\n",
+        "expected": "Compute.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare to the report's category aggregate.\n",
+        "expected": "Match within rounding.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm a vendor in a different category is NOT included in\nthe first category's aggregate.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "Category grouping aggregates only the right vendors and metrics\nreconcile to a hand-weighted average.\n",
+    "pass_criteria": "Category aggregate matches receipt-weighted average within\nrounding AND no cross-category leakage.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-VENDORPERF-004",
+    "title": "Drill-through from a vendor's row opens the underlying receipt history",
+    "goal": "From the vendor performance report, drill into one vendor's\nperformance row. Verify the drill opens the receipts (and\nassociated quality records) that produced the metrics.\n",
+    "roles": [
+      "Procurement"
+    ],
+    "preconditions": [
+      "At least one vendor has multiple receipts including one with a quality issue."
+    ],
+    "prerequisite_cases": [
+      "P3-RECV-001",
+      "P3-RECV-003",
+      "RPT-VENDORPERF-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run vendor performance for the relevant date range.\n",
+        "expected": "Renders.\n"
+      },
+      {
+        "n": 2,
+        "action": "Drill into a vendor's row.\n",
+        "expected": "A list of that vendor's receipts opens, with promised vs.\nactual date and rejected quantity per row.\n"
+      },
+      {
+        "n": 3,
+        "action": "Count: on-time receipts, defective receipts, total receipts.\nRecompute on-time % and defect %.\n",
+        "expected": "Numbers match the parent row within rounding.\n"
+      },
+      {
+        "n": 4,
+        "action": "Open one receipt from the drill list. Confirm PO number,\nreceipt date, and quality outcome match the receipt record.\n",
+        "expected": "Match.\n"
+      }
+    ],
+    "expected_overall": "Drill exposes the receipts that produced the metrics and the\nhand-recompute matches.\n",
+    "pass_criteria": "Hand-recompute from drill list matches parent row within rounding\nAND a spot-checked receipt opens correctly.\n",
+    "est_minutes": 8
+  },
+  {
+    "id": "RPT-VENDSTMT-001",
+    "title": "Vendor statement reconciliation matches our AP ledger to the vendor's view",
+    "goal": "Generate the per-vendor statement (or vendor reconciliation\nworksheet). Verify the listed invoices, credit memos, and\npayments equal the AP ledger for that vendor and the ending\nbalance matches the vendor's row on AP aging.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one vendor has period activity — an invoice, a payment, and a credit memo (P3-AP-CM-001)."
+    ],
+    "prerequisite_cases": [
+      "P3-AP-001",
+      "P3-PAY-001",
+      "P3-AP-CM-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Generate the vendor statement / reconciliation for one\nvendor for the period.\n",
+        "expected": "Statement lists invoices, payments, and credit memos in date\norder with running balance.\n"
+      },
+      {
+        "n": 2,
+        "action": "Compare each line to the vendor's entries in the AP ledger.\n",
+        "expected": "Every entry matches; no missing or extra.\n"
+      },
+      {
+        "n": 3,
+        "action": "Verify ending balance = opening + (invoices - payments -\ncredit memos applied).\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Compare ending balance to the vendor's row on AP aging\n(RPT-APAGE-001).\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Vendor statement equals AP ledger and ties to AP aging.\n",
+    "pass_criteria": "Every transaction in the period appears on the statement AND\nending balance ties to AP aging within $0.01.\n",
+    "why_this_matters": "Vendor reconciliation prevents double payments and missed\ncredit memos. A statement that doesn't tie to AP makes the\nreconciliation untrustworthy.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-WHHOLD-001",
+    "title": "Withholding remittance reconciles to per-vendor withholding postings and the payable account",
+    "goal": "Run the withholding remittance report (e.g., 1099 / 1042 /\ncontractor withholding) for the period. Verify per-vendor\nwithholding equals what was deducted on payments to that vendor,\nand total withholding ties to the withholding payable GL.\n",
+    "roles": [
+      "Controller"
+    ],
+    "preconditions": [
+      "At least one vendor is flagged for withholding (P5-WHTAX-001).",
+      "At least one payment has been made with withholding deducted."
+    ],
+    "prerequisite_cases": [
+      "P5-WHTAX-001",
+      "P3-PAY-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the withholding remittance report for the period.\n",
+        "expected": "Report shows per-vendor: gross paid, withholding amount, net\npaid, and a total.\n"
+      },
+      {
+        "n": 2,
+        "action": "For one vendor, pull the period's payment register. Sum the\nwithholding deductions. Compare.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 3,
+        "action": "Verify gross - withholding = net per row.\n",
+        "expected": "Holds within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Sum total withholding. Compare to the withholding payable\nGL balance for the period.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 5,
+        "action": "Confirm a non-withholding vendor does NOT appear on the\nreport.\n",
+        "expected": "Excluded.\n"
+      }
+    ],
+    "expected_overall": "Withholding totals reconcile per-vendor and at the GL.\n",
+    "pass_criteria": "Per-vendor withholding matches payment register within $0.01\nAND total ties to withholding payable GL within $0.01 AND\nnon-withholding vendors are excluded.\n",
+    "why_this_matters": "Withholding remittance is filed with tax authorities and the\nvendor uses it to file their own taxes. Errors create dual\nliability — to the vendor and to the tax authority.\n",
+    "est_minutes": 10
+  },
+  {
     "id": "RPT-WOVAR-001",
     "title": "WO variance report reconciles to actual material and labor postings",
     "goal": "Run the WO variance report for closed work orders. Verify the\nmaterial and labor variance numbers equal (actual posted - standard\nper BOM/routing) for each WO.\n",
@@ -15667,5 +18442,97 @@
     "expected_overall": "WO variance report numbers reconcile to source material / labor.\n",
     "pass_criteria": "Material and labor variance match the hand calculation within $0.01.\n",
     "est_minutes": 12
+  },
+  {
+    "id": "RPT-WOVAR-002",
+    "title": "WO variance filtered by work center ties to that work center's WO postings",
+    "goal": "Run the WO variance report filtered to a single primary work\ncenter. Verify the totals equal the sum of variance across only\nWOs whose primary operation runs at that work center.\n",
+    "roles": [
+      "Controller",
+      "Production Manager"
+    ],
+    "preconditions": [
+      "WOs exist whose primary operation is at two or more distinct work centers (P4-COMP-FINAL run for multiple WOs)."
+    ],
+    "prerequisite_cases": [
+      "P4-COMP-FINAL",
+      "RPT-WOVAR-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the WO variance report filtered to work center A.\n",
+        "expected": "Report shows only WOs whose primary operation is at work\ncenter A.\n"
+      },
+      {
+        "n": 2,
+        "action": "Pull the closed WOs primarily at work center A. For each,\ncompute (actual cost - standard cost). Sum.\n",
+        "expected": "Compute.\n"
+      },
+      {
+        "n": 3,
+        "action": "Compare to the report's total variance.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Confirm a WO primarily at a different work center does NOT\nappear in the filtered report.\n",
+        "expected": "Excluded.\n"
+      },
+      {
+        "n": 5,
+        "action": "Run the unfiltered report. Sum (filter A total + filter B\ntotal + ...). Compare.\n",
+        "expected": "Match within $0.01.\n"
+      }
+    ],
+    "expected_overall": "Work-center filter correctly partitions WOs and totals reconcile.\n",
+    "pass_criteria": "Filtered total matches hand-computed work-center variance within\n$0.01 AND per-work-center sum equals unfiltered total within $0.01.\n",
+    "est_minutes": 10
+  },
+  {
+    "id": "RPT-WOVAR-003",
+    "title": "WO variance drill-through opens material and labor detail",
+    "goal": "From the WO variance report, drill into one WO's variance line.\nVerify the drill exposes per-material-issue and per-labor-entry\ndetail that sums to the WO's variance.\n",
+    "roles": [
+      "Controller",
+      "Production Manager"
+    ],
+    "preconditions": [
+      "At least one closed WO has both material and labor variance (P4-COMP-FINAL with quantities differing from standard)."
+    ],
+    "prerequisite_cases": [
+      "P4-COMP-FINAL",
+      "RPT-WOVAR-001"
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Run the WO variance report.\n",
+        "expected": "Report renders with a row per closed WO.\n"
+      },
+      {
+        "n": 2,
+        "action": "Drill into one WO's variance.\n",
+        "expected": "A breakdown opens showing per-component material variance and\nper-operation labor variance.\n"
+      },
+      {
+        "n": 3,
+        "action": "Sum the per-component material variance lines. Compare to the\nWO's total material variance on the parent report.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 4,
+        "action": "Sum the per-operation labor variance lines. Compare to the\nWO's total labor variance on the parent report.\n",
+        "expected": "Match within $0.01.\n"
+      },
+      {
+        "n": 5,
+        "action": "Drill one more level into one material variance line. Confirm\nit lists the actual issue transactions for that component.\n",
+        "expected": "Issue transactions list opens.\n"
+      }
+    ],
+    "expected_overall": "Variance drill-through exposes the correct breakdown and each\nlevel reconciles to the parent.\n",
+    "pass_criteria": "Material and labor detail sums each match the parent WO variance\nwithin $0.01 AND the deepest drill exposes real source issues.\n",
+    "est_minutes": 10
   }
 ]
