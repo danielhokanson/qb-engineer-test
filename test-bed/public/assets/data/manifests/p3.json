@@ -1,0 +1,138 @@
+{
+  "phase": "P3",
+  "title": "First transactions — POs, receipts, asset commissioning, opening balances, cycle counts",
+  "description": "Move from describing things to doing things. First real PO, first\ninventory in the door, first fixed asset on the books, first cycle\ncount, first vendor payment.\n",
+  "estimated_total_minutes": 110,
+  "default_fixture": "cascade-components-mid",
+  "sequence": [
+    {
+      "id": "P3-REQ-001",
+      "required": false,
+      "scale_tags": [
+        "mid-market",
+        "enterprise"
+      ]
+    },
+    {
+      "id": "P3-PO-001",
+      "required": true,
+      "note": "Blocking. Most subsequent P3 cases depend on at least one issued PO."
+    },
+    {
+      "id": "P3-PO-002",
+      "required": false
+    },
+    {
+      "id": "P3-PO-003",
+      "required": false
+    },
+    {
+      "id": "P3-RECV-001",
+      "required": true,
+      "note": "Blocking. Without a received PO, no inventory exists for downstream phases."
+    },
+    {
+      "id": "P3-RECV-002",
+      "required": false
+    },
+    {
+      "id": "P3-RECV-003",
+      "required": false
+    },
+    {
+      "id": "P3-ASSET-COMM-001",
+      "required": false,
+      "note": "Required if P3-PO-002 was run with a fixed-asset line.",
+      "prerequisite_cases": [
+        "P3-PO-002"
+      ]
+    },
+    {
+      "id": "P3-AP-001",
+      "required": true,
+      "note": "Required to verify 3-way match works.",
+      "prerequisite_cases": [
+        "P3-RECV-001"
+      ]
+    },
+    {
+      "id": "P3-OB-001",
+      "required": false,
+      "note": "Run only on a migration / cutover scenario."
+    },
+    {
+      "id": "P3-OB-002",
+      "required": false,
+      "scale_tags": [
+        "mid-market",
+        "enterprise"
+      ]
+    },
+    {
+      "id": "P3-COUNT-001",
+      "required": true,
+      "note": "Required to verify counts and variance handling."
+    },
+    {
+      "id": "P3-COUNT-002",
+      "required": false,
+      "scale_tags": [
+        "mid-market",
+        "enterprise"
+      ]
+    },
+    {
+      "id": "P3-PAY-001",
+      "required": true,
+      "note": "Required to close the AP cycle.",
+      "prerequisite_cases": [
+        "P3-AP-001"
+      ]
+    }
+  ],
+  "checkpoints": [
+    {
+      "after": "P3-PO-001",
+      "state_summary": "First PO is issued and pending receipt.\n"
+    },
+    {
+      "after": "P3-RECV-001",
+      "state_summary": "First inventory exists. PO closed. GR/IR pending invoice match.\n"
+    },
+    {
+      "after": "P3-AP-001",
+      "state_summary": "AP entry posted, ready for payment.\n"
+    },
+    {
+      "after": "P3-COUNT-002",
+      "state_summary": "Cycle count complete with variance handled. Bin transfers verified.\n"
+    },
+    {
+      "after": "P3-PAY-001",
+      "state_summary": "Full vendor cycle complete: PO → receive → AP → pay.\n"
+    }
+  ],
+  "branches": [],
+  "roles_introduced": [
+    "Warehouse / Logistics",
+    "QC Inspector"
+  ],
+  "flows_used_heavily": [
+    "vendor-to-asset",
+    "part-to-inventory",
+    "cycle-count"
+  ],
+  "dedicated_suites_referenced": [
+    "i18n-suite",
+    "accessibility-suite"
+  ],
+  "completion_criteria": [
+    "At least one PO has been issued, received, and paid.",
+    "At least one cycle count has reconciled successfully.",
+    "GL postings tie out for inventory and AP."
+  ],
+  "out_of_scope": [
+    "Sales transactions (P4).",
+    "PM scheduling (P5)."
+  ]
+}

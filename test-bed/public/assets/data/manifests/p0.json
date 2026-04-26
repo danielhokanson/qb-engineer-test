@@ -1,0 +1,166 @@
+{
+  "phase": "P0",
+  "title": "Bootstrap — from empty database to a configured tenant",
+  "description": "Take the application from a freshly installed state, with no\nrecords and no users, to a state where foundational records can\nbe added in Phase 1. This phase is run by a single administrator\nin most cases.\n",
+  "estimated_total_minutes": 80,
+  "default_fixture": "cascade-components-mid",
+  "sequence": [
+    {
+      "id": "P0-INSTALL-001",
+      "required": true
+    },
+    {
+      "id": "P0-ADMIN-001",
+      "required": true,
+      "note": "Blocking. Without an admin account, nothing else in the phase\ncan be tested.\n"
+    },
+    {
+      "id": "P0-ADMIN-002",
+      "required": true
+    },
+    {
+      "id": "P0-TENANT-001",
+      "required": true
+    },
+    {
+      "id": "P0-TENANT-002",
+      "required": true,
+      "scale_tags": [
+        "small-shop",
+        "mid-market",
+        "enterprise"
+      ],
+      "note": "Required everywhere. Even single-language shops should test\nthat switching works.\n"
+    },
+    {
+      "id": "P0-TENANT-003",
+      "required": true
+    },
+    {
+      "id": "P0-TENANT-004",
+      "required": true
+    },
+    {
+      "id": "P0-TENANT-005",
+      "required": true,
+      "note": "Decision point. The chosen costing model influences how some\nPhase 1 and Phase 4 cases read, but does not branch this phase.\n"
+    },
+    {
+      "id": "P0-INTEG-001",
+      "required": true,
+      "branches": [
+        {
+          "branch": "accounting-mode",
+          "downstream_effect": "Affects Phase 4 financial cases. The runner records the\nchoice and serves the matching variants there.\n"
+        }
+      ]
+    },
+    {
+      "id": "P0-INTEG-002",
+      "required": true,
+      "branches": [
+        {
+          "branch": "shipping-mode",
+          "downstream_effect": "Affects Phase 4 shipping cases.\n"
+        }
+      ]
+    },
+    {
+      "id": "P0-INTEG-003",
+      "required": true
+    },
+    {
+      "id": "P0-USER-001",
+      "required": true,
+      "scale_variants": {
+        "small-shop": {
+          "note": "Small shops may collapse this to two roles (Owner, Worker).\nThe default fixture uses five. The tester can override the\nfixture before the case starts.\n"
+        },
+        "enterprise": {
+          "note": "Enterprise fixtures may add more roles. The tester is\nexpected to use whatever fixture matches their scenario.\n"
+        }
+      }
+    },
+    {
+      "id": "P0-USER-002",
+      "required": true
+    },
+    {
+      "id": "P0-USER-003",
+      "required": true
+    },
+    {
+      "id": "P0-INFRA-001",
+      "required": true,
+      "note": "Final sanity check. Should always be the last case in the\nphase.\n"
+    }
+  ],
+  "checkpoints": [
+    {
+      "after": "P0-ADMIN-002",
+      "state_summary": "Admin account exists and is signed in. No tenant configuration\nyet.\n"
+    },
+    {
+      "after": "P0-TENANT-005",
+      "state_summary": "Company identity, locale, time zone, fiscal year, currency,\nand costing model are all saved. No integrations configured.\nNo users beyond the first admin.\n"
+    },
+    {
+      "after": "P0-INTEG-003",
+      "state_summary": "All tenant configuration and all integration choices are saved.\nNo additional users, no roles defined.\n"
+    },
+    {
+      "after": "P0-USER-003",
+      "state_summary": "Full Phase 0 complete except final persistence check. Two users\nexist (admin + Floor Operator). All settings saved.\n"
+    }
+  ],
+  "branches": [
+    {
+      "id": "accounting-mode",
+      "declared_in": "P0-INTEG-001",
+      "affects_phases": [
+        "P4"
+      ],
+      "options": [
+        {
+          "id": "quickbooks"
+        },
+        {
+          "id": "manual"
+        },
+        {
+          "id": "skip"
+        }
+      ]
+    },
+    {
+      "id": "shipping-mode",
+      "declared_in": "P0-INTEG-002",
+      "affects_phases": [
+        "P4"
+      ],
+      "options": [
+        {
+          "id": "connected-carrier"
+        },
+        {
+          "id": "manual"
+        }
+      ]
+    }
+  ],
+  "dedicated_suites_referenced": [
+    "i18n-suite",
+    "accessibility-suite"
+  ],
+  "completion_criteria": [
+    "All required cases in sequence are marked passed.",
+    "Branch choices are recorded for accounting-mode and shipping-mode.",
+    "P0-INFRA-001 passed (data persistence verified)."
+  ],
+  "out_of_scope": [
+    "Master data (parts, BOMs, customers, vendors). Begins in Phase 1.",
+    "Inventory transactions. Begins in Phase 3.",
+    "Production. Begins in Phase 4.",
+    "Periodic close and reporting. Begins in Phase 5."
+  ]
+}

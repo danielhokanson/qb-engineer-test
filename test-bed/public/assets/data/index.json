@@ -1,0 +1,45 @@
+{
+  "library_version": "0.2.0",
+  "built_at": "2026-04-26T00:31:07.572Z",
+  "case_count": 127,
+  "tutorial_count": 6,
+  "roles": [
+    "Administrator",
+    "Controller",
+    "Engineer / R&D",
+    "Floor Operator",
+    "HR",
+    "IT Admin",
+    "Maintenance Manager",
+    "Maintenance Tech",
+    "Procurement",
+    "Production Manager",
+    "Production Planner",
+    "QC Inspector",
+    "Sales / Account Manager",
+    "Warehouse / Logistics"
+  ],
+  "flows": [
+    "customer-return",
+    "cycle-count",
+    "damage-to-completion",
+    "foundational-records",
+    "hire-to-first-assignment",
+    "lead-to-customer",
+    "part-to-inventory",
+    "period-close",
+    "quote-to-cash",
+    "rd-to-product",
+    "tenant-onboarding",
+    "vendor-to-asset",
+    "wear-to-repair"
+  ],
+  "phase_files": [
+    "03-phase-0-bootstrap.md",
+    "05-phase-1-foundations.md",
+    "07-phase-2-master-data.md",
+    "09-phase-3-transactions.md",
+    "11-phase-4-production-cycle.md",
+    "13-phase-5-exception-cycles.md"
+  ]
+}

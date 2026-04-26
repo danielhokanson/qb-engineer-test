@@ -2,68 +2,68 @@
   {
     "id": "TUT-001",
     "title": "How to read a test step",
-    "goal": "Learn what an action is, what an expected result is, and the difference between them.",
+    "goal": "Learn what an \"action\" is, what an \"expected result\" is, and the\ndifference between them. This is the most important habit in\ntesting — never skip checking the expected result.\n",
     "preconditions": [
-      "The Practice App is open below this case.",
+      "The Practice App screen is open.",
       "The counter shows 0."
     ],
     "steps": [
       {
         "n": 1,
-        "action": "Read the next two lines carefully before doing anything.",
-        "expected": "You read the lines.",
-        "notes": "Every test step has TWO parts. The action tells you what to do. The expected tells you what should happen. You always check the expected against what you actually see. If they don't match, that is a bug — even if it seems small."
+        "action": "Read the next two lines carefully before doing anything.\n",
+        "expected": "You read the lines. (You really did, right?)\n",
+        "notes": "Every test step has TWO parts. The \"action\" tells you what to do.\nThe \"expected\" tells you what should happen. You always check the\nexpected against what you actually see. If they don't match, that\nis a bug — even if it seems small.\n"
       },
       {
         "n": 2,
-        "action": "Click the \"Add 1\" button one time.",
-        "expected": "The counter now shows 1."
+        "action": "Click the \"Add 1\" button one time.\n",
+        "expected": "The counter now shows 1.\n"
       },
       {
         "n": 3,
-        "action": "Click \"Add 1\" two more times.",
-        "expected": "The counter now shows 3."
+        "action": "Click \"Add 1\" two more times.\n",
+        "expected": "The counter now shows 3.\n"
       }
     ],
-    "expected_overall": "You clicked Add 1 three times and the counter ended on 3.",
-    "pass_criteria": "The counter shows 3 after three clicks.",
-    "est_minutes": 2,
-    "uses_practice_app": true
+    "expected_overall": "You clicked Add 1 three times and the counter ended on 3.\n",
+    "pass_criteria": "The counter shows 3 after three clicks.\n",
+    "why_this_matters": "In real cases the action and expected won't be this obvious. You'll\nclick something and you have to actually look at the screen to verify\nwhat happened. The habit of reading expected, doing the action, and\ncomparing — that habit is the whole job.\n",
+    "est_minutes": 2
   },
   {
     "id": "TUT-002",
     "title": "How to record a passing result",
-    "goal": "Practice marking a case as passed.",
+    "goal": "Practice marking a case as passed. The runner stores your result\nlocally so you can resume later or see what you've already done.\n",
     "preconditions": [
       "You completed TUT-001.",
-      "The counter shows 3 from the previous case."
+      "The counter shows 3 (from the previous case)."
     ],
     "steps": [
       {
         "n": 1,
-        "action": "Click \"Reset\" to set the counter back to 0.",
-        "expected": "The counter now shows 0."
+        "action": "Click \"Reset\" to set the counter back to 0.\n",
+        "expected": "The counter now shows 0.\n"
       },
       {
         "n": 2,
-        "action": "Click \"Subtract 1\" once.",
-        "expected": "The counter now shows -1."
+        "action": "Click \"Subtract 1\" once.\n",
+        "expected": "The counter now shows -1.\n"
       },
       {
         "n": 3,
-        "action": "When everything matches what was expected, mark this case as passed using the runner controls.",
-        "expected": "The case is recorded as passed."
+        "action": "When everything matches what was expected, mark this case as\n\"Passed\" using the runner's controls.\n",
+        "expected": "The case is recorded as passed. The case list shows a checkmark\nor similar indicator next to TUT-002.\n"
       }
     ],
-    "expected_overall": "The counter went 0, -1, and you marked the case passed in the runner.",
-    "pass_criteria": "The counter behaved correctly AND the runner recorded a pass.",
-    "est_minutes": 2,
-    "uses_practice_app": true
+    "expected_overall": "The counter went 0, -1, and you marked the case passed in the runner.\n",
+    "pass_criteria": "The counter behaved correctly AND the runner recorded a pass.\n",
+    "notes": "Yes — passing a case is itself a step. Don't forget to actually click\nthe \"Pass\" button. A case nobody marked is a case nobody ran.\n",
+    "est_minutes": 2
   },
   {
     "id": "TUT-003",
     "title": "How to record a failing result and write a useful note",
-    "goal": "Practice marking a case as failed and writing a note someone else can read later.",
+    "goal": "Practice marking a case as failed. Practice writing a note about the\nfailure that someone else can read later and understand without\nasking you questions.\n",
     "preconditions": [
       "You completed TUT-002.",
       "The Practice App is visible."
@@ -71,23 +71,124 @@
     "steps": [
       {
         "n": 1,
-        "action": "Click the button labeled \"Crash on purpose.\"",
-        "expected": "The counter shows a number (any number)."
+        "action": "Click the button labeled \"Crash on purpose.\"\n",
+        "expected": "The counter shows a number (any number).\n"
       },
       {
         "n": 2,
-        "action": "Look at the counter. Compare what you actually see to the expected result above.",
-        "expected": "You notice the counter is showing something that is not a number."
+        "action": "Look at the counter. Compare what you actually see to the\nexpected result above.\n",
+        "expected": "You notice the counter is showing something that is not a\nnumber.\n"
       },
       {
         "n": 3,
-        "action": "Mark this case as failed. When the runner asks for a note, write what you actually saw. Be specific.",
-        "expected": "The case is recorded as failed with your note attached."
+        "action": "Mark this case as \"Failed.\" When the runner asks for a note,\nwrite what you actually saw. Be specific. \"The counter showed\nthe word BANANA instead of a number after I clicked Crash on\npurpose.\" Don't write \"it broke.\"\n",
+        "expected": "The case is recorded as failed with your note attached.\n"
       }
     ],
-    "expected_overall": "You correctly identified the mismatch, marked the case failed, and wrote a useful note.",
-    "pass_criteria": "Case is recorded as failed AND the note describes what was seen, not just \"doesn't work\".",
-    "est_minutes": 4,
-    "uses_practice_app": true
+    "expected_overall": "You correctly identified that the actual result didn't match the\nexpected result, marked the case as failed, and wrote a note that a\ndeveloper could read tomorrow and understand without talking to you.\n",
+    "pass_criteria": "Case is recorded as failed AND the note describes what was seen\n(not just \"doesn't work\").\n",
+    "why_this_matters": "Most bug reports that bounce back to the tester do so because the\nnote doesn't say what was actually seen. \"Login is broken\" gets\nignored. \"After clicking Sign In with valid credentials, the page\nshowed a blank white screen for 30 seconds, then returned to the\nlogin form with no error message\" gets fixed.\n",
+    "est_minutes": 4
+  },
+  {
+    "id": "TUT-004",
+    "title": "When to write a bug versus when to assume it's intended",
+    "goal": "Learn the discipline that \"if expected says X and you see Y, you\nwrite a bug.\" You don't decide on your own that Y is fine. You\ndon't ask the developer first. You write what you saw.\n",
+    "preconditions": [
+      "You completed TUT-003.",
+      "The Practice App is visible."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Click \"Reset\" so the counter shows 0.\n",
+        "expected": "The counter shows 0.\n"
+      },
+      {
+        "n": 2,
+        "action": "Turn on the \"Show double\" toggle.\n",
+        "expected": "Next to the counter, you see \"(×2 = 0)\".\n"
+      },
+      {
+        "n": 3,
+        "action": "Click \"Add 1\" five times.\n",
+        "expected": "The counter shows 5. Next to it, you see \"(×2 = 10)\".\n"
+      },
+      {
+        "n": 4,
+        "action": "Click \"Subtract 1\" twice.\n",
+        "expected": "The counter shows 3. Next to it, you see \"(×2 = 6)\".\n"
+      }
+    ],
+    "expected_overall": "At every step the doubled value matches what doubling the counter\nshould be.\n",
+    "pass_criteria": "The doubled value was correct after every click in steps 2 through 4.\n",
+    "notes": "If at any point the doubled value was wrong — even by a little, even\nif the regular counter was right — that is a bug. Mark the case\nfailed and describe exactly what you saw at which step. Don't decide\nit's a rounding issue or \"close enough.\" Your job is to compare\nexpected to actual and report. The developer's job is to decide\nwhat counts as a real problem.\n",
+    "est_minutes": 3
+  },
+  {
+    "id": "TUT-005",
+    "title": "Why preconditions matter",
+    "goal": "Learn that a case may assume specific state before it starts. If\nthe state isn't right, you can't run the case yet — or your\nresults won't mean anything.\n",
+    "preconditions": [
+      "The Practice App is visible.",
+      "The counter shows exactly 7. (You'll need to set this up.)",
+      "The \"Show double\" toggle is OFF."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Before doing anything else, set up the precondition state. Click\nReset, then click \"Add 1\" seven times. Make sure \"Show double\" is\noff.\n",
+        "expected": "Counter shows 7. No \"(×2 = N)\" displayed next to it.\n"
+      },
+      {
+        "n": 2,
+        "action": "Now click \"Subtract 1\" three times.\n",
+        "expected": "The counter shows 4.\n"
+      },
+      {
+        "n": 3,
+        "action": "Click \"Add 1\" once.\n",
+        "expected": "The counter shows 5.\n"
+      }
+    ],
+    "expected_overall": "You set the system to the precondition state first, then ran the\ncase. The final counter is 5.\n",
+    "pass_criteria": "Counter shows 5 at the end AND you set up the preconditions before\nrunning the steps (not after).\n",
+    "notes": "In real cases the preconditions might be \"Customer ACME-001 exists\nand has an open sales order.\" If those aren't true, the steps won't\nmake sense. The runner will sometimes let you skip ahead by setting\nup state automatically — but you, the tester, should always read the\npreconditions first to know what the case assumes.\n",
+    "why_this_matters": "A case that \"fails\" because the preconditions weren't met is not a\nreal bug. It just means the test wasn't really run. Get in the habit\nof checking preconditions before starting steps.\n",
+    "est_minutes": 3
+  },
+  {
+    "id": "TUT-006",
+    "title": "Take breaks, the runner remembers",
+    "goal": "Learn that you can stop in the middle of a session and the runner\nwill pick up where you left off. There is no penalty for going slow\nor splitting work across days.\n",
+    "preconditions": [
+      "You've completed TUT-001 through TUT-005."
+    ],
+    "steps": [
+      {
+        "n": 1,
+        "action": "Look at the case list. Note how the cases you've completed are\nmarked.\n",
+        "expected": "TUT-001 through TUT-005 are marked as passed (or failed, if you\ngenuinely encountered an issue).\n"
+      },
+      {
+        "n": 2,
+        "action": "Close the runner entirely. Close the browser tab. Walk away for\nat least one minute.\n",
+        "expected": "The runner is closed.\n"
+      },
+      {
+        "n": 3,
+        "action": "Reopen the runner.\n",
+        "expected": "The runner remembers your previous session. The completed cases\nare still marked. You can pick up at TUT-006 (this case) without\nredoing anything.\n"
+      },
+      {
+        "n": 4,
+        "action": "Mark this case as passed.\n",
+        "expected": "The runner records the pass. You've completed the tutorial.\n"
+      }
+    ],
+    "expected_overall": "The runner correctly remembered your prior progress after a full\nclose and reopen.\n",
+    "pass_criteria": "Prior pass/fail records were preserved across closing and reopening\nthe runner.\n",
+    "notes": "Real test sessions often span multiple sittings. A full Phase 0\ncold-start might take half a day. You are not expected to do it in\none go. The runner stores your progress on this device — don't switch\ncomputers mid-session unless you're prepared to start over or\nmanually transfer your data.\n",
+    "est_minutes": 3
   }
 ]
