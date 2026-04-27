@@ -8,7 +8,8 @@ goal: |
   totals income from posted invoices (less voids), totals expenses
   from posted bills and payroll, and reports net profit equal to
   income minus expenses to the cent.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
 preconditions:

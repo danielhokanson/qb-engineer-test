@@ -8,7 +8,8 @@ goal: |
   buckets (current / 1-30 / 31-60 / 61-90 / 90+) — equals the sum
   of every open (unpaid or partially paid) invoice in the system,
   and equals the AR balance on the balance sheet.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - AR Clerk

@@ -8,7 +8,8 @@ goal: |
   order, the raw inventory value decreases by the issued cost and
   the work-in-process (WIP) value increases by the same amount,
   preserving total asset value.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - Floor Operator

@@ -8,7 +8,8 @@ goal: |
   closed month, that the re-opening is recorded with actor,
   timestamp, and reason, and that postings dated in that month are
   again accepted until it is re-closed.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Administrator
   - Shop Owner

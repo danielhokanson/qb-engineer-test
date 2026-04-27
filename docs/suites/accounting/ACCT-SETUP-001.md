@@ -9,7 +9,8 @@ goal: |
   receivable, inventory, accounts payable, sales, cost of goods sold,
   payroll expense, owner's equity, retained earnings) and that
   accepting the defaults makes those accounts immediately usable.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - Administrator

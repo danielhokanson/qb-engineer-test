@@ -8,7 +8,8 @@ goal: |
   takes out of the business that is not wages — and that cash
   decreases while owner's equity decreases by the same amount,
   with no impact on payroll, expense, or withholding accounts.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
 preconditions:

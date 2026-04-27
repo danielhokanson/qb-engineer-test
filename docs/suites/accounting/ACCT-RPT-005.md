@@ -7,7 +7,8 @@ goal: |
   Verify that the AP aging report's grand total — across all aging
   buckets — equals the sum of every open (unpaid or partially paid)
   vendor bill, and equals the AP balance on the balance sheet.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - AP Clerk

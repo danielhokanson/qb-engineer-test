@@ -10,7 +10,8 @@ goal: |
   adjustment), reference, amount, and a running balance — and the
   ending running balance matches the account balance shown on the
   balance sheet.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
 preconditions:

@@ -9,6 +9,7 @@ goal: |
   invoice total equals the taxable subtotal, and the
   sales-tax-payable liability is unchanged.
 optional_module: builtin-accounting
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - AR Clerk

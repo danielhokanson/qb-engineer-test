@@ -9,6 +9,7 @@ goal: |
   tax rate) and that new customer invoices default to that rate
   unless the customer is exempt or the destination overrides it.
 optional_module: builtin-accounting
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - Administrator

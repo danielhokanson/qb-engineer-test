@@ -9,7 +9,8 @@ goal: |
   total in the opposite direction so the affected account balances
   return to their pre-adjustment values, and both entries remain
   visible for audit.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
 preconditions:

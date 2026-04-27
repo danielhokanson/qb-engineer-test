@@ -8,7 +8,8 @@ goal: |
   gross wages as a payroll expense, net pay as a cash decrease,
   and the difference (income tax, FICA, or equivalent withholdings)
   as separate liabilities owed to the relevant authorities.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - Payroll Clerk

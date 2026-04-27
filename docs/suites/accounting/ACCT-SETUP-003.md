@@ -7,7 +7,8 @@ goal: |
   Verify that the shop owner can choose between cash-basis and
   accrual-basis accounting, that the choice is explained in plain
   language, and that reports honor the choice.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - Administrator

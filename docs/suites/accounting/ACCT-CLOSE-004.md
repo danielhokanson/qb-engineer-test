@@ -8,7 +8,8 @@ goal: |
   expense account balances reset to zero for the new fiscal year
   and the prior year's net profit (or loss) is moved to retained
   earnings — with total equity unchanged across the roll.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
 preconditions:

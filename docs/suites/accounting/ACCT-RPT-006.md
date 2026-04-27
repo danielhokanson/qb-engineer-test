@@ -10,7 +10,8 @@ goal: |
   posted (non-void) invoice in the period — and equals the
   sales-tax-payable liability on the balance sheet less prior
   remittances.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
 preconditions:

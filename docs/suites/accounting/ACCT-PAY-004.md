@@ -8,7 +8,8 @@ goal: |
   summaries (W-2 equivalent) and per-contractor payment summaries
   (1099 equivalent) from the year's posted payroll and AP activity,
   with totals that tie out to the GL.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - Payroll Clerk

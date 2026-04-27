@@ -8,7 +8,8 @@ goal: |
   checks written but not yet cashed, deposits made but not yet
   posted by the bank — with totals matching the difference between
   the book balance and the last reconciled cleared balance.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
 preconditions:

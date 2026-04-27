@@ -9,7 +9,8 @@ goal: |
   cost, and a "goods received, not yet billed" pending liability
   records the same value so AP is captured correctly when the bill
   later arrives.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - Receiving Clerk

@@ -8,7 +8,8 @@ goal: |
   and date, mark each book entry as cleared or not, and reach a
   zero-difference reconciliation when the cleared book activity
   matches the statement.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
 preconditions:

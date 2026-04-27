@@ -8,7 +8,8 @@ goal: |
   or more incoming payments — the cash (bank account) balance
   increases by the total of the deposited items, and each included
   item is marked as deposited.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - AR Clerk

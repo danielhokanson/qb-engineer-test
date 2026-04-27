@@ -9,7 +9,8 @@ goal: |
   month, the application rejects the attempt with a plain-language
   message explaining that the month is closed and the post was not
   recorded.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - AR Clerk

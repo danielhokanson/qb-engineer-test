@@ -2,6 +2,11 @@
   {
     "id": "builtin-accounting",
     "name": "Built-in accounting module",
-    "description": "Lightweight ledger for small shops who don't want a separate accounting system. Substitutes for external accounting integration. Tests in this module are only actionable if the application implements the built-in accounting feature."
+    "description": "Lightweight ledger interface for small shops. Invoice, payment, expense, sales-tax rate, and customer-side accounting CRUD. Substitutes for external accounting integration in standalone mode."
+  },
+  {
+    "id": "builtin-accounting-full-gl",
+    "name": "Built-in full general ledger",
+    "description": "Full GL machinery: chart of accounts, journal entries (manual/recurring/reversing), period close, bank reconciliation, year-end roll, depreciation, multi-currency revaluation. Currently no application implements this module — it exists in the test catalog so the corresponding test cases can be filtered cleanly."
   }
 ]

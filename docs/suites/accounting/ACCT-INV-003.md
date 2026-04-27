@@ -8,7 +8,8 @@ goal: |
   accumulated WIP cost (materials, plus any labor or overhead
   applied) moves to finished-goods inventory at the same total
   value, with no leakage.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - Floor Operator

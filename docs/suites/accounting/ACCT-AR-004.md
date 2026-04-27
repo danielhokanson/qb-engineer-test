@@ -9,6 +9,7 @@ goal: |
   recorded as a credit on the customer's account, and revenue is
   not overstated by the overpayment amount.
 optional_module: builtin-accounting
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - AR Clerk

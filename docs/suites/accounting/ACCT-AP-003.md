@@ -8,7 +8,8 @@ goal: |
   records the matching bill, inventory value increases by the
   received cost, accounts payable increases by the bill total, and
   no double-counting occurs.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - AP Clerk

@@ -8,6 +8,7 @@ goal: |
   balance owed increases by the bill total and the shop's total
   accounts payable increases by the same amount.
 optional_module: builtin-accounting
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - AP Clerk

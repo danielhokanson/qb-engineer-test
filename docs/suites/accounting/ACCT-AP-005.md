@@ -9,6 +9,7 @@ goal: |
   the original bill visible (marked void) for audit, and does not
   create duplicate or orphan entries.
 optional_module: builtin-accounting
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - AP Clerk

@@ -8,7 +8,8 @@ goal: |
   application records the closure and from that point on rejects
   any attempt to post a new transaction (invoice, bill, payment,
   manual adjustment) with a date in that closed month.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
 preconditions:

@@ -6,7 +6,8 @@ title: Configure when the shop's fiscal year begins
 goal: |
   Verify that the shop owner can set the fiscal year start month,
   and that monthly and yearly reports honor that choice.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - Administrator

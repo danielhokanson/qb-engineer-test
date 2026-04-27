@@ -9,7 +9,8 @@ goal: |
   closed), the correction lands in that prior period — affecting
   the prior month's reports — rather than being silently rolled
   forward to the current period.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
 preconditions:

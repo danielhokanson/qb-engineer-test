@@ -8,7 +8,8 @@ goal: |
   reconciliation, the cash register (or bank account ledger) shows
   it as cleared with a clear visual indicator, and the cleared
   balance is calculable separately from the book balance.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
 preconditions:

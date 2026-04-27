@@ -9,6 +9,7 @@ goal: |
   setup, and that no transaction or report exposes a multi-currency
   surface that could confuse the user.
 optional_module: builtin-accounting
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - Administrator

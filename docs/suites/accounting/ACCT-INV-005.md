@@ -9,7 +9,8 @@ goal: |
   match the counted quantity (at the item's unit cost) and the
   variance — positive or negative — posts to an inventory-adjustment
   expense (or income) account.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - Floor Operator

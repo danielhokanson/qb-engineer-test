@@ -9,6 +9,7 @@ goal: |
   and the shop's total accounts receivable increases by the same
   amount.
 optional_module: builtin-accounting
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - AR Clerk

@@ -9,6 +9,7 @@ goal: |
   the difference, and that AR and cash both reflect the partial
   amount correctly.
 optional_module: builtin-accounting
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - AR Clerk

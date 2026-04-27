@@ -7,7 +7,8 @@ goal: |
   Verify that for any chosen as-of date, the balance sheet's total
   assets equals the sum of total liabilities and total equity to
   the cent — the fundamental accounting equation must hold.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
 preconditions:

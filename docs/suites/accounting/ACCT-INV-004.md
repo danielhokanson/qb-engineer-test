@@ -8,7 +8,8 @@ goal: |
   finished goods, the corresponding inventory value decreases by
   the scrapped cost and a scrap-loss (or inventory-adjustment)
   expense increases by the same amount.
-optional_module: builtin-accounting
+optional_module: builtin-accounting-full-gl
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - Floor Operator

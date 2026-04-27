@@ -10,6 +10,7 @@ goal: |
   sales-tax-payable liability increases by the collected tax
   amount.
 optional_module: builtin-accounting
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - AR Clerk

@@ -8,6 +8,7 @@ goal: |
   bill marks it paid, decreases the vendor's owed balance by the
   payment amount, and decreases cash by the same amount.
 optional_module: builtin-accounting
+# Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
   - AP Clerk
