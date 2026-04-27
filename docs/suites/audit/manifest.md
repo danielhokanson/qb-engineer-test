@@ -2,6 +2,10 @@
 
 Verifies that every state-changing action of consequence is recorded in the audit log with who, what, when, and the before/after state. Audit trails that look right but skip certain action classes are a compliance risk and a forensic dead-end.
 
+The suite covers two distinct audit surfaces: per-entity `activity_logs` (each entity carries its own change history) and the system-wide `audit_log_entries` (cross-cutting and non-entity events: auth, role grants, period close, deactivation sweeps, bulk role assignment, audit infrastructure itself). Cases in this suite are explicit about which surface they assert against; see the glossary entries for "System-wide audit log" and "Activity log" for the per-surface breakdown.
+
+> Reconciled in Phase 2 — explicitly references system-wide audit log per L4 polish.
+
 ## ID convention
 
 `AUDIT-{ACTION}-NNN`. ACTION is a short capability label (e.g., `LOGIN`, `USER-CHANGE`, `PERIOD-LOCK`, `BOM-REV`, `PO-AMEND`, `PRICE-OVR`, `PERMS-CHG`, `DEACT`, `CREDIT-CHG`).
@@ -14,9 +18,12 @@ Audit cases are independent. Run any in any order once the underlying records ex
 suite: audit
 title: Audit log captures every consequential state change
 description: |
-  For each major state-changing action, verify the audit log records
-  the action with actor, timestamp, target record, and before/after
-  state. Tampering checks live alongside.
+  For each major state-changing action, verify the appropriate audit
+  surface records the action with actor, timestamp, target record, and
+  before/after state. Per-entity events go to `activity_logs`; non-entity
+  / cross-cutting events (auth, role changes, period close, audit
+  infrastructure) go to the system-wide `audit_log_entries`. Tampering
+  checks live alongside.
 estimated_total_minutes: 50
 
 cases:

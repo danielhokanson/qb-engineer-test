@@ -7,8 +7,9 @@ goal: |
   Verify a sales admin can mass-delete a filtered set of expired
   draft quotes that never converted to an order, that any quote
   with a downstream link (converted SO, attached document) is
-  excluded, and the operation is audit-logged at the operation
-  level even though individual records are gone.
+  excluded, and the operation is recorded in the system-wide audit
+  log (audit_log_entries) at the operation level even though
+  individual records are gone.
 roles:
   - Sales Administrator
 preconditions:
@@ -30,15 +31,20 @@ steps:
       reason "Linked to SO-NNN — cannot delete."
   - n: 3
     action: |
-      Check the operation audit log.
+      Check the system-wide audit log (audit_log_entries) for the
+      bulk-delete operation entry.
     expected: |
       Bulk-delete operation captured (who, when, count, IDs deleted)
       even though the underlying quote rows are gone.
 expected_overall: |
-  Mass delete respects downstream references and is audited at the
-  operation level.
+  Mass delete respects downstream references and is recorded at the
+  operation level in the system-wide audit log.
 pass_criteria: |
   Eligible quotes deleted AND linked quote preserved with reason AND
-  operation-level audit retained.
+  operation-level entry retained in the system-wide audit log
+  (audit_log_entries).
 est_minutes: 7
+notes: |
+  Reconciled in Phase 2 — explicitly references system-wide audit log
+  per L4 polish.
 ```

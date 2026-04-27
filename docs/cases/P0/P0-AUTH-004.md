@@ -45,20 +45,24 @@ steps:
       Call is rejected with a clear authentication error.
   - n: 5
     action: |
-      Open the audit log.
+      Open the system-wide audit log (audit_log_entries).
     expected: |
       Token issuance and revocation are both logged.
 expected_overall: |
-  API tokens authenticate, are scoped, and are revocable in real time.
+  API tokens authenticate, are scoped, and are revocable in real time;
+  issuance and revocation are recorded in the system-wide audit log.
 pass_criteria: |
   Token works while active AND fails immediately after revoke AND
-  both events audited.
+  both events present in the system-wide audit log (audit_log_entries).
 est_minutes: 10
 notes: |
   If the application doesn't expose an API at all, this case can be
   marked Blocked with a note. But "no API" is itself a finding worth
   flagging — most ERP buyers expect at least a read-only integration
   surface.
+
+  Reconciled in Phase 2 — explicitly references system-wide audit log
+  per L4 polish.
 negative_variants:
   - id: P0-AUTH-004-N1
     title: Token cannot exceed its declared scope

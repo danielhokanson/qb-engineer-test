@@ -1,30 +1,33 @@
-## EDGE-DATE-DST-004 — Time-stamped audit log entries near a DST transition remain monotonic
+## EDGE-DATE-DST-004 — Time-stamped system-wide audit log entries near a DST transition remain monotonic
 
 ```yaml
 id: EDGE-DATE-DST-004
-title: Audit log entries spanning a DST transition remain in chronological order
+title: System-wide audit log entries spanning a DST transition remain in chronological order
 goal: |
-  Verify that the audit log, which captures every state-changing
-  action, presents events in true chronological order across a DST
-  transition — not naive wall-clock order, which would put a fall-back
-  event before its predecessor.
+  Verify that the system-wide audit log (audit_log_entries), which
+  captures cross-cutting state-changing actions, presents events in
+  true chronological order across a DST transition — not naive
+  wall-clock order, which would put a fall-back event before its
+  predecessor.
 roles:
   - Administrator
 preconditions:
   - The tenant time zone observes DST.
-  - The audit log is populated with at least a handful of recent
-    actions.
+  - The system-wide audit log (audit_log_entries) is populated with at
+    least a handful of recent actions.
 steps:
   - n: 1
     action: |
-      Identify (or backdate-create) two audit events that bracket a
-      fall-back DST transition — one at 1:30 AM tenant-local before
-      the transition, one at 1:30 AM after.
+      Identify (or backdate-create) two system-wide audit log events
+      that bracket a fall-back DST transition — one at 1:30 AM
+      tenant-local before the transition, one at 1:30 AM after.
     expected: |
-      Both events appear in the audit log.
+      Both events appear in the system-wide audit log
+      (audit_log_entries).
   - n: 2
     action: |
-      Read the audit log sorted by timestamp.
+      Read the system-wide audit log (audit_log_entries) sorted by
+      timestamp.
     expected: |
       The earlier event appears first; the later event appears second.
       No reordering or visual ambiguity, even though both display 1:30
@@ -32,16 +35,21 @@ steps:
       1:30 AM PDT vs 1:30 AM PST).
   - n: 3
     action: |
-      Filter the audit log by the calendar day of the transition.
+      Filter the system-wide audit log by the calendar day of the
+      transition.
     expected: |
       Both events are returned. Order remains correct.
 expected_overall: |
-  Audit log preserves true chronological order across DST.
+  System-wide audit log (audit_log_entries) preserves true
+  chronological order across DST.
 pass_criteria: |
   Events display in true time order AND the display unambiguously
   distinguishes the two 1:30 AM occurrences.
 why_this_matters: |
-  Audit logs are the legal record of who did what when. Out-of-order
-  events on DST day undermine the entire audit story.
+  System-wide audit logs are the legal record of who did what when.
+  Out-of-order events on DST day undermine the entire audit story.
 est_minutes: 8
+notes: |
+  Reconciled in Phase 2 — explicitly references system-wide audit log
+  per L4 polish.
 ```

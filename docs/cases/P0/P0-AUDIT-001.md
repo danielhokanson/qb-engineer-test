@@ -2,11 +2,12 @@
 
 ```yaml
 id: P0-AUDIT-001
-title: The admin audit log captures setup activity from Phase 0
+title: The system-wide audit log captures setup activity from Phase 0
 goal: |
-  Verify that the audit log is reachable and shows the consequential
-  admin actions performed during Phase 0 (tenant settings, role
-  creation, user invitation, integration choices).
+  Verify that the system-wide audit log (audit_log_entries) is
+  reachable and shows the consequential admin actions performed
+  during Phase 0 (tenant settings, role creation, user invitation,
+  integration choices).
 roles:
   - Administrator
   - IT Admin
@@ -19,9 +20,10 @@ prerequisite_cases:
 steps:
   - n: 1
     action: |
-      Find and open the audit log area.
+      Find and open the system-wide audit log (audit_log_entries) area.
     expected: |
-      Audit log opens. Filtering by date and event type is available.
+      System-wide audit log opens. Filtering by date and event type is
+      available.
   - n: 2
     action: |
       Filter to the period covering this Phase 0 run.
@@ -37,30 +39,35 @@ steps:
       Detail shows actor, timestamp, prior value (none / unset), new
       value (Standard Cost), and any reason / comment captured.
 expected_overall: |
-  Phase 0 actions are visible in the audit log with full attribution.
+  Phase 0 actions are visible in the system-wide audit log
+  (audit_log_entries) with full attribution.
 pass_criteria: |
-  Audit log is reachable AND lists the major Phase 0 actions AND
-  per-entry detail includes actor / before / after.
+  System-wide audit log (audit_log_entries) is reachable AND lists the
+  major Phase 0 actions AND per-entry detail includes actor / before /
+  after.
 est_minutes: 5
+notes: |
+  Reconciled in Phase 2 — explicitly references system-wide audit log
+  per L4 polish.
 negative_variants:
   - id: P0-AUDIT-001-N1
-    title: Audit log entries cannot be edited or deleted
+    title: System-wide audit log entries cannot be edited or deleted
     action: |
       As an Administrator, attempt to edit or delete an entry in the
-      audit log.
+      system-wide audit log (audit_log_entries).
     expected: |
       The action is unavailable or blocked with a clear message that
       audit entries are immutable.
     pass_criteria: |
       Edit and delete are not possible from any UI surface.
   - id: P0-AUDIT-001-N2
-    title: Non-admin user cannot read the audit log
+    title: Non-admin user cannot read the system-wide audit log
     action: |
       Sign in as the Floor Operator from P0-USER-003 and try to
-      navigate to the audit log.
+      navigate to the system-wide audit log (audit_log_entries).
     expected: |
-      The audit log is hidden from navigation or returns a clear
-      "permission denied" response. No audit content leaks.
+      The system-wide audit log is hidden from navigation or returns a
+      clear "permission denied" response. No audit content leaks.
     pass_criteria: |
-      Audit log is inaccessible to non-privileged users.
+      System-wide audit log is inaccessible to non-privileged users.
 ```

@@ -41,7 +41,8 @@ steps:
       lockouts).
   - n: 4
     action: |
-      As the IT Admin, open the audit log.
+      As the IT Admin, open the system-wide audit log
+      (audit_log_entries).
     expected: |
       Lockout event is recorded with user, timestamp, and source IP.
   - n: 5
@@ -49,15 +50,19 @@ steps:
       As the IT Admin, unlock the account from the user-management
       area (or wait for the lockout duration to elapse and re-test).
     expected: |
-      The unlock action is recorded. After unlock, a correct password
-      sign-in succeeds.
+      The unlock action is recorded in the system-wide audit log.
+      After unlock, a correct password sign-in succeeds.
 expected_overall: |
-  Lockout triggers, holds, audits, and is recoverable.
+  Lockout triggers, holds, audits in the system-wide audit log, and is
+  recoverable.
 pass_criteria: |
   Threshold is enforced AND locked-account sign-in is rejected with
   the right message AND unlock works AND both lock and unlock are
-  audited.
+  recorded in the system-wide audit log (audit_log_entries).
 est_minutes: 8
+notes: |
+  Reconciled in Phase 2 — explicitly references system-wide audit log
+  per L4 polish.
 negative_variants:
   - id: P0-AUTH-003-N1
     title: Lockout policy threshold cannot be set to 0 or absurdly high

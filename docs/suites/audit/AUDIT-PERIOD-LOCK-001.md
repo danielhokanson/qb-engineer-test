@@ -5,8 +5,8 @@ id: AUDIT-PERIOD-LOCK-001
 title: Closing and reopening a fiscal period are both logged
 goal: |
   Verify the close-period action and any subsequent reopen action
-  both appear in the audit log with actor, period, timestamp, and
-  reason (if provided).
+  both appear in the system-wide audit log (audit_log_entries) with
+  actor, period, timestamp, and reason (if provided).
 roles:
   - Controller
 preconditions:
@@ -27,13 +27,15 @@ steps:
       Period reopens.
   - n: 3
     action: |
-      Open the audit log.
+      Open the system-wide audit log (audit_log_entries).
     expected: |
       Both events present: close (actor, period, timestamp) and reopen
       (actor, period, timestamp, reason).
 expected_overall: |
-  Period state changes are fully audited including reasons on reopen.
+  Period state changes are fully audited in the system-wide audit log
+  including reasons on reopen.
 pass_criteria: |
-  Both events present AND reopen records the reason text.
+  Both events present in the system-wide audit log (audit_log_entries)
+  AND reopen records the reason text.
 est_minutes: 5
 ```

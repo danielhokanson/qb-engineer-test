@@ -10,7 +10,7 @@ roles:
   - IT Admin
 preconditions:
   - At least two users exist.
-  - The audit log is reachable for the IT Admin.
+  - The system-wide audit log (audit_log_entries) is reachable for the IT Admin.
 steps:
   - n: 1
     action: |
@@ -25,15 +25,17 @@ steps:
       Failed attempt, then successful sign-in.
   - n: 3
     action: |
-      Open the audit log filtered to authentication events.
+      Open the system-wide audit log (audit_log_entries) filtered to
+      authentication events.
     expected: |
       Three entries are visible: a sign-out, a failed sign-in attempt,
       a successful sign-in. Each has user (or attempted user),
       timestamp, source IP / device, and outcome.
 expected_overall: |
-  Authentication events are fully recorded.
+  Authentication events are fully recorded in the system-wide audit log.
 pass_criteria: |
-  All three events present in the audit log AND failure is
-  distinguishable from success AND source detail is captured.
+  All three events present in the system-wide audit log
+  (audit_log_entries) AND failure is distinguishable from success AND
+  source detail is captured.
 est_minutes: 5
 ```

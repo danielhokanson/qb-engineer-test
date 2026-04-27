@@ -5,7 +5,8 @@ id: AUDIT-DEACT-001
 title: Deactivating a customer, vendor, or user records actor and target
 goal: |
   Verify deactivating any of the three entities (customer, vendor,
-  user) records the action in the audit log.
+  user) records the action in the system-wide audit log
+  (audit_log_entries).
 roles:
   - Administrator
   - Procurement
@@ -25,13 +26,16 @@ steps:
       All three deactivations succeed.
   - n: 2
     action: |
-      Open the audit log filtered to deactivation events.
+      Open the system-wide audit log (audit_log_entries) filtered to
+      deactivation events.
     expected: |
       Three entries are present, each with actor, target entity,
       target ID, and timestamp.
 expected_overall: |
-  Deactivations are uniformly audited across entity types.
+  Deactivations are uniformly audited across entity types in the
+  system-wide audit log.
 pass_criteria: |
-  All three deactivations recorded with full attribution.
+  All three deactivations recorded in the system-wide audit log
+  (audit_log_entries) with full attribution.
 est_minutes: 5
 ```

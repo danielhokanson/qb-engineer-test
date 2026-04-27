@@ -48,19 +48,23 @@ steps:
       application as the matching user with the right role.
   - n: 5
     action: |
-      Verify the audit log records the SSO sign-in with provider
-      detail.
+      Verify the system-wide audit log (audit_log_entries) records the
+      SSO sign-in with provider detail.
     expected: |
       Entry present with provider, user, and timestamp.
 expected_overall: |
-  SSO works end-to-end. Federated user signs in successfully.
+  SSO works end-to-end. Federated user signs in successfully and the
+  sign-in is recorded in the system-wide audit log.
 pass_criteria: |
   SSO completes AND user lands in the right role AND the sign-in is
-  audited.
+  recorded in the system-wide audit log (audit_log_entries).
 est_minutes: 15
 notes: |
   If no IdP is available, this case can be marked Blocked with a
   note. SSO is a common buyer requirement at mid-market scale.
+
+  Reconciled in Phase 2 — explicitly references system-wide audit log
+  per L4 polish.
 negative_variants:
   - id: P0-AUTH-005-N1
     title: SAML response with invalid signature is rejected
@@ -69,9 +73,11 @@ negative_variants:
       configured certificate.
     expected: |
       The application rejects the assertion and surfaces a clear
-      "signature invalid" error in the audit log. No session created.
+      "signature invalid" error in the system-wide audit log
+      (audit_log_entries). No session created.
     pass_criteria: |
-      Invalid-signature assertion is refused AND audited.
+      Invalid-signature assertion is refused AND recorded in the
+      system-wide audit log.
   - id: P0-AUTH-005-N2
     title: Federated user with no local match cannot sign in
     action: |

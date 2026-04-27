@@ -4,8 +4,9 @@
 id: AUDIT-USER-CHANGE-001
 title: Changing a user's role is logged with before and after state
 goal: |
-  Verify that when an IT Admin changes a user's role, the audit log
-  shows actor, target user, prior role, new role, and timestamp.
+  Verify that when an IT Admin changes a user's role, the system-wide
+  audit log (audit_log_entries) shows actor, target user, prior role,
+  new role, and timestamp.
 roles:
   - IT Admin
 preconditions:
@@ -20,7 +21,8 @@ steps:
       Change saves.
   - n: 2
     action: |
-      Open the audit log filtered to user-management events.
+      Open the system-wide audit log (audit_log_entries) filtered to
+      user-management events.
     expected: |
       A role-change entry is present with actor (IT Admin), target
       user, prior role, new role, and timestamp.
@@ -31,9 +33,10 @@ steps:
       Second entry recorded for the revert, also with full before /
       after.
 expected_overall: |
-  User-role changes record full before/after with attribution.
+  User-role changes record full before/after with attribution in the
+  system-wide audit log.
 pass_criteria: |
-  Both entries present AND each captures actor, target, prior, new,
-  timestamp.
+  Both entries present in the system-wide audit log (audit_log_entries)
+  AND each captures actor, target, prior, new, timestamp.
 est_minutes: 5
 ```

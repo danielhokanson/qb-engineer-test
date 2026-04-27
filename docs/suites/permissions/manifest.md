@@ -21,7 +21,7 @@ Verifies that role-based access control actually enforces — both that allowed 
   `ManageAPI`.
 - `NNN` is a sequence within the cell (usually `001` for the canonical case; additional numbers reserved for variants like "with controller override approval").
 
-A single case asserts whether the role *should* be able to perform the capability. Allow-cases verify the action succeeds and audit-logs correctly; deny-cases verify the action is blocked at both UI and direct-URL/API levels and produces a non-leaky error.
+A single case asserts whether the role *should* be able to perform the capability. Allow-cases verify the action succeeds and is recorded in the appropriate audit surface (per-entity `activity_logs` for entity-scoped actions like `ModifyBOM`, `OverridePricing`, `IssueCreditMemo`; the system-wide audit log `audit_log_entries` for non-entity / cross-cutting actions like `ConfigureRoles`, `CreateUser`, `ModifyTaxCodes`, `ManageAPI`, `ClosePeriod`, `ModifyTenant`); deny-cases verify the action is blocked at both UI and direct-URL/API levels and produces a non-leaky error.
 
 ## What this suite is NOT
 
@@ -398,7 +398,7 @@ cases:
 completion_criteria:
   - Every case in the suite has a recorded pass/fail.
   - For deny cases, both UI access AND direct-URL / API access were blocked.
-  - For allow cases, the action succeeded AND was recorded in the audit log with user and timestamp.
+  - For allow cases, the action succeeded AND was recorded in the appropriate audit surface (per-entity `activity_logs` or the system-wide `audit_log_entries`, depending on the capability) with user and timestamp.
 ```
 
 ## Authoring guidance for new cells
@@ -408,4 +408,6 @@ When adding a new `(role, capability)` cell:
 1. Decide the intent (`allow` or `deny`) based on a defensible role definition for a typical mid-market manufacturer. When unsure, deny by default — over-permissioned defaults are a common security failure.
 2. Write one case at the canonical ID `PERM-{ROLE}-{CAP}-001`.
 3. Always test both UI and direct URL / API where applicable. UI hiding without backend enforcement is the most common version of the bug this suite catches.
-4. For allow cases, always check the audit log records the action.
+4. For allow cases, always check the appropriate audit surface records the action — per-entity `activity_logs` for entity-scoped capabilities, the system-wide `audit_log_entries` for non-entity / cross-cutting capabilities. See the glossary entries for "System-wide audit log" and "Activity log".
+
+> Reconciled in Phase 2 — explicitly references system-wide audit log per L4 polish.
