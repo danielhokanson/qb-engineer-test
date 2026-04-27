@@ -502,3 +502,17 @@ The following are deliberately not included in the library and should not be add
 The library is maintained alongside the application it tests. When the application changes behavior, the cases describing that behavior are updated. When the application gains a capability, cases for it are added. When the application loses a capability that the library expected to exist, the case stays — it represents what should be true — and the missing capability gets a bug filed against the application.
 
 Changes to the schema (Section 3) are non-breaking by default: adding optional fields doesn't invalidate existing cases. Breaking changes to the schema are versioned and migrate the existing library forward in a single change.
+
+---
+
+## 13. Stories and the gold path
+
+Stories (see `docs/stories.md`) are derived from the gold path, not authored independently. The gold path — curated in `phase-1-output/1D-gold-path/gold-path-proposal.md` — is the canonical "must work" subset of the library. A story is the gold path's narrative arc through a specific business journey (e.g., lead-to-cash), with chapter intros and role-handoff annotations layered on top.
+
+The operating rule:
+
+- **New stories must compose existing gold-path cases.** A story scene is a pointer to a case_id; that case_id must already be in the gold path.
+- **If a candidate story needs a non-gold-path case, the case is first reviewed for promotion to the gold path.** If it's genuinely critical-path daily-must-work behavior, it's added to the gold path and then referenced from the story. If it isn't, the story is restructured to either drop the scene or substitute a gold-path case that covers the same territory.
+- **The gold path is broader than any single story.** It also includes cross-cutting cases (audit, list views, reports, notifications, permissions, edge cases, concurrency) that the application must satisfy for the story flows to remain healthy in production but that the story narrative does not visit directly.
+
+This keeps the gold path as a single source of truth for "must work" and prevents stories from drifting into a parallel curation that silently disagrees with the gold-path baseline.

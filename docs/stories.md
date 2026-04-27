@@ -2,6 +2,8 @@
 
 Each block below is a single story — an ordered, role-aware narrative through the case library. The runner surfaces stories as a third entry point alongside test runs and the tutorial.
 
+Stories are derived from the gold path, not authored independently. The gold path (see `phase-1-output/1D-gold-path/gold-path-proposal.md`) is the canonical "must work" subset of the library; a story is the gold path's narrative arc through a specific business journey, with role handoffs added. New stories must compose existing gold-path cases. If a candidate story needs a non-gold-path case, that case is reviewed for promotion to the gold path before the story is published — see `docs/test-scenarios.md` §13.
+
 See [`01-schema.md`](01-schema.md#stories) for the field reference.
 
 ---
@@ -12,11 +14,18 @@ See [`01-schema.md`](01-schema.md#stories) for the field reference.
 id: lead-to-cash
 name: Lead to cash from an empty system
 description: |
-  The canonical end-to-end test of qb-engineer. Start with a brand-new
-  empty tenant and walk through every role's contribution to taking a
+  The canonical end-to-end test of qb-engineer, and the narrative arc
+  of the gold path's lead-to-cash spine. Start with a brand-new empty
+  tenant and walk through every role's contribution to taking a
   customer from initial inquiry to cash applied. Each chapter marks a
   role handoff — sign out and back in as the named role to verify the
   system routes work correctly across users.
+
+  Every scene below is a gold-path case. The gold path also includes
+  cross-cutting cases (audit, list views, reports, notifications,
+  permissions) that this story does not visit directly but that the
+  application must satisfy for the lead-to-cash flow to remain healthy
+  in production.
 estimated_total_minutes: 240
 
 chapters:
@@ -111,8 +120,6 @@ chapters:
       foundation of the parts catalog.
     scenes:
       - case: P2-VENDOR-001
-        role: Procurement
-      - case: P2-VENDOR-003
         role: Procurement
 
   - title: Master data — Engineering
