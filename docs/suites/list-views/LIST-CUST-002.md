@@ -11,6 +11,9 @@ roles:
   - Sales / Account Manager
   - Administrator
 preconditions:
+  - Test environment must have >= 5,000 rows of the entity under
+    test seeded; use `/api/v1/dev/seed-bulk-list?entity=customer&count=5000`
+    (when available) or pre-seed via DB script.
   - At least 5,000 customers exist in the dataset (use bulk import or
     seeded data if needed).
 steps:
@@ -51,5 +54,8 @@ expected_overall: |
 pass_criteria: |
   Total count, page navigation, page size changes, and filter
   interaction with pagination all behave correctly.
+notes: |
+  Reconciled in Phase 2 — depends on dev seed-helper endpoint per
+  L3 in phase-2-library-reconciliation.md.
 est_minutes: 7
 ```

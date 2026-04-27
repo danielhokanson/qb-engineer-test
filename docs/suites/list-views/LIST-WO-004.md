@@ -1,12 +1,15 @@
-## LIST-WO-004 — WO list: saved filter views
+## LIST-WO-004 — WO list: persisted table state per-user
 
 ```yaml
 id: LIST-WO-004
-title: WO list supports named saved filter views
+title: WO list supports persisting and recalling table state per-user
 goal: |
-  Verify the WO list supports saved views for recurring queries
-  (e.g., "My active WOs", "Late WOs", "Press Shop today") and that
-  saved views persist per-user.
+  Verify the WO list supports persisting and recalling table state
+  per-user via any mechanism — either a dedicated saved-views UI
+  affordance or a generic key/value preference store — for
+  recurring queries (e.g., "My active WOs", "Late WOs", "Press
+  Shop today"). Persistence must support save, recall, update, and
+  delete against the current user.
 roles:
   - Production Manager
   - Production Planner
@@ -22,27 +25,45 @@ steps:
       List reflects the configuration.
   - n: 2
     action: |
-      Save as a named view (e.g., "Press Shop active").
+      Persist the configuration under a name / identifier (e.g.,
+      "Press Shop active") via whatever mechanism the application
+      provides — dedicated saved-views menu, or a generic
+      user-preferences key/value entry (e.g., POST to
+      /user-preferences).
     expected: |
-      Saved view appears in the menu.
+      Configuration is stored against the current user. If a
+      saved-views UI exists, the entry appears in the menu;
+      otherwise the preference persists in the underlying store.
   - n: 3
     action: |
-      Switch to a default list view, then re-open the saved view.
+      Switch to a default list view, then recall the persisted
+      configuration via the same mechanism used in step 2.
     expected: |
-      Saved view restores the exact filter / sort.
+      Recalled configuration restores the exact filter / sort.
   - n: 4
     action: |
-      Edit the saved view: change one filter and save in place.
+      Update the persisted configuration: change one filter and
+      save in place under the same identifier.
     expected: |
-      Saved view updates.
+      Stored configuration updates.
   - n: 5
     action: |
-      Delete the saved view.
+      Delete the persisted configuration.
     expected: |
-      View removed. Default list unaffected.
+      Entry removed from the persistence layer (menu or key/value
+      store). Default list unaffected.
 expected_overall: |
-  Saved views support recurring production-floor workflows.
+  Persisted table state supports recurring production-floor
+  workflows regardless of whether the application surfaces it as
+  a first-class saved-views UI or as a generic user-preferences
+  key/value store.
 pass_criteria: |
-  Save, recall, edit, and delete all work cleanly.
+  Persist, recall, update, and delete of table state all work
+  cleanly. Either a dedicated UI affordance OR a generic key/value
+  preference store satisfies this requirement.
+notes: |
+  Reconciled in Phase 2 — when the application develops a
+  dedicated saved-views UI, this case will tighten to require
+  that surface.
 est_minutes: 5
 ```

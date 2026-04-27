@@ -10,6 +10,9 @@ roles:
   - Engineer / R&D
   - Procurement
 preconditions:
+  - Test environment must have >= 5,000 rows of the entity under
+    test seeded; use `/api/v1/dev/seed-bulk-list?entity=part&count=5000`
+    (when available) or pre-seed via DB script.
   - At least 5,000 parts exist across types and tracking modes.
 steps:
   - n: 1
@@ -39,5 +42,8 @@ expected_overall: |
 pass_criteria: |
   Pagination correctness and responsiveness hold at 5,000+ rows
   with and without filters.
+notes: |
+  Reconciled in Phase 2 — depends on dev seed-helper endpoint per
+  L3 in phase-2-library-reconciliation.md.
 est_minutes: 6
 ```

@@ -10,6 +10,9 @@ roles:
   - Procurement
   - Administrator
 preconditions:
+  - Test environment must have >= 5,000 rows of the entity under
+    test seeded; use `/api/v1/dev/seed-bulk-list?entity=vendor&count=5000`
+    (when available) or pre-seed via DB script.
   - At least 5,000 vendors exist (seeded or imported).
 steps:
   - n: 1
@@ -40,5 +43,8 @@ expected_overall: |
   Vendor list is usable at production scale.
 pass_criteria: |
   Pagination correctness and responsiveness hold at 5,000+ rows.
+notes: |
+  Reconciled in Phase 2 — depends on dev seed-helper endpoint per
+  L3 in phase-2-library-reconciliation.md.
 est_minutes: 6
 ```

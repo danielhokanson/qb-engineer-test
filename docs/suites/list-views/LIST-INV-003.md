@@ -10,6 +10,9 @@ roles:
   - Controller
   - AR / Collections
 preconditions:
+  - Test environment must have >= 5,000 rows of the entity under
+    test seeded; use `/api/v1/dev/seed-bulk-list?entity=invoice&count=5000`
+    (when available) or pre-seed via DB script.
   - At least 5,000 invoices exist across statuses, customers, and
     dates.
 steps:
@@ -39,5 +42,8 @@ expected_overall: |
   Invoice list is usable at multi-year AR scale.
 pass_criteria: |
   Pagination correctness and responsiveness hold at 5,000+ rows.
+notes: |
+  Reconciled in Phase 2 — depends on dev seed-helper endpoint per
+  L3 in phase-2-library-reconciliation.md.
 est_minutes: 5
 ```

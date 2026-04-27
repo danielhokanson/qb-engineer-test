@@ -10,6 +10,9 @@ roles:
   - Production Manager
   - Production Planner
 preconditions:
+  - Test environment must have >= 5,000 rows of the entity under
+    test seeded; use `/api/v1/dev/seed-bulk-list?entity=wo&count=5000`
+    (when available) or pre-seed via DB script.
   - At least 5,000 WOs exist across statuses, work centers, and
     due dates.
 steps:
@@ -40,5 +43,8 @@ expected_overall: |
   WO list is usable at production-floor scale.
 pass_criteria: |
   Pagination correctness and responsiveness hold at 5,000+ rows.
+notes: |
+  Reconciled in Phase 2 — depends on dev seed-helper endpoint per
+  L3 in phase-2-library-reconciliation.md.
 est_minutes: 5
 ```

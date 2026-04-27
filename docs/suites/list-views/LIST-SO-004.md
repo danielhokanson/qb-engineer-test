@@ -10,6 +10,9 @@ roles:
   - Sales / Account Manager
   - Customer Service
 preconditions:
+  - Test environment must have >= 5,000 rows of the entity under
+    test seeded; use `/api/v1/dev/seed-bulk-list?entity=so&count=5000`
+    (when available) or pre-seed via DB script.
   - At least 5,000 SOs exist across customers, statuses, and dates.
 steps:
   - n: 1
@@ -38,5 +41,10 @@ expected_overall: |
   SO list is usable at multi-year order-management scale.
 pass_criteria: |
   Pagination correctness and responsiveness hold at 5,000+ rows.
+notes: |
+  Reconciled in Phase 2 — depends on dev seed-helper endpoint per
+  L3 in phase-2-library-reconciliation.md.
+  Additionally depends on F1 — SO list endpoint must exist before
+  this case can verdict.
 est_minutes: 5
 ```
