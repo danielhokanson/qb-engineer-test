@@ -22,6 +22,28 @@ A BOM can be hierarchical: the BOM for a finished assembly may include sub-assem
 
 A chronological record of what happened in the system: who signed in, what records they changed, what transactions they posted. Audit logs are typically immutable — entries can be added but not edited or deleted. They are referenced when answering "who changed this and when" or for compliance reviews.
 
+The application implements this concept as two physical surfaces, now disambiguated below: per-entity `activity_logs` and the cross-cutting system-wide `audit_log_entries`. See the next two entries for the per-surface breakdown and which case-types assert against each.
+
+## System-wide audit log
+
+Entity: `audit_log_entries`.
+
+Cross-entity events captured for compliance and security review (logins, role changes, MFA, system configuration changes, deactivations). Records cross-cutting and non-entity events: authentication (sign-in / sign-out / failed-attempt), role grants and revokes, role-permission diffs, period close and reopen, system configuration changes, audit-log infrastructure itself, and bulk role assignment (one entry per affected user). Distinct from per-entity activity logs.
+
+Implementation: Postgres table `audit_log_entries`, surfaced via the `/admin/audit-log` endpoint with cross-cutting filters.
+
+See also: activity log.
+
+## Activity log
+
+Entity: `activity_logs`.
+
+Per-entity timeline of state changes scoped to one record. UI surface for "show me this customer's history." Each entity (customer, vendor, part, BOM, PO, SO, WO, invoice, payment, employee, JE) carries its own activity log recording state changes scoped to that entity: create, field-level updates, deactivation, status transitions, line edits, version diffs.
+
+A user opening "the audit log" on a specific entity record is reading that record's `activity_logs`. A user opening "the audit log" filtered to authentication events or role grants is reading the system-wide `audit_log_entries`.
+
+See also: system-wide audit log.
+
 ## Calendar
 
 A schedule that defines when work happens. Includes shift times, weekends, holidays, and planned downtime. Calendars apply to the plant by default and can be overridden per work center for areas that run on different schedules.

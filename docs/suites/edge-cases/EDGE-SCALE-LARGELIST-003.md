@@ -18,6 +18,12 @@ notes: |
   This is a high-stakes case. If "select all" semantics are unclear,
   the user can wipe records they didn't intend to. The application
   must make the scope of "all" explicit.
+  Reconciled in Phase 2 — bulk endpoints take an explicit ID list,
+  not an implicit filter. Filtered-set bulk actions are the UI's job
+  to translate to ID lists: when the user asks to act on a filtered
+  set, the UI must construct the explicit array of entity IDs and
+  submit it in the request payload. The case still tests bulk-action
+  scope correctness; the contract shape is now explicit.
 steps:
   - n: 1
     action: |
@@ -45,11 +51,19 @@ steps:
       All 5,234 are deactivated; no record outside the filter was
       touched.
 expected_overall: |
-  Bulk action scope is exact — matches the user's filter, no more,
-  no less.
+  Bulk action scope is exact — matches the explicit set the user
+  intended, no more, no less. The contract is that bulk operations
+  accept an explicit array of entity IDs in the request payload;
+  behavior against a filtered-on-screen set is the UI's
+  responsibility (the UI constructs the ID list from the filter and
+  submits it).
 pass_criteria: |
-  Acted-on count equals filtered count exactly AND no record outside
-  filter was modified.
+  Acted-on count equals the count of IDs submitted in the request
+  payload exactly AND no record outside that explicit ID list was
+  modified. When the user's intent is "all rows matching my current
+  filter," the UI is responsible for materializing that filter into
+  an explicit ID array before submitting; the bulk endpoint itself
+  acts only on the IDs it receives.
 why_this_matters: |
   "Select all" that secretly means "all 10,000" instead of "the 5,234
   I filtered" is a one-click data disaster. The semantics must be

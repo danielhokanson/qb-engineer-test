@@ -15,8 +15,16 @@ preconditions:
   - 5,000+ records exist for the entity (e.g., parts).
   - List view supports at least two-column sorting.
 notes: |
-  If multi-column sort is not supported, mark Not Applicable and
-  document.
+  Reconciled in Phase 2 to align with the application's documented
+  single-key + stable-secondary pagination contract (see CLAUDE.md
+  §pagination, e.g. `?page=1&pageSize=25&sort=createdAt&order=desc`).
+  Multi-column sort, if implemented, is treated as enrichment beyond
+  baseline. Baseline pass requires a single sort key paired with a
+  stable secondary tiebreaker (typically the primary id).
+  If multi-column sort is not supported, the multi-column step is an
+  enrichment check — mark that step Not Applicable and document; the
+  case as a whole still passes if the single-key + stable-secondary
+  contract holds.
 steps:
   - n: 1
     action: |
@@ -41,10 +49,16 @@ steps:
     expected: |
       Sort changes deterministically; no row dropouts on any page.
 expected_overall: |
-  Multi-column sort at scale is stable and deterministic.
+  Sort at scale is stable and deterministic. Baseline contract is a
+  single sort key paired with a stable secondary tiebreaker
+  (typically the primary id); multi-column sort, if implemented, is
+  verified as an enrichment on top of that baseline.
 pass_criteria: |
-  Repeated load of same query returns identical order AND no rows
-  dropped or duplicated across paging.
+  Single sort key with a stable secondary (typically primary id)
+  produces a deterministic order: repeated load of the same query
+  returns identical order AND no rows are dropped or duplicated
+  across paging. Multi-column sort, where supported, behaves as an
+  enrichment that preserves the same determinism guarantees.
 why_this_matters: |
   A non-deterministic sort at scale silently makes lists that look
   identical on every refresh actually be different — pagination

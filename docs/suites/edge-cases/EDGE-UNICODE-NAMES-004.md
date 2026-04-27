@@ -1,19 +1,24 @@
-## EDGE-UNICODE-NAMES-004 — Unicode-aware sort orders names per locale, not by byte value
+## EDGE-UNICODE-NAMES-004 — Unicode-aware sort orders names per the configured database locale
+
+> Note: Reconciled in Phase 2 to reflect that collation is a deploy-time config, not a library invariant — see L-EDGE-UNICODE-NAMES-004.
 
 ```yaml
 id: EDGE-UNICODE-NAMES-004
-title: A list of customers with accented names sorts by locale-aware order, not by raw byte order
+title: A list of customers with accented names sorts by the configured database locale's collation, not by raw byte order
 goal: |
   Verify that sorting a list of customers whose names mix accented
   and unaccented Latin characters produces an order a human reader
   would expect — "Ångström" near "Aalto," not at the end after "Z" —
-  per a documented locale collation.
+  per the collation rule defined by the configured database locale.
 roles:
   - Administrator
 preconditions:
   - At least 10 customers with names that include both accented and
     unaccented characters (e.g., "Aalto", "Ångström", "Bär", "Bärbel",
     "Cabo", "Café", "Zebra").
+  - The deployment's database collation is configured and documented
+    (default for this build: Postgres `und-x-icu` for general
+    Unicode-aware ordering, or whatever locale the deploy chooses).
 steps:
   - n: 1
     action: |
@@ -35,11 +40,12 @@ steps:
     expected: |
       Order changes per the new locale's collation rules.
 expected_overall: |
-  List sorting respects Unicode collation per a documented locale.
+  List sorting respects the collation rule defined by the configured
+  database locale, and that locale is documented in deployment docs.
 pass_criteria: |
-  Sort order matches a documented locale's collation AND no byte-order
-  artifacts (Å, Ä, Ö dumped at end) appear unless that is the locale's
-  documented behavior.
+  Sort order matches the documented collation rule for the configured
+  locale AND no byte-order artifacts (Å, Ä, Ö dumped at end) appear
+  unless that is the configured locale's documented behavior.
 why_this_matters: |
   Byte-order sorting puts every accented name at the end of the list,
   which makes finding "Ångström" require scrolling past "Z." A real
