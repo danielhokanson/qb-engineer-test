@@ -12,6 +12,10 @@ roles:
   - Floor Operator
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-MFG-BACKFLUSH
+  - CAP-MFG-COMPLETE
+  - CAP-INV-LOTS
 preconditions:
   - At least one finished part has its BOM configured for backflush.
   - A WO for that part is released and at completion.

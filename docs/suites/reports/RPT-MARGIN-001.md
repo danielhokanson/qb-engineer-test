@@ -11,6 +11,10 @@ goal: |
 roles:
   - Controller
   - Sales / Account Manager
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-O2C-INVOICE
+  - CAP-MFG-COMPLETE
 preconditions:
   - At least one part has invoice line activity in the period
     AND a corresponding WO completion / standard cost.

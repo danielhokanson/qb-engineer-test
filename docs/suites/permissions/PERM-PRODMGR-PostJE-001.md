@@ -9,6 +9,9 @@ goal: |
   manual journal entries.
 roles:
   - Production Manager
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A user assigned only the Production Manager role exists and can
     sign in.

@@ -12,6 +12,9 @@ roles:
   - Controller
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-MFG-WOVARIANCE
+  - CAP-MFG-COMPLETE
 preconditions:
   - A WO has completed all operations and is ready to close.
 prerequisite_cases:

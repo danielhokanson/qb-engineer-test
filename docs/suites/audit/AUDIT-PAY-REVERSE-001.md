@@ -10,6 +10,9 @@ goal: |
 roles:
   - AR Clerk
   - Controller
+capabilities:
+  - CAP-O2C-CASH
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - An applied customer payment exists.
 prerequisite_cases:

@@ -8,6 +8,9 @@ goal: |
   PLM / CAD-system integrations they may use.
 roles:
   - Engineer / R&D
+capabilities:
+  - CAP-IDEN-AUTH-API-KEYS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An Engineer user exists with no other roles attached.
   - The integrations area exists.

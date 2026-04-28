@@ -8,6 +8,9 @@ goal: |
   is not financial-calendar authority.
 roles:
   - Procurement
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
   - At least one open fiscal period exists.

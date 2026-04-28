@@ -49,6 +49,8 @@ roles:
   - Administrator
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-LOCATIONS
 preconditions:
   - |
     The application is bootstrapped: company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)
@@ -111,6 +113,8 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-MD-LOCATIONS
 preconditions:
   - The primary location exists with a complete address and is flagged as the company default. (Established by P1-LOC-001.)
 steps:
@@ -184,6 +188,8 @@ roles:
   - Administrator
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-WORKCENTERS
 preconditions:
   - At least one location exists.
   - You are signed in as a user with permission to configure work centers.
@@ -265,6 +271,9 @@ roles:
   - Production Manager
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-WORKCENTERS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least one work center exists (e.g. Press Shop), linked to the primary location, with a default labor rate and capacity. (Established by P1-WC-001.)
 steps:
@@ -321,6 +330,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-MD-WORKCENTERS
+  - CAP-MD-CALENDARS
 preconditions:
   - At least one calendar exists. (See P1-CAL-001.)
   - Multiple work centers exist covering common operations (Press Shop, Cut & Saw, Weld, Paint, Assembly, Inspection), all linked to the primary location. (Established by P1-WC-002.)
@@ -381,6 +393,8 @@ roles:
   - Administrator
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-UOM
 preconditions:
   - |
     The application is bootstrapped: company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)
@@ -435,6 +449,8 @@ roles:
   - Administrator
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-UOM
 preconditions:
   - Standard units of measure are available (each, kilogram, pound, hour, foot, square foot, gallon, liter). (Established by P1-UOM-001.)
 steps:
@@ -484,6 +500,8 @@ roles:
   - Administrator
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-UOM
 preconditions:
   - Standard units of measure exist (each, kilogram, pound, hour, foot, square foot, gallon, liter) plus at least one custom unit (e.g. "sheet"). (Established by P1-UOM-001 and P1-UOM-002.)
 steps:
@@ -563,6 +581,8 @@ roles:
   - Controller
 flows:
   - foundational-records
+capabilities:
+  - CAP-ACCT-FULLGL
 preconditions:
   - |
     The application is bootstrapped: company identity, locale, time zone, fiscal year, currency, costing model, and integrations are configured, and the first administrator can sign in. (Phase 0 outcomes.)
@@ -641,6 +661,8 @@ roles:
   - Controller
 flows:
   - foundational-records
+capabilities:
+  - CAP-ACCT-FULLGL
 preconditions:
   - |
     The chart of accounts is initialized with standard accounts: cash, accounts receivable, inventory, accounts payable, sales, cost of goods sold, and wages — at minimum. (Established by P1-GL-001.)
@@ -694,6 +716,8 @@ roles:
   - Controller
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-TAXCODES
 preconditions:
   - |
     Tax calculation has been configured: a tax provider has been chosen (integrated provider or manual rates) and the choice persists across tenant settings. (Established by P0-INTEG-003.)
@@ -773,6 +797,8 @@ roles:
   - Controller
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-TAXCODES
 preconditions:
   - At least one sales tax code exists with a defined rate, exemption flag, and posting GL account. (Established by P1-TAX-001.)
 steps:
@@ -829,6 +855,8 @@ roles:
   - Administrator
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-EMPLOYEES
 preconditions:
   - The first administrator has a system account (P0-ADMIN-001).
   - At least one location exists (P1-LOC-001).
@@ -906,6 +934,9 @@ roles:
   - Administrator
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-EMPLOYEES
+  - CAP-IDEN-USERS
 preconditions:
   - The first employee record exists with hire date, default location, department, and pay info. (Established by P1-EMP-001.)
 steps:
@@ -974,6 +1005,8 @@ roles:
   - HR
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-EMPLOYEES
 preconditions:
   - The first employee record exists with hire date, default location, department, and pay info. (Established by P1-EMP-001.)
 steps:
@@ -1043,6 +1076,9 @@ roles:
   - Administrator
 flows:
   - foundational-records
+capabilities:
+  - CAP-IDEN-USERS
+  - CAP-IDEN-ROLES
 preconditions:
   - At least one non-admin role exists (P0-USER-001).
   - At least four employees exist covering varied pay classifications (hourly with overtime, salaried-exempt, salaried-non-exempt). (Established by P1-EMP-003.)
@@ -1108,6 +1144,9 @@ roles:
   - IT Admin
 flows:
   - foundational-records
+capabilities:
+  - CAP-IDEN-ROLES
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A second non-admin system user exists, assigned a Floor Operator (or equivalent) role and able to sign in. (Established by P1-USER-001.)
   - You can sign in as the user created in P1-USER-001 (a credential
@@ -1178,6 +1217,8 @@ roles:
   - IT Admin
 flows:
   - foundational-records
+capabilities:
+  - CAP-IDEN-USERS
 preconditions:
   - At least one non-admin user exists (P1-USER-001).
 steps:
@@ -1253,6 +1294,8 @@ roles:
   - Administrator
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-CALENDARS
 preconditions:
   - At least one location exists (P1-LOC-001).
 steps:
@@ -1333,6 +1376,8 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-MD-CALENDARS
 preconditions:
   - The plant default calendar is configured with working days, shift times, and at least the upcoming-year US federal holidays marked non-working. (Established by P1-CAL-001.)
 steps:
@@ -1387,6 +1432,8 @@ roles:
   - Production Manager
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-CALENDARS
 preconditions:
   - The plant default calendar is configured with working days, shift times, and at least the upcoming-year US federal holidays marked non-working. (Established by P1-CAL-001.)
 steps:
@@ -1461,6 +1508,8 @@ roles:
   - Administrator
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-ASSETS
 preconditions:
   - At least one work center exists (P1-WC-001).
   - At least one GL account for fixed assets exists (P1-GL-001).
@@ -1542,6 +1591,9 @@ roles:
   - Maintenance Manager
 flows:
   - foundational-records
+capabilities:
+  - CAP-MD-ASSETS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least one fixed asset record exists, linked to a work center, with depreciation method and useful life configured and a depreciation schedule generated. (Established by P1-ASSET-001.)
 steps:
@@ -1607,6 +1659,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-P2P-PO
+  - CAP-MD-ASSETS
 preconditions:
   - |
     The chart of accounts is initialized with standard accounts: cash, accounts receivable, inventory, accounts payable, sales, cost of goods sold, and wages — at minimum. (Established by P1-GL-001.)

@@ -7,6 +7,9 @@ goal: |
   Verify a Floor Operator cannot modify tax codes.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists with no other roles attached.
   - At least one tax code is configured.

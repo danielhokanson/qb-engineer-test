@@ -10,6 +10,11 @@ goal: |
 roles:
   - HR
   - Controller
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-HR-HIRE
+  - CAP-HR-TERMINATION
+  - CAP-MD-EMPLOYEES
 preconditions:
   - At least one hire (P4-HIRE-001) and one termination
     (P5-HR-TERM-001) occurred in the period.

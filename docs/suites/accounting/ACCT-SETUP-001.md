@@ -14,6 +14,9 @@ optional_module: builtin-accounting-full-gl
 roles:
   - Shop Owner
   - Administrator
+capabilities:
+  - CAP-ACCT-BUILTIN
+  - CAP-ACCT-FULLGL
 preconditions:
   - The built-in accounting module is enabled at session start.
   - No accounting transactions have been recorded yet.

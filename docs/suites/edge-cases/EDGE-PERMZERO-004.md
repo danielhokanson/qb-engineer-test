@@ -13,6 +13,11 @@ goal: |
 roles:
   - Administrator
   - Inventory Clerk
+capabilities:
+  - CAP-IDEN-ROLES
+  - CAP-CROSS-PERMS-MATRIX
+  - CAP-MD-LOCATIONS
+  - CAP-INV-CORE
 preconditions:
   - A user assigned to a role that requires location filtering.
   - That user's accessible-locations list explicitly = 0 entries.

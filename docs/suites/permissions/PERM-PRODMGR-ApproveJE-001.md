@@ -7,6 +7,9 @@ goal: |
   Verify a Production Manager cannot approve pending JEs.
 roles:
   - Production Manager
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Manager user exists with no other roles attached.
   - At least one over-threshold JE awaiting approval exists.

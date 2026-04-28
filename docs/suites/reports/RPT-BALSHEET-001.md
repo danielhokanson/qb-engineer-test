@@ -9,6 +9,10 @@ goal: |
   reports — and that the sheet itself balances.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
+  - CAP-RPT-INVVAL
 preconditions:
   - The period has been closed (P5-CLOSE-004).
   - AR aging, AP aging, inventory valuation, and a depreciation

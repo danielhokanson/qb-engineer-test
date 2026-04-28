@@ -9,6 +9,9 @@ goal: |
   effect is in place.
 roles:
   - Controller
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A balanced draft manual JE exists.
 prerequisite_cases:

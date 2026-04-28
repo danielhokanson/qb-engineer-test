@@ -11,6 +11,9 @@ goal: |
 roles:
   - Administrator
   - Data Steward
+capabilities:
+  - CAP-CROSS-INTEG-FILE
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - A 100-row CSV is prepared. Row 50 contains a value guaranteed
     to fail validation late (e.g., references master data deleted

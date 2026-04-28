@@ -10,6 +10,9 @@ goal: |
 roles:
   - HR Admin
   - Administrator
+capabilities:
+  - CAP-MD-EMPLOYEES
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A user with permission to create employees exists.
 steps:

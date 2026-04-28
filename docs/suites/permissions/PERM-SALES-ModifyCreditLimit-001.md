@@ -8,6 +8,9 @@ goal: |
   authority belongs to Controller / Finance.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists.
   - A customer with an existing credit limit exists.

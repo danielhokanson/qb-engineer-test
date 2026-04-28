@@ -16,6 +16,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-HR-SHIFTS
+  - CAP-MD-CALENDARS
 preconditions:
   - At least 3 employees and at least 2 shift definitions exist
     (P1-CAL-001, P1-CAL-002).

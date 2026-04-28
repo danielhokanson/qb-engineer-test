@@ -9,6 +9,8 @@ goal: |
   who can also provision users could grant themselves capabilities.
 roles:
   - Controller
+capabilities:
+  - CAP-IDEN-USERS
 preconditions:
   - A Controller user exists with no other roles attached.
 steps:

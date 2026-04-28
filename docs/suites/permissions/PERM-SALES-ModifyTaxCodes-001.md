@@ -8,6 +8,9 @@ goal: |
   customer documents but cannot redefine the rates themselves.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists with no other roles attached.
   - At least one tax code is configured.

@@ -2,7 +2,7 @@
   {
     "id": "lead-to-cash",
     "name": "Lead to cash from an empty system",
-    "description": "The canonical end-to-end test of qb-engineer. Start with a brand-new\nempty tenant and walk through every role's contribution to taking a\ncustomer from initial inquiry to cash applied. Each chapter marks a\nrole handoff — sign out and back in as the named role to verify the\nsystem routes work correctly across users.\n",
+    "description": "The canonical end-to-end test of qb-engineer, and the narrative arc\nof the gold path's lead-to-cash spine. Start with a brand-new empty\ntenant and walk through every role's contribution to taking a\ncustomer from initial inquiry to cash applied. Each chapter marks a\nrole handoff — sign out and back in as the named role to verify the\nsystem routes work correctly across users.\n\nEvery scene below is a gold-path case. The gold path also includes\ncross-cutting cases (audit, list views, reports, notifications,\npermissions) that this story does not visit directly but that the\napplication must satisfy for the lead-to-cash flow to remain healthy\nin production.\n",
     "estimated_total_minutes": 240,
     "chapters": [
       {
@@ -135,10 +135,6 @@
         "scenes": [
           {
             "case": "P2-VENDOR-001",
-            "role": "Procurement"
-          },
-          {
-            "case": "P2-VENDOR-003",
             "role": "Procurement"
           }
         ]

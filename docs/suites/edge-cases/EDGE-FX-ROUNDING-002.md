@@ -9,6 +9,9 @@ goal: |
   at B before computing C — which would compound rounding error.
 roles:
   - Controller
+capabilities:
+  - CAP-MD-CURRENCIES
+  - CAP-RPT-FINANCIALS
 preconditions:
   - The home currency is, e.g., USD.
   - At least one foreign-currency transaction in EUR exists.

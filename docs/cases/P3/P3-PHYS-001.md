@@ -12,6 +12,9 @@ roles:
   - Controller
 flows:
   - cycle-count
+capabilities:
+  - CAP-INV-PHYSICAL
+  - CAP-INV-CORE
 preconditions:
   - At least 5 parts have on-hand inventory.
 modality:

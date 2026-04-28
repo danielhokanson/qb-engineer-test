@@ -7,6 +7,9 @@ goal: |
   Verify a Procurement user cannot post payroll.
 roles:
   - Procurement
+capabilities:
+  - CAP-HR-PAYROLL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
   - At least one prepared payroll run exists.

@@ -10,6 +10,10 @@ goal: |
 roles:
   - Sales / Account Manager
   - Controller
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-LIST-UX
+  - CAP-CROSS-INTEG-FILE
 preconditions:
   - At least 100 customers exist. User has permission to export.
 steps:

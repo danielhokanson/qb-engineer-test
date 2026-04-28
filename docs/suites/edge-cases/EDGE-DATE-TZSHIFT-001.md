@@ -12,6 +12,10 @@ roles:
   - Floor Operator
   - HR
   - Production Manager
+capabilities:
+  - CAP-HR-TIMETRACK
+  - CAP-MFG-LABOR
+  - CAP-HR-SHIFTS
 preconditions:
   - At least one Floor Operator user with labor-entry capability.
   - Shift configuration that permits overnight work.

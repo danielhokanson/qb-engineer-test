@@ -10,6 +10,9 @@ goal: |
 roles:
   - Procurement
   - Controller
+capabilities:
+  - CAP-MD-VENDORS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Vendors exist with onboarded dates and last-PO dates spanning
     at least the last 24 months.

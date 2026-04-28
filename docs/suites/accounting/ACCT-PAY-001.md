@@ -13,6 +13,9 @@ optional_module: builtin-accounting-full-gl
 roles:
   - Shop Owner
   - Payroll Clerk
+capabilities:
+  - CAP-HR-PAYROLL
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one active employee exists with a configured pay rate.
   - Withholding rates are configured at a basic level.

@@ -9,6 +9,8 @@ goal: |
   what each role can do belongs to IT Admin / Administrator.
 roles:
   - HR
+capabilities:
+  - CAP-IDEN-ROLES
 preconditions:
   - An HR user exists with no other roles attached.
   - At least one editable role exists.

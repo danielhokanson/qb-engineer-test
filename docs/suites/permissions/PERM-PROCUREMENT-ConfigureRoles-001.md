@@ -7,6 +7,8 @@ goal: |
   Verify a Procurement user cannot configure role permissions.
 roles:
   - Procurement
+capabilities:
+  - CAP-IDEN-ROLES
 preconditions:
   - A Procurement user exists with no other roles attached.
   - At least one editable role exists.

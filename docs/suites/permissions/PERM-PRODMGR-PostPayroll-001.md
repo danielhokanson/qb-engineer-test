@@ -9,6 +9,9 @@ goal: |
   segregated to prevent fraud.
 roles:
   - Production Manager
+capabilities:
+  - CAP-HR-PAYROLL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Manager user exists with no other roles attached.
   - At least one prepared payroll run exists.

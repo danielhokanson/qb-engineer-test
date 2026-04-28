@@ -7,6 +7,9 @@ goal: |
   Verify a Warehouse user cannot delete customer records.
 roles:
   - Warehouse / Logistics
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Warehouse user exists with no other roles attached.
   - At least one customer record exists.

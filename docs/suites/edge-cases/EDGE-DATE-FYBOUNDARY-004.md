@@ -11,6 +11,10 @@ goal: |
 roles:
   - Controller
   - AP Clerk
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-CROSS-PERMS-MATRIX
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
 preconditions:
   - At least one prior fiscal year is closed (period-locked).
   - An AP Clerk user without reopen permission exists.

@@ -7,6 +7,9 @@ goal: |
   Verify an HR user cannot issue credit memos.
 roles:
   - HR
+capabilities:
+  - CAP-O2C-CREDITMEMO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An HR user exists with no other roles attached.
   - At least one customer with an open AR balance exists.

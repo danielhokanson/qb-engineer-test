@@ -12,6 +12,10 @@ goal: |
 roles:
   - Administrator
   - AR Clerk
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-LIST-UX
+  - CAP-CROSS-INTEG-FILE
 preconditions:
   - At least one entity with an optional text field (customer notes
     or part description).

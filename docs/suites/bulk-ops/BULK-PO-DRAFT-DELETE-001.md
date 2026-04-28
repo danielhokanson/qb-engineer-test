@@ -10,6 +10,9 @@ goal: |
 roles:
   - Buyer
   - Procurement
+capabilities:
+  - CAP-P2P-PO
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 6 POs exist in Draft status with creation date over
     90 days ago.

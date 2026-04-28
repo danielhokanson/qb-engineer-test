@@ -9,6 +9,9 @@ goal: |
   reporting and for the Year-To-Date calculations on every report.
 roles:
   - Controller
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-RPT-FINANCIALS
 preconditions:
   - The fiscal year starts January 1 (per P0-TENANT-004).
   - At least two open periods straddling the year-end boundary exist.

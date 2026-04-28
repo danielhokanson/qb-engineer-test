@@ -8,6 +8,9 @@ goal: |
   inspection gates within a WO but do not release WOs to the floor.
 roles:
   - QC Inspector
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A QC Inspector user exists with no other roles attached.
   - At least one planned (un-released) work order exists.

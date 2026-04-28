@@ -12,6 +12,10 @@ goal: |
 roles:
   - Administrator
   - HR
+capabilities:
+  - CAP-MD-EMPLOYEES
+  - CAP-HR-TIMETRACK
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one employee with two recorded shifts before today.
   - Employee time zone is editable.

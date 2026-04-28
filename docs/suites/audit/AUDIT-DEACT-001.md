@@ -11,6 +11,11 @@ roles:
   - Administrator
   - Procurement
   - IT Admin
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-MD-VENDORS
+  - CAP-IDEN-USERS
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
 preconditions:
   - At least one customer, one vendor, and one user are in a state
     where they can be deactivated.

@@ -7,6 +7,9 @@ goal: |
   Verify a Sales user cannot approve ECRs.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-MD-ECO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists with no other roles attached.
   - At least one open ECR exists.

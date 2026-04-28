@@ -11,6 +11,10 @@ goal: |
 roles:
   - Administrator
   - HR
+capabilities:
+  - CAP-IDEN-ROLES
+  - CAP-CROSS-PERMS-MATRIX
+  - CAP-ACCT-EXPENSES
 preconditions:
   - A user with spending limit explicitly = 0.
   - An expense-submission workflow exists.

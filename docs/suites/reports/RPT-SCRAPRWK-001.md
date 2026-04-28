@@ -11,6 +11,10 @@ roles:
   - Production Manager
   - QC Inspector
   - Controller
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-MFG-COMPLETE
+  - CAP-QC-NCR
 preconditions:
   - At least one WO recorded scrap (P4-COMP with reject qty) and
     at least one NCR was dispositioned to rework (P5-QC-NCR-001).

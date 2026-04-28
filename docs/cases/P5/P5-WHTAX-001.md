@@ -15,6 +15,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one vendor is flagged for withholding (e.g., a foreign
     contractor).

@@ -10,6 +10,10 @@ goal: |
 roles:
   - Controller
   - Sales / Account Manager
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-O2C-INVOICE
+  - CAP-MD-PARTS
 preconditions:
   - Parts in the invoice register fall into at least two categories
     (P2-PART-001 with category assigned).

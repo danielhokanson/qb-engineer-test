@@ -9,6 +9,8 @@ goal: |
   audited.
 roles:
   - Administrator
+capabilities:
+  - CAP-IDEN-USERS
 preconditions:
   - The Administrator user exists.
   - At least one role exists to assign to a new user.

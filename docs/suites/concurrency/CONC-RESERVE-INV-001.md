@@ -11,6 +11,9 @@ goal: |
 roles:
   - Sales / Account Manager
   - Warehouse / Logistics
+capabilities:
+  - CAP-CROSS-CONCURRENCY
+  - CAP-INV-RESERVE
 preconditions:
   - One part has on-hand quantity of exactly 10.
   - Two users with reservation authority exist.

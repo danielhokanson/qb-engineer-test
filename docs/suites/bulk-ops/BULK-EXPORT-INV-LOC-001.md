@@ -11,6 +11,10 @@ goal: |
 roles:
   - Warehouse Supervisor
   - Inventory Controller
+capabilities:
+  - CAP-INV-CORE
+  - CAP-CROSS-INTEG-FILE
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 50 inventory rows exist across multiple locations.
   - At least one location has between 10 and 30 rows with on-hand

@@ -12,6 +12,9 @@ roles:
   - Floor Operator
   - HR
   - Production Manager
+capabilities:
+  - CAP-HR-TIMETRACK
+  - CAP-MFG-LABOR
 preconditions:
   - The tenant time zone observes DST.
   - At least one Floor Operator user exists.

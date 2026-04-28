@@ -9,6 +9,9 @@ goal: |
   and key metadata (NOT the secret) in the audit log.
 roles:
   - IT Admin
+capabilities:
+  - CAP-IDEN-AUTH-API-KEYS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An IT Admin user exists.
   - The integrations / API key area is enabled in tenant config.

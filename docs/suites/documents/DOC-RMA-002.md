@@ -9,6 +9,10 @@ goal: |
   send is logged on the RMA, and the recipient mailbox receives it.
 roles:
   - Customer Service
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-O2C-RMA
 preconditions:
   - An approved RMA exists.
   - The customer has a valid email contact.

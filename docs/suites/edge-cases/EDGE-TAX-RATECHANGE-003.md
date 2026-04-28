@@ -10,6 +10,10 @@ goal: |
   current rate until the effective date arrives.
 roles:
   - Controller
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A tax code with a known current rate.
   - The current period is open.

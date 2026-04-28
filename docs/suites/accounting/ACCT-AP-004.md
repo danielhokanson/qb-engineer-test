@@ -13,6 +13,9 @@ optional_module: builtin-accounting
 roles:
   - Shop Owner
   - AP Clerk
+capabilities:
+  - CAP-ACCT-EXPENSES
+  - CAP-ACCT-BUILTIN
 preconditions:
   - The chart of accounts includes at least one expense account.
 prerequisite_cases:

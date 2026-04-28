@@ -8,6 +8,8 @@ goal: |
   authority, cannot create new users.
 roles:
   - Procurement
+capabilities:
+  - CAP-IDEN-USERS
 preconditions:
   - A Procurement user exists.
 steps:

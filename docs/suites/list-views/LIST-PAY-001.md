@@ -11,6 +11,9 @@ goal: |
 roles:
   - AR / Collections
   - AP / Accounts Payable
+capabilities:
+  - CAP-O2C-CASH
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least 100 payments exist across customers / vendors with
     varied references and check numbers.

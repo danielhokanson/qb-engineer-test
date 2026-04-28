@@ -39,6 +39,9 @@ roles:
   - Sales / Account Manager
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-O2C-QUOTE
+  - CAP-MD-PRICELIST
 preconditions:
   - At least one customer (P2-CUST-001).
   - At least one finished part with pricing (P2-PART-002, P2-PRICE-001).
@@ -111,6 +114,8 @@ roles:
   - Sales / Account Manager
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-O2C-QUOTE
 preconditions:
   - A quote has been created for a customer with the right customer-list pricing applied, validity dates set, and the quote sent. (Established by P4-QUOTE-001.)
 steps:
@@ -169,6 +174,9 @@ roles:
   - Sales / Account Manager
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-O2C-QUOTE
+  - CAP-O2C-SO
 preconditions:
   - A quote has been created for a customer with the right customer-list pricing applied, validity dates set, and the quote sent. (Established by P4-QUOTE-001.)
 steps:
@@ -245,6 +253,9 @@ roles:
   - Production Planner
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-O2C-SO
 preconditions:
   - A sales order has been created from an accepted quote, in Open or Booked status, with customer PO number, requested ship date, and ship-to address all confirmed. (Established by P4-QUOTE-003.)
   - The part on the SO has a BOM and routing.
@@ -337,6 +348,9 @@ roles:
   - Floor Operator
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-EXT-KANBAN
+  - CAP-MFG-WO-RELEASE
 preconditions:
   - A work order has been released from a sales order. The WO carries a stable number, references the BOM and routing active at release, and is in Released status — visible to the floor but not yet started. (Established by P4-WO-001.)
 steps:
@@ -386,6 +400,11 @@ roles:
   - Floor Operator
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-MFG-SHOPFLOOR
+  - CAP-MFG-LABOR
+  - CAP-EXT-KANBAN
+  - CAP-IDEN-AUTH-KIOSK
 preconditions:
   - A work order has been released from a sales order. The WO carries a stable number, references the BOM and routing active at release, and is in Released status — visible to the floor but not yet started. (Established by P4-WO-001.)
 modality:
@@ -467,6 +486,10 @@ roles:
   - Warehouse / Logistics
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-MFG-MATL-ISSUE
+  - CAP-INV-LOTS
+  - CAP-INV-CORE
 preconditions:
   - |
     A work-order operation is in progress: an operator scanned the WO and the start action, the operation transitioned from Released to In Progress, labor time is tracking, and the kanban card has moved accordingly. (Established by P4-WO-START.)
@@ -530,6 +553,8 @@ roles:
   - Floor Operator
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-MFG-LABOR
 preconditions:
   - |
     A work-order operation is in progress: an operator scanned the WO and the start action, the operation transitioned from Released to In Progress, labor time is tracking, and the kanban card has moved accordingly. (Established by P4-WO-START.)
@@ -593,6 +618,10 @@ roles:
   - Floor Operator
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-MFG-MULTIOP
+  - CAP-MFG-COMPLETE
+  - CAP-EXT-KANBAN
 preconditions:
   - |
     A work-order operation is in progress: an operator scanned the WO and the start action, the operation transitioned from Released to In Progress, labor time is tracking, and the kanban card has moved accordingly. (Established by P4-WO-START.)
@@ -661,6 +690,10 @@ roles:
   - Floor Operator
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-MFG-COMPLETE
+  - CAP-INV-CORE
+  - CAP-INV-SERIALS
 preconditions:
   - All preceding operations on the WO have completed.
   - WO is on the final inspection or final operation.
@@ -724,6 +757,8 @@ roles:
   - Warehouse / Logistics
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-INV-CORE
 preconditions:
   - |
     The final routing operation is complete: WO is closed, finished goods are in inventory, WIP is cleared, and any required serial numbers have been recorded. (Established by P4-COMP-FINAL.)
@@ -778,6 +813,10 @@ roles:
   - Warehouse / Logistics
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-O2C-PICKPACK
+  - CAP-INV-RESERVE
+  - CAP-INV-SERIALS
 preconditions:
   - Finished goods have been moved from the staging area to a storage bin and are visible in the available-to-pick view at the new location. (Established by P4-PUTAWAY.)
   - Finished goods are available.
@@ -845,6 +884,9 @@ roles:
   - Warehouse / Logistics
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-O2C-PICKPACK
+  - CAP-CROSS-DOCS
 preconditions:
   - All sales-order lines have been picked at the bin, allocated to the SO, and staged for shipping. (Established by P4-PICK.)
 modality:
@@ -904,6 +946,9 @@ roles:
   - Warehouse / Logistics
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-O2C-SHIP
+  - CAP-O2C-INVOICE
 preconditions:
   - The order is packed into shipping containers, the packing slip has been generated, and items have been verified against the SO. (Established by P4-PACK.)
   - A shipping integration is configured (P0-INTEG-002) — or manual
@@ -975,6 +1020,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-O2C-SHIP
+  - CAP-CROSS-DOCS
 preconditions:
   - At least one international customer (P2-CUST-004).
   - That customer has an SO ready to ship.
@@ -1036,6 +1084,9 @@ roles:
   - Sales / Account Manager
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-MD-TAXCODES
 preconditions:
   - The order has been handed off to a carrier, a tracking number is recorded on the SO, and the customer invoice has been triggered or queued. (Established by P4-SHIP.)
 steps:
@@ -1109,6 +1160,8 @@ roles:
   - Controller
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-O2C-CASH
 preconditions:
   - A customer invoice has been posted from a shipped sales order, AR has increased accordingly, and the invoice has been sent to the customer. (Established by P4-INV-001.)
 steps:
@@ -1198,6 +1251,8 @@ roles:
   - Controller
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-O2C-CASH
 preconditions:
   - An open invoice exists.
 steps:
@@ -1248,6 +1303,8 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-O2C-CASH
 preconditions:
   - An open invoice exists.
 steps:
@@ -1296,6 +1353,10 @@ roles:
   - HR
 flows:
   - hire-to-first-assignment
+capabilities:
+  - CAP-HR-HIRE
+  - CAP-MD-EMPLOYEES
+  - CAP-QC-COMPLIANCE-FORMS
 preconditions:
   - At least one location and pay structure exist (P1).
 steps:
@@ -1376,6 +1437,10 @@ roles:
   - IT Admin
 flows:
   - hire-to-first-assignment
+capabilities:
+  - CAP-IDEN-USERS
+  - CAP-IDEN-ROLES
+  - CAP-HR-HIRE
 preconditions:
   - A new employee record exists with all required onboarding documents (W-4, I-9, direct deposit, background check, drug test) captured and any required digital signatures attached. (Established by P4-HIRE-001.)
 steps:
@@ -1432,6 +1497,10 @@ roles:
 flows:
   - hire-to-first-assignment
   - quote-to-cash
+capabilities:
+  - CAP-HR-HIRE
+  - CAP-EXT-KANBAN
+  - CAP-HR-TRAINING
 preconditions:
   - The new employee has a system user account, the user is linked to the employee record, and a Floor Operator role is assigned. (Established by P4-HIRE-002.)
   - At least one open WO operation exists.

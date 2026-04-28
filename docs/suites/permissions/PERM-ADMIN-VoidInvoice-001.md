@@ -9,6 +9,9 @@ goal: |
   Administrator owns tenant configuration, not finance.
 roles:
   - Administrator
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - The Administrator user exists with no other roles attached.
   - At least one posted customer invoice exists.

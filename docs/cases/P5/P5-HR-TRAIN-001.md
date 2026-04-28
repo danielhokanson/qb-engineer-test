@@ -12,6 +12,8 @@ roles:
   - Production Manager
 flows:
   - hire-to-first-assignment
+capabilities:
+  - CAP-HR-TRAINING
 preconditions:
   - At least one employee exists.
 prerequisite_cases:

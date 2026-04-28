@@ -10,6 +10,10 @@ goal: |
 roles:
   - Controller
   - Warehouse / Logistics
+capabilities:
+  - CAP-RPT-INVVAL
+  - CAP-INV-CORE
+  - CAP-ACCT-FULLGL
 preconditions:
   - Inventory exists for at least one part.
   - At least one period has been through the close cycle.

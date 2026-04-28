@@ -13,6 +13,8 @@ optional_module: builtin-accounting
 roles:
   - Shop Owner
   - AP Clerk
+capabilities:
+  - CAP-ACCT-BUILTIN
 preconditions:
   - At least one posted, unpaid vendor bill exists.
 prerequisite_cases:

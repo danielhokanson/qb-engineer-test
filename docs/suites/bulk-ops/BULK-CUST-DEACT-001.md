@@ -11,6 +11,9 @@ goal: |
 roles:
   - Controller
   - Administrator
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 5 customers exist; at least 2 have no activity in the
     last 3 years; at least 1 has an open invoice.

@@ -10,6 +10,9 @@ goal: |
 roles:
   - AR Clerk
   - Controller
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A draft customer invoice tied to a shipment or SO exists.
 prerequisite_cases:

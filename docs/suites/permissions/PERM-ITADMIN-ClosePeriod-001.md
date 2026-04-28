@@ -8,6 +8,9 @@ goal: |
   is a financial action and IT has no financial authority.
 roles:
   - IT Admin
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An IT Admin user exists with no other roles attached.
   - At least one open fiscal period exists.

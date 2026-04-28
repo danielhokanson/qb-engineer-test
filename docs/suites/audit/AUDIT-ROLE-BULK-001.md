@@ -10,6 +10,10 @@ goal: |
   role, and new role — not a single aggregated entry.
 roles:
   - IT Admin
+capabilities:
+  - CAP-IDEN-ROLES
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least three non-admin users with different current roles exist.
 steps:

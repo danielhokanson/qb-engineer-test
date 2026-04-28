@@ -8,6 +8,10 @@ goal: |
   fixed-asset register and to the period's GL depreciation postings.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-DEPRECIATION
+  - CAP-MD-ASSETS
 preconditions:
   - At least one fixed asset has been commissioned and depreciation
     has run (P5-CLOSE-003).

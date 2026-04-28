@@ -9,6 +9,9 @@ goal: |
   audit log with employee count and net pay total.
 roles:
   - HR
+capabilities:
+  - CAP-HR-PAYROLL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An HR user exists.
   - At least one prepared payroll run is ready to post.

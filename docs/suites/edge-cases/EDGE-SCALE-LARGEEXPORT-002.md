@@ -10,6 +10,9 @@ goal: |
 roles:
   - Administrator
   - Controller
+capabilities:
+  - CAP-CROSS-INTEG-FILE
+  - CAP-CROSS-CONCURRENCY
 preconditions:
   - 5,000+ records exist for at least two exportable entities.
   - Two distinct user sessions are available.

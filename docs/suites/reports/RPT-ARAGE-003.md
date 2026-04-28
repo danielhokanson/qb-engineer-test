@@ -10,6 +10,10 @@ goal: |
 roles:
   - Sales / Account Manager
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-O2C-INVOICE
+  - CAP-MD-CUSTOMERS
 preconditions:
   - Customers with open invoices are assigned to at least two
     distinct sales reps.

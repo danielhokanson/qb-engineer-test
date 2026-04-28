@@ -7,6 +7,9 @@ goal: |
   Verify a Floor Operator cannot approve POs.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-P2P-APPROVALS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists with no other roles attached.
   - A draft PO awaiting approval exists.

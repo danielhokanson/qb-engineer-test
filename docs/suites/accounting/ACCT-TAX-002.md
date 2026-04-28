@@ -13,6 +13,9 @@ optional_module: builtin-accounting-full-gl
 # Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-ACCT-FULLGL
 preconditions:
   - A sales-tax-payable liability exists from prior collection
     activity (e.g., $7.25 from ACCT-TAX-001).

@@ -11,6 +11,8 @@ goal: |
 roles:
   - Administrator
   - Procurement
+capabilities:
+  - CAP-CROSS-LIST-UX
 preconditions:
   - |
     Either 5,000+ part records exist in the test environment, OR a bulk-seed

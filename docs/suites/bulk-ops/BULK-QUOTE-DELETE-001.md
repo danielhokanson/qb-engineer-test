@@ -12,6 +12,10 @@ goal: |
   individual records are gone.
 roles:
   - Sales Administrator
+capabilities:
+  - CAP-O2C-QUOTE
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 6 draft quotes exist with expiry date in the past.
   - At least 1 of them is linked to a converted SO.

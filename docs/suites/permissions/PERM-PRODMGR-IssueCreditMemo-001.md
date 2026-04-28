@@ -7,6 +7,9 @@ goal: |
   Verify a Production Manager cannot issue credit memos.
 roles:
   - Production Manager
+capabilities:
+  - CAP-O2C-CREDITMEMO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Manager user exists with no other roles attached.
   - At least one customer with an open AR balance exists.

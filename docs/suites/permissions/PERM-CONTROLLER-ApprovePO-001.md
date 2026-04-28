@@ -9,6 +9,9 @@ goal: |
   recorded with attribution.
 roles:
   - Controller
+capabilities:
+  - CAP-P2P-APPROVALS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Controller user exists.
   - A draft PO exists with a total above procurement's threshold and

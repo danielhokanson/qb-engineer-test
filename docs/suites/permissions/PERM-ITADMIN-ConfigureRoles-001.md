@@ -9,6 +9,8 @@ goal: |
   list.
 roles:
   - IT Admin
+capabilities:
+  - CAP-IDEN-ROLES
 preconditions:
   - An IT Admin user exists.
   - At least one editable, non-system role exists (e.g., a custom

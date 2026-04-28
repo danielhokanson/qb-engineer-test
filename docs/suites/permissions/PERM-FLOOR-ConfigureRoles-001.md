@@ -7,6 +7,8 @@ goal: |
   Verify a Floor Operator cannot configure role permissions.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-IDEN-ROLES
 preconditions:
   - A Floor Operator user exists with no other roles attached.
   - At least one editable role exists.

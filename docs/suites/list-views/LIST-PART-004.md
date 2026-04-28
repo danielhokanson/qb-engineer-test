@@ -10,6 +10,9 @@ goal: |
 roles:
   - Engineer / R&D
   - Procurement
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Parts list view is open with the default column set.
 steps:

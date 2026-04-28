@@ -12,6 +12,8 @@ optional_module: builtin-accounting-full-gl
 # Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
+capabilities:
+  - CAP-ACCT-FULLGL
 preconditions:
   - A completed bank reconciliation exists from ACCT-BANK-002 with
     several cleared transactions.

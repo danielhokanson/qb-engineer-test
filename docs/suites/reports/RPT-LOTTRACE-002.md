@@ -11,6 +11,10 @@ goal: |
 roles:
   - QC Inspector
   - Warehouse / Logistics
+capabilities:
+  - CAP-QC-RECALL
+  - CAP-INV-SERIALS
+  - CAP-INV-LOTS
 preconditions:
   - A finished serial has been produced from a WO that consumed
     multiple raw lots (P4-COMP-FINAL with multi-component BOM).

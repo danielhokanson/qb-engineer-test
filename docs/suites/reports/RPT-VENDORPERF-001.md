@@ -9,6 +9,10 @@ goal: |
 roles:
   - Procurement
   - QC Inspector
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-P2P-RECEIVE
+  - CAP-MD-VENDORS
 preconditions:
   - At least one vendor has multiple receipts (P3-RECV-001) over time.
   - At least one of those receipts had a partial / damaged quantity

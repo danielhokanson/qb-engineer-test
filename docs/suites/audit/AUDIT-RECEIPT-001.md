@@ -9,6 +9,9 @@ goal: |
   inventory effect.
 roles:
   - Receiving / Warehouse
+capabilities:
+  - CAP-P2P-RECEIVE
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - An issued PO with at least two lines exists.
 prerequisite_cases:

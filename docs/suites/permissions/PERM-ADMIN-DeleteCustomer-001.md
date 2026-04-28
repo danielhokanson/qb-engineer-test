@@ -10,6 +10,9 @@ goal: |
   recorded in the audit log.
 roles:
   - Administrator
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - The Administrator user exists.
   - At least one customer record exists with no transactional

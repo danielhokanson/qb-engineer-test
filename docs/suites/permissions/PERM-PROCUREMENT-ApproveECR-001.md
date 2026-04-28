@@ -8,6 +8,9 @@ goal: |
   cost / supplier feasibility input but the approval is engineering's.
 roles:
   - Procurement
+capabilities:
+  - CAP-MD-ECO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
   - At least one open ECR exists.

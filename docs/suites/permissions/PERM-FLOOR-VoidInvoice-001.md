@@ -7,6 +7,9 @@ goal: |
   Verify a Floor Operator cannot void invoices.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists with no other roles attached.
   - At least one posted customer invoice exists.

@@ -9,6 +9,9 @@ goal: |
   journal entries. Posting belongs to Controller.
 roles:
   - Administrator
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - The Administrator user exists and can sign in with no other roles attached.
   - The chart of accounts is initialized.

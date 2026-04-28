@@ -10,6 +10,9 @@ goal: |
   what the jurisdiction expects.
 roles:
   - Controller
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-RPT-FINANCIALS
 preconditions:
   - A tax-rate change occurred mid-period.
   - At least one invoice was issued under each rate within the period.

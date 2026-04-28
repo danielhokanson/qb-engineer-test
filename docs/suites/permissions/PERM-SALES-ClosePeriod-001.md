@@ -7,6 +7,9 @@ goal: |
   Verify a Sales user cannot close fiscal periods.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists with no other roles attached.
   - At least one open fiscal period exists.

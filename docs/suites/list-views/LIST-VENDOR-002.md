@@ -9,6 +9,9 @@ goal: |
 roles:
   - Procurement
   - Administrator
+capabilities:
+  - CAP-MD-VENDORS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Test environment must have >= 5,000 rows of the entity under
     test seeded; use `/api/v1/dev/seed-bulk-list?entity=vendor&count=5000`

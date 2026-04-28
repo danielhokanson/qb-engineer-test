@@ -12,6 +12,10 @@ goal: |
 roles:
   - Warehouse Supervisor
   - Inventory Controller
+capabilities:
+  - CAP-INV-CORE
+  - CAP-INV-MULTILOC
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - Source location has on-hand for at least 6 parts.
   - At least 1 of those parts has a reserved / allocated quantity.

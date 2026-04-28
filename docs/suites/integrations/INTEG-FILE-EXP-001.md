@@ -9,6 +9,8 @@ goal: |
   references or losing data fidelity.
 roles:
   - Administrator
+capabilities:
+  - CAP-CROSS-INTEG-FILE
 preconditions:
   - At least 20 records of one entity exist.
 steps:

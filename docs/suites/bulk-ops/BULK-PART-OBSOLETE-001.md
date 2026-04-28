@@ -11,6 +11,9 @@ goal: |
 roles:
   - Engineering
   - Planner
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 5 active parts exist; at least 2 have on-hand
     inventory; a replacement part exists.

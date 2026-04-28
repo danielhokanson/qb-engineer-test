@@ -12,6 +12,9 @@ roles:
   - Procurement
 flows:
   - part-to-inventory
+capabilities:
+  - CAP-P2P-PO
+  - CAP-P2P-RECEIVE
 preconditions:
   - A PO has a partially received line (e.g., 60 of 100 received).
 prerequisite_cases:

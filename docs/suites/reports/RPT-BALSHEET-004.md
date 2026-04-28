@@ -9,6 +9,9 @@ goal: |
   per-entity totals roll up to the consolidated balance sheet.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
 preconditions:
   - Postings carry an entity / segment dimension and at least two
     distinct values exist.

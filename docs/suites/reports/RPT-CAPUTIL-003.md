@@ -9,6 +9,10 @@ goal: |
   no leakage from operations at other centers in the same routing.
 roles:
   - Production Manager
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-PLAN-CAPACITY
+  - CAP-MD-ROUTING
 preconditions:
   - At least one routing has operations on multiple work centers
     (P2-ROUTE-001).

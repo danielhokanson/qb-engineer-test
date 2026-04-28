@@ -10,6 +10,9 @@ goal: |
   configured the tenant during P0.
 roles:
   - IT Admin
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An IT Admin user exists with no other roles attached.
   - Tenant identity is configured.

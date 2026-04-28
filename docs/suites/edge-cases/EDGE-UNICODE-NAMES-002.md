@@ -11,6 +11,10 @@ goal: |
 roles:
   - Administrator
   - AP Clerk
+capabilities:
+  - CAP-MD-VENDORS
+  - CAP-P2P-PO
+  - CAP-CROSS-DOCS
 preconditions:
   - Vendor creation is available.
 steps:

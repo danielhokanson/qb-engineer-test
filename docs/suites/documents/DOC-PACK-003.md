@@ -9,6 +9,9 @@ goal: |
   through a single line, or barcode unreadability.
 roles:
   - Warehouse / Logistics
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-O2C-PICKPACK
 preconditions:
   - A packed shipment with enough lines to span at least two pages
     exists.

@@ -7,6 +7,9 @@ goal: |
   Verify a Production Manager cannot void posted customer invoices.
 roles:
   - Production Manager
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Manager user exists with no other roles attached.
   - At least one posted customer invoice exists.

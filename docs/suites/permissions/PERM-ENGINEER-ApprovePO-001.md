@@ -9,6 +9,9 @@ goal: |
   belongs to Procurement / Controller.
 roles:
   - Engineer / R&D
+capabilities:
+  - CAP-P2P-APPROVALS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An Engineer user exists with no other roles attached.
   - A draft PO awaiting approval exists.

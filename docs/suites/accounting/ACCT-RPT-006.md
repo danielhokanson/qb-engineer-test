@@ -14,6 +14,10 @@ optional_module: builtin-accounting-full-gl
 # Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-MD-TAXCODES
+  - CAP-O2C-INVOICE
 preconditions:
   - At least three posted invoices in the period collected sales
     tax at the home jurisdiction's rate.

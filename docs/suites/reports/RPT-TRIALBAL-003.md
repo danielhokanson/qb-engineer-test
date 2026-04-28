@@ -10,6 +10,9 @@ goal: |
   internally balanced.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
 preconditions:
   - Postings carry a department / location / class dimension and at
     least two values exist with their own activity.

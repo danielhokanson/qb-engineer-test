@@ -10,6 +10,9 @@ goal: |
   total, currency.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-O2C-SO
 preconditions:
   - A multi-line sales order with taxes and a freight charge exists.
 prerequisite_cases:

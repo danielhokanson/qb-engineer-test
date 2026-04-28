@@ -8,6 +8,9 @@ goal: |
   approve POs (they receive against POs, but do not authorize spend).
 roles:
   - Warehouse / Logistics
+capabilities:
+  - CAP-P2P-APPROVALS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Warehouse user exists.
   - A draft PO awaiting approval exists.

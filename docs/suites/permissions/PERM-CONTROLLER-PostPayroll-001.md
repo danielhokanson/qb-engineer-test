@@ -10,6 +10,9 @@ goal: |
   compensation.
 roles:
   - Controller
+capabilities:
+  - CAP-HR-PAYROLL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Controller user exists with no other roles attached.
   - At least one prepared payroll run exists.

@@ -13,6 +13,9 @@ roles:
   - Integrations Owner
   - Customer Service
   - Receiving Clerk
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-CROSS-INTEG-EDI
 preconditions:
   - EDI integration is configured for at least one trading partner
     with a documented document-type mapping.

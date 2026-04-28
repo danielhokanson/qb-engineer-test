@@ -10,6 +10,8 @@ goal: |
   manufacture financial authority for themselves.
 roles:
   - Controller
+capabilities:
+  - CAP-IDEN-ROLES
 preconditions:
   - A Controller user exists with no other roles attached.
   - At least one editable role exists.

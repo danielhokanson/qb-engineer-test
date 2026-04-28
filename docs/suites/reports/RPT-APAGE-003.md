@@ -10,6 +10,10 @@ goal: |
   to the AP control balance.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-P2P-PO
+  - CAP-ACCT-FULLGL
 preconditions:
   - Open vendor invoices span at least two distinct GL expense
     categories (e.g., "Materials" and "Operating Expenses").

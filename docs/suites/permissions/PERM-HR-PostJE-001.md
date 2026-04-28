@@ -9,6 +9,9 @@ goal: |
   journal entries.
 roles:
   - HR
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An HR user exists with no other roles attached.
   - The chart of accounts is initialized.

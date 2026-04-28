@@ -10,6 +10,9 @@ goal: |
   description per line where applicable.
 roles:
   - Warehouse / Logistics
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-O2C-SHIP
 preconditions:
   - A shipment ready to dispatch with carrier, weight, package count,
     and freight terms entered exists.

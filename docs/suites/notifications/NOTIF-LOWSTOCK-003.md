@@ -10,6 +10,10 @@ goal: |
 roles:
   - Procurement
   - Warehouse Lead
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-PLAN-SAFETYSTOCK
+  - CAP-INV-MULTILOC
 preconditions:
   - A part is stocked at two or more locations, each with its own
     reorder point and subscriber list.

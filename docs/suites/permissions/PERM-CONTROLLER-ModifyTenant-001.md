@@ -9,6 +9,9 @@ goal: |
   legal identity, time zone, or primary currency selection.
 roles:
   - Controller
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Controller user exists with no other roles attached.
   - Tenant identity is configured.

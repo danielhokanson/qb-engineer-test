@@ -10,6 +10,9 @@ goal: |
   that the GL entries balance to zero in both currencies.
 roles:
   - Controller
+capabilities:
+  - CAP-MD-CURRENCIES
+  - CAP-ACCT-BUILTIN
 preconditions:
   - At least one foreign-currency vendor or customer exists
     (P2-VENDOR-003 or P2-CUST-004).

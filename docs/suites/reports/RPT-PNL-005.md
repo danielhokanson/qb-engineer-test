@@ -10,6 +10,10 @@ goal: |
   line.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
+  - CAP-ACCT-PERIOD
 preconditions:
   - At least two consecutive fiscal periods have been closed
     (P5-CLOSE-004 has run twice for sequential periods).

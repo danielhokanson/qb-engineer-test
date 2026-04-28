@@ -13,6 +13,8 @@ optional_module: builtin-accounting-full-gl
 # Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
+capabilities:
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one posted manual adjustment exists (use ACCT-JE-001's).
 prerequisite_cases:

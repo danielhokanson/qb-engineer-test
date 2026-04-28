@@ -35,6 +35,9 @@ roles:
   - Maintenance Manager
 flows:
   - damage-to-completion
+capabilities:
+  - CAP-MAINT-BREAKDOWN
+  - CAP-MD-ASSETS
 preconditions:
   - At least one fixed asset record (P1-ASSET-001).
 modality:
@@ -94,6 +97,9 @@ roles:
   - Maintenance Manager
 flows:
   - damage-to-completion
+capabilities:
+  - CAP-MAINT-BREAKDOWN
+  - CAP-CROSS-NOTIFICATIONS
 preconditions:
   - A damage report exists against an asset, with description, severity, and (optionally) photos, and a maintenance ticket has been created in the maintenance queue. (Established by P5-DAMAGE-001.)
 steps:
@@ -143,6 +149,10 @@ roles:
   - Maintenance Tech
 flows:
   - damage-to-completion
+capabilities:
+  - CAP-MAINT-BREAKDOWN
+  - CAP-INV-CORE
+  - CAP-MFG-LABOR
 preconditions:
   - |
     A maintenance ticket has been triaged: priority is set, a tech is assigned, and the ticket is scheduled for execution. (Established by P5-DAMAGE-002.)
@@ -215,6 +225,8 @@ roles:
   - Maintenance Manager
 flows:
   - wear-to-repair
+capabilities:
+  - CAP-MAINT-PM
 preconditions:
   - At least one asset (P1-ASSET-001).
 steps:
@@ -274,6 +286,10 @@ roles:
   - Maintenance Tech
 flows:
   - wear-to-repair
+capabilities:
+  - CAP-MAINT-PM
+  - CAP-MFG-LABOR
+  - CAP-INV-CORE
 preconditions:
   - A preventative maintenance schedule is configured on an asset, with interval, description, required parts, estimated labor, and a next-due date that will trigger a PM work order. (Established by P5-PM-001.)
 steps:
@@ -325,6 +341,10 @@ roles:
   - Floor Operator
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-QC-INSPECTION
+  - CAP-QC-NCR
+  - CAP-MFG-MULTIOP
 preconditions:
   - A WO is at an inspection operation.
 modality:
@@ -393,6 +413,9 @@ roles:
   - Sales / Account Manager
 flows:
   - customer-return
+capabilities:
+  - CAP-O2C-RMA
+  - CAP-CROSS-DOCS
 preconditions:
   - At least one shipped invoice exists (P4-SHIP / P4-INV-001).
 steps:
@@ -457,6 +480,10 @@ roles:
   - QC Inspector
 flows:
   - customer-return
+capabilities:
+  - CAP-O2C-RMA
+  - CAP-INV-CORE
+  - CAP-QC-INSPECTION
 preconditions:
   - An RMA has been created against a shipped invoice, with returned quantity, reason, desired resolution, and customer-facing return instructions. (Established by P5-RMA-001.)
 modality:
@@ -523,6 +550,10 @@ roles:
   - Controller
 flows:
   - customer-return
+capabilities:
+  - CAP-O2C-CREDITMEMO
+  - CAP-O2C-RMA
+  - CAP-ACCT-BUILTIN
 preconditions:
   - Returned product has been physically received, inspected, and dispositioned — units routed to return-to-stock, rework, or scrap as appropriate. (Established by P5-RMA-002.)
 steps:
@@ -589,6 +620,9 @@ roles:
 flows:
   - vendor-to-asset
   - part-to-inventory
+capabilities:
+  - CAP-P2P-RECEIVE
+  - CAP-INV-CORE
 preconditions:
   - Some quarantined or defective material exists from P3-RECV-003 or
     similar.
@@ -656,6 +690,8 @@ roles:
   - Controller
 flows:
   - cycle-count
+capabilities:
+  - CAP-INV-CORE
 preconditions:
   - Inventory exists for at least one part.
 steps:
@@ -724,6 +760,9 @@ roles:
   - Engineer / R&D
 flows:
   - rd-to-product
+capabilities:
+  - CAP-MD-ECO
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one BOM with a revision (P2-BOM-003).
 modality:
@@ -776,6 +815,9 @@ roles:
   - Production Manager
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-MFG-STOPPAGE
+  - CAP-MFG-SHOPFLOOR
 preconditions:
   - A WO is in progress.
 modality:
@@ -842,6 +884,9 @@ roles:
   - Warehouse / Logistics
 flows:
   - period-close
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-RPT-INVVAL
 preconditions:
   - |
     Phase 4 has run at least one full quote-to-cash cycle: a work order has consumed material, finished goods went to inventory, an order was shipped, an invoice was posted, and cash was applied. (Phase 4 outcomes.)
@@ -891,6 +936,9 @@ roles:
   - Controller
 flows:
   - period-close
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-RPT-FINANCIALS
 preconditions:
   - |
     AR and AP both have transaction history: at least one customer invoice exists in AR (from Phase 4) and at least one vendor invoice and payment exist in AP (from Phase 3). (Phase 3 + Phase 4 outcomes.)
@@ -934,6 +982,9 @@ roles:
   - Controller
 flows:
   - period-close
+capabilities:
+  - CAP-ACCT-DEPRECIATION
+  - CAP-ACCT-PERIOD
 preconditions:
   - Fixed assets exist with depreciation schedules (P3-ASSET-COMM-001).
 steps:
@@ -993,6 +1044,8 @@ roles:
   - Controller
 flows:
   - period-close
+capabilities:
+  - CAP-ACCT-PERIOD
 preconditions:
   - All period adjustments and depreciation have posted.
 steps:
@@ -1052,6 +1105,9 @@ roles:
   - Warehouse / Logistics
 flows:
   - cycle-count
+capabilities:
+  - CAP-INV-CYCLECOUNT
+  - CAP-PLAN-ABC
 preconditions:
   - Inventory exists across multiple parts.
 modality:
@@ -1101,6 +1157,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-INV-SERIALS
+  - CAP-O2C-RMA
 preconditions:
   - At least one serial-tracked part has been shipped (P2-PART-004,
     P4-SHIP).
@@ -1147,6 +1206,9 @@ roles:
   - Controller
 flows:
   - customer-return
+capabilities:
+  - CAP-QC-RECALL
+  - CAP-INV-LOTS
 preconditions:
   - At least one lot-tracked raw material has been issued to a WO
     (P4-MATL-ISSUE).
@@ -1191,6 +1253,9 @@ roles:
   - Warehouse / Logistics
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-P2P-SUBCONTRACT
+  - CAP-MFG-MULTIOP
 preconditions:
   - A WO is at a subcontract operation (from P2-ROUTE-002).
 modality:
@@ -1235,6 +1300,9 @@ roles:
   - Floor Operator
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-P2P-SUBCONTRACT
+  - CAP-MFG-MULTIOP
 preconditions:
   - |
     A sub-assembly has been shipped out for subcontract processing: a shipper / pack list was generated and the material is flagged offsite-with-vendor (no longer in available inventory). (Established by P5-OFFSITE-SEND.)
@@ -1284,6 +1352,9 @@ roles:
   - Controller
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-P2P-SUBCONTRACT
+  - CAP-INV-CORE
 preconditions:
   - |
     A sub-assembly was shipped to a subcontractor and is currently flagged offsite-with-vendor. (Established by P5-OFFSITE-SEND.)
@@ -1344,6 +1415,9 @@ roles:
   - Floor Operator
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-P2P-SUBCONTRACT
+  - CAP-INV-CORE
 preconditions:
   - |
     A sub-assembly is offsite at a subcontractor. (Established by P5-OFFSITE-SEND.)
@@ -1417,6 +1491,9 @@ roles:
   - Controller
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-P2P-SUBCONTRACT
+  - CAP-INV-CORE
 preconditions:
   - |
     A sub-assembly is offsite at a subcontractor and the vendor has reported scrap during processing. (Established by P5-OFFSITE-SEND.)
@@ -1484,6 +1561,9 @@ roles:
   - Production Manager
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-P2P-SUBCONTRACT
+  - CAP-CROSS-NOTIFICATIONS
 preconditions:
   - |
     A subcontract shipment has been sent with a documented expected return date that has now passed. (Established by P5-OFFSITE-SEND.)
@@ -1527,6 +1607,10 @@ roles:
   - QC Inspector
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-P2P-SUBCONTRACT
+  - CAP-INV-LOTS
+  - CAP-INV-SERIALS
 preconditions:
   - |
     A subcontract shipment with serial- or lot-tracked parts is offsite. (Established by P5-OFFSITE-SEND.)
@@ -1584,6 +1668,9 @@ roles:
   - Controller
 flows:
   - customer-return
+capabilities:
+  - CAP-QC-RECALL
+  - CAP-INV-LOTS
 preconditions:
   - |
     At least one lot-tracked raw material has been issued to one or more work orders, finished units have been produced, and at least one of those units has shipped to a customer. (Phase 4 outcomes.)
@@ -1626,6 +1713,10 @@ roles:
   - Engineer / R&D
 flows:
   - customer-return
+capabilities:
+  - CAP-QC-RECALL
+  - CAP-INV-SERIALS
+  - CAP-INV-LOTS
 preconditions:
   - |
     At least one serial-tracked finished good has been produced from lot-tracked raw materials and shipped. (Phase 4 outcomes.)
@@ -1669,6 +1760,9 @@ roles:
   - Sales / Account Manager
 flows:
   - customer-return
+capabilities:
+  - CAP-QC-RECALL
+  - CAP-CROSS-DOCS
 preconditions:
   - |
     A forward trace from a suspect lot to customers has been produced. (Established by P5-RECALL-001.)
@@ -1724,6 +1818,10 @@ roles:
   - Engineer / R&D
 flows:
   - customer-return
+capabilities:
+  - CAP-QC-RECALL
+  - CAP-MD-BOM
+  - CAP-INV-LOTS
 preconditions:
   - |
     A work order has consumed a part as a substitution for the standard BOM component, and the substituted part is lot-tracked. (Phase 4 outcomes plus substitution.)
@@ -1765,6 +1863,9 @@ roles:
   - QC Inspector
 flows:
   - customer-return
+capabilities:
+  - CAP-QC-RECALL
+  - CAP-INV-LOTS
 preconditions:
   - |
     A finished unit has gone through a rework loop where additional lot-tracked material was consumed. (Phase 4 outcomes plus P5-QC-FAIL.)
@@ -1807,6 +1908,9 @@ roles:
   - Warehouse / Logistics
 flows:
   - customer-return
+capabilities:
+  - CAP-QC-RECALL
+  - CAP-INV-CORE
 preconditions:
   - |
     A lot has been flagged for recall and at least some on-hand inventory still carries that lot. (Established by P5-RECALL-001 / P5-RECALL-003.)
@@ -1863,6 +1967,8 @@ roles:
   - Controller
 flows:
   - period-close
+capabilities:
+  - CAP-ACCT-PERIOD
 preconditions:
   - |
     A period has been closed and locked. (Established by P5-CLOSE-004.)
@@ -1903,6 +2009,9 @@ roles:
   - Controller
 flows:
   - period-close
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-ACCT-BUILTIN
 preconditions:
   - |
     A period has been closed. (Established by P5-CLOSE-004.) The vendor invoice received now is dated within that closed period.
@@ -1947,6 +2056,9 @@ roles:
   - Controller
 flows:
   - period-close
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-INV-CORE
 preconditions:
   - |
     A period has been closed. (Established by P5-CLOSE-004.)
@@ -1987,6 +2099,9 @@ roles:
   - Controller
 flows:
   - period-close
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-O2C-CASH
 preconditions:
   - |
     A period has been closed. (Established by P5-CLOSE-004.) Bank reconciliation for that period was completed. (Established by P5-BANK-001.)
@@ -2029,6 +2144,9 @@ roles:
   - Controller
 flows:
   - period-close
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
 preconditions:
   - |
     A period has been closed. (Established by P5-CLOSE-004.) A correcting JE must post into the closed period.
@@ -2100,6 +2218,8 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-ACCT-PERIOD
 preconditions:
   - |
     The period has been soft-closed. (Established by P5-CLOSE-004 if soft / hard close are distinguished.)
@@ -2149,6 +2269,9 @@ roles:
   - Controller
 flows:
   - customer-return
+capabilities:
+  - CAP-O2C-RMA
+  - CAP-INV-CORE
 preconditions:
   - |
     A returned unit has been received against an RMA and is awaiting disposition. (Established by P5-RMA-002.)
@@ -2204,6 +2327,9 @@ roles:
   - Floor Operator
 flows:
   - customer-return
+capabilities:
+  - CAP-O2C-RMA
+  - CAP-MFG-WO-RELEASE
 preconditions:
   - |
     A returned unit has been received and inspected; QC indicates rework is appropriate. (Established by P5-RMA-002.)
@@ -2251,6 +2377,10 @@ roles:
   - Controller
 flows:
   - customer-return
+capabilities:
+  - CAP-O2C-RMA
+  - CAP-INV-CORE
+  - CAP-ACCT-BUILTIN
 preconditions:
   - |
     A returned unit has been received and inspected; QC indicates scrap is the correct disposition. (Established by P5-RMA-002.)
@@ -2311,6 +2441,9 @@ roles:
   - QC Inspector
 flows:
   - customer-return
+capabilities:
+  - CAP-O2C-RMA
+  - CAP-INV-CORE
 preconditions:
   - |
     A multi-unit RMA has been received. (Established by P5-RMA-002.)
@@ -2359,6 +2492,9 @@ roles:
   - Warehouse / Logistics
 flows:
   - customer-return
+capabilities:
+  - CAP-O2C-RMA
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - |
     A unit has been dispositioned but downstream processing has not yet completed. (Established by P5-RMA-004 / P5-RMA-005 / P5-RMA-006.)
@@ -2414,6 +2550,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-O2C-RMA
+  - CAP-INV-CORE
 preconditions:
   - |
     A returned unit has been reworked and is ready for re-entry to FG. (Established by P5-RMA-005.)
@@ -2461,6 +2600,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-O2C-RMA
+  - CAP-INV-CORE
 preconditions:
   - |
     An RMA is received with customer-supplied material attached. (Established by P5-RMA-001 / P5-RMA-002.)
@@ -2511,6 +2653,9 @@ roles:
   - Maintenance Manager
 flows:
   - wear-to-repair
+capabilities:
+  - CAP-MAINT-PM
+  - CAP-MFG-LABOR
 preconditions:
   - |
     A PM work order is in progress with documented estimated labor hours. (Established by P5-PM-002.)
@@ -2564,6 +2709,9 @@ roles:
   - Maintenance Tech
 flows:
   - wear-to-repair
+capabilities:
+  - CAP-MAINT-PM
+  - CAP-INV-CORE
 preconditions:
   - |
     A PM schedule defines required parts. (Established by P5-PM-001.) On-hand inventory of at least one required part is below the PM's required quantity.
@@ -2620,6 +2768,9 @@ roles:
   - Maintenance Tech
 flows:
   - wear-to-repair
+capabilities:
+  - CAP-MAINT-PM
+  - CAP-INV-CORE
 preconditions:
   - |
     A PM work order is in progress. (Established by P5-PM-002.)
@@ -2659,6 +2810,9 @@ roles:
   - Maintenance Manager
 flows:
   - wear-to-repair
+capabilities:
+  - CAP-MAINT-PM
+  - CAP-MAINT-BREAKDOWN
 preconditions:
   - |
     A PM work order is in progress. (Established by P5-PM-002.)
@@ -2710,6 +2864,8 @@ roles:
   - Maintenance Manager
 flows:
   - wear-to-repair
+capabilities:
+  - CAP-MAINT-PM
 preconditions:
   - |
     A PM work order is in progress. (Established by P5-PM-002.)
@@ -2759,6 +2915,9 @@ roles:
   - Controller
 flows:
   - wear-to-repair
+capabilities:
+  - CAP-MAINT-PM
+  - CAP-MD-ASSETS
 preconditions:
   - |
     Multiple PM cycles have completed against an asset. (Established by P5-PM-002 plus P5-PM-003 / P5-PM-005 if those ran.)

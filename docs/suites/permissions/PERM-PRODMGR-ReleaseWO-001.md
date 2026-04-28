@@ -8,6 +8,9 @@ goal: |
   floor and that the release records cleanly in the audit log.
 roles:
   - Production Manager
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Manager user exists.
   - At least one planned (un-released) work order exists.

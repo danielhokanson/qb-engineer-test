@@ -9,6 +9,8 @@ goal: |
   delete an entry, or alter timestamps.
 roles:
   - Administrator
+capabilities:
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
 preconditions:
   - At least 10 system-wide audit log (audit_log_entries) entries exist
     from prior cases.

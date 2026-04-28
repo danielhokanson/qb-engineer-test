@@ -10,6 +10,9 @@ goal: |
 roles:
   - Controller
   - Sales / Account Manager
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least 20 customer invoices exist across statuses and aging
     buckets.

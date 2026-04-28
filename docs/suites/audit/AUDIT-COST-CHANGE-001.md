@@ -10,6 +10,9 @@ goal: |
 roles:
   - Controller
   - Cost Accountant
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - An active part with a standard cost and on-hand inventory exists.
 prerequisite_cases:

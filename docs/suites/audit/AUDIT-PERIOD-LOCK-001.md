@@ -9,6 +9,9 @@ goal: |
   actor, period, timestamp, and reason (if provided).
 roles:
   - Controller
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
 preconditions:
   - A Controller user exists.
   - At least one period is in a state ready to close.

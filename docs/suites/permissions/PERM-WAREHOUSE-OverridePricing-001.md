@@ -7,6 +7,9 @@ goal: |
   Verify a Warehouse user cannot override quote / order pricing.
 roles:
   - Warehouse / Logistics
+capabilities:
+  - CAP-O2C-QUOTE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Warehouse user exists with no other roles attached.
   - At least one open draft quote exists.

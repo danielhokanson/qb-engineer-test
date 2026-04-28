@@ -10,6 +10,10 @@ goal: |
 roles:
   - Production Manager
   - HR
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-MFG-LABOR
+  - CAP-MD-WORKCENTERS
 preconditions:
   - At least one employee has logged labor at two or more distinct
     work centers (P4-LABOR with multiple WO/op entries).

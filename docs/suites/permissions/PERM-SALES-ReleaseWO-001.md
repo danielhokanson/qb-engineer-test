@@ -8,6 +8,9 @@ goal: |
   capacity but the production schedule belongs to Production.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists with no other roles attached.
   - At least one planned (un-released) work order exists.

@@ -8,6 +8,9 @@ goal: |
   see other employees' compensation data.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-HR-PAYROLL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists with no other roles attached.
   - At least one prepared payroll run exists.

@@ -10,6 +10,9 @@ goal: |
 roles:
   - Planner
   - Buyer
+capabilities:
+  - CAP-PLAN-MRP
+  - CAP-O2C-COLLECTIONS
 preconditions:
   - At least one purchased part with a documented lead time.
   - The current or near-future test date can be set to early March of

@@ -11,6 +11,10 @@ goal: |
 roles:
   - Production Manager
   - QC Inspector
+capabilities:
+  - CAP-RPT-OEE
+  - CAP-MFG-STOPPAGE
+  - CAP-MFG-COMPLETE
 preconditions:
   - At least one work center ran a complete WO with labor, completion,
     and any QC outcomes recorded.

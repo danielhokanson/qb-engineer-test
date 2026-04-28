@@ -8,6 +8,9 @@ goal: |
   or direct URL.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists.
   - At least one open fiscal period exists.

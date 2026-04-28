@@ -11,6 +11,9 @@ roles:
   - HR
   - Production Manager
   - Controller
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-MFG-LABOR
 preconditions:
   - At least one employee has recorded labor against WOs in the period
     (P4-LABOR).

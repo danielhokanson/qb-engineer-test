@@ -9,6 +9,9 @@ goal: |
   entries.
 roles:
   - Procurement
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
   - The chart of accounts is initialized.

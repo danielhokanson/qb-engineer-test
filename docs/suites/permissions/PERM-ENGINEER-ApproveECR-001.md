@@ -9,6 +9,9 @@ goal: |
   / routing change to released status with full audit attribution.
 roles:
   - Engineer / R&D
+capabilities:
+  - CAP-MD-ECO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An Engineer / R&D user exists.
   - At least one open ECR exists with linked BOM / routing changes

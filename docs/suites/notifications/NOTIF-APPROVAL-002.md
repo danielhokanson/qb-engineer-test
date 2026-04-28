@@ -10,6 +10,9 @@ goal: |
 roles:
   - Procurement Manager
   - Controller
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-P2P-APPROVALS
 preconditions:
   - An approval workflow exists with escalation policy and a defined
     next-level approver.

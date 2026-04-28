@@ -11,6 +11,10 @@ goal: |
 roles:
   - Cost Accountant
   - Controller
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-RPT-INVVAL
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 5 parts exist on standard costing with on-hand quantity.
   - GL is open for the current period.

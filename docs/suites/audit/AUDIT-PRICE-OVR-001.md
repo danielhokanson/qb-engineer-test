@@ -8,6 +8,9 @@ goal: |
   audit log with prior price, new price, actor, and timestamp.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-O2C-QUOTE
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A Sales user with override permission exists.
   - At least one part with a default price exists.

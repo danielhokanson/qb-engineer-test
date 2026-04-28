@@ -8,6 +8,9 @@ goal: |
   records who and when in the audit log.
 roles:
   - Controller
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Controller user exists and can sign in.
   - At least one fiscal period is in a state ready to close (no

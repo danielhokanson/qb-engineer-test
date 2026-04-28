@@ -9,6 +9,9 @@ goal: |
 roles:
   - Engineer / R&D
   - Procurement
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Test environment must have >= 5,000 rows of the entity under
     test seeded; use `/api/v1/dev/seed-bulk-list?entity=part&count=5000`

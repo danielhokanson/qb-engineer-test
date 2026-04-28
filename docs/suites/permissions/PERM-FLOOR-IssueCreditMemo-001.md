@@ -7,6 +7,9 @@ goal: |
   Verify a Floor Operator cannot issue credit memos.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-O2C-CREDITMEMO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists with no other roles attached.
   - At least one customer with an open AR balance exists.

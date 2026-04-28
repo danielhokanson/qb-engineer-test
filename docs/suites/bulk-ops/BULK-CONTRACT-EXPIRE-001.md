@@ -10,6 +10,9 @@ goal: |
   transactions remain unchanged.
 roles:
   - Contracts Administrator
+capabilities:
+  - CAP-MD-CONTRACTS-CONSIGNMENT
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 4 contracts exist with end date prior to today and
     status = Active.

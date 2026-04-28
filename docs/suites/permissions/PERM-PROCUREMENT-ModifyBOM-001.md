@@ -8,6 +8,9 @@ goal: |
   components a BOM enumerates but the BOM itself is engineering-owned.
 roles:
   - Procurement
+capabilities:
+  - CAP-MD-BOM
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
   - A finished part has a released BOM.

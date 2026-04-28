@@ -15,6 +15,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-IDEN-AUTH-SSO
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
 preconditions:
   - An external IdP test tenant is available (Azure AD, Okta, Google
     Workspace, etc.) with a test user.

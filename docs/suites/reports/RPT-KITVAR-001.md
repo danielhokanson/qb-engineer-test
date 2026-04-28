@@ -10,6 +10,11 @@ goal: |
 roles:
   - Production Manager
   - Controller
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-MFG-WOVARIANCE
+  - CAP-MFG-BACKFLUSH
+  - CAP-MD-BOM
 preconditions:
   - At least one kit / sub-assembly WO has been completed
     (P4-WO-BACKFLUSH-001 or a WO with kit/phantom BOM in P2-BOM-002).

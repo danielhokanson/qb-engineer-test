@@ -11,6 +11,9 @@ goal: |
 roles:
   - Administrator
   - Records Administrator
+capabilities:
+  - CAP-CROSS-ATTACHMENTS
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 8 attachments exist with upload date older than the
     retention threshold.

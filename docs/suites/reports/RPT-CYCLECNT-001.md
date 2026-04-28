@@ -11,6 +11,10 @@ goal: |
 roles:
   - Warehouse / Logistics
   - Controller
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-INV-CYCLECOUNT
+  - CAP-INV-CORE
 preconditions:
   - At least one cycle count has been performed in the period
     (P3-COUNT-001 or P5-CYCLE-001) including one with a non-zero

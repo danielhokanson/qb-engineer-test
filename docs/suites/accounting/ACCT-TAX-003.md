@@ -13,6 +13,10 @@ optional_module: builtin-accounting
 roles:
   - Shop Owner
   - AR Clerk
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-O2C-INVOICE
+  - CAP-MD-CUSTOMERS
 preconditions:
   - Home tax jurisdiction is set with a known rate.
   - At least one customer is flagged as tax-exempt with an exemption

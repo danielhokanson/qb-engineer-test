@@ -9,6 +9,10 @@ goal: |
   associated quality records) that produced the metrics.
 roles:
   - Procurement
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-P2P-RECEIVE
+  - CAP-QC-INSPECTION
 preconditions:
   - At least one vendor has multiple receipts including one with
     a quality issue.

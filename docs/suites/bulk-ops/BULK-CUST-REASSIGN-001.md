@@ -10,6 +10,9 @@ goal: |
 roles:
   - Administrator
   - Sales / Account Manager
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 5 customers exist with one account manager assigned.
   - A second sales user exists.

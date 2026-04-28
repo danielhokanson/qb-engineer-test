@@ -9,6 +9,9 @@ goal: |
   in their workflow.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-O2C-QUOTE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists.
   - At least one open draft quote exists.

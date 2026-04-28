@@ -9,6 +9,10 @@ goal: |
   reconcile to that shift's stoppage and completion records.
 roles:
   - Production Manager
+capabilities:
+  - CAP-RPT-OEE
+  - CAP-MFG-STOPPAGE
+  - CAP-HR-SHIFTS
 preconditions:
   - At least two shifts have run the same work center on the same
     day with distinct stoppage and completion records.

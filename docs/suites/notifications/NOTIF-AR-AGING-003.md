@@ -10,6 +10,9 @@ goal: |
 roles:
   - Controller
   - Sales / Account Manager
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-O2C-COLLECTIONS
 preconditions:
   - At least one customer has multiple invoices in past-due buckets
     assigned to a recipient configured for digest mode.

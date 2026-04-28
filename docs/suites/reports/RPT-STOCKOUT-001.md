@@ -11,6 +11,10 @@ goal: |
 roles:
   - Warehouse / Logistics
   - Sales / Account Manager
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-O2C-SO
+  - CAP-INV-CORE
 preconditions:
   - At least one SO has a line whose qty exceeds on-hand at the
     fulfilling location (a backorder).

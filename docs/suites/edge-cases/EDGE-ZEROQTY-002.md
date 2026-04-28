@@ -12,6 +12,9 @@ goal: |
 roles:
   - Production Manager
   - Controller
+capabilities:
+  - CAP-MFG-COMPLETE
+  - CAP-MFG-WOVARIANCE
 preconditions:
   - At least one open work order with materials issued.
 steps:

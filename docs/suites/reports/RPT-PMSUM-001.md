@@ -10,6 +10,9 @@ goal: |
   (completed on time) / (scheduled in period) × 100.
 roles:
   - Production Manager
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-MAINT-PM
 preconditions:
   - At least one PM was scheduled and completed on time
     (P5-PM-001) and at least one is overdue (or completed late).

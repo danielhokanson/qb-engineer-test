@@ -28,6 +28,7 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities: []
 preconditions:
   - The application is installed and reachable at its expected URL.
   - No accounts have been created yet.
@@ -93,6 +94,9 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-USERS
+  - CAP-IDEN-AUTH-PASSWORD
 preconditions:
   - You completed P0-INSTALL-001.
   - No user accounts exist yet.
@@ -189,6 +193,9 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-ROLES
+  - CAP-IDEN-TENANT-CONFIG
 preconditions:
   - You completed P0-ADMIN-001 and are signed in as the first admin.
 prerequisite_cases:
@@ -252,6 +259,8 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
 preconditions:
   - You are signed in as the first admin.
   - No company-level settings have been entered.
@@ -339,6 +348,8 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
 preconditions:
   - The company identity is saved (from P0-TENANT-001).
 prerequisite_cases:
@@ -430,6 +441,8 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
 preconditions:
   - Company identity is saved.
 prerequisite_cases:
@@ -515,6 +528,8 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
 preconditions:
   - Company identity is saved.
   - No financial transactions have been recorded.
@@ -596,6 +611,8 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
 preconditions:
   - Fiscal year and currency are saved.
   - No inventory or production transactions exist.
@@ -696,6 +713,9 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-ACCT-EXTERNAL
+  - CAP-ACCT-BUILTIN
 preconditions:
   - Costing model is saved.
 prerequisite_cases:
@@ -800,6 +820,8 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-O2C-SHIP
 preconditions:
   - Costing model is saved.
 prerequisite_cases:
@@ -872,6 +894,8 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-MD-TAXCODES
 preconditions:
   - Company identity is saved.
 prerequisite_cases:
@@ -950,6 +974,8 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-ROLES
 preconditions:
   - Admin account is signed in.
   - No additional users have been created yet.
@@ -1053,6 +1079,8 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-ROLES
 preconditions:
   - Roles are defined (from P0-USER-001).
 prerequisite_cases:
@@ -1135,6 +1163,10 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-USERS
+  - CAP-IDEN-ROLES
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - Roles are defined and at least one (Floor Operator) has
     permissions configured.
@@ -1250,6 +1282,7 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities: []
 preconditions:
   - All previous Phase 0 cases are completed.
 prerequisite_cases:

@@ -10,6 +10,10 @@ goal: |
   late WO counts reflect actual completion timestamps.
 roles:
   - Production Manager
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-MFG-WO-RELEASE
+  - CAP-MFG-COMPLETE
 preconditions:
   - At least one WO was scheduled to finish in the period and
     completed on time, and at least one was completed late (or

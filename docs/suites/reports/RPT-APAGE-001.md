@@ -10,6 +10,10 @@ goal: |
   total equals the AP control balance.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-P2P-PO
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one open vendor invoice exists in each of three buckets
     (current, 1-30, 60+) so bucket cuts are exercised.

@@ -7,6 +7,9 @@ goal: |
   Verify a Floor Operator cannot manage API keys.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-IDEN-AUTH-API-KEYS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists with no other roles attached.
   - The integrations area exists.

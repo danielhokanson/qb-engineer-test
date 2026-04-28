@@ -13,6 +13,10 @@ optional_module: builtin-accounting
 roles:
   - Shop Owner
   - AR Clerk
+capabilities:
+  - CAP-O2C-CASH
+  - CAP-O2C-INVOICE
+  - CAP-O2C-CREDITMEMO
 preconditions:
   - At least one open customer invoice for $500.00 exists.
 prerequisite_cases:

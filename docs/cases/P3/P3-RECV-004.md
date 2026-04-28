@@ -12,6 +12,8 @@ roles:
   - Procurement
 flows:
   - part-to-inventory
+capabilities:
+  - CAP-P2P-RECEIVE
 preconditions:
   - An open PO line exists for a part with a defined over-receipt
     tolerance configured (in Procurement settings or per-vendor).

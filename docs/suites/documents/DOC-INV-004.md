@@ -10,6 +10,9 @@ goal: |
   final page.
 roles:
   - Controller
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-O2C-INVOICE
 preconditions:
   - A posted invoice with enough lines to span at least two pages
     exists.

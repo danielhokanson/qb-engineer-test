@@ -10,6 +10,8 @@ goal: |
   drops bad rows or partial outcomes.
 roles:
   - Administrator
+capabilities:
+  - CAP-CROSS-INTEG-FILE
 preconditions:
   - At least one importable entity has a documented CSV / Excel
     template.

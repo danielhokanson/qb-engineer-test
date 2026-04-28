@@ -7,6 +7,9 @@ goal: |
   Verify an IT Admin cannot post payroll.
 roles:
   - IT Admin
+capabilities:
+  - CAP-HR-PAYROLL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An IT Admin user exists with no other roles attached.
   - At least one prepared payroll run exists.

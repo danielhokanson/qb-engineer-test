@@ -9,6 +9,10 @@ goal: |
   the range total equals the sum of weeks.
 roles:
   - Production Manager
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-PLAN-CAPACITY
+  - CAP-MD-CALENDARS
 preconditions:
   - At least one work center has scheduled WO load on multiple
     days across a 4-week span.

@@ -11,6 +11,9 @@ roles:
   - AR / Collections
   - AP / Accounts Payable
   - Controller
+capabilities:
+  - CAP-O2C-CASH
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least 50 payments exist across all supported methods and
     clearing states.

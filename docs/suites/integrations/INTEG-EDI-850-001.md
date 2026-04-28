@@ -10,6 +10,9 @@ goal: |
 roles:
   - Sales / Account Manager
   - IT Admin
+capabilities:
+  - CAP-CROSS-INTEG-EDI
+  - CAP-O2C-SO
 preconditions:
   - The application supports EDI inbound (or has a test trading
     partner configured).

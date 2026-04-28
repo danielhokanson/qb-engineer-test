@@ -10,6 +10,10 @@ goal: |
 roles:
   - Maintenance Manager
   - Production Supervisor
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-MAINT-PM
+  - CAP-MD-ASSETS
 preconditions:
   - An asset has an owner / cost-center contact configured.
   - A PM is scheduled against that asset.

@@ -12,6 +12,8 @@ roles:
   - IT Admin
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-AUTH-PASSWORD
 preconditions:
   - At least two users exist with valid email addresses.
 prerequisite_cases:

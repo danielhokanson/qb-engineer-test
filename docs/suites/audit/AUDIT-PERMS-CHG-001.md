@@ -10,6 +10,9 @@ goal: |
 roles:
   - Administrator
   - IT Admin
+capabilities:
+  - CAP-IDEN-ROLES
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
 preconditions:
   - At least one custom role exists (P0-USER-001).
 steps:

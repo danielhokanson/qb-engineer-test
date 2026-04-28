@@ -9,6 +9,10 @@ goal: |
   underlying transactions that produced them.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
+  - CAP-ACCT-PERIOD
 preconditions:
   - The period has been closed (P5-CLOSE-004).
   - At least one customer invoice was posted in the period (P4-INV-001).

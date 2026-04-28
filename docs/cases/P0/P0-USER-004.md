@@ -15,6 +15,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-IDEN-USERS
+  - CAP-CROSS-INTEG-FILE
 preconditions:
   - At least one role exists for the new users to be assigned to.
 prerequisite_cases:

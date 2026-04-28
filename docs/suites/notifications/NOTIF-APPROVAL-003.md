@@ -11,6 +11,9 @@ goal: |
 roles:
   - Procurement
   - Controller
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-P2P-APPROVALS
 preconditions:
   - An approval workflow exists.
   - Primary approver has an active delegation set to a backup user.

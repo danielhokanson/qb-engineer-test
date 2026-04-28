@@ -10,6 +10,9 @@ goal: |
 roles:
   - Production Supervisor
   - Work Center Owner
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-MFG-MULTIOP
 preconditions:
   - A work order is in progress with a routed operation that has a
     planned end date in the past (or can be backdated).

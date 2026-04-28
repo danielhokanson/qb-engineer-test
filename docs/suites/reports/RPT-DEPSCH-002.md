@@ -11,6 +11,10 @@ goal: |
   methods (e.g., straight-line).
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-DEPRECIATION
+  - CAP-MD-ASSETS
 preconditions:
   - At least one straight-line asset has been commissioned and
     has remaining useful life.

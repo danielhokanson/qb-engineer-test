@@ -12,6 +12,9 @@ optional_module: builtin-accounting
 roles:
   - Shop Owner
   - AP Clerk
+capabilities:
+  - CAP-P2P-PO
+  - CAP-ACCT-BUILTIN
 preconditions:
   - At least one open vendor bill with a known total exists
     (use ACCT-AP-001's $300.00 bill).

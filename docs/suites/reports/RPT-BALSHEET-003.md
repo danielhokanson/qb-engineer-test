@@ -10,6 +10,10 @@ goal: |
   matching total.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
+  - CAP-RPT-INVVAL
 preconditions:
   - Balance sheet runs cleanly (RPT-BALSHEET-001 has passed).
 prerequisite_cases:

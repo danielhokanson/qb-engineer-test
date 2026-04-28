@@ -10,6 +10,9 @@ goal: |
 roles:
   - Sales / Account Manager
   - Production Planner
+capabilities:
+  - CAP-O2C-SO
+  - CAP-CROSS-LIST-UX
 preconditions:
   - SOs exist with order dates and promised ship dates spanning at
     least the last 12 months.

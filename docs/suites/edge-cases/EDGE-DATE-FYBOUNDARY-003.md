@@ -11,6 +11,10 @@ goal: |
 roles:
   - Administrator
   - Controller
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
+  - CAP-ACCT-PERIOD
+  - CAP-RPT-FINANCIALS
 preconditions:
   - |
     Either the tenant fiscal calendar starts July 1, OR a separate test

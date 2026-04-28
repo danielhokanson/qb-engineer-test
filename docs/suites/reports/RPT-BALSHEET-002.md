@@ -9,6 +9,10 @@ goal: |
   respective trial balance.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
+  - CAP-ACCT-PERIOD
 preconditions:
   - Two sequential periods have been closed (P5-CLOSE-004 run twice).
   - Trial balance is runnable for both close dates.

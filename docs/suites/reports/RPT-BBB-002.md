@@ -11,6 +11,10 @@ goal: |
 roles:
   - Sales / Account Manager
   - Controller
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-O2C-SO
+  - CAP-O2C-INVOICE
 preconditions:
   - SO and invoice activity span at least 3 consecutive periods.
 prerequisite_cases:

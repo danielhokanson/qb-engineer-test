@@ -9,6 +9,9 @@ goal: |
   quantities as the initial "after" state.
 roles:
   - Engineer / R&D
+capabilities:
+  - CAP-MD-BOM
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A finished part exists with no BOM yet.
   - At least three component parts exist.

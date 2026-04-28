@@ -9,6 +9,8 @@ goal: |
   coerce them to February 28 or March 1.
 roles:
   - Administrator
+capabilities:
+  - CAP-CROSS-INTEG-FILE
 preconditions:
   - At least one entity (e.g., customers, parts, invoices) supports
     CSV bulk import with a date field.

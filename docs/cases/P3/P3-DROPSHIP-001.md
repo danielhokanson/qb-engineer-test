@@ -18,6 +18,12 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-P2P-DROPSHIP
+  - CAP-O2C-SO
+  - CAP-P2P-PO
+  - CAP-O2C-INVOICE
+  - CAP-ACCT-BUILTIN
 preconditions:
   - At least one customer and one vendor exist.
   - At least one part is configured for drop-ship.

@@ -14,6 +14,10 @@ roles:
   - Controller
 flows:
   - hire-to-first-assignment
+capabilities:
+  - CAP-HR-PAYROLL
+  - CAP-HR-TIMETRACK
+  - CAP-MFG-LABOR
 preconditions:
   - Multiple labor entries from at least 2 employees in the pay period
     exist (P4-LABOR).

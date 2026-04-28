@@ -7,6 +7,9 @@ goal: |
   Verify a Warehouse user cannot approve ECRs.
 roles:
   - Warehouse / Logistics
+capabilities:
+  - CAP-MD-ECO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Warehouse user exists with no other roles attached.
   - At least one open ECR exists.

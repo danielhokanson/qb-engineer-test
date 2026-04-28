@@ -8,6 +8,9 @@ goal: |
   actor, timestamp, prior status, and new "closed" status.
 roles:
   - Procurement
+capabilities:
+  - CAP-P2P-PO
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A PO that has been fully received and invoice-matched exists.
 prerequisite_cases:

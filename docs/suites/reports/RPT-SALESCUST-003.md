@@ -11,6 +11,9 @@ goal: |
 roles:
   - Controller
   - Sales / Account Manager
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-O2C-INVOICE
 preconditions:
   - Invoices exist with at least two distinct sales rep
     attributions.

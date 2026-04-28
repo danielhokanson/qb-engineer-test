@@ -7,6 +7,9 @@ goal: |
   Verify a Production Manager cannot manage API keys.
 roles:
   - Production Manager
+capabilities:
+  - CAP-IDEN-AUTH-API-KEYS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Manager user exists with no other roles attached.
   - The integrations area exists.

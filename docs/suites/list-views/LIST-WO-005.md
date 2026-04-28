@@ -10,6 +10,10 @@ goal: |
 roles:
   - Production Manager
   - Production Planner
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-CROSS-LIST-UX
+  - CAP-CROSS-INTEG-FILE
 preconditions:
   - At least 100 WOs exist across statuses with varied % complete.
 steps:

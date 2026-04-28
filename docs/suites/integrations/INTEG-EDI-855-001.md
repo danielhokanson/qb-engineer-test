@@ -9,6 +9,9 @@ goal: |
   (PO acknowledgment) with the right approval / change codes.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-CROSS-INTEG-EDI
+  - CAP-O2C-SO
 preconditions:
   - At least one inbound 850 has produced an SO (per
     INTEG-EDI-850-001).

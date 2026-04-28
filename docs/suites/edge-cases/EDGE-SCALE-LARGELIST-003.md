@@ -10,6 +10,9 @@ goal: |
   and not to the visible page only.
 roles:
   - Administrator
+capabilities:
+  - CAP-CROSS-BULK-OPS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - 10,000+ records exist for the entity.
   - The list view supports filtering and a bulk action (e.g.,

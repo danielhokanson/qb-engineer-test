@@ -10,6 +10,10 @@ goal: |
 roles:
   - Procurement
   - Controller
+capabilities:
+  - CAP-P2P-PO
+  - CAP-CROSS-LIST-UX
+  - CAP-CROSS-INTEG-FILE
 preconditions:
   - At least 100 POs exist across statuses, vendors, and dates.
 steps:

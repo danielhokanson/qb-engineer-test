@@ -10,6 +10,10 @@ goal: |
   and from JPY respect this.
 roles:
   - Controller
+capabilities:
+  - CAP-MD-CURRENCIES
+  - CAP-O2C-INVOICE
+  - CAP-O2C-CASH
 preconditions:
   - JPY (or any zero-decimal currency) is configured as a transaction
     currency.

@@ -8,6 +8,9 @@ goal: |
   not extend to vendor spend.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-P2P-APPROVALS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists with no other roles attached.
   - A draft PO awaiting approval exists.

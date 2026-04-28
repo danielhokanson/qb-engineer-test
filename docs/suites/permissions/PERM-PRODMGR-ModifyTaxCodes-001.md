@@ -7,6 +7,9 @@ goal: |
   Verify a Production Manager cannot modify tax codes.
 roles:
   - Production Manager
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Manager user exists with no other roles attached.
   - At least one tax code is configured.

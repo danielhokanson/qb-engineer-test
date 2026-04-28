@@ -11,6 +11,9 @@ roles:
   - AR / Collections
   - AP / Accounts Payable
   - Controller
+capabilities:
+  - CAP-O2C-CASH
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Payments exist across at least the last 12 months with varied
     posted and cleared dates.

@@ -12,6 +12,8 @@ optional_module: builtin-accounting-full-gl
 # Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
+capabilities:
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least three posted cash transactions exist within a defined
     statement period (mix of deposits and bill payments).

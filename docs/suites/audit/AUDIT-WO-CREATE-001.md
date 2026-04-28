@@ -9,6 +9,9 @@ goal: |
   the BOM / routing snapshot used at release.
 roles:
   - Production Planner
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A finished part with a released BOM and routing exists.
 prerequisite_cases:

@@ -10,6 +10,10 @@ goal: |
   date.
 roles:
   - Production Planner
+capabilities:
+  - CAP-RPT-MRPEX
+  - CAP-PLAN-MRP
+  - CAP-PLAN-FORECAST
 preconditions:
   - At least one part has demand 60-90 days out that exceeds
     on-hand + on-order through that date but is fine within 30 days

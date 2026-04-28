@@ -11,6 +11,8 @@ goal: |
 roles:
   - Engineer / R&D
   - Procurement
+capabilities:
+  - CAP-CROSS-ATTACHMENTS
 preconditions:
   - At least one part record exists.
 steps:

@@ -8,6 +8,9 @@ goal: |
   and that the override is captured for management visibility.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-O2C-QUOTE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists.
   - At least one customer with default pricing exists.

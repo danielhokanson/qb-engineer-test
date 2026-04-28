@@ -11,6 +11,10 @@ goal: |
 roles:
   - HR / People Ops
   - Administrator
+capabilities:
+  - CAP-MD-EMPLOYEES
+  - CAP-CROSS-LIST-UX
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - Employee list view is open. Test user has permission to view
     the columns being toggled.

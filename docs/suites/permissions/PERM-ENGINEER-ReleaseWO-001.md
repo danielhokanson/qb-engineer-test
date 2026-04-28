@@ -9,6 +9,9 @@ goal: |
   decision is a production-control function.
 roles:
   - Engineer / R&D
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An Engineer user exists with no other roles attached.
   - At least one planned (un-released) work order exists.

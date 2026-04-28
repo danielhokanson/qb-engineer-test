@@ -9,6 +9,9 @@ goal: |
   Production.
 roles:
   - Procurement
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
   - At least one planned (un-released) work order exists.

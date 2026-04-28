@@ -7,6 +7,8 @@ goal: |
   Verify a Production Manager cannot create system users.
 roles:
   - Production Manager
+capabilities:
+  - CAP-IDEN-USERS
 preconditions:
   - A Production Manager user exists with no other roles attached.
 steps:

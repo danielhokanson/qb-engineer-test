@@ -11,6 +11,9 @@ goal: |
 roles:
   - Planner
   - Engineering
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 8 parts exist; at least 3 have no transaction in the
     last 2 years; at least 1 of those is still referenced on an

@@ -927,7 +927,7 @@
     "completion_criteria": [
       "Every case in the suite has a recorded pass/fail.",
       "For deny cases, both UI access AND direct-URL / API access were blocked.",
-      "For allow cases, the action succeeded AND was recorded in the audit log with user and timestamp."
+      "For allow cases, the action succeeded AND was recorded in the appropriate audit surface (per-entity `activity_logs` or the system-wide `audit_log_entries`, depending on the capability) with user and timestamp."
     ]
   }
 }

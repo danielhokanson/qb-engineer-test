@@ -11,6 +11,9 @@ roles:
   - IT Admin
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-AUTH-PASSWORD
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
 preconditions:
   - At least one user account exists.
   - The lockout policy (threshold, duration) is documented in the

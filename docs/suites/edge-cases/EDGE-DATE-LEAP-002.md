@@ -10,6 +10,9 @@ goal: |
 roles:
   - Controller
   - Sales Manager
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-RPT-FINANCIALS
 preconditions:
   - At least one full leap year of historical transactional data
     exists, OR a backdate-seed script can produce one.

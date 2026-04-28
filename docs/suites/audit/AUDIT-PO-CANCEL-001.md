@@ -9,6 +9,9 @@ goal: |
   reason if the system collects one.
 roles:
   - Procurement
+capabilities:
+  - CAP-P2P-PO
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - An issued PO with no receipts exists.
 prerequisite_cases:

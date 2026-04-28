@@ -10,6 +10,9 @@ goal: |
   payment / shipping terms.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-O2C-SO
 preconditions:
   - At least one accepted sales order exists.
 prerequisite_cases:

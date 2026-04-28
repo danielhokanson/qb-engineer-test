@@ -9,6 +9,10 @@ goal: |
   method, and accumulated depreciation.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-DEPRECIATION
+  - CAP-MD-ASSETS
 preconditions:
   - At least one fixed asset has been commissioned and depreciated
     in at least one period.

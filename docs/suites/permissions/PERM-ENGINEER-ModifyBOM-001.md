@@ -8,6 +8,9 @@ goal: |
   change creates a new revision rather than overwriting the live one.
 roles:
   - Engineer / R&D
+capabilities:
+  - CAP-MD-BOM
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An Engineer / R&D user exists.
   - A finished part has a released BOM at revision A.

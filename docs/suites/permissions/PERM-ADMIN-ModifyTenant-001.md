@@ -9,6 +9,9 @@ goal: |
   effects) and the change persists with audit attribution.
 roles:
   - Administrator
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - The Administrator user exists.
   - Tenant identity is configured.

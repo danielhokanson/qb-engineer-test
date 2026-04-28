@@ -10,6 +10,11 @@ goal: |
 roles:
   - Credit Officer
   - Controller
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-CROSS-ACTIVITY-LOG
+  - CAP-MD-CUSTOMERS
+  - CAP-O2C-SHIP
 preconditions:
   - A sales order is on credit hold for a customer over their credit
     limit.

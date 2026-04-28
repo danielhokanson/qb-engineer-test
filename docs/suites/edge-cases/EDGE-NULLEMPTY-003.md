@@ -11,6 +11,10 @@ goal: |
 roles:
   - Administrator
   - Procurement
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-LIST-UX
+  - CAP-CROSS-INTEG-FILE
 preconditions:
   - At least one entity with a numeric field where null and zero
     differ in meaning.

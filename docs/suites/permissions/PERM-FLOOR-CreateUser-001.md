@@ -7,6 +7,8 @@ goal: |
   Verify a Floor Operator cannot create system users.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-IDEN-USERS
 preconditions:
   - A Floor Operator user exists with no other roles attached.
 steps:

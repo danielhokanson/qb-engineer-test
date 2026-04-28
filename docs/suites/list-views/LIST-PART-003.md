@@ -10,6 +10,9 @@ goal: |
 roles:
   - Engineer / R&D
   - Procurement
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Parts exist in each supported lifecycle status, including at
     least a few obsolete and pending.

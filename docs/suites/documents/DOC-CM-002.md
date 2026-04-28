@@ -10,6 +10,9 @@ goal: |
   amounts, tax adjustments, total credit, currency.
 roles:
   - Controller
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-O2C-CREDITMEMO
 preconditions:
   - A posted credit memo with at least two credited lines and a tax
     adjustment exists.

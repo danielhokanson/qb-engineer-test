@@ -10,6 +10,10 @@ goal: |
 roles:
   - Administrator
   - Data Steward
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-INTEG-FILE
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 5 parts exist in the system.
   - A CSV is prepared with 8 rows; 3 rows duplicate existing part

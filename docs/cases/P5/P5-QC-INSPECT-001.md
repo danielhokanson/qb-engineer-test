@@ -12,6 +12,10 @@ roles:
   - Engineer / R&D
 flows:
   - part-to-inventory
+capabilities:
+  - CAP-QC-INSPECTION
+  - CAP-P2P-RECEIVE
+  - CAP-INV-CORE
 preconditions:
   - At least one purchased raw material exists.
 prerequisite_cases:

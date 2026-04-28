@@ -8,6 +8,9 @@ goal: |
   Procurement deals with vendor terms, not customer credit.
 roles:
   - Procurement
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
   - At least one customer with an existing credit limit exists.

@@ -9,6 +9,9 @@ goal: |
   reason if the system captures one.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-O2C-SO
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A confirmed SO exists with no shipments yet.
 prerequisite_cases:

@@ -8,6 +8,9 @@ goal: |
   already been released, but cannot release a new WO themselves.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists.
   - At least one planned (un-released) work order exists.

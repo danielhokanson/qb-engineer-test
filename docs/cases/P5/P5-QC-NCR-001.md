@@ -14,6 +14,9 @@ roles:
   - Engineer / R&D
 flows:
   - part-to-inventory
+capabilities:
+  - CAP-QC-NCR
+  - CAP-INV-CORE
 preconditions:
   - At least one inspection has failed (P5-QC-INSPECT-001).
 prerequisite_cases:

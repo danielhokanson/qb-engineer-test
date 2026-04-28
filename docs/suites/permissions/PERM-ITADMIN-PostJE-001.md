@@ -8,6 +8,9 @@ goal: |
   no financial authority — cannot post manual journal entries.
 roles:
   - IT Admin
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An IT Admin user exists with no other roles attached.
   - The chart of accounts is initialized.

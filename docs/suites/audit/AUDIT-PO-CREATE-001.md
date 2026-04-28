@@ -9,6 +9,9 @@ goal: |
   the initial "after" state.
 roles:
   - Procurement
+capabilities:
+  - CAP-P2P-PO
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one active vendor and one purchasable part exist.
 steps:

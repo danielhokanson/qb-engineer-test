@@ -10,6 +10,11 @@ goal: |
   underlying activity in the period.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-MD-ASSETS
+  - CAP-ACCT-DEPRECIATION
+  - CAP-MAINT-ASSETLIFECYCLE
 preconditions:
   - The period had at least one asset addition (P3-ASSET-COMM-001),
     one disposal/retirement (P5-ASSET-RETIRE-001), and one period

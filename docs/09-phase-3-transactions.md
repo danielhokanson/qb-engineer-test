@@ -38,6 +38,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-P2P-PO
+  - CAP-P2P-APPROVALS
 preconditions:
   - |
     Phase 2 master data exists: at least one vendor, one customer, raw and finished parts, a BOM, a routing, and pricing — all with their supporting fields populated. (Phase 2 outcomes.)
@@ -115,6 +118,8 @@ roles:
 flows:
   - vendor-to-asset
   - part-to-inventory
+capabilities:
+  - CAP-P2P-PO
 preconditions:
   - At least one vendor exists.
   - At least one part with vendor pricing exists.
@@ -191,6 +196,9 @@ roles:
   - Controller
 flows:
   - vendor-to-asset
+capabilities:
+  - CAP-P2P-PO
+  - CAP-MD-ASSETS
 preconditions:
   - At least one vendor exists.
   - At least one fixed-asset GL account is present in the chart of accounts, available to assign on a fixed-asset PO line. (Established in P1-GL-001.)
@@ -258,6 +266,9 @@ roles:
 flows:
   - vendor-to-asset
   - part-to-inventory
+capabilities:
+  - CAP-P2P-PO
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A purchase order has been issued to a vendor, has a stable PO number, and has at least one line for a part with quantity and price. (Established by P3-PO-001.)
 steps:
@@ -333,6 +344,10 @@ roles:
   - Procurement
 flows:
   - part-to-inventory
+capabilities:
+  - CAP-P2P-RECEIVE
+  - CAP-INV-CORE
+  - CAP-INV-LOTS
 preconditions:
   - A purchase order has been issued to a vendor, has a stable PO number, and has at least one line for a part with quantity and price. (Established by P3-PO-001.)
 modality:
@@ -407,6 +422,9 @@ roles:
   - Warehouse / Logistics
 flows:
   - part-to-inventory
+capabilities:
+  - CAP-P2P-RECEIVE
+  - CAP-INV-CORE
 preconditions:
   - An issued PO exists with at least one line.
 modality:
@@ -469,6 +487,10 @@ roles:
   - QC Inspector
 flows:
   - part-to-inventory
+capabilities:
+  - CAP-P2P-RECEIVE
+  - CAP-QC-INSPECTION
+  - CAP-INV-CORE
 preconditions:
   - An issued PO with a line for 500 ft of steel.
 modality:
@@ -536,6 +558,10 @@ roles:
   - Controller
 flows:
   - vendor-to-asset
+capabilities:
+  - CAP-MD-ASSETS
+  - CAP-ACCT-DEPRECIATION
+  - CAP-P2P-RECEIVE
 preconditions:
   - A purchase order has been issued that includes a fixed-asset line (capitalize-on-receipt) alongside any inventory lines, with asset class and capitalization GL account specified. (Established by P3-PO-002.)
   - P3-RECV-001 or equivalent has received the asset line.
@@ -611,6 +637,9 @@ roles:
 flows:
   - vendor-to-asset
   - part-to-inventory
+capabilities:
+  - CAP-P2P-RECEIVE
+  - CAP-ACCT-BUILTIN
 preconditions:
   - A purchase order has been issued to a vendor, has a stable PO number, and has at least one line for a part with quantity and price. (Established by P3-PO-001.)
   - |
@@ -688,6 +717,9 @@ roles:
   - Warehouse / Logistics
 flows:
   - foundational-records
+capabilities:
+  - CAP-INV-CORE
+  - CAP-ACCT-BUILTIN
 preconditions:
   - Parts exist for at least 5 items.
   - Inventory and equity GL accounts exist.
@@ -768,6 +800,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-ACCT-BUILTIN
+  - CAP-RPT-FINANCIALS
 preconditions:
   - At least one customer and one vendor exist.
 steps:
@@ -835,6 +870,9 @@ roles:
   - Warehouse / Logistics
 flows:
   - cycle-count
+capabilities:
+  - CAP-INV-CYCLECOUNT
+  - CAP-INV-CORE
 preconditions:
   - |
     Opening inventory balances have been posted: at least five parts have starting quantities and unit costs as of a cutover date, with the offsetting equity / opening-balance GL entry. (Established by P3-OB-001.)
@@ -919,6 +957,8 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-INV-CORE
 preconditions:
   - At least one bin exists.
   - Inventory in at least one bin.
@@ -981,6 +1021,8 @@ roles:
 flows:
   - vendor-to-asset
   - part-to-inventory
+capabilities:
+  - CAP-ACCT-BUILTIN
 preconditions:
   - A vendor invoice has been 3-way matched against its PO and receipt, is approved for payment, and AP is increased accordingly. (Established by P3-AP-001.)
 steps:

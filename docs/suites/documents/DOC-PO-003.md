@@ -10,6 +10,10 @@ goal: |
   from the document history if retained.
 roles:
   - Procurement
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-CROSS-ACTIVITY-LOG
+  - CAP-P2P-PO
 preconditions:
   - An issued PO already has a generated and saved PDF.
 prerequisite_cases:

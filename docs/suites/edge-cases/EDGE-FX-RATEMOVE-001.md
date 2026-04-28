@@ -10,6 +10,10 @@ goal: |
   in revenue.
 roles:
   - Controller
+capabilities:
+  - CAP-MD-CURRENCIES
+  - CAP-ACCT-FXREVAL
+  - CAP-O2C-CASH
 preconditions:
   - A foreign-currency customer exists.
   - An open invoice in that currency exists, posted at one rate.

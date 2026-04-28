@@ -11,6 +11,10 @@ goal: |
 roles:
   - Administrator
   - HR
+capabilities:
+  - CAP-HR-TIMETRACK
+  - CAP-MFG-LABOR
+  - CAP-MD-EMPLOYEES
 preconditions:
   - The tenant time zone is set (e.g., US Pacific).
   - At least one employee record exists with a different time zone

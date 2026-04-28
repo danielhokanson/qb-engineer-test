@@ -8,6 +8,9 @@ goal: |
   Procurement handles vendor-side documents, not AR.
 roles:
   - Procurement
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
   - At least one posted customer invoice exists.

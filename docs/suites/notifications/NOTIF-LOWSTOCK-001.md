@@ -9,6 +9,9 @@ goal: |
   notification clears once stock is replenished above the point.
 roles:
   - Procurement
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-PLAN-SAFETYSTOCK
 preconditions:
   - A part has reorder point and notification subscribers configured
     (P3-SS-001).

@@ -10,6 +10,9 @@ goal: |
 roles:
   - Engineer / R&D
   - Production Planner
+capabilities:
+  - CAP-MD-BOM
+  - CAP-CROSS-LIST-UX
 preconditions:
   - BOMs exist with multiple revisions per parent and a mix of
     statuses and effectivity windows.

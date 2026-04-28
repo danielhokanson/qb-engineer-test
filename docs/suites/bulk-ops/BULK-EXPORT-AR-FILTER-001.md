@@ -11,6 +11,10 @@ goal: |
 roles:
   - Credit Manager
   - Controller
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-INTEG-FILE
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 30 invoices exist across various aging buckets and
     customers.

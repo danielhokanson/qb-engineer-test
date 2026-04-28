@@ -11,6 +11,9 @@ goal: |
 roles:
   - Pricing Analyst
   - Controller
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 10 active finished-good parts exist with a list price
     set on each.

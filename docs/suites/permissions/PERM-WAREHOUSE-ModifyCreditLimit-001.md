@@ -7,6 +7,9 @@ goal: |
   Verify a Warehouse user cannot change customer credit limits.
 roles:
   - Warehouse / Logistics
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Warehouse user exists with no other roles attached.
   - At least one customer with an existing credit limit exists.

@@ -10,6 +10,10 @@ goal: |
 roles:
   - Production Planner
   - Procurement
+capabilities:
+  - CAP-RPT-MRPEX
+  - CAP-PLAN-MRP
+  - CAP-MD-PARTS
 preconditions:
   - At least two parts have different default buyers configured
     (P2-PART-001 with buyer assignment).

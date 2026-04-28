@@ -13,6 +13,9 @@ optional_module: builtin-accounting
 roles:
   - Shop Owner
   - AR Clerk
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-ACCT-BUILTIN
 preconditions:
   - The accounting module is set up with a chart of accounts.
   - At least one active customer exists with a starting balance of zero.

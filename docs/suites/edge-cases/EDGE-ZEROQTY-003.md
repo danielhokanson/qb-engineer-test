@@ -11,6 +11,9 @@ goal: |
 roles:
   - AR Clerk
   - Controller
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-O2C-COLLECTIONS
 preconditions:
   - At least one customer with at least one shipped item.
   - A workflow path for warranty / no-charge shipment exists, OR a

@@ -11,6 +11,10 @@ goal: |
 roles:
   - Sales / Account Manager
   - Credit Officer
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-MD-CUSTOMERS
+  - CAP-O2C-SO
 preconditions:
   - A customer has a configured credit limit and existing exposure
     (open orders + AR balance) close to the limit.

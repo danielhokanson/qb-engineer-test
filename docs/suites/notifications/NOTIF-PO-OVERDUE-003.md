@@ -10,6 +10,9 @@ goal: |
 roles:
   - Procurement
   - Procurement Manager
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-P2P-PO
 preconditions:
   - A PO has been overdue past the documented escalation window with no
     receipt activity. Escalation policy is configured.

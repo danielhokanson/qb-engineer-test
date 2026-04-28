@@ -12,6 +12,9 @@ roles:
   - Warehouse / Logistics
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-INV-RESERVE
+  - CAP-O2C-SO
 preconditions:
   - At least one confirmed SO with an in-stock part exists.
 prerequisite_cases:

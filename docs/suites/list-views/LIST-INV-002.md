@@ -10,6 +10,9 @@ goal: |
 roles:
   - Controller
   - AR / Collections
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Invoices exist across at least the last 12 months with varied
     invoice dates and due dates.

@@ -11,6 +11,8 @@ goal: |
 roles:
   - Administrator
   - Procurement
+capabilities:
+  - CAP-CROSS-LIST-UX
 preconditions:
   - 5,000+ records exist for the entity (e.g., parts).
   - List view supports at least two-column sorting.

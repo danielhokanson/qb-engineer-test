@@ -11,6 +11,10 @@ goal: |
 roles:
   - Sales / Account Manager
   - Controller
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-O2C-QUOTE
+  - CAP-O2C-SO
 preconditions:
   - At least 5 quotes were issued in the period, with at least one
     converted to an SO and one explicitly lost / expired.

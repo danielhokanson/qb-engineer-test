@@ -11,6 +11,10 @@ goal: |
 roles:
   - Sales / Account Manager
   - Controller
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-O2C-SO
+  - CAP-O2C-INVOICE
 preconditions:
   - At least one SO was confirmed in the period (P4-QUOTE-005 or
     SO confirmation pathway).

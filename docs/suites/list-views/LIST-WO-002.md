@@ -9,6 +9,9 @@ goal: |
 roles:
   - Production Manager
   - Production Planner
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Test environment must have >= 5,000 rows of the entity under
     test seeded; use `/api/v1/dev/seed-bulk-list?entity=wo&count=5000`

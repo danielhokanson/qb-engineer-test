@@ -10,6 +10,10 @@ goal: |
   balance matches the vendor's row on AP aging.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-P2P-PO
+  - CAP-CROSS-DOCS
 preconditions:
   - At least one vendor has period activity — an invoice, a
     payment, and a credit memo (P3-AP-CM-001).

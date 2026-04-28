@@ -12,6 +12,9 @@ goal: |
 roles:
   - Sales / Account Manager
   - Administrator
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least 50 customers exist (for filter / sort / paginate
     coverage). Some active, some inactive.

@@ -11,6 +11,9 @@ goal: |
 roles:
   - Sales Manager
   - Administrator
+capabilities:
+  - CAP-O2C-LEAD
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 5 open opportunities are owned by Rep A.
   - Rep B exists and has the same territory permissions.

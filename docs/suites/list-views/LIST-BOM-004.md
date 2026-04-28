@@ -10,6 +10,9 @@ goal: |
 roles:
   - Engineer / R&D
   - Production Planner
+capabilities:
+  - CAP-MD-BOM
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Test environment must have >= 5,000 rows of the entity under
     test seeded; use `/api/v1/dev/seed-bulk-list?entity=bom&count=5000`

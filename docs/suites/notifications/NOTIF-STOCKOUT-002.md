@@ -12,6 +12,10 @@ roles:
   - Production Planner
   - Production Supervisor
   - Procurement
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-INV-CORE
+  - CAP-MFG-MATL-ISSUE
 preconditions:
   - An in-progress work order requires a specific component for an
     upcoming or current operation.

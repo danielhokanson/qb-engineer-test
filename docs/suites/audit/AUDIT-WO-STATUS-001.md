@@ -9,6 +9,10 @@ goal: |
 roles:
   - Production Planner
   - Production Operator
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-MFG-MULTIOP
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A released WO exists.
 prerequisite_cases:

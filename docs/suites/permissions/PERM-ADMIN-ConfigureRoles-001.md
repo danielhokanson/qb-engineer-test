@@ -9,6 +9,8 @@ goal: |
   Admin user is created and as escalation backup later.
 roles:
   - Administrator
+capabilities:
+  - CAP-IDEN-ROLES
 preconditions:
   - The Administrator user exists.
   - At least one editable, non-system role exists.

@@ -7,6 +7,9 @@ goal: |
   Verify an HR user cannot override quote / order pricing.
 roles:
   - HR
+capabilities:
+  - CAP-O2C-QUOTE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An HR user exists with no other roles attached.
   - At least one open draft quote exists.

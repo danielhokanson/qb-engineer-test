@@ -8,6 +8,9 @@ goal: |
   cannot even see customer credit data.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists with no other roles attached.
   - At least one customer with an existing credit limit exists.

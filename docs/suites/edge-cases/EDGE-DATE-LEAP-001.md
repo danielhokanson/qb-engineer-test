@@ -10,6 +10,9 @@ goal: |
   29th of every month" handle non-February months.
 roles:
   - Controller
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-O2C-COLLECTIONS
 preconditions:
   - The tenant date is set to (or backdated to) a known leap year
     (e.g., 2028 or use a historical leap year if backdating works).

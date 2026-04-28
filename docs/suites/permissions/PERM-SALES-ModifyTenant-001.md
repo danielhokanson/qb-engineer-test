@@ -7,6 +7,9 @@ goal: |
   Verify a Sales user cannot change tenant-level settings.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists with no other roles attached.
 steps:

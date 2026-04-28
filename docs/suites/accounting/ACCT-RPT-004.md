@@ -13,6 +13,9 @@ optional_module: builtin-accounting-full-gl
 roles:
   - Shop Owner
   - AR Clerk
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-O2C-INVOICE
 preconditions:
   - At least four open invoices exist with varying ages.
 prerequisite_cases:

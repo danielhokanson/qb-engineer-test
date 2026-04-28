@@ -12,6 +12,9 @@ roles:
   - Sales / Account Manager
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-O2C-QUOTE
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one sent quote exists.
 prerequisite_cases:

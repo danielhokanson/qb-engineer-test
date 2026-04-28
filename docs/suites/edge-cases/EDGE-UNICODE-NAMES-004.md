@@ -12,13 +12,16 @@ goal: |
   per the collation rule defined by the configured database locale.
 roles:
   - Administrator
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least 10 customers with names that include both accented and
     unaccented characters (e.g., "Aalto", "Ångström", "Bär", "Bärbel",
     "Cabo", "Café", "Zebra").
-  - The deployment's database collation is configured and documented
+  - "The deployment's database collation is configured and documented
     (default for this build: Postgres `und-x-icu` for general
-    Unicode-aware ordering, or whatever locale the deploy chooses).
+    Unicode-aware ordering, or whatever locale the deploy chooses)."
 steps:
   - n: 1
     action: |

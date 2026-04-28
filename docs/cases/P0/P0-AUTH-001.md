@@ -11,6 +11,9 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-AUTH-MFA
+  - CAP-IDEN-AUTH-PASSWORD
 preconditions:
   - The first admin exists (P0-ADMIN-001).
   - The tenant has not yet enforced MFA on this account.

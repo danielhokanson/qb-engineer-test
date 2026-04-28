@@ -11,6 +11,10 @@ goal: |
 roles:
   - Controller
   - Warehouse / Logistics
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-RPT-INVVAL
+  - CAP-INV-CORE
 preconditions:
   - At least one part has had no issue / consumption activity for
     180+ days (a slow mover) AND at least one part is actively

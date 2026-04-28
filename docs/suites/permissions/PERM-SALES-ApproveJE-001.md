@@ -7,6 +7,9 @@ goal: |
   Verify a Sales user cannot approve pending JEs.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists with no other roles attached.
   - At least one over-threshold JE awaiting approval exists.

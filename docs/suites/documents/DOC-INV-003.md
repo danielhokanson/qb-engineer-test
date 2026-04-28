@@ -10,6 +10,9 @@ goal: |
   if multi-line tax), freight, grand total, due date, currency.
 roles:
   - Controller
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-O2C-INVOICE
 preconditions:
   - A posted invoice with multi-line tax (e.g., state and local) and
     freight exists.

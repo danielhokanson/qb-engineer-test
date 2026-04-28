@@ -10,6 +10,10 @@ goal: |
 roles:
   - Controller
   - Sales / Account Manager
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-O2C-INVOICE
+  - CAP-O2C-CASH
 preconditions:
   - At least one partially paid invoice exists (P4-CASH-PARTIAL).
 prerequisite_cases:

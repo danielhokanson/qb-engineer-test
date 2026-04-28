@@ -7,6 +7,9 @@ goal: |
   Verify an HR user cannot change tenant-level settings.
 roles:
   - HR
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An HR user exists with no other roles attached.
 steps:

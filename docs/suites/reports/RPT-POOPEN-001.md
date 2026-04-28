@@ -11,6 +11,10 @@ goal: |
 roles:
   - Procurement
   - Controller
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-P2P-PO
+  - CAP-P2P-RECEIVE
 preconditions:
   - At least one PO is open with partial receipt
     (P3-RECV-002 partial) and at least one is fully open (no

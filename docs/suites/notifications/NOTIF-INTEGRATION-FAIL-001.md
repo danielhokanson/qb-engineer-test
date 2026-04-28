@@ -12,6 +12,9 @@ goal: |
 roles:
   - Integrations Owner
   - Controller
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-ACCT-EXTERNAL
 preconditions:
   - An accounting integration is configured and scheduled.
   - A failure can be induced (invalid credential, malformed payload,

@@ -9,6 +9,9 @@ goal: |
   change-control process.
 roles:
   - QC Inspector
+capabilities:
+  - CAP-MD-BOM
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A QC Inspector user exists with no other roles attached.
   - A finished part has a released BOM.

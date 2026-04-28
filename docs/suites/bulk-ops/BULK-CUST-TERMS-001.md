@@ -11,6 +11,9 @@ goal: |
 roles:
   - Credit Manager
   - Controller
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 6 customers exist on Net 30 terms.
   - At least 1 of them has an open invoice already issued on Net 30.

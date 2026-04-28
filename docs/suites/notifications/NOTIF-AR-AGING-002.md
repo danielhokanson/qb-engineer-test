@@ -12,6 +12,9 @@ roles:
   - Controller
   - Sales / Account Manager
   - Credit Officer
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-O2C-COLLECTIONS
 preconditions:
   - An unpaid customer invoice exists, old enough to walk through
     multiple buckets via backdating.

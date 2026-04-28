@@ -11,6 +11,10 @@ goal: |
 roles:
   - Controller
   - Warehouse / Logistics
+capabilities:
+  - CAP-RPT-INVVAL
+  - CAP-INV-CORE
+  - CAP-INV-MULTILOC
 preconditions:
   - Inventory exists at two or more distinct locations / warehouses.
   - At least one part is stocked at multiple locations to verify the

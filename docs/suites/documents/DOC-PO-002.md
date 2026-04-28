@@ -10,6 +10,9 @@ goal: |
   delivery date, buyer name, currency, and PO revision.
 roles:
   - Procurement
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-P2P-PO
 preconditions:
   - An issued PO with at least three line items, taxes, and freight
     exists.

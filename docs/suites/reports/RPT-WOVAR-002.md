@@ -10,6 +10,10 @@ goal: |
 roles:
   - Controller
   - Production Manager
+capabilities:
+  - CAP-MFG-WOVARIANCE
+  - CAP-MD-WORKCENTERS
+  - CAP-RPT-OPERATIONAL
 preconditions:
   - WOs exist whose primary operation is at two or more distinct
     work centers (P4-COMP-FINAL run for multiple WOs).

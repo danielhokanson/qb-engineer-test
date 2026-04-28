@@ -10,6 +10,10 @@ goal: |
   opens with a matching amount.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
+  - CAP-MD-ASSETS
 preconditions:
   - At least one fixed-asset purchase exists in the period
     (P3-ASSET-COMM-001).

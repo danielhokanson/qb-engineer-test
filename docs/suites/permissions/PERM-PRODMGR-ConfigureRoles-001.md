@@ -7,6 +7,8 @@ goal: |
   Verify a Production Manager cannot configure role permissions.
 roles:
   - Production Manager
+capabilities:
+  - CAP-IDEN-ROLES
 preconditions:
   - A Production Manager user exists with no other roles attached.
   - At least one editable role exists.

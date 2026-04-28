@@ -12,6 +12,8 @@ roles:
   - Controller
 flows:
   - period-close
+capabilities:
+  - CAP-ACCT-FULLGL
 preconditions:
   - A cash GL account exists.
   - At least one customer payment and one vendor payment have posted

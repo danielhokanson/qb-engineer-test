@@ -14,6 +14,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-ACCT-DEPRECIATION
+  - CAP-MD-ASSETS
 preconditions:
   - At least one fixed asset is being created or can have its method
     changed (typically only at creation).

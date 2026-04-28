@@ -13,6 +13,9 @@ roles:
 flows:
   - part-to-inventory
   - quote-to-cash
+capabilities:
+  - CAP-INV-HAZMAT
+  - CAP-O2C-SHIP
 preconditions:
   - At least one part exists that can be marked hazmat.
 steps:

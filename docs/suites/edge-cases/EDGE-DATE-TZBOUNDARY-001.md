@@ -9,6 +9,9 @@ goal: |
   server stored it as UTC.
 roles:
   - Controller
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
+  - CAP-RPT-FINANCIALS
 preconditions:
   - The tenant is configured to a non-UTC time zone (Pacific from
     P0-TENANT-003 is fine).

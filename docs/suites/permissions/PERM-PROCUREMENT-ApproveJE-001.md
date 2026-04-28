@@ -7,6 +7,9 @@ goal: |
   Verify a Procurement user cannot approve pending JEs.
 roles:
   - Procurement
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
   - At least one over-threshold JE awaiting approval exists.

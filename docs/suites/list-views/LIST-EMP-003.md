@@ -10,6 +10,9 @@ goal: |
 roles:
   - HR / People Ops
   - Administrator
+capabilities:
+  - CAP-MD-EMPLOYEES
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least 50 employees exist across multiple departments and
     hire dates.

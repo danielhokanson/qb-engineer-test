@@ -8,6 +8,9 @@ goal: |
   does not own the financial calendar.
 roles:
   - HR
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An HR user exists with no other roles attached.
   - At least one open fiscal period exists.

@@ -10,6 +10,9 @@ goal: |
   action.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-O2C-CREDITMEMO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists with no other roles attached.
   - At least one customer with an open AR balance exists.

@@ -11,6 +11,8 @@ optional_module: builtin-accounting-full-gl
 roles:
   - Shop Owner
   - Administrator
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
 preconditions:
   - The chart of accounts has been initialized (ACCT-SETUP-001).
   - No periods have been closed yet.

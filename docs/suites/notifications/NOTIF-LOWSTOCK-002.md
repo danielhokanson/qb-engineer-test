@@ -10,6 +10,9 @@ goal: |
   channel fires for a user who has opted out of both.
 roles:
   - Procurement
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-PLAN-SAFETYSTOCK
 preconditions:
   - A part has reorder point and at least three subscribers configured
     with distinct channel preferences (email-only, in-app-only, both

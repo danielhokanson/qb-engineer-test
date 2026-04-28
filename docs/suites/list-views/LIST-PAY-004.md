@@ -10,6 +10,9 @@ roles:
   - AR / Collections
   - AP / Accounts Payable
   - Controller
+capabilities:
+  - CAP-O2C-CASH
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Test environment must have >= 5,000 rows of the entity under
     test seeded; use `/api/v1/dev/seed-bulk-list?entity=payment&count=5000`

@@ -9,6 +9,9 @@ goal: |
 roles:
   - Maintenance Manager
   - Maintenance Tech
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-MAINT-PM
 preconditions:
   - A PM is scheduled with a date in the past (or backdate to make it
     past due).

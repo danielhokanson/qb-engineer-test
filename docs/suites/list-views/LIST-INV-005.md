@@ -10,6 +10,9 @@ goal: |
 roles:
   - Controller
   - AR / Collections
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Invoice list view is open with the default column set.
 steps:

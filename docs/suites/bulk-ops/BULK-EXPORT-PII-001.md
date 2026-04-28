@@ -12,6 +12,12 @@ goal: |
 roles:
   - Administrator
   - Sales / Account Manager
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-MD-EMPLOYEES
+  - CAP-CROSS-PERMS-MATRIX
+  - CAP-CROSS-INTEG-FILE
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - Customer or employee list contains at least one row with PII-
     classified fields populated.

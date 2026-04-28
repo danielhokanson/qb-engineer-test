@@ -9,6 +9,10 @@ goal: |
   balance, and emailed to the customer.
 roles:
   - Controller
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-O2C-COLLECTIONS
 preconditions:
   - At least one customer with multiple invoices and at least one
     payment exists.

@@ -11,6 +11,10 @@ goal: |
 roles:
   - Warehouse / Logistics
   - Controller
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-CROSS-ATTACHMENTS
+  - CAP-O2C-SHIP
 preconditions:
   - A shipment ready to dispatch exists.
 prerequisite_cases:

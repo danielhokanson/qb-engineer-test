@@ -10,6 +10,9 @@ goal: |
 roles:
   - Controller
   - GL Accountant
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A user with permission to create journal entries exists.
   - At least two posting GL accounts exist.

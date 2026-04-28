@@ -11,6 +11,10 @@ goal: |
 roles:
   - Controller
   - Warehouse / Logistics
+capabilities:
+  - CAP-RPT-INVVAL
+  - CAP-INV-CORE
+  - CAP-P2P-RECEIVE
 preconditions:
   - At least one part is configured for FIFO or weighted-average
     costing AND has at least two receipts at different unit costs

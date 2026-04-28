@@ -9,6 +9,9 @@ goal: |
   and when.
 roles:
   - Procurement
+capabilities:
+  - CAP-P2P-APPROVALS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with a defined approval threshold (e.g., $25,000).
   - A draft PO under the threshold exists for them to approve.

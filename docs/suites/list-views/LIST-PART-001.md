@@ -10,6 +10,9 @@ goal: |
 roles:
   - Engineer / R&D
   - Procurement
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least 50 parts exist across multiple types and tracking modes.
 prerequisite_cases:

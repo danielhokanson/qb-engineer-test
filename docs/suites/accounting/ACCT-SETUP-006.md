@@ -13,6 +13,9 @@ optional_module: builtin-accounting
 roles:
   - Shop Owner
   - Administrator
+capabilities:
+  - CAP-MD-CURRENCIES
+  - CAP-IDEN-TENANT-CONFIG
 preconditions:
   - The chart of accounts has been initialized (ACCT-SETUP-001).
 prerequisite_cases:

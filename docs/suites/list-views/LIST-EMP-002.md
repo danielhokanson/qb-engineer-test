@@ -10,6 +10,9 @@ goal: |
 roles:
   - HR / People Ops
   - Administrator
+capabilities:
+  - CAP-MD-EMPLOYEES
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Employees exist across at least three departments, all
     employment statuses, and at least two employment types.

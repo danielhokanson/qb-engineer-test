@@ -12,6 +12,10 @@ goal: |
 roles:
   - Administrator
   - Sales / Order Entry
+capabilities:
+  - CAP-IDEN-ROLES
+  - CAP-CROSS-PERMS-MATRIX
+  - CAP-O2C-SO
 preconditions:
   - A salesperson role with max discount = 0%.
   - A user in that role.

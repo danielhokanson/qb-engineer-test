@@ -8,6 +8,9 @@ goal: |
   authority over manufacturing data but no financial-calendar control.
 roles:
   - Production Manager
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Manager user exists with no other roles attached.
   - At least one open fiscal period exists.

@@ -9,6 +9,9 @@ goal: |
   deleting a master record belongs to Administrator.
 roles:
   - Controller
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Controller user exists with no other roles attached.
   - At least one customer record with no transactional history exists.

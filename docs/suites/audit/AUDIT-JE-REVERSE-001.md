@@ -9,6 +9,9 @@ goal: |
   visible and unchanged.
 roles:
   - Controller
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A posted manual JE exists in an open period.
 prerequisite_cases:

@@ -10,6 +10,9 @@ goal: |
 roles:
   - Controller
   - Accounting Lead
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-ACCT-PERIOD
 preconditions:
   - A fiscal period has a configured close deadline and reminder
     cadence.

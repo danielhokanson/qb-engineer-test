@@ -10,6 +10,9 @@ goal: |
 roles:
   - Maintenance Manager
   - Plant Manager
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-MAINT-PM
 preconditions:
   - A scheduled PM exists with escalation policy defined.
 prerequisite_cases:

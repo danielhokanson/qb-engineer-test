@@ -14,6 +14,9 @@ optional_module: builtin-accounting
 roles:
   - Shop Owner
   - AR Clerk
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-O2C-INVOICE
 preconditions:
   - Home tax jurisdiction is set with a known rate (use ACCT-SETUP-004's
     7.25%).

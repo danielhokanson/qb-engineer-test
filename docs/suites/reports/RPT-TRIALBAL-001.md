@@ -9,6 +9,9 @@ goal: |
   derivable from posted JEs.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
 preconditions:
   - The period has been closed.
 prerequisite_cases:

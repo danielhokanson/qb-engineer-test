@@ -9,6 +9,9 @@ goal: |
   matching the posted invoice.
 roles:
   - Controller
+capabilities:
+  - CAP-CROSS-INTEG-EDI
+  - CAP-O2C-INVOICE
 preconditions:
   - A trading partner expects 810.
   - A posted customer invoice for that customer exists.

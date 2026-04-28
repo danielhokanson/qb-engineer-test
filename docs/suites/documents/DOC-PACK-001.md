@@ -9,6 +9,9 @@ goal: |
   handling notes, no pricing.
 roles:
   - Warehouse / Logistics
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-O2C-PICKPACK
 preconditions:
   - A packed (but possibly not yet shipped) order exists.
 prerequisite_cases:

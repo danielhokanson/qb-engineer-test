@@ -7,6 +7,9 @@ goal: |
   Verify an HR user cannot approve pending JEs.
 roles:
   - HR
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An HR user exists with no other roles attached.
   - At least one over-threshold JE awaiting approval exists.

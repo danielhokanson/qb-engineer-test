@@ -7,6 +7,9 @@ goal: |
   Verify a Production Manager cannot delete customer records.
 roles:
   - Production Manager
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Manager user exists with no other roles attached.
   - At least one customer record exists.

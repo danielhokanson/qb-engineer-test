@@ -12,6 +12,10 @@ roles:
   - Controller
 flows:
   - foundational-records
+capabilities:
+  - CAP-MAINT-ASSETLIFECYCLE
+  - CAP-MD-ASSETS
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one fixed asset exists at a known location (P1-ASSET-001).
   - At least two locations exist (P1-LOC-002).

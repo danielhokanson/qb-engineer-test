@@ -7,6 +7,9 @@ goal: |
   Verify a Procurement user cannot change tenant-level settings.
 roles:
   - Procurement
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
 steps:

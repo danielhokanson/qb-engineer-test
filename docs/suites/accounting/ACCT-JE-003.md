@@ -13,6 +13,9 @@ optional_module: builtin-accounting-full-gl
 # Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-ACCT-PERIOD
 preconditions:
   - The current period is open.
   - The immediately prior period is also still open (not yet closed).

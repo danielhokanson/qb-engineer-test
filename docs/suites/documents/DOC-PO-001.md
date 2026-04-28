@@ -9,6 +9,9 @@ goal: |
   attached terms-and-conditions.
 roles:
   - Procurement
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-P2P-PO
 preconditions:
   - At least one issued PO exists.
 prerequisite_cases:

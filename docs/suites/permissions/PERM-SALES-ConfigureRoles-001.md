@@ -7,6 +7,8 @@ goal: |
   Verify a Sales user cannot configure role permissions.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-IDEN-ROLES
 preconditions:
   - A Sales user exists with no other roles attached.
   - At least one editable role exists.

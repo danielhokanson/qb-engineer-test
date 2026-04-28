@@ -3,7 +3,7 @@
     "id": "accounting",
     "directory": "accounting",
     "title": "Built-in lightweight accounting module — math correctness behind a plain-language UI",
-    "description": "Optional suite gated on the built-in accounting module being enabled\nfor the run. Verifies that AR, AP, payroll, inventory, bank, manual\nadjustments, reports, period close, and sales tax all keep correct\nbooks while presenting a plain-language surface to a non-accountant\nshop owner. Excludes multi-currency, multi-entity, audit-grade\nattestation, complex payroll-tax depth, and inventory costing methods\nbeyond Average and Standard.\n",
+    "description": "Optional suite gated per-case on either the built-in accounting\nmodule (minimal CRUD: invoices, payments, expenses, customers,\nitems, sales-tax rates) or the built-in full-GL module (chart of\naccounts, journal entries, period close, bank reconciliation,\nyear-end roll, sales-tax remittance, inventory value flow). Verifies\nthat AR, AP, payroll, inventory, bank, manual adjustments, reports,\nperiod close, and sales tax all keep correct books while presenting\na plain-language surface to a non-accountant shop owner. Excludes\nmulti-currency, multi-entity, audit-grade attestation, complex\npayroll-tax depth, and inventory costing methods beyond Average and\nStandard.\n",
     "estimated_total_minutes": 270,
     "case_count": 45,
     "planned_count": 45
@@ -12,7 +12,7 @@
     "id": "audit",
     "directory": "audit",
     "title": "Audit log captures every consequential state change",
-    "description": "For each major state-changing action, verify the audit log records\nthe action with actor, timestamp, target record, and before/after\nstate. Tampering checks live alongside.\n",
+    "description": "For each major state-changing action, verify the appropriate audit\nsurface records the action with actor, timestamp, target record, and\nbefore/after state. Per-entity events go to `activity_logs`; non-entity\n/ cross-cutting events (auth, role changes, period close, audit\ninfrastructure) go to the system-wide `audit_log_entries`. Tampering\nchecks live alongside.\n",
     "estimated_total_minutes": 50,
     "case_count": 40,
     "planned_count": 40

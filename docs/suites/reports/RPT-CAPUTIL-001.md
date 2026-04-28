@@ -9,6 +9,10 @@ goal: |
   hours and the calendar's available hours.
 roles:
   - Production Manager
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-PLAN-CAPACITY
+  - CAP-MD-WORKCENTERS
 preconditions:
   - At least one WO is scheduled (released and dated) at a known
     work center.

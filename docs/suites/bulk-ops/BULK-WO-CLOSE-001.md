@@ -10,6 +10,9 @@ goal: |
   rather than silently skipped.
 roles:
   - Production Manager
+capabilities:
+  - CAP-MFG-COMPLETE
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 5 WOs exist with all operations complete.
   - At least one of them has a missing variance reason that should

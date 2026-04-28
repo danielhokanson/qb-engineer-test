@@ -12,6 +12,9 @@ goal: |
   silently lands in a closed period.
 roles:
   - Controller
+capabilities:
+  - CAP-CROSS-CONCURRENCY
+  - CAP-ACCT-PERIOD
 preconditions:
   - A Controller user (User A) is in a position to close the period.
   - A second user (User B) has a draft transaction (e.g., a customer

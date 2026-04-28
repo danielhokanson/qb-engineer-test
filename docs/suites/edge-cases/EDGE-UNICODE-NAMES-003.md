@@ -12,6 +12,9 @@ goal: |
 roles:
   - Engineer / R&D
   - Administrator
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-INTEG-FILE
 preconditions:
   - Part creation is available.
 steps:

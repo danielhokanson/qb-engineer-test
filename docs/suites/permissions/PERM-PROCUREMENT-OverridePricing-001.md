@@ -9,6 +9,9 @@ goal: |
   pricing belongs to Sales.
 roles:
   - Procurement
+capabilities:
+  - CAP-O2C-QUOTE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
   - At least one open draft quote exists.

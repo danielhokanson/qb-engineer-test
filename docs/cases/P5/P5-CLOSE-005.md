@@ -12,6 +12,9 @@ roles:
   - Controller
 flows:
   - period-close
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-ACCT-FULLGL
 preconditions:
   - All periods of the fiscal year are closed.
   - Net income for the year is computed (P&L).

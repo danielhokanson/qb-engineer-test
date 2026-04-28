@@ -8,6 +8,9 @@ goal: |
   posted one — that's a financial action belonging to the Controller.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists.
   - At least one posted customer invoice exists.

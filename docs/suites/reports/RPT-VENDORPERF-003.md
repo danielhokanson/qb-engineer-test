@@ -10,6 +10,10 @@ goal: |
   across categories.
 roles:
   - Procurement
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-P2P-RECEIVE
+  - CAP-MD-VENDORS
 preconditions:
   - At least two vendor categories (e.g., "Steel," "Electronics")
     each have multiple vendors with receipt history.

@@ -10,6 +10,10 @@ goal: |
   mailbox receives it.
 roles:
   - Controller
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-O2C-CREDITMEMO
 preconditions:
   - A posted credit memo exists.
   - The customer has a valid AR email address.

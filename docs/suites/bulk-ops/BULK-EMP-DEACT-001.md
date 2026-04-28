@@ -11,6 +11,11 @@ goal: |
 roles:
   - HR
   - Administrator
+capabilities:
+  - CAP-MD-EMPLOYEES
+  - CAP-IDEN-USERS
+  - CAP-HR-TERMINATION
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 4 employees have a termination date in the past.
   - At least 1 of them is the assigned approver on an open PO or

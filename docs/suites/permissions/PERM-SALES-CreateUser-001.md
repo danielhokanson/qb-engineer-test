@@ -7,6 +7,8 @@ goal: |
   Verify a Sales user cannot create system users.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-IDEN-USERS
 preconditions:
   - A Sales user exists with no other roles attached.
 steps:

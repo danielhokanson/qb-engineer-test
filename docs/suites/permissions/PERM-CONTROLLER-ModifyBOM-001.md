@@ -9,6 +9,9 @@ goal: |
   changes belong to Engineering.
 roles:
   - Controller
+capabilities:
+  - CAP-MD-BOM
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Controller user exists.
   - A finished part has a released BOM.

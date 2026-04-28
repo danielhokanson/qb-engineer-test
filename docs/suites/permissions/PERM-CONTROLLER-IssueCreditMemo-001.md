@@ -9,6 +9,9 @@ goal: |
   capture the action with reason and amount in the audit log.
 roles:
   - Controller
+capabilities:
+  - CAP-O2C-CREDITMEMO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Controller user exists.
   - At least one customer with an open AR balance exists.

@@ -10,6 +10,10 @@ goal: |
   variance), and the file is consistent with the on-screen view.
 roles:
   - Production Manager
+capabilities:
+  - CAP-MFG-COMPLETE
+  - CAP-CROSS-INTEG-FILE
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 20 closed work orders exist with completion dates
     spread across the last 90 days.

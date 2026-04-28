@@ -10,6 +10,11 @@ goal: |
   balance on the trial balance.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-MD-TAXCODES
+  - CAP-O2C-INVOICE
+  - CAP-ACCT-FULLGL
 preconditions:
   - The period has invoices spanning at least two tax rates / tax
     jurisdictions.

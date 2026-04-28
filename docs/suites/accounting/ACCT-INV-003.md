@@ -13,6 +13,10 @@ optional_module: builtin-accounting-full-gl
 roles:
   - Shop Owner
   - Floor Operator
+capabilities:
+  - CAP-MFG-COMPLETE
+  - CAP-INV-CORE
+  - CAP-ACCT-FULLGL
 preconditions:
   - One open work order with material already issued exists. WIP
     value attributable to the WO is known (e.g., $200.00 from

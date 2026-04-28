@@ -12,6 +12,10 @@ goal: |
   supports multi-operator).
 roles:
   - Floor Operator
+capabilities:
+  - CAP-CROSS-CONCURRENCY
+  - CAP-MFG-LABOR
+  - CAP-MFG-SHOPFLOOR
 preconditions:
   - Two Floor Operator users exist.
   - At least one released WO with a Released operation exists.

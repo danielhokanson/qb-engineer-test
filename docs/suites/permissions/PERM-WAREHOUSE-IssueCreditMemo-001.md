@@ -9,6 +9,9 @@ goal: |
   to Controller.
 roles:
   - Warehouse / Logistics
+capabilities:
+  - CAP-O2C-CREDITMEMO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Warehouse user exists with no other roles attached.
   - At least one customer with an open AR balance exists.

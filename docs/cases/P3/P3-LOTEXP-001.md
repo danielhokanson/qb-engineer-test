@@ -12,6 +12,8 @@ roles:
   - QC Inspector
 flows:
   - part-to-inventory
+capabilities:
+  - CAP-INV-LOTS
 preconditions:
   - At least one lot-tracked part exists with two open lots that
     have different expiry dates (one nearer, one further).

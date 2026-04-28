@@ -10,6 +10,10 @@ goal: |
 roles:
   - Controller
   - Sales / Account Manager
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-O2C-INVOICE
 preconditions:
   - At least one posted customer invoice exists.
   - The customer has a valid AR email address.

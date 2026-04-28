@@ -9,6 +9,9 @@ goal: |
   Engineering.
 roles:
   - Controller
+capabilities:
+  - CAP-MD-ECO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Controller user exists with no other roles attached.
   - At least one open ECR exists.

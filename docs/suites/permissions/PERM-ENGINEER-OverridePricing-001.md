@@ -8,6 +8,9 @@ goal: |
   pricing. They define the product; Sales prices it.
 roles:
   - Engineer / R&D
+capabilities:
+  - CAP-O2C-QUOTE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An Engineer user exists with no other roles attached.
   - At least one open draft quote exists.

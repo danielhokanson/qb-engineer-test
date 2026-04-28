@@ -2,7 +2,7 @@
   "id": "audit",
   "directory": "audit",
   "title": "Audit log captures every consequential state change",
-  "description": "For each major state-changing action, verify the audit log records\nthe action with actor, timestamp, target record, and before/after\nstate. Tampering checks live alongside.\n",
+  "description": "For each major state-changing action, verify the appropriate audit\nsurface records the action with actor, timestamp, target record, and\nbefore/after state. Per-entity events go to `activity_logs`; non-entity\n/ cross-cutting events (auth, role changes, period close, audit\ninfrastructure) go to the system-wide `audit_log_entries`. Tampering\nchecks live alongside.\n",
   "estimated_total_minutes": 50,
   "case_ids": [
     "AUDIT-LOGIN-001",
@@ -92,7 +92,7 @@
   "raw": {
     "suite": "audit",
     "title": "Audit log captures every consequential state change",
-    "description": "For each major state-changing action, verify the audit log records\nthe action with actor, timestamp, target record, and before/after\nstate. Tampering checks live alongside.\n",
+    "description": "For each major state-changing action, verify the appropriate audit\nsurface records the action with actor, timestamp, target record, and\nbefore/after state. Per-entity events go to `activity_logs`; non-entity\n/ cross-cutting events (auth, role changes, period close, audit\ninfrastructure) go to the system-wide `audit_log_entries`. Tampering\nchecks live alongside.\n",
     "estimated_total_minutes": 50,
     "cases": [
       {

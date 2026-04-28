@@ -8,6 +8,9 @@ goal: |
   which lines, what changed, prior values, new values, and the actor.
 roles:
   - Engineer / R&D
+capabilities:
+  - CAP-MD-BOM
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A finished part has a released BOM (P2-BOM-001).
 prerequisite_cases:

@@ -9,6 +9,9 @@ goal: |
   are audited.
 roles:
   - Administrator
+capabilities:
+  - CAP-IDEN-AUTH-API-KEYS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - The Administrator user exists.
   - The integrations / API key area is enabled.

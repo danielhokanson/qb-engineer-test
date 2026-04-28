@@ -14,6 +14,10 @@ optional_module: builtin-accounting-full-gl
 roles:
   - Shop Owner
   - Receiving Clerk
+capabilities:
+  - CAP-P2P-RECEIVE
+  - CAP-INV-CORE
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one stocked item with a known unit cost exists.
   - At least one active vendor exists.

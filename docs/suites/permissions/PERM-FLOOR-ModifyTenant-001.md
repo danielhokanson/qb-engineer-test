@@ -8,6 +8,9 @@ goal: |
   settings.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists.
 steps:

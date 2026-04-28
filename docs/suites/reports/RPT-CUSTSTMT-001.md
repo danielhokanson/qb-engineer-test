@@ -11,6 +11,11 @@ goal: |
 roles:
   - Sales / Account Manager
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-O2C-INVOICE
+  - CAP-O2C-CASH
+  - CAP-CROSS-DOCS
 preconditions:
   - At least one customer has period activity — an invoice, a
     partial payment, and (ideally) a credit memo (P4-CM-001).

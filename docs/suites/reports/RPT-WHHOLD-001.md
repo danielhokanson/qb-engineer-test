@@ -10,6 +10,10 @@ goal: |
   and total withholding ties to the withholding payable GL.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-MD-VENDORS
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one vendor is flagged for withholding (P5-WHTAX-001).
   - At least one payment has been made with withholding deducted.

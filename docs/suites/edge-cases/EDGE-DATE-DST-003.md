@@ -9,6 +9,8 @@ goal: |
   fall-back day and does not silently skip the spring-forward day.
 roles:
   - Administrator
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
 preconditions:
   - At least one recurring scheduled job exists, configurable to a
     specific tenant-local time.

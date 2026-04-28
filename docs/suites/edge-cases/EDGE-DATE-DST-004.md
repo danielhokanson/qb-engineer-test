@@ -11,6 +11,8 @@ goal: |
   predecessor.
 roles:
   - Administrator
+capabilities:
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
 preconditions:
   - The tenant time zone observes DST.
   - The system-wide audit log (audit_log_entries) is populated with at

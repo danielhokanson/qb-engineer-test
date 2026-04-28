@@ -13,6 +13,8 @@ roles:
 flows:
   - vendor-to-asset
   - part-to-inventory
+capabilities:
+  - CAP-ACCT-BUILTIN
 preconditions:
   - At least one open vendor invoice exists.
   - A vendor return or pricing dispute justifies a credit.

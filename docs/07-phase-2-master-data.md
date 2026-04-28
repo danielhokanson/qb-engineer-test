@@ -37,6 +37,8 @@ roles:
 flows:
   - vendor-to-asset
   - part-to-inventory
+capabilities:
+  - CAP-MD-VENDORS
 preconditions:
   - |
     Foundational records exist: at least one location, work center, standard UoMs, the chart of accounts, at least one tax code, employees, calendar, and asset records. (Phase 1 outcomes.)
@@ -107,6 +109,8 @@ roles:
   - Procurement
 flows:
   - vendor-to-asset
+capabilities:
+  - CAP-MD-VENDORS
 preconditions:
   - The first vendor record exists with name, address, primary contact, payment terms, and default expense / inventory GL account. (Established by P2-VENDOR-001.)
 steps:
@@ -176,6 +180,9 @@ roles:
   - Controller
 flows:
   - vendor-to-asset
+capabilities:
+  - CAP-MD-VENDORS
+  - CAP-MD-CURRENCIES
 preconditions:
   - The first vendor record exists with name, address, primary contact, payment terms, and default expense / inventory GL account. (Established by P2-VENDOR-001.)
 steps:
@@ -261,6 +268,8 @@ scale_tags:
   - small-shop
   - mid-market
   - enterprise
+capabilities:
+  - CAP-MD-VENDORS
 preconditions:
   - The first vendor record exists with name, address, primary contact, payment terms, and default expense / inventory GL account. (Established by P2-VENDOR-001.)
 steps:
@@ -330,6 +339,8 @@ roles:
   - Procurement
 flows:
   - vendor-to-asset
+capabilities:
+  - CAP-MD-VENDORS
 preconditions:
   - At least two vendors exist.
 steps:
@@ -394,6 +405,8 @@ roles:
 flows:
   - lead-to-customer
   - quote-to-cash
+capabilities:
+  - CAP-MD-CUSTOMERS
 preconditions:
   - |
     Foundational records exist: at least one location, one work center, standard units of measure, the chart of accounts, at least one tax code, the first employee, a default calendar, and at least one fixed asset. (Phase 1 outcomes.)
@@ -465,6 +478,8 @@ roles:
 flows:
   - lead-to-customer
   - quote-to-cash
+capabilities:
+  - CAP-MD-CUSTOMERS
 preconditions:
   - The first customer record exists with billing and shipping addresses, primary contact, default tax code, payment terms, and a $50,000 credit limit. (Established by P2-CUST-001.)
 steps:
@@ -533,6 +548,9 @@ roles:
 flows:
   - lead-to-customer
   - quote-to-cash
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-O2C-SO
 preconditions:
   - The first customer record exists with billing and shipping addresses, primary contact, default tax code, payment terms, and a $50,000 credit limit. (Established by P2-CUST-001.)
 steps:
@@ -613,6 +631,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-MD-CURRENCIES
 preconditions:
   - The first customer record exists with billing and shipping addresses, primary contact, default tax code, payment terms, and a $50,000 credit limit. (Established by P2-CUST-001.)
   - Multi-currency is enabled in tenant settings (P0).
@@ -677,6 +698,8 @@ roles:
   - Procurement
 flows:
   - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
 preconditions:
   - At least one unit of measure exists (P1-UOM-001).
   - Default inventory GL account exists (P1-GL-001).
@@ -759,6 +782,8 @@ roles:
 flows:
   - part-to-inventory
   - quote-to-cash
+capabilities:
+  - CAP-MD-PARTS
 preconditions:
   - A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)
 steps:
@@ -822,6 +847,9 @@ roles:
   - Production Manager
 flows:
   - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-INV-LOTS
 preconditions:
   - A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)
 steps:
@@ -879,6 +907,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-INV-SERIALS
 preconditions:
   - A finished-goods part exists (e.g. FG-BRACKET-A1) with type, unit of measure, sales GL account, and a list price. (Established by P2-PART-002.)
 steps:
@@ -941,6 +972,9 @@ roles:
   - Engineer / R&D
 flows:
   - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-INTEG-FILE
 preconditions:
   - At least one UoM and one GL account exist.
 steps:
@@ -1002,6 +1036,8 @@ roles:
 flows:
   - part-to-inventory
   - rd-to-product
+capabilities:
+  - CAP-MD-BOM
 preconditions:
   - A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)
   - A finished-goods part exists (e.g. FG-BRACKET-A1) with type, unit of measure, sales GL account, and a list price. (Established by P2-PART-002.)
@@ -1075,6 +1111,8 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-MD-BOM
 preconditions:
   - A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)
 steps:
@@ -1141,6 +1179,8 @@ roles:
 flows:
   - part-to-inventory
   - rd-to-product
+capabilities:
+  - CAP-MD-BOM
 preconditions:
   - A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)
 steps:
@@ -1211,6 +1251,8 @@ roles:
   - Engineer / R&D
 flows:
   - part-to-inventory
+capabilities:
+  - CAP-MD-BOM
 preconditions:
   - A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)
 steps:
@@ -1262,6 +1304,8 @@ roles:
 flows:
   - part-to-inventory
   - rd-to-product
+capabilities:
+  - CAP-MD-ROUTING
 preconditions:
   - A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)
   - Work centers from P1-WC-001/002 exist.
@@ -1346,6 +1390,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-MD-ROUTING
+  - CAP-P2P-SUBCONTRACT
 preconditions:
   - A finished-goods part has a routing with ordered operations at the right work centers, including setup and run times for each. (Established by P2-ROUTE-001.)
   - At least one vendor that does subcontract work exists (or can be
@@ -1420,6 +1467,8 @@ flows:
   - part-to-inventory
 scale_tags:
   - enterprise
+capabilities:
+  - CAP-MD-ROUTING
 preconditions:
   - A finished-goods part has a routing with ordered operations at the right work centers, including setup and run times for each. (Established by P2-ROUTE-001.)
 steps:
@@ -1477,6 +1526,8 @@ roles:
   - Controller
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-MD-PRICELIST
 preconditions:
   - At least one customer and one finished part exist.
 steps:
@@ -1553,6 +1604,8 @@ roles:
   - Sales / Account Manager
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-MD-PRICELIST
 preconditions:
   - A finished-goods part exists (e.g. FG-BRACKET-A1) with type, unit of measure, sales GL account, and a list price. (Established by P2-PART-002.)
 steps:
@@ -1614,6 +1667,9 @@ roles:
 flows:
   - vendor-to-asset
   - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-P2P-PO
 preconditions:
   - The first vendor record exists with name, address, primary contact, payment terms, and default expense / inventory GL account. (Established by P2-VENDOR-001.)
   - A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)
@@ -1676,6 +1732,9 @@ roles:
   - Engineer / R&D
 flows:
   - rd-to-product
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-MD-ECO
 preconditions:
   - At least one UoM and GL account exist.
 steps:
@@ -1734,6 +1793,8 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-MD-ECO
 preconditions:
   - A finished-goods part has a single-level BOM listing component parts, quantities-per-unit, and units of measure, marked effective. (Established by P2-BOM-001.)
 steps:
@@ -1801,6 +1862,9 @@ roles:
 flows:
   - rd-to-product
   - lead-to-customer
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-MD-PARTS
 preconditions:
   - At least one customer exists (P2-CUST-001).
   - Prototype part type exists (P2-RD-001).
@@ -1861,6 +1925,9 @@ roles:
   - Production Manager
 flows:
   - rd-to-product
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-MD-ECO
 preconditions:
   - A prototype part exists, marked not-for-production / not-for-sale and gated from sales orders. (Established by P2-RD-001.)
   - The prototype has a BOM and routing.
@@ -1918,6 +1985,8 @@ roles:
   - Sales / Account Manager
 flows:
   - lead-to-customer
+capabilities:
+  - CAP-O2C-LEAD
 preconditions:
   - |
     Foundational records exist: at least one location, one work center, standard units of measure, the chart of accounts, at least one tax code, the first employee, a default calendar, and at least one fixed asset. (Phase 1 outcomes.)
@@ -1978,6 +2047,9 @@ roles:
   - Sales / Account Manager
 flows:
   - lead-to-customer
+capabilities:
+  - CAP-O2C-LEAD
+  - CAP-MD-CUSTOMERS
 preconditions:
   - A sales lead has been captured with company, contact info, source attribution, and estimated deal size. (Established by P2-LEAD-001.)
 steps:

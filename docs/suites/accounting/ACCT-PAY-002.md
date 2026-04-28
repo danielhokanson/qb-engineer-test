@@ -13,6 +13,8 @@ optional_module: builtin-accounting
 roles:
   - Shop Owner
   - Payroll Clerk
+capabilities:
+  - CAP-ACCT-EXPENSES
 preconditions:
   - At least one active employee exists.
   - The chart of accounts includes at least one expense category

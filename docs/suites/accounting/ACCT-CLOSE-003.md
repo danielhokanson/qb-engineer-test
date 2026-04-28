@@ -13,6 +13,10 @@ optional_module: builtin-accounting-full-gl
 roles:
   - Administrator
   - Shop Owner
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one closed month exists.
 prerequisite_cases:

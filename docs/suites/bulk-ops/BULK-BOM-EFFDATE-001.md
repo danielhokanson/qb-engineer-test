@@ -12,6 +12,9 @@ goal: |
 roles:
   - Engineering Planner
   - Production Manager
+capabilities:
+  - CAP-MD-BOM
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 3 BOMs exist with components scheduled for a future
     effectivity date.

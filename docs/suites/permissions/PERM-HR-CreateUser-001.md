@@ -9,6 +9,8 @@ goal: |
   account belongs to IT Admin.
 roles:
   - HR
+capabilities:
+  - CAP-IDEN-USERS
 preconditions:
   - An HR user exists with no other roles attached.
 steps:

@@ -12,6 +12,10 @@ goal: |
 roles:
   - Controller
   - Procurement
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-P2P-RECEIVE
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one PO has been received but not yet invoiced
     (P3-RECV-001 without follow-up P3-AP-001 for that PO).

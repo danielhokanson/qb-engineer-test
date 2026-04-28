@@ -11,6 +11,10 @@ goal: |
 roles:
   - Controller
   - Sales / Account Manager
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-O2C-INVOICE
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one open invoice exists in each of three buckets
     (current, 1-30, 90+) so bucket cuts are exercised.

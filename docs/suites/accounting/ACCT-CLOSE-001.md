@@ -12,6 +12,9 @@ optional_module: builtin-accounting-full-gl
 # Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-ACCT-FULLGL
 preconditions:
   - Activity has been posted in the prior month and reconciled.
 prerequisite_cases:

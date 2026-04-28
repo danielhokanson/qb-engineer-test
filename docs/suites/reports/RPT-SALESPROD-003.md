@@ -10,6 +10,9 @@ goal: |
 roles:
   - Controller
   - Sales / Account Manager
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-O2C-INVOICE
 preconditions:
   - At least one part has multiple invoice lines in the period
     (sold to multiple customers or on multiple dates).

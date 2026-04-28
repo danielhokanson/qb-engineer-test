@@ -12,6 +12,10 @@ roles:
   - Production Planner
   - Production Supervisor
   - Sales / Account Manager
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-MFG-MULTIOP
+  - CAP-O2C-SO
 preconditions:
   - A work order has multiple routed operations and a due date.
   - At least one earlier operation has slipped enough that the

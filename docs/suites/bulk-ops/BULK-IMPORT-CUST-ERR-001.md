@@ -12,6 +12,10 @@ goal: |
 roles:
   - Administrator
   - Data Steward
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-INTEG-FILE
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - A CSV with 10 customer rows is prepared. 7 valid; 3 invalid
     with distinct errors (missing required field, malformed email,

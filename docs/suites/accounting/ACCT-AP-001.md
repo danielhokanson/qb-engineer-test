@@ -12,6 +12,9 @@ optional_module: builtin-accounting
 roles:
   - Shop Owner
   - AP Clerk
+capabilities:
+  - CAP-P2P-PO
+  - CAP-ACCT-BUILTIN
 preconditions:
   - The accounting module is set up.
   - At least one active vendor exists with a starting balance of zero.

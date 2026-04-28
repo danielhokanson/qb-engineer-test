@@ -9,6 +9,10 @@ goal: |
   new year, and that both years' P&L reflect the correct net impact.
 roles:
   - Controller
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-ACCT-FULLGL
+  - CAP-RPT-FINANCIALS
 preconditions:
   - The fiscal year starts January 1.
   - At least two open periods straddle the year-end boundary.

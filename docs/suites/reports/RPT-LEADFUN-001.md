@@ -10,6 +10,10 @@ goal: |
   and stage-to-stage conversion rates compute correctly.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-O2C-LEAD
+  - CAP-O2C-QUOTE
 preconditions:
   - At least 5 leads exist with stage history spanning at least
     3 funnel stages.

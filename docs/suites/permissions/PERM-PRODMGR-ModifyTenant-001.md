@@ -7,6 +7,9 @@ goal: |
   Verify a Production Manager cannot change tenant-level settings.
 roles:
   - Production Manager
+capabilities:
+  - CAP-IDEN-TENANT-CONFIG
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Manager user exists with no other roles attached.
 steps:

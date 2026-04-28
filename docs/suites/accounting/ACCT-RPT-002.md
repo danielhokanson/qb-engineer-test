@@ -11,6 +11,9 @@ optional_module: builtin-accounting-full-gl
 # Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
 preconditions:
   - Some activity (invoices, bills, payments, pay runs) has been
     posted across at least two periods.

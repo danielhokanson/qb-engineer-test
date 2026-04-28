@@ -12,6 +12,9 @@ optional_module: builtin-accounting-full-gl
 roles:
   - Shop Owner
   - AP Clerk
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-P2P-PO
 preconditions:
   - At least three open vendor bills exist with varying ages.
 prerequisite_cases:

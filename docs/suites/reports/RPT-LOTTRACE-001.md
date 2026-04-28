@@ -11,6 +11,10 @@ goal: |
 roles:
   - QC Inspector
   - Warehouse / Logistics
+capabilities:
+  - CAP-QC-RECALL
+  - CAP-INV-LOTS
+  - CAP-MFG-MATL-ISSUE
 preconditions:
   - A raw-material lot has been received (P3-RECV-001 with lot
     enabled) and consumed in at least one WO (P4-MATL-ISSUE).

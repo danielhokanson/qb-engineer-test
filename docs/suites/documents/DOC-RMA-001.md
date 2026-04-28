@@ -12,6 +12,9 @@ goal: |
 roles:
   - Customer Service
   - Sales / Account Manager
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-O2C-RMA
 preconditions:
   - At least one approved RMA exists.
 prerequisite_cases:

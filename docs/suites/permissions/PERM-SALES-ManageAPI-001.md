@@ -8,6 +8,9 @@ goal: |
   CRM / sales-side integrations. Credential issuance belongs to IT.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-IDEN-AUTH-API-KEYS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists with no other roles attached.
   - The integrations area exists.

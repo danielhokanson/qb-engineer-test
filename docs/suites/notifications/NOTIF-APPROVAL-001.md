@@ -11,6 +11,9 @@ roles:
   - Procurement
   - Production Manager
   - Controller
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-P2P-APPROVALS
 preconditions:
   - At least one approval workflow exists with a documented reminder
     threshold (e.g., 24 hours).

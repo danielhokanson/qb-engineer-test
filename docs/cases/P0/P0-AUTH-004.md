@@ -12,6 +12,9 @@ roles:
   - Administrator
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-AUTH-API-KEYS
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
 preconditions:
   - The application has at least one documented API endpoint for
     integration use.

@@ -7,6 +7,9 @@ goal: |
   Verify an HR user cannot approve ECRs.
 roles:
   - HR
+capabilities:
+  - CAP-MD-ECO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An HR user exists with no other roles attached.
   - At least one open ECR exists.

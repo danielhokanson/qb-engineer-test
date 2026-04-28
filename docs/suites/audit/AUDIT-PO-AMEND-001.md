@@ -9,6 +9,9 @@ goal: |
   before/after diff.
 roles:
   - Procurement
+capabilities:
+  - CAP-P2P-PO
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one issued PO exists.
 prerequisite_cases:

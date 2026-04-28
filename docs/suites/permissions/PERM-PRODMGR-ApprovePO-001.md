@@ -10,6 +10,9 @@ goal: |
   from approval is the whole point.
 roles:
   - Production Manager
+capabilities:
+  - CAP-P2P-APPROVALS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Manager user exists with no other roles attached.
   - A draft PO awaiting approval exists.

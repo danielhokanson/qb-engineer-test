@@ -10,6 +10,9 @@ goal: |
 roles:
   - Controller
   - Sales / Account Manager
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one active customer with a current credit limit exists.
 prerequisite_cases:

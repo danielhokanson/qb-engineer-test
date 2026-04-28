@@ -13,6 +13,8 @@ optional_module: builtin-accounting
 roles:
   - Shop Owner
   - AR Clerk
+capabilities:
+  - CAP-O2C-INVOICE
 preconditions:
   - At least one posted, unpaid invoice exists.
 prerequisite_cases:

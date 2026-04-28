@@ -10,6 +10,9 @@ goal: |
 roles:
   - Procurement
   - Controller
+capabilities:
+  - CAP-MD-VENDORS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least 20 vendors exist with mixed 1099 status and at least
     two currencies.

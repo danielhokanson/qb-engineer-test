@@ -9,6 +9,9 @@ goal: |
   revisions.
 roles:
   - Production Planner
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Planner user exists.
   - At least one planned (un-released) work order exists.

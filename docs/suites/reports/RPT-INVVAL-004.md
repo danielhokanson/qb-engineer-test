@@ -10,6 +10,10 @@ goal: |
 roles:
   - Controller
   - Warehouse / Logistics
+capabilities:
+  - CAP-RPT-INVVAL
+  - CAP-INV-LOTS
+  - CAP-INV-SERIALS
 preconditions:
   - At least one lot- or serial-tracked part has on-hand stock
     spanning two or more lots / serials.

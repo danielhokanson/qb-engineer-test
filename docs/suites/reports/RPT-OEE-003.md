@@ -9,6 +9,10 @@ goal: |
   out-of-range stoppages don't leak in.
 roles:
   - Production Manager
+capabilities:
+  - CAP-RPT-OEE
+  - CAP-MFG-STOPPAGE
+  - CAP-MFG-COMPLETE
 preconditions:
   - Stoppage and completion records span 7+ days at one work center.
 prerequisite_cases:

@@ -11,6 +11,10 @@ goal: |
 roles:
   - Production Manager
   - Scheduler
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-MD-WORKCENTERS
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 5 open WOs are routed through Work Center A.
   - At least 1 of them has labor already reported on the current

@@ -9,6 +9,9 @@ goal: |
   and reason if captured.
 roles:
   - HR Admin
+capabilities:
+  - CAP-HR-TERMINATION
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one active employee exists.
 prerequisite_cases:

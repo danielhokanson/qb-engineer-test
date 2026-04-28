@@ -13,6 +13,9 @@ roles:
   - IT Admin
 flows:
   - hire-to-first-assignment
+capabilities:
+  - CAP-HR-TERMINATION
+  - CAP-IDEN-USERS
 preconditions:
   - At least one employee with an active linked user account exists.
 prerequisite_cases:

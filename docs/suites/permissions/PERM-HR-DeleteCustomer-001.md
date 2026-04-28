@@ -7,6 +7,9 @@ goal: |
   Verify an HR user cannot delete customer records.
 roles:
   - HR
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An HR user exists with no other roles attached.
   - At least one customer record exists.

@@ -12,6 +12,9 @@ roles:
   - Maintenance Manager
 flows:
   - period-close
+capabilities:
+  - CAP-MAINT-ASSETLIFECYCLE
+  - CAP-ACCT-DEPRECIATION
 preconditions:
   - At least one fixed asset has been depreciating (P5-CLOSE-003).
 prerequisite_cases:

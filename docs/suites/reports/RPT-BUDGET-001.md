@@ -10,6 +10,9 @@ goal: |
   (actual - budget) line by line.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
 preconditions:
   - A budget has been loaded for the period across all P&L lines.
   - The period has been closed and the regular P&L is runnable.

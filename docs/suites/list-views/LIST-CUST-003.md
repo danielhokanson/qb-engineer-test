@@ -11,6 +11,9 @@ goal: |
 roles:
   - Sales / Account Manager
   - Controller
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Customers exist with created dates spanning the last 24 months
     and varied last-activity dates.

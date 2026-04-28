@@ -12,6 +12,10 @@ roles:
   - Controller
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-O2C-SHIP
+  - CAP-O2C-INVOICE
+  - CAP-O2C-SO
 preconditions:
   - A confirmed SO with a quantity that can be split exists.
   - Inventory is partially available (e.g., 60 of 100 on hand).

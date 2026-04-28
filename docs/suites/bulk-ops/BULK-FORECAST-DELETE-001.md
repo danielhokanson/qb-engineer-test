@@ -11,6 +11,9 @@ goal: |
 roles:
   - Planner
   - Demand Planner
+capabilities:
+  - CAP-PLAN-FORECAST
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 10 forecast rows exist for periods in the past.
   - At least one part has both forecast rows (deleted target) and

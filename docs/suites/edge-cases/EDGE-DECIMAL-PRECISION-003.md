@@ -11,6 +11,10 @@ goal: |
 roles:
   - Engineer / R&D
   - Inventory Clerk
+capabilities:
+  - CAP-MD-UOM
+  - CAP-INV-CORE
+  - CAP-MFG-MATL-ISSUE
 preconditions:
   - At least one part with a primary UoM and at least one alternate
     UoM (e.g., kilograms with a pounds alternate).

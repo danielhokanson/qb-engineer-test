@@ -11,6 +11,8 @@ goal: |
 roles:
   - Receiving Clerk
   - Procurement
+capabilities:
+  - CAP-P2P-RECEIVE
 preconditions:
   - At least one open PO with a remaining quantity to receive.
 steps:

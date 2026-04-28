@@ -10,6 +10,10 @@ goal: |
   date is itself audited.
 roles:
   - Controller
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one tax code with a known rate exists (P1-TAX-001).
   - The current period is open and at least 5 days have passed.

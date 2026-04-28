@@ -10,6 +10,10 @@ goal: |
 roles:
   - HR
   - Production Manager
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-MFG-LABOR
+  - CAP-MD-EMPLOYEES
 preconditions:
   - Employees in at least two departments have recorded labor in
     the period.

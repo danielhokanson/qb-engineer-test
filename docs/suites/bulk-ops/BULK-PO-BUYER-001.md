@@ -10,6 +10,9 @@ goal: |
 roles:
   - Procurement Lead
   - Administrator
+capabilities:
+  - CAP-P2P-PO
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - Buyer A has at least 5 open POs in various states (Draft,
     Submitted, Approved-not-Received).

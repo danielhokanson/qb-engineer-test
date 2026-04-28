@@ -13,6 +13,10 @@ optional_module: builtin-accounting-full-gl
 roles:
   - Shop Owner
   - Payroll Clerk
+capabilities:
+  - CAP-HR-PAYROLL
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one employee with posted pay-run activity for the year
     exists.

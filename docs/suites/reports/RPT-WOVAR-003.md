@@ -10,6 +10,10 @@ goal: |
 roles:
   - Controller
   - Production Manager
+capabilities:
+  - CAP-MFG-WOVARIANCE
+  - CAP-MFG-MATL-ISSUE
+  - CAP-MFG-LABOR
 preconditions:
   - At least one closed WO has both material and labor variance
     (P4-COMP-FINAL with quantities differing from standard).

@@ -9,6 +9,9 @@ goal: |
   surfaces share UI patterns; their permissions must not bleed.
 roles:
   - Maintenance Manager
+capabilities:
+  - CAP-MFG-WO-RELEASE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Maintenance Manager user exists with no other roles attached.
   - At least one planned (un-released) production work order exists.

@@ -8,6 +8,9 @@ goal: |
   financial control belonging to Controller / Finance.
 roles:
   - Administrator
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - The Administrator user exists with no other roles attached.
   - At least one over-threshold JE awaiting approval exists.

@@ -12,6 +12,9 @@ roles:
   - HR
 flows:
   - hire-to-first-assignment
+capabilities:
+  - CAP-HR-TIMETRACK
+  - CAP-MFG-LABOR
 preconditions:
   - A Floor Operator user exists.
 modality:

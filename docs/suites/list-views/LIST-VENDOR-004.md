@@ -10,6 +10,9 @@ goal: |
 roles:
   - Procurement
   - Controller
+capabilities:
+  - CAP-MD-VENDORS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least 50 vendors exist with overlapping values in at least
     two sortable columns (e.g., several vendors share the same

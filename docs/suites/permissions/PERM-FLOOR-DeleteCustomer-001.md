@@ -7,6 +7,9 @@ goal: |
   Verify a Floor Operator cannot delete customer records.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists with no other roles attached.
   - At least one customer record exists.

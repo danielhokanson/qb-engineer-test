@@ -8,6 +8,9 @@ goal: |
   applies tax on inbound invoices but cannot redefine rates.
 roles:
   - Procurement
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
   - At least one tax code is configured.

@@ -9,6 +9,9 @@ goal: |
   Engineering; production-floor edits would bypass change control.
 roles:
   - Production Manager
+capabilities:
+  - CAP-MD-BOM
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Manager user exists with no other roles attached.
   - A finished part has a released BOM.

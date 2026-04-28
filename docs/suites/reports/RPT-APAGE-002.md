@@ -9,6 +9,9 @@ goal: |
   and credit memos, and remaining balance.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-P2P-PO
 preconditions:
   - At least one partially paid vendor invoice exists or a credit
     memo has been applied (P3-AP-CM-001).

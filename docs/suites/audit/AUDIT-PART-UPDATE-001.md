@@ -8,6 +8,9 @@ goal: |
   each changed field with prior and new values, actor, and timestamp.
 roles:
   - Engineer / R&D
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one active part exists.
 prerequisite_cases:

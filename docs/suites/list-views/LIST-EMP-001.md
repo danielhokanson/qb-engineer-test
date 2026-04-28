@@ -10,6 +10,9 @@ goal: |
 roles:
   - HR / People Ops
   - Administrator
+capabilities:
+  - CAP-MD-EMPLOYEES
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least 100 employees exist with varied names and badge / ID
     formats.

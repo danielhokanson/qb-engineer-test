@@ -10,6 +10,9 @@ goal: |
   attribution from the original poster.
 roles:
   - Controller
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Controller user exists, distinct from the user who posted the
     pending JE.

@@ -10,6 +10,9 @@ goal: |
   that exact range — no leakage in or out at the boundaries.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one customer invoice and one vendor invoice have been
     posted in the closed period (P5-CLOSE-004).

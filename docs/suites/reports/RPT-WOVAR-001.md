@@ -10,6 +10,10 @@ goal: |
 roles:
   - Controller
   - Production Manager
+capabilities:
+  - CAP-MFG-WOVARIANCE
+  - CAP-MFG-COMPLETE
+  - CAP-RPT-OPERATIONAL
 preconditions:
   - At least one WO has been completed and closed (P4-COMP-FINAL).
 prerequisite_cases:

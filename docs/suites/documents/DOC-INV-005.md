@@ -11,6 +11,11 @@ goal: |
   is, and the audit trail links the documents.
 roles:
   - Controller
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-CROSS-ACTIVITY-LOG
+  - CAP-O2C-INVOICE
+  - CAP-O2C-CREDITMEMO
 preconditions:
   - A posted invoice with a generated PDF exists, and the correction
     workflow used by the system is documented.

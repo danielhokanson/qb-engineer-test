@@ -9,6 +9,9 @@ goal: |
   not HR.
 roles:
   - HR
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An HR user exists with no other roles attached.
   - At least one tax code is configured.

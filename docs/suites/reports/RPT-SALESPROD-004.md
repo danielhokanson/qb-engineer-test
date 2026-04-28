@@ -11,6 +11,9 @@ goal: |
 roles:
   - Sales / Account Manager
   - Controller
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-O2C-INVOICE
 preconditions:
   - At least 12 parts have revenue in the period (so a top-10
     cutoff is meaningful).

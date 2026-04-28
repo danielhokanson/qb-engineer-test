@@ -14,6 +14,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-ACCT-FXREVAL
+  - CAP-ACCT-PERIOD
 preconditions:
   - At least one open AR or AP balance in a foreign currency exists.
   - A period-end FX rate that differs from the original transaction

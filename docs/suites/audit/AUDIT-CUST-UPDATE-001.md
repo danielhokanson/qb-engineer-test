@@ -9,6 +9,9 @@ goal: |
   values, actor, and timestamp.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one active customer exists.
 prerequisite_cases:

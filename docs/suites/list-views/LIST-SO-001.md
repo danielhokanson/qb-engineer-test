@@ -10,6 +10,9 @@ goal: |
 roles:
   - Sales / Account Manager
   - Customer Service
+capabilities:
+  - CAP-O2C-SO
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least 100 SOs exist with varied SO numbers, customers, and
     line items.

@@ -11,6 +11,10 @@ goal: |
 roles:
   - Sales / Account Manager
   - Controller
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-O2C-SO
+  - CAP-O2C-SHIP
 preconditions:
   - At least one SO is partially shipped (P4-SHIP-SPLIT-001) and
     at least one is fully open (no shipments yet).

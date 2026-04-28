@@ -12,6 +12,9 @@ roles:
   - Procurement
   - Sales / Account Manager
   - Production Planner
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-INV-CORE
 preconditions:
   - A part has open demand (at least one sales order or work order
     requiring it) and on-hand can be driven to zero.

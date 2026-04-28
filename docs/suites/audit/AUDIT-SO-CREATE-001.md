@@ -9,6 +9,9 @@ goal: |
   (part, qty, price) as the initial state.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-O2C-SO
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one active customer and one sellable part exist.
 steps:

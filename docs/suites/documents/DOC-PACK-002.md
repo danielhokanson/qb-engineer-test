@@ -11,6 +11,10 @@ goal: |
   not present.
 roles:
   - Warehouse / Logistics
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-O2C-PICKPACK
+  - CAP-INV-LOTS
 preconditions:
   - A packed shipment with at least one lot-tracked line and a special
     handling note exists.

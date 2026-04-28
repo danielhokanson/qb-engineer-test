@@ -14,6 +14,10 @@ optional_module: builtin-accounting-full-gl
 roles:
   - Shop Owner
   - Floor Operator
+capabilities:
+  - CAP-INV-CYCLECOUNT
+  - CAP-INV-CORE
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one item with system on-hand of 10 at unit cost $40.00
     exists.

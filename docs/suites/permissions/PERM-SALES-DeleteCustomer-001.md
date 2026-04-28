@@ -9,6 +9,9 @@ goal: |
   require higher authority.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists with no other roles attached.
   - At least one customer record exists.

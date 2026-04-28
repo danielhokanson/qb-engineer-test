@@ -7,6 +7,9 @@ goal: |
   Verify a Sales user cannot post payroll.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-HR-PAYROLL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists with no other roles attached.
   - At least one prepared payroll run exists.

@@ -11,6 +11,9 @@ goal: |
 roles:
   - Controller
   - Engineer / R&D
+capabilities:
+  - CAP-MD-BOM
+  - CAP-RPT-INVVAL
 preconditions:
   - A multi-level BOM exists — at least raw → sub-assembly → finished
     good.

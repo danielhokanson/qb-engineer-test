@@ -10,6 +10,9 @@ goal: |
 roles:
   - Administrator
   - Controller
+capabilities:
+  - CAP-CROSS-INTEG-FILE
+  - CAP-CROSS-LIST-UX
 preconditions:
   - 5,000+ records exist for the entity being exported.
 steps:

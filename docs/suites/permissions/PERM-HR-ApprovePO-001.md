@@ -7,6 +7,9 @@ goal: |
   Verify an HR user cannot approve POs.
 roles:
   - HR
+capabilities:
+  - CAP-P2P-APPROVALS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An HR user exists with no other roles attached.
   - A draft PO awaiting approval exists.

@@ -7,6 +7,9 @@ goal: |
   Verify an IT Admin cannot edit tax-code rates or GL mappings.
 roles:
   - IT Admin
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An IT Admin user exists with no other roles attached.
   - At least one tax code is configured.

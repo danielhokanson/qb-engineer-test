@@ -9,6 +9,9 @@ goal: |
   with that dimension only.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
 preconditions:
   - Postings in the closed period carry at least two distinct
     department/dimension tags (so filtering is meaningful).

@@ -10,6 +10,9 @@ goal: |
   applicable).
 roles:
   - Warehouse / Logistics
+capabilities:
+  - CAP-CROSS-INTEG-EDI
+  - CAP-O2C-SHIP
 preconditions:
   - A trading partner expects 856.
   - A shipment is ready to send.

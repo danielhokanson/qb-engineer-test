@@ -10,6 +10,9 @@ goal: |
   arbitrary financial authority.
 roles:
   - Controller
+capabilities:
+  - CAP-IDEN-AUTH-API-KEYS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Controller user exists with no other roles attached.
   - The integrations area exists and has at least one configured

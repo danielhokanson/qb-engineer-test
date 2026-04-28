@@ -16,6 +16,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-QC-CAPA
+  - CAP-QC-NCR
 preconditions:
   - At least one NCR exists (P5-QC-NCR-001).
 prerequisite_cases:

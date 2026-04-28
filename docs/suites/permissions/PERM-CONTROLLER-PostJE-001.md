@@ -8,6 +8,9 @@ goal: |
   entry, and that the action records cleanly in the audit log.
 roles:
   - Controller
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A user with the Controller role exists and can sign in.
   - The chart of accounts is initialized.

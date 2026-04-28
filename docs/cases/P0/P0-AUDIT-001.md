@@ -13,6 +13,8 @@ roles:
   - IT Admin
 flows:
   - tenant-onboarding
+capabilities:
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
 preconditions:
   - Phase 0 cases through P0-USER-003 have been run.
 prerequisite_cases:

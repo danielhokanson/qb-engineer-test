@@ -9,6 +9,9 @@ goal: |
 roles:
   - Sales / Account Manager
   - Administrator
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one active customer with no open transactions exists.
 prerequisite_cases:

@@ -9,6 +9,9 @@ goal: |
   date range, and sorting.
 roles:
   - Procurement
+capabilities:
+  - CAP-P2P-PO
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least 20 POs exist across statuses and vendors.
 prerequisite_cases:

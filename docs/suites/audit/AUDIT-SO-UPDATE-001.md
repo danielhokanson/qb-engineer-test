@@ -9,6 +9,9 @@ goal: |
   actor, and timestamp.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-O2C-SO
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A confirmed SO exists with at least one line and a ship date.
 prerequisite_cases:

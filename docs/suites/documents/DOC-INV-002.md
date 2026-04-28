@@ -10,6 +10,9 @@ goal: |
   freight, grand total, payment terms, and remit-to instructions.
 roles:
   - Controller
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-O2C-INVOICE
 preconditions:
   - At least one posted customer invoice exists.
 prerequisite_cases:

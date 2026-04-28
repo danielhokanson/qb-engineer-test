@@ -8,6 +8,9 @@ goal: |
   feed vendor-portal / EDI integrations.
 roles:
   - Procurement
+capabilities:
+  - CAP-IDEN-AUTH-API-KEYS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
   - The integrations area exists.

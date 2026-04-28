@@ -11,6 +11,9 @@ goal: |
 roles:
   - Controller
   - AR Clerk
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-O2C-CREDITMEMO
 preconditions:
   - A tax rate change exists with an effective date.
   - At least one customer invoice was issued at the old rate before

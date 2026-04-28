@@ -12,6 +12,10 @@ roles:
   - Sales / Account Manager
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-QC-COA
+  - CAP-INV-LOTS
+  - CAP-CROSS-DOCS
 preconditions:
   - At least one lot-tracked finished good was inspected and shipped
     on a customer SO.

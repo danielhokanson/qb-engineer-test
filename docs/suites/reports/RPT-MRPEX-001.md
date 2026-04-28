@@ -10,6 +10,9 @@ goal: |
 roles:
   - Production Planner
   - Procurement
+capabilities:
+  - CAP-RPT-MRPEX
+  - CAP-PLAN-MRP
 preconditions:
   - At least one open SO with demand exists.
   - At least one part has demand that exceeds on-hand + on-order minus

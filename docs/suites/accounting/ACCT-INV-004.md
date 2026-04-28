@@ -13,6 +13,10 @@ optional_module: builtin-accounting-full-gl
 roles:
   - Shop Owner
   - Floor Operator
+capabilities:
+  - CAP-MFG-COMPLETE
+  - CAP-INV-CORE
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one item with on-hand stock and a known unit cost exists.
 prerequisite_cases:

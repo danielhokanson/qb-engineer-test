@@ -12,6 +12,9 @@ roles:
   - Controller
   - AP Clerk
   - AR Clerk
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-ACCT-PERIOD
 preconditions:
   - A fiscal period is approaching its close date.
   - At least two subledgers contain open items (e.g., unposted AP

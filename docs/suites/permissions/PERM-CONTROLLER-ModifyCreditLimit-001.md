@@ -9,6 +9,9 @@ goal: |
   values.
 roles:
   - Controller
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Controller user exists.
   - At least one customer with an existing credit limit exists.

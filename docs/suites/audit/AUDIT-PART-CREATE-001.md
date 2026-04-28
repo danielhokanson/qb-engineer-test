@@ -9,6 +9,9 @@ goal: |
 roles:
   - Engineer / R&D
   - Administrator
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A user with permission to create parts exists.
 steps:

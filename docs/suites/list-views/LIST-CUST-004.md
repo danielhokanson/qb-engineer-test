@@ -10,6 +10,9 @@ goal: |
 roles:
   - Sales / Account Manager
   - Administrator
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Customer list view is open with the default column set.
 steps:

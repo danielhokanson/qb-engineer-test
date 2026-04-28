@@ -14,6 +14,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-O2C-CASH
+  - CAP-CROSS-INTEG-FILE
 preconditions:
   - At least 5 open customer invoices across multiple customers.
   - A lockbox-format file (or equivalent batch entry) is available.

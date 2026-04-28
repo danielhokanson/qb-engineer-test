@@ -11,6 +11,10 @@ goal: |
 roles:
   - Administrator
   - AP Clerk
+capabilities:
+  - CAP-IDEN-ROLES
+  - CAP-CROSS-PERMS-MATRIX
+  - CAP-P2P-APPROVALS
 preconditions:
   - A role exists with an "approval limit" field set to exactly 0.
   - A user assigned to that role.

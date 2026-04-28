@@ -7,6 +7,9 @@ goal: |
   Verify a Warehouse user cannot modify BOMs.
 roles:
   - Warehouse / Logistics
+capabilities:
+  - CAP-MD-BOM
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Warehouse user exists with no other roles attached.
   - A finished part has a released BOM.

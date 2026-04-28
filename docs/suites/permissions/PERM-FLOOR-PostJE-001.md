@@ -9,6 +9,9 @@ goal: |
   by addressing the JE area's URL directly.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A user assigned only the Floor Operator role exists and can sign in.
   - The chart of accounts is initialized.

@@ -11,6 +11,9 @@ goal: |
 roles:
   - Inventory Clerk
   - Production Manager
+capabilities:
+  - CAP-INV-CORE
+  - CAP-MFG-MATL-ISSUE
 preconditions:
   - At least one part with a known on-hand quantity (e.g., 10 units).
 steps:

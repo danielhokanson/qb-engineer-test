@@ -10,6 +10,10 @@ goal: |
 roles:
   - Controller
   - Engineer / R&D
+capabilities:
+  - CAP-P2P-PO
+  - CAP-P2P-RECEIVE
+  - CAP-RPT-INVVAL
 preconditions:
   - At least one part with a non-trivial UoM (e.g., RM-STEEL-1018-3X3
     in feet).

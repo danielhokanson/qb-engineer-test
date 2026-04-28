@@ -15,6 +15,8 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-PLAN-FORECAST
 preconditions:
   - At least one finished part exists.
 steps:

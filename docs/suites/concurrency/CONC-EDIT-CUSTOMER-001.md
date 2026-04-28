@@ -11,6 +11,9 @@ goal: |
 roles:
   - Sales / Account Manager
   - Administrator
+capabilities:
+  - CAP-CROSS-CONCURRENCY
+  - CAP-MD-CUSTOMERS
 preconditions:
   - Two users with edit access to the same customer exist.
   - At least one customer record exists.

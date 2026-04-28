@@ -9,6 +9,9 @@ goal: |
 roles:
   - Procurement
   - Administrator
+capabilities:
+  - CAP-MD-VENDORS
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A user with permission to create vendors exists.
 steps:

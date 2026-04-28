@@ -11,6 +11,10 @@ goal: |
 roles:
   - Asset Administrator
   - Maintenance Manager
+capabilities:
+  - CAP-MD-ASSETS
+  - CAP-MAINT-ASSETLIFECYCLE
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 6 fixed assets exist in Department X with custodian =
     Person A.

@@ -7,6 +7,9 @@ goal: |
   Verify an HR user cannot void posted customer invoices.
 roles:
   - HR
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - An HR user exists with no other roles attached.
   - At least one posted customer invoice exists.

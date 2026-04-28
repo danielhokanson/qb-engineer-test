@@ -12,6 +12,10 @@ optional_module: builtin-accounting-full-gl
 # Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-ACCT-FULLGL
+  - CAP-RPT-FINANCIALS
 preconditions:
   - All months in the closing fiscal year are closed.
   - A non-zero net profit exists for that year.

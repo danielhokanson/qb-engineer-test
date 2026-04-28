@@ -9,6 +9,10 @@ goal: |
   references the open balance, not the original ordered quantity.
 roles:
   - Procurement
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-P2P-PO
+  - CAP-P2P-RECEIVE
 preconditions:
   - An issued PO has been partially received and has an open balance,
     with the expected delivery date in the past.

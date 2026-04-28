@@ -9,6 +9,9 @@ goal: |
   bill / JE) for the same amount.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one customer invoice and one vendor invoice (or expense
     JE) are posted in the closed period.

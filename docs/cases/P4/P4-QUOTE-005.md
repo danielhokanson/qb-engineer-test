@@ -11,6 +11,9 @@ roles:
   - Sales / Account Manager
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-O2C-QUOTE
+  - CAP-O2C-SO
 preconditions:
   - At least one quote with a validity period exists.
 prerequisite_cases:

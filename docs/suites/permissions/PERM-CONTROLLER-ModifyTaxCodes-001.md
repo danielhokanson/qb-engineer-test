@@ -8,6 +8,9 @@ goal: |
   and that the change is captured with prior / new values for audit.
 roles:
   - Controller
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Controller user exists.
   - At least one tax code is configured (e.g., a state sales tax with

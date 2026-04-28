@@ -9,6 +9,9 @@ goal: |
   formal Approve action belongs to Engineering.
 roles:
   - Production Manager
+capabilities:
+  - CAP-MD-ECO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Production Manager user exists with no other roles attached.
   - At least one open ECR exists.

@@ -13,6 +13,8 @@ roles:
   - Sales / Account Manager
 flows:
   - quote-to-cash
+capabilities:
+  - CAP-O2C-COLLECTIONS
 preconditions:
   - At least one customer has at least one invoice 15+ days past due.
 prerequisite_cases:

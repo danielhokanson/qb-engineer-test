@@ -13,6 +13,8 @@ roles:
   - Production Manager
 flows:
   - hire-to-first-assignment
+capabilities:
+  - CAP-HR-LEAVE
 preconditions:
   - At least one employee with a configured PTO accrual policy exists.
 steps:

@@ -13,6 +13,10 @@ optional_module: builtin-accounting
 roles:
   - Shop Owner
   - Administrator
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-MD-VENDORS
+  - CAP-O2C-INVOICE
 preconditions:
   - The chart of accounts has been initialized (ACCT-SETUP-001).
 prerequisite_cases:

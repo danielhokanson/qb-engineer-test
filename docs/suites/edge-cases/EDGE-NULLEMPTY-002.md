@@ -11,6 +11,8 @@ goal: |
 roles:
   - Administrator
   - AR Clerk
+capabilities:
+  - CAP-MD-CUSTOMERS
 preconditions:
   - At least one entity with a required text field.
 steps:

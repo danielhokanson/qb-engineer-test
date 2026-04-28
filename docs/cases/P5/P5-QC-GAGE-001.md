@@ -14,6 +14,9 @@ flows:
 scale_tags:
   - mid-market
   - enterprise
+capabilities:
+  - CAP-QC-GAGE
+  - CAP-QC-INSPECTION
 preconditions:
   - The inspection plan from P5-QC-INSPECT-001 references measurement
     tools.

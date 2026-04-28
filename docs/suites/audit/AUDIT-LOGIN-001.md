@@ -8,6 +8,9 @@ goal: |
   all recorded with user, timestamp, IP / source, and outcome.
 roles:
   - IT Admin
+capabilities:
+  - CAP-IDEN-AUTH-PASSWORD
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
 preconditions:
   - At least two users exist.
   - The system-wide audit log (audit_log_entries) is reachable for the IT Admin.

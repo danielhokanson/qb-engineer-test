@@ -8,6 +8,9 @@ goal: |
   each changed field with prior and new values, actor, and timestamp.
 roles:
   - Procurement
+capabilities:
+  - CAP-MD-VENDORS
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one active vendor exists.
 prerequisite_cases:

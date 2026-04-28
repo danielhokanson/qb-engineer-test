@@ -8,6 +8,9 @@ goal: |
   tenant administration is a separate authority.
 roles:
   - Administrator
+capabilities:
+  - CAP-HR-PAYROLL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - The Administrator user exists with no other roles attached.
   - At least one prepared payroll run exists.

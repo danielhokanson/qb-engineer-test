@@ -10,6 +10,9 @@ goal: |
 roles:
   - Order Entry
   - Controller
+capabilities:
+  - CAP-O2C-SO
+  - CAP-O2C-INVOICE
 preconditions:
   - At least one customer.
   - At least one part.

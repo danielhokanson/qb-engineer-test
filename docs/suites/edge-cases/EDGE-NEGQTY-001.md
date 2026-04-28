@@ -11,6 +11,9 @@ goal: |
 roles:
   - Order Entry
   - Controller
+capabilities:
+  - CAP-O2C-SO
+  - CAP-O2C-RMA
 preconditions:
   - At least one customer.
   - At least one stocked finished good with on-hand inventory.

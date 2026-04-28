@@ -8,6 +8,8 @@ goal: |
   creation is audited.
 roles:
   - IT Admin
+capabilities:
+  - CAP-IDEN-USERS
 preconditions:
   - An IT Admin user exists.
   - At least one role exists to assign to a new user.

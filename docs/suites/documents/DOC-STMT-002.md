@@ -11,6 +11,9 @@ goal: |
   aging for that customer as of the statement end date.
 roles:
   - Controller
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-O2C-COLLECTIONS
 preconditions:
   - A customer with multiple invoices, at least one payment, and at
     least one credit memo within the date range exists.

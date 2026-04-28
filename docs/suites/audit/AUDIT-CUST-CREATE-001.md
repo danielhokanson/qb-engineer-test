@@ -10,6 +10,9 @@ goal: |
 roles:
   - Sales / Account Manager
   - Administrator
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A user with permission to create customers exists.
 steps:

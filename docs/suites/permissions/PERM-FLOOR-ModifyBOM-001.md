@@ -7,6 +7,9 @@ goal: |
   Verify a Floor Operator cannot modify BOMs.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-MD-BOM
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists with no other roles attached.
   - A finished part has a released BOM.

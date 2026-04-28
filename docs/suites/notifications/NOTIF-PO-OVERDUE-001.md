@@ -9,6 +9,9 @@ goal: |
   buyer team.
 roles:
   - Procurement
+capabilities:
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-P2P-PO
 preconditions:
   - At least one issued PO with an expected delivery date in the past
     and not fully received.

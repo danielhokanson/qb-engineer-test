@@ -9,6 +9,9 @@ goal: |
   and each invoice the payment was applied to with the applied amount.
 roles:
   - AR Clerk
+capabilities:
+  - CAP-O2C-CASH
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one posted, unpaid customer invoice exists.
 prerequisite_cases:

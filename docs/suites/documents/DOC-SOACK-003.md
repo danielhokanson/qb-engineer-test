@@ -10,6 +10,10 @@ goal: |
   it.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-CROSS-NOTIFICATIONS
+  - CAP-O2C-SO
 preconditions:
   - An accepted sales order with a valid customer email contact
     exists.

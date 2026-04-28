@@ -9,6 +9,9 @@ goal: |
 roles:
   - Engineer / R&D
   - Administrator
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - At least one active part with no open demand or supply exists.
 prerequisite_cases:

@@ -10,6 +10,10 @@ goal: |
   that account.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
+  - CAP-ACCT-PERIOD
 preconditions:
   - The period has both pre-close and post-close states
     available (closing JEs were posted as part of P5-CLOSE-004).

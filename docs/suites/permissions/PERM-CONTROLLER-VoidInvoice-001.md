@@ -9,6 +9,9 @@ goal: |
   trail.
 roles:
   - Controller
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Controller user exists.
   - At least one posted customer invoice exists.

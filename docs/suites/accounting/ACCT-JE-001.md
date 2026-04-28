@@ -13,6 +13,8 @@ optional_module: builtin-accounting-full-gl
 # Reconciled in Phase 2 — module tag split per L1.
 roles:
   - Shop Owner
+capabilities:
+  - CAP-ACCT-FULLGL
 preconditions:
   - The accounting module is set up with a chart of accounts.
   - The user has permission to record manual adjustments.

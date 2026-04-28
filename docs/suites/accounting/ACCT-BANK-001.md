@@ -13,6 +13,9 @@ optional_module: builtin-accounting-full-gl
 roles:
   - Shop Owner
   - AR Clerk
+capabilities:
+  - CAP-O2C-CASH
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least two received customer payments exist that have not yet
     been deposited (e.g., $200.00 and $300.00).

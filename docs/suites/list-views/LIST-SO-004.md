@@ -9,6 +9,9 @@ goal: |
 roles:
   - Sales / Account Manager
   - Customer Service
+capabilities:
+  - CAP-O2C-SO
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Test environment must have >= 5,000 rows of the entity under
     test seeded; use `/api/v1/dev/seed-bulk-list?entity=so&count=5000`

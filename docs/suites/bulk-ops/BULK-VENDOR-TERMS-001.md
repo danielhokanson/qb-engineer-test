@@ -9,6 +9,9 @@ goal: |
   per-row success / failure report.
 roles:
   - Procurement
+capabilities:
+  - CAP-MD-VENDORS
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 5 vendors exist.
 prerequisite_cases:

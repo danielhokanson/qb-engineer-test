@@ -15,6 +15,9 @@ roles:
   - Shop Owner
   - AR Clerk
   - AP Clerk
+capabilities:
+  - CAP-ACCT-PERIOD
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one closed month exists (use ACCT-CLOSE-001).
 prerequisite_cases:

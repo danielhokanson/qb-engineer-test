@@ -7,6 +7,9 @@ goal: |
   Verify a Floor Operator cannot approve ECRs.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-MD-ECO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists with no other roles attached.
   - At least one open ECR exists.

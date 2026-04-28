@@ -9,6 +9,9 @@ goal: |
   invoices after the fact.
 roles:
   - Warehouse / Logistics
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Warehouse user exists with no other roles attached.
   - At least one posted customer invoice exists.

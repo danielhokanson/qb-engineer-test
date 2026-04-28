@@ -10,6 +10,10 @@ goal: |
 roles:
   - Procurement
   - Buyer
+capabilities:
+  - CAP-MD-PARTS
+  - CAP-PLAN-MRP
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - At least 8 parts exist with the same primary vendor.
   - MRP / planning is configured for those parts.

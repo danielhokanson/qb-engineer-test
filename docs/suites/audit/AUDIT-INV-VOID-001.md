@@ -10,6 +10,9 @@ goal: |
 roles:
   - AR Clerk
   - Controller
+capabilities:
+  - CAP-O2C-INVOICE
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A posted, unpaid customer invoice exists.
 prerequisite_cases:

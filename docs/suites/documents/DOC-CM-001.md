@@ -11,6 +11,9 @@ goal: |
   amount, and remit-to instructions where the credit applies.
 roles:
   - Controller
+capabilities:
+  - CAP-CROSS-DOCS
+  - CAP-O2C-CREDITMEMO
 preconditions:
   - At least one posted credit memo (against a prior invoice) exists.
 prerequisite_cases:

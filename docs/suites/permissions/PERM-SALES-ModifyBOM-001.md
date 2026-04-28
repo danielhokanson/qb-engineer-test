@@ -9,6 +9,9 @@ goal: |
   configured-BOM revision; Sales requests it.
 roles:
   - Sales / Account Manager
+capabilities:
+  - CAP-MD-BOM
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Sales user exists with no other roles attached.
   - A finished part has a released BOM.

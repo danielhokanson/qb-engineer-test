@@ -9,6 +9,9 @@ goal: |
   balance sheet.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
 preconditions:
   - The period is closed and a P&L and balance sheet have been run
     for it.

@@ -11,6 +11,10 @@ goal: |
 roles:
   - Administrator
   - Procurement
+capabilities:
+  - CAP-MD-VENDORS
+  - CAP-CROSS-INTEG-FILE
+  - CAP-CROSS-BULK-OPS
 preconditions:
   - Payment-terms list, currency list, and country list are
     configured.

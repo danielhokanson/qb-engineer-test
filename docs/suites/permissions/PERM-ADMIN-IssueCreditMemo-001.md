@@ -7,6 +7,9 @@ goal: |
   Verify the Administrator cannot issue credit memos.
 roles:
   - Administrator
+capabilities:
+  - CAP-O2C-CREDITMEMO
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - The Administrator user exists with no other roles attached.
   - At least one customer with an open AR balance exists.

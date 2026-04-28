@@ -11,6 +11,10 @@ goal: |
 roles:
   - Controller
   - Warehouse / Logistics
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-RPT-INVVAL
+  - CAP-INV-CORE
 preconditions:
   - The closed period has COGS activity and the inventory
     valuation has been run (RPT-INVVAL-001).

@@ -10,6 +10,8 @@ goal: |
   system within the documented sync window.
 roles:
   - Controller
+capabilities:
+  - CAP-ACCT-EXTERNAL
 preconditions:
   - The accounting integration is configured to a test sandbox
     (not real).

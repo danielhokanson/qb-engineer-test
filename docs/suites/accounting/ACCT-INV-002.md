@@ -13,6 +13,10 @@ optional_module: builtin-accounting-full-gl
 roles:
   - Shop Owner
   - Floor Operator
+capabilities:
+  - CAP-MFG-MATL-ISSUE
+  - CAP-INV-CORE
+  - CAP-ACCT-FULLGL
 preconditions:
   - At least one open work order exists.
   - At least one raw-material item with sufficient on-hand stock and

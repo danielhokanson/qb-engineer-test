@@ -10,6 +10,9 @@ goal: |
 roles:
   - Production Operator
   - Production Planner
+capabilities:
+  - CAP-MFG-COMPLETE
+  - CAP-CROSS-ACTIVITY-LOG
 preconditions:
   - A WO is in-process with material issued.
 prerequisite_cases:

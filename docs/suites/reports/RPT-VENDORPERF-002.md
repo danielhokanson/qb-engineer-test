@@ -9,6 +9,9 @@ goal: |
   % are computed only from receipts dated within the range.
 roles:
   - Procurement
+capabilities:
+  - CAP-RPT-OPERATIONAL
+  - CAP-P2P-RECEIVE
 preconditions:
   - One vendor has receipts spanning multiple periods (some good,
     some late, some with rejected qty), enough to make a date-

@@ -10,6 +10,9 @@ goal: |
 roles:
   - Procurement
   - AP / Accounts Payable
+capabilities:
+  - CAP-P2P-PO
+  - CAP-CROSS-LIST-UX
 preconditions:
   - At least 50 POs exist across multiple statuses, due dates, and
     total amounts.

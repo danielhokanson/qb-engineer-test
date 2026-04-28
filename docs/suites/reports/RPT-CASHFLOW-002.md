@@ -9,6 +9,9 @@ goal: |
   equals the actual cash-account postings classified to that source.
 roles:
   - Controller
+capabilities:
+  - CAP-RPT-FINANCIALS
+  - CAP-ACCT-FULLGL
 preconditions:
   - The application supports direct-method cash flow (or both
     methods).

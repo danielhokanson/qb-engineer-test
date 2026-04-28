@@ -11,6 +11,8 @@ goal: |
 roles:
   - Order Entry
   - Controller
+capabilities:
+  - CAP-O2C-SO
 preconditions:
   - At least one customer.
   - At least one part with configurable unit price to six decimals.

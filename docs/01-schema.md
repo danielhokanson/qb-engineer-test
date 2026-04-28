@@ -26,6 +26,7 @@ The author writes prose. Plain English steps. Multi-line notes. JSON makes that 
 |---|---|---|
 | `why_this_matters` | string | Plain-English business reason. Skipped by experienced testers, read by interns. Use sparingly — only on cases where the reason isn't obvious from the goal. |
 | `scale_tags` | list | Which business sizes this case applies to. Values: `small-shop`, `mid-market`, `enterprise`. If absent, the case applies to all. |
+| `capabilities` | list | Capability IDs (from `qb-engineer.api/Capabilities/CapabilityCatalog.cs`) the case actively demonstrates in its `steps:`. See "Capability tags" below for the binding convention. Sits between `scale_tags` and `preconditions` in source order. |
 | `modality` | list | Which input paths this case exercises. Values: `keyboard`, `touch`, `scanner`, `manual-entry`. Defaults to `keyboard`. Cases that only apply to a specific modality (scanner-specific behaviors) tag accordingly. |
 | `branches` | list | Branch declarations. See "Branching" below. |
 | `prerequisite_cases` | list | Other case IDs that must pass before this one can be attempted. Used by the runner for dependency tracking and the skip-ahead feature. |
@@ -100,6 +101,55 @@ negative_variants:
 ```
 
 A negative variant inherits the parent's preconditions and prior steps unless it overrides them.
+
+## Capability tags
+
+The `capabilities:` field cross-references each case to the application's authoritative capability catalog (`qb-engineer-server/qb-engineer.api/Capabilities/CapabilityCatalog.cs`). It enables offline coverage queries: which cases exercise which capabilities, and which capabilities have no case authored against them.
+
+### Binding convention
+
+> **A case's `capabilities:` array lists every capability the case *actively demonstrates in its `steps:`*.**
+>
+> A capability is "actively demonstrated" when: **if that capability were disabled at install time, this case would fail at one of its `steps:` (not preconditions, not setup).** The test would be unable to complete because the underlying feature isn't accessible.
+
+### Rules
+
+- **Multi-capability flow cases** (e.g., "create quote → convert to SO → invoice") list ALL capabilities exercised across the steps. Order is not significant. Example: `["CAP-O2C-QUOTE", "CAP-O2C-SO", "CAP-O2C-INVOICE"]`.
+- **Master-data preconditions** that exist as setup but aren't being tested do NOT tag. A case that creates a quote against an existing customer does not tag `CAP-MD-CUSTOMERS` unless one of its steps exercises customer CRUD.
+- **Foundation / bootstrap / setup cases** that don't exercise any feature capability use `capabilities: []` (explicit empty array). This signals "considered, intentionally none" and distinguishes from "not yet tagged".
+- **Cross-cutting capabilities (`CAP-CROSS-*`)** generally do not tag at the case level. They describe system-wide guarantees, not specific feature flows. The exception: a case that specifically tests a cross-cutting behavior (e.g., bulk-edit UX, optimistic locking conflict) tags the relevant `CAP-CROSS-*`.
+- **Unknown capability IDs are an error.** Every ID must exist in `CapabilityCatalog.cs`. Build tooling does not currently enforce this; reviewers verify by grep against the catalog.
+
+### Examples
+
+A multi-capability flow case:
+
+```yaml
+id: P5-FX-REVAL-001
+title: Run period-end FX revaluation on open foreign-currency balances
+# ... goal, roles, etc.
+scale_tags:
+  - mid-market
+  - enterprise
+capabilities:
+  - CAP-ACCT-FXREVAL
+  - CAP-ACCT-PERIOD
+preconditions:
+  - At least one open AR or AP balance in a foreign currency exists.
+  # ...
+```
+
+A foundation case with no capabilities exercised in steps:
+
+```yaml
+id: P0-INSTALL-001
+title: Open the application's starting page in a fresh browser
+# ... goal, roles, etc.
+capabilities: []
+preconditions:
+  - The application is installed and reachable at its expected URL.
+  # ...
+```
 
 ## Example: a fully fleshed case
 

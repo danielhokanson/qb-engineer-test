@@ -9,6 +9,10 @@ goal: |
   new role, and timestamp.
 roles:
   - IT Admin
+capabilities:
+  - CAP-IDEN-USERS
+  - CAP-IDEN-ROLES
+  - CAP-IDEN-AUDIT-SYSTEM-LOG
 preconditions:
   - An IT Admin user exists.
   - At least one non-admin user exists.

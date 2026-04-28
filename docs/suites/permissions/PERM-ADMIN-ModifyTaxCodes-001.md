@@ -9,6 +9,9 @@ goal: |
   Controller; the Administrator owns tenant identity, not finance.
 roles:
   - Administrator
+capabilities:
+  - CAP-MD-TAXCODES
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - The Administrator user exists with no other roles attached.
   - At least one tax code is configured.

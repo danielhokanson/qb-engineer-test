@@ -7,6 +7,9 @@ goal: |
   Verify a Floor Operator cannot approve pending JEs.
 roles:
   - Floor Operator
+capabilities:
+  - CAP-ACCT-FULLGL
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Floor Operator user exists with no other roles attached.
   - At least one over-threshold JE awaiting approval exists.

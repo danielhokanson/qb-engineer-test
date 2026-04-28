@@ -11,6 +11,10 @@ goal: |
 roles:
   - Administrator
   - AR Clerk
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-INTEG-FILE
+  - CAP-CROSS-LIST-UX
 preconditions:
   - Customer creation is available.
   - CSV export and import are available for customers.

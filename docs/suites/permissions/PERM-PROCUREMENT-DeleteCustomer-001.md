@@ -7,6 +7,9 @@ goal: |
   Verify a Procurement user cannot delete customer records.
 roles:
   - Procurement
+capabilities:
+  - CAP-MD-CUSTOMERS
+  - CAP-CROSS-PERMS-MATRIX
 preconditions:
   - A Procurement user exists with no other roles attached.
   - At least one customer record exists.
