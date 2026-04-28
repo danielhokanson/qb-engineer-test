@@ -33,4 +33,22 @@ pass_criteria: |
   Entry present with attribution, total, application detail, and GL
   reference.
 est_minutes: 5
+moot:
+  decision: moot-by-design
+  determined_at: 2026-04-28
+  determined_by: Phase 3 closeout / orchestrator-approved
+  reason: |
+    Same as AUDIT-INV-POST-001 — the "GL cash-receipt reference" pass
+    criterion is unsatisfiable in standalone mode (no local GL) and in
+    QB-connected mode the equivalent is the QB sync ID. Local GL ledger
+    is intentionally delegated.
+  consultant_guidance: |
+    In QB-connected mode the QB sync ID for the payment application is
+    the operational equivalent of the GL cash-receipt reference. The
+    audit row itself (actor, timestamp, payment total, application detail)
+    is recorded post-WU-03; the local GL link doesn't exist by design.
+  alternative_behavior: |
+    /admin/audit-log records the PaymentApplied event with actor + total
+    + applied-invoice details. The cash-receipt GL leg lives on the
+    connected accounting provider's books.
 ```

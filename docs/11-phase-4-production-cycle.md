@@ -298,6 +298,26 @@ negative_variants:
       Release is blocked with a clear "no active routing" message.
     pass_criteria: |
       Release blocked AND error names missing routing.
+moot:
+  decision: moot-by-design
+  determined_at: 2026-04-28
+  determined_by: Phase 3 closeout / orchestrator-approved
+  reason: |
+    Per Option A SO/Job unification (WU-18 locked decision), Job is the
+    canonical work-execution entity and a stage transition replaces
+    "release WO from SO". The case wording assumes Option B
+    architecture (separate WO entity created from SO). qb-engineer does
+    not have a "release WO from SO" endpoint by design.
+  consultant_guidance: |
+    WO release is a Job stage transition, not a separate endpoint. The
+    Sales Order is the same Job at the "Order Confirmed" stage; moving
+    the Job into a production-released stage performs the operation
+    this case targets. Use the Job stage-transition surface rather than
+    looking for a /release endpoint on Sales Order.
+  alternative_behavior: |
+    POST /jobs creates the Job (= SO + WO unified). Stage transitions
+    on the Job carry the work into production. BOM/routing snapshots at
+    the stage transition time supply the "lock at release" semantic.
 ```
 
 ---
@@ -1140,6 +1160,27 @@ negative_variants:
       customer" message.
     pass_criteria: |
       Cross-customer application refused.
+moot:
+  decision: moot-by-design
+  determined_at: 2026-04-28
+  determined_by: Phase 3 closeout / orchestrator-approved
+  reason: |
+    GL postings under intentional accounting delegation. The standalone
+    application has no GL surface; the QB-connected application
+    delegates GL postings to QB. The pass criterion "GL postings correct"
+    is not directly observable inside qb-engineer in either mode.
+  consultant_guidance: |
+    Cash receipts post to AR via the customer payment-application
+    surface (POST /payments). The GL cash debit / AR credit is recorded
+    in your accounting provider (QB/Xero/etc.); confirm it there. In
+    standalone mode you have an AR sub-ledger but no GL — same posture
+    as the rest of accounting-bounded features per CLAUDE.md
+    "Accounting Boundary".
+  alternative_behavior: |
+    POST /payments records the payment with applications across open
+    invoices; invoice balanceDue → 0 and status → Paid; customer AR
+    sub-ledger updated. The contra-account GL leg is owned by the
+    connected accounting provider.
 ```
 
 ---

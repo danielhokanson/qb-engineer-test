@@ -45,4 +45,20 @@ pass_criteria: |
   Office-supplies expense up by $75.00 AND cash down by $75.00 AND
   no impact on payroll figures.
 est_minutes: 4
+moot:
+  decision: moot-by-design
+  determined_at: 2026-04-28
+  determined_by: Phase 3 closeout / orchestrator-approved
+  reason: |
+    Payroll is delegated to the connected accounting/payroll provider.
+    The "no payroll-impact" pass criterion is unverifiable in either mode
+    (standalone has no payroll module; QB-connected delegates payroll to QB).
+  consultant_guidance: |
+    Reimbursements are recorded via /expenses (separate from payroll surfaces).
+    Any payroll-side impact verification must be performed in the connected
+    accounting/payroll provider — qb-engineer does not own the payroll-vs-expense
+    category split.
+  alternative_behavior: |
+    /expenses POST records the reimbursement against the employee with the
+    chosen expense category. Cash leg lives in the accounting provider.
 ```

@@ -52,4 +52,22 @@ why_this_matters: |
   additional sales corrupts both revenue and stock — and the bug is
   hard to spot until the physical count fails.
 est_minutes: 10
+moot:
+  decision: moot-by-design
+  determined_at: 2026-04-28
+  determined_by: Phase 3 closeout / orchestrator-approved
+  reason: |
+    Mixed sale + return on a single sales order is rejected by design.
+    The application uses the RMA flow for returns rather than allowing
+    negative-quantity lines on a sale order. The case wording assumes
+    a single-document mixed-line architecture this app intentionally
+    does not implement.
+  consultant_guidance: |
+    Use the RMA workflow for returns instead of negative line quantities
+    on a sales order. The application validates SalesOrderLine.Quantity > 0
+    on POST /orders.
+  alternative_behavior: |
+    Returns are processed via the RMA (return-merchandise-authorization)
+    flow — a separate document type that posts the credit to revenue and
+    increases on-hand inventory.
 ```

@@ -34,4 +34,24 @@ pass_criteria: |
   Posting entry present AND captures attribution, amount, and GL
   reference.
 est_minutes: 5
+moot:
+  decision: moot-by-design
+  determined_at: 2026-04-28
+  determined_by: Phase 3 closeout / orchestrator-approved
+  reason: |
+    The "GL reference" pass criterion is unsatisfiable in standalone mode
+    (no local GL by design) and in QB-connected mode the operational
+    equivalent is the QB sync ID, not a local GL journal-line reference.
+    The case wording assumes a local GL ledger that the application
+    intentionally does not maintain.
+  consultant_guidance: |
+    In QB-connected mode the QB sync ID (quickbooksDocId on the synced
+    invoice) serves the audit-trail purpose the case originally targeted.
+    The audit-log row itself (with actor, timestamp, invoice, amount) is
+    produced by the system-wide audit log post-WU-03; the missing piece
+    is only the local GL link, which doesn't exist by design.
+  alternative_behavior: |
+    /admin/audit-log records the InvoicePosted event with actor + amount.
+    The downstream GL effect is recorded on the connected accounting
+    provider's books; trace via the QB sync surface.
 ```
