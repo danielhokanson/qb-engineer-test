@@ -1,0 +1,115 @@
+# Release workflow for qb-engineer-test (test-bed SPA)
+#
+# Triggers:
+#   - push to main             -> :main-<sha> + :latest
+#   - push of a v*.*.* tag     -> :X.Y.Z + :X.Y + :X
+#
+# Image goes to GHCR (ghcr.io/danielhokanson/qb-engineer-test) as a native
+# linux/arm64 build (Raspberry Pi production target). Mirrors the
+# qb-engineer-server / qb-engineer-ui release.yml shape (Phase 2/6 references).
+# To add amd64 later, set `platforms` on build-push to
+# `linux/arm64,linux/amd64` and add a `docker/setup-qemu-action` step.
+#
+# Tests gate the image push: lint-equivalent (build:content), Angular
+# production build, and Vitest must all succeed before build-and-push
+# starts. The build:content step runs as part of the prebuild hook in
+# the package.json — it doubles as a YAML-content validity gate so a
+# malformed scenario file blocks the workflow before the Docker build.
+#
+# Build context is the REPO ROOT (one level above test-bed/) because the
+# build-content compile step in the Dockerfile reads from ../docs.
+
+name: Release
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*.*.*']
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: test-bed
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: test-bed/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Compile scenario content — `prebuild` would run this, but
+      # invoking it explicitly here doubles as a content-validity gate
+      # that fails the workflow on malformed YAML/Markdown before any
+      # Angular work starts.
+      - name: Compile scenario content
+        run: npm run build:content
+
+      - name: Build (production)
+        run: npx ng build --configuration=production
+
+      - name: Unit tests (Vitest)
+        run: npx ng test
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=sha,prefix=main-,format=short,enable=${{ github.ref == 'refs/heads/main' }}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./test-bed/Dockerfile
+          push: true
+          platforms: linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

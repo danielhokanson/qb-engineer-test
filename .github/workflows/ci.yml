@@ -1,0 +1,52 @@
+# PR + push CI for qb-engineer-test
+#
+# Runs on: every PR into develop or main, every push to develop or main.
+# Steps: install, compile scenario content, build, unit tests (Vitest).
+# This catches YAML/Markdown errors and broken builds before they reach main.
+#
+# Mirrors the test-job portion of release.yml, minus the image build/push.
+
+name: CI
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: test-bed
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: test-bed/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile scenario content
+        run: npm run build:content
+
+      - name: Build (production)
+        run: npx ng build --configuration=production
+
+      - name: Unit tests (Vitest)
+        run: npx ng test
