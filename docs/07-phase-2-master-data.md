@@ -691,8 +691,8 @@ id: P2-PART-001
 title: Create a raw material part
 phase: P2
 goal: |
-  Add the first raw-material part to inventory. Will be referenced
-  by BOMs and POs.
+  Add the first raw-material part to inventory using the guided
+  workflow. Will be referenced by BOMs and POs.
 roles:
   - Engineer / R&D
   - Procurement
@@ -703,36 +703,68 @@ capabilities:
 preconditions:
   - At least one unit of measure exists (P1-UOM-001).
   - Default inventory GL account exists (P1-GL-001).
+  - At least one vendor exists for the preferred-vendor pick (e.g. Pacific Steel Supply from P2-VENDOR-001).
 steps:
   - n: 1
     action: |
-      Find and open the parts / items area. Choose to create a new
-      part.
+      Find and open the parts area. Click the New Part button.
     expected: |
-      The part creation form appears.
+      A four-step fork dialog opens asking how the part should be
+      sourced. The dialog title indicates a brand-new part is being
+      added.
   - n: 2
     action: |
-      Enter:
-      - Part number: "RM-STEEL-1018-3X3"
-      - Description: "Cold-rolled steel bar, 1018, 3in x 3in x 12ft"
-      - Type: Raw material
-      - Unit of measure: foot
-      - Default vendor: Pacific Steel Supply
-      - Inventory GL account: from P1-GL-001
+      Step 1 — pick "Bought" (purchased from a vendor as-is).
     expected: |
-      The form accepts the values and saves.
+      The selected card highlights with a check icon. Step 2
+      ("inventory bucket") appears below with a soft fade-in.
   - n: 3
     action: |
-      Open the part. Verify all values are visible.
+      Step 2 — pick "Raw material" (bulk input — bar stock, sheet,
+      pellets, wire).
     expected: |
-      Part exists with stable ID. Type, UoM, and default vendor are
-      visible.
+      The selected card highlights. Step 3 ("item kind") appears
+      with an OPTIONAL pill chip on its heading. Step 4 (mode)
+      also appears, with one mode marked as the recommended default.
+  - n: 4
+    action: |
+      Skip step 3 (leave item kind unselected). On step 4, accept
+      the recommended default mode (Express for Buy + Raw — "All
+      at once"). Click Continue.
+    expected: |
+      The fork dialog closes. The express form opens in a centered
+      dialog with title "New part" and a small "Express" indicator
+      in the header.
+  - n: 5
+    action: |
+      Fill in the express form:
+      - Name: "RM-STEEL-1018-3X3"
+      - Description: "Cold-rolled steel bar, 1018, 3in x 3in x 12ft"
+      - Traceability: Bulk (no tracking)
+      - ABC Class: leave unset
+      - Manual cost override: $4.50
+      Click Save.
+    expected: |
+      The form posts. A success snackbar appears. The browser
+      navigates back to the parts list and the new part is visible
+      in the table.
+  - n: 6
+    action: |
+      Open the new part record. Verify the procurement source
+      (Buy), inventory class (Raw), name, and cost are persisted.
+    expected: |
+      Part exists with a stable ID and a part number generated
+      from the configured pattern. All four-axis values from the
+      fork dialog are stored on the row.
 expected_overall: |
-  Raw material part exists, ready to be referenced on BOMs and POs.
+  Raw material part exists, created via the new-part fork dialog
+  and the express workflow form, ready to be referenced on BOMs
+  and POs.
 pass_criteria: |
-  Part record exists AND default vendor links correctly AND UoM
-  is what was entered.
-est_minutes: 5
+  Part record exists AND procurement source is Buy AND inventory
+  class is Raw AND the name + cost entered on the express form
+  are persisted.
+est_minutes: 6
 negative_variants:
   - id: P2-PART-001-N1
     title: Reject duplicate part number
@@ -771,11 +803,12 @@ negative_variants:
 
 ```yaml
 id: P2-PART-002
-title: Create a finished-goods part
+title: Create a finished-goods part (made in-house)
 phase: P2
 goal: |
-  Add a finished-goods part the business sells. This part will get
-  a BOM and a routing in subsequent cases.
+  Add a finished-goods part the business manufactures using the
+  guided workflow's full step rail. This part will get a BOM and a
+  routing in subsequent cases.
 roles:
   - Engineer / R&D
   - Sales / Account Manager
@@ -785,30 +818,74 @@ flows:
 capabilities:
   - CAP-MD-PARTS
 preconditions:
-  - A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)
+  - A raw material part record exists (e.g. RM-STEEL-1018-3X3). (Established by P2-PART-001.)
 steps:
   - n: 1
     action: |
-      Create a new part:
-      - Part number: "FG-BRACKET-A1"
-      - Description: "Mounting bracket, model A1"
-      - Type: Finished goods
-      - Unit of measure: each
-      - Default sales GL account
+      From the parts list, click New Part. The fork dialog opens.
+      Step 1 — pick "Made" (produced in-house). Step 2 — pick
+      "Finished good" (sold to customers). Skip step 3 (item kind).
+      Step 4 — accept the recommended Guided mode ("Step by step").
+      Click Continue.
     expected: |
-      Part saves.
+      The fork dialog closes. The guided workflow shell opens with
+      a left rail showing the steps for Make + FinishedGood (basics,
+      BOM, routing, costing, shipping, quality, alternates). The
+      header reads "New part" with a "Step 1 of N · Basics"
+      breadcrumb. Mode toggle in the header shows Guided active.
   - n: 2
     action: |
-      Set a list price on the part (e.g., $45.00).
+      Fill the Basics step:
+      - Name: "FG-BRACKET-A1"
+      - Description: "Mounting bracket, model A1"
+      Click Continue.
     expected: |
-      Price field accepts value. Sales orders will default to this
-      price unless overridden.
+      The basics indicator on the rail flips to a green check with
+      a brief pop animation. The shell advances to the BOM step
+      with a soft content fade-in. The breadcrumb updates to
+      "Step 2 of N · Bill of Materials".
+  - n: 3
+    action: |
+      Add at least one component to the BOM (the raw material from
+      P2-PART-001 will work). Continue.
+    expected: |
+      BOM step shows the added component. Rail step ticks complete
+      on Continue. Routing step opens.
+  - n: 4
+    action: |
+      Skip routing for now (will be added in P2-ROUTE-001). Click
+      Continue. On the costing step, set Manual cost override:
+      $45.00. Continue.
+    expected: |
+      Costing rail entry ticks complete. Subsequent optional steps
+      (shipping, quality, alternates) are present and navigable.
+  - n: 5
+    action: |
+      Click Mark Complete from the last step.
+    expected: |
+      The server's readiness gate runs. Because routing isn't set
+      yet (hasRouting gate fails for Make + FinishedGood), the
+      Routing rail row turns red with a warning marker AND an
+      inline alert appears at the top of the routing step body
+      listing "Routing operations not yet defined." A toast also
+      surfaces the missing-validators message.
+  - n: 6
+    action: |
+      Jump back to the routing step from the rail (click it). Add
+      one operation. Mark Complete again.
+    expected: |
+      The routing rail row clears its error marker and goes green.
+      Mark Complete succeeds; a snackbar reads "Part promoted to
+      Active." The browser returns to the parts list.
 expected_overall: |
-  Finished-goods part exists with a list price.
+  Make + Finished-goods part exists, walked through the full guided
+  workflow (basics, BOM, routing, costing). Promoted to Active via
+  Mark Complete after all required gates passed.
 pass_criteria: |
-  Part exists AND has a list price AND is classified as finished
-  goods (not raw material).
-est_minutes: 4
+  Part exists AND procurement source is Make AND inventory class is
+  FinishedGood AND status is Active AND a BOM and routing entry
+  both exist on the part.
+est_minutes: 9
 negative_variants:
   - id: P2-PART-002-N1
     title: Reject negative list price
@@ -851,16 +928,19 @@ capabilities:
   - CAP-MD-PARTS
   - CAP-INV-LOTS
 preconditions:
-  - A raw material part record exists (e.g. RM-STEEL-1018-3X3) with type, unit of measure, default vendor, and inventory GL account. (Established by P2-PART-001.)
+  - A raw material part record exists (e.g. RM-STEEL-1018-3X3). (Established by P2-PART-001.)
 steps:
   - n: 1
     action: |
-      Open RM-STEEL-1018-3X3. Find lot-tracking settings.
+      Open RM-STEEL-1018-3X3 from the parts list. Locate the
+      Traceability field (on the part detail page or the basics
+      step of the part workflow if relaunched).
     expected: |
-      A toggle or option to enable lot tracking is present.
+      A three-choice control is present: Bulk (no tracking), By
+      lot / batch, By serial number. The current value is "Bulk".
   - n: 2
     action: |
-      Enable lot tracking. Save.
+      Change Traceability to "By lot / batch". Save.
     expected: |
       Setting persists. Future receipts of this part will require
       a lot number; future issues will track which lot was consumed.
@@ -911,18 +991,21 @@ capabilities:
   - CAP-MD-PARTS
   - CAP-INV-SERIALS
 preconditions:
-  - A finished-goods part exists (e.g. FG-BRACKET-A1) with type, unit of measure, sales GL account, and a list price. (Established by P2-PART-002.)
+  - A finished-goods part exists (e.g. FG-BRACKET-A1). (Established by P2-PART-002.)
 steps:
   - n: 1
     action: |
-      Open FG-BRACKET-A1. Find serial-tracking settings.
+      Open FG-BRACKET-A1 from the parts list. Locate the
+      Traceability field (on the part detail page or the basics
+      step of the part workflow).
     expected: |
-      A toggle or option for serial tracking is present, distinct
-      from lot tracking.
+      The traceability control offers three choices: Bulk, By lot /
+      batch, By serial number. Current value reflects what was set
+      during creation (likely Bulk).
   - n: 2
     action: |
-      Enable serial tracking. Configure serial format if available
-      (e.g., "BRA-{YYYY}-{nnnnn}").
+      Change Traceability to "By serial number". Configure a serial
+      format if available (e.g., "BRA-{YYYY}-{nnnnn}"). Save.
     expected: |
       Setting saves. Future production completions of this part
       will require a serial number.
@@ -1018,6 +1101,642 @@ negative_variants:
     pass_criteria: |
       Bad row is flagged AND good rows are not blocked AND error
       message names the field and the bad value.
+```
+
+---
+
+## P2-WIZARD-001 — New-part fork dialog: four-step axis picker
+
+```yaml
+id: P2-WIZARD-001
+title: Walk through the four-step new-part fork dialog
+phase: P2
+goal: |
+  Verify the new-part fork dialog correctly cascades from
+  procurement source through inventory class, item kind, and
+  workflow mode. Each step should reveal only when the prior
+  step is satisfied.
+roles:
+  - Engineer / R&D
+flows:
+  - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
+preconditions:
+  - The user is signed in with permission to create parts.
+steps:
+  - n: 1
+    action: |
+      From the parts list, click New Part.
+    expected: |
+      The fork dialog opens. Only Step 1 ("How is this part
+      sourced?") is visible. The dialog header shows the dialog
+      title and a Cancel button. The Continue button is disabled
+      because no axis has been picked.
+  - n: 2
+    action: |
+      On Step 1, click "Made". Read the description on each card.
+    expected: |
+      The "Made" card shows a check icon in the corner and a
+      highlighted background. Step 2 ("What inventory bucket?")
+      animates in below with a fade + slide. Only Make-compatible
+      inventory choices are presented (no Raw material since Make
+      doesn't apply to raw stock; Component, Subassembly,
+      FinishedGood, Tool are valid).
+  - n: 3
+    action: |
+      Switch the Step 1 selection from "Made" to "Bought". Watch
+      Step 2.
+    expected: |
+      Step 2 re-renders with the Buy-compatible inventory choices
+      (Raw, Component, Subassembly, FinishedGood, Consumable, Tool).
+      Any previous Step 2 selection is cleared.
+  - n: 4
+    action: |
+      On Step 2, pick "Raw material". Step 3 (item kind) and Step 4
+      (mode) appear.
+    expected: |
+      Step 3 heading shows an OPTIONAL pill chip. Step 4 shows
+      Express and Guided cards; one is marked as the recommended
+      default for Buy + Raw (express).
+  - n: 5
+    action: |
+      Click Continue without touching Step 3 or Step 4.
+    expected: |
+      The fork dialog closes. The recommended workflow mode (express)
+      opens.
+expected_overall: |
+  The four-step picker cascades correctly: changing an earlier
+  axis re-renders or clears later ones. Only the first axis is
+  required to start; the recommended default fills in for unset
+  axes.
+pass_criteria: |
+  All four steps reveal in order AND switching procurement clears
+  inventory class AND optional step is clearly labeled AND
+  Continue uses the recommended default when not overridden.
+est_minutes: 4
+```
+
+---
+
+## P2-WIZARD-002 — Express vs. guided mode toggle (mid-flow switch with confirm)
+
+```yaml
+id: P2-WIZARD-002
+title: Switch between express and guided modes mid-flow
+phase: P2
+goal: |
+  Verify the workflow shell's mode toggle works mid-edit, confirms
+  before discarding unsaved changes, and visually communicates
+  the mode choice.
+roles:
+  - Engineer / R&D
+flows:
+  - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
+preconditions:
+  - The new-part fork dialog can be reached from the parts list.
+steps:
+  - n: 1
+    action: |
+      Start a new part (P2-WIZARD-001 step 1-5). Land on the
+      express form.
+    expected: |
+      The header shows the title and an Express/Guided segmented
+      toggle. Express is highlighted with the "All at once"
+      sub-label. Guided shows the "Step by step" sub-label.
+  - n: 2
+    action: |
+      WITHOUT typing anything, click Guided.
+    expected: |
+      The shell switches to guided mode. The step rail appears on
+      the left. The breadcrumb in the header reads "Step 1 of N ·
+      Basics". No confirmation dialog appears (form was clean).
+  - n: 3
+    action: |
+      In the basics step, type a Name. Without saving, click
+      Express on the mode toggle.
+    expected: |
+      A confirmation dialog appears: "Switch modes? You have
+      unsaved changes on this step. Switching modes will discard
+      them." with a "Switch and discard" primary button and a
+      Cancel button.
+  - n: 4
+    action: |
+      Click Cancel on the confirmation.
+    expected: |
+      The confirmation closes. Mode stays guided. The Name typed
+      earlier is still in the field.
+  - n: 5
+    action: |
+      Click Express again, this time confirm "Switch and discard".
+    expected: |
+      Mode switches to express. The form's data may be cleared
+      because the unsaved edits weren't persisted. The Express
+      segment is now active.
+expected_overall: |
+  The toggle works mid-flow but protects unsaved edits behind a
+  confirmation. The sub-labels make the choice self-explanatory.
+pass_criteria: |
+  Mode switch with no dirty data is silent AND mode switch with
+  dirty data prompts confirmation AND Cancel preserves data AND
+  Confirm allows the swap.
+est_minutes: 4
+```
+
+---
+
+## P2-WIZARD-003 — Guided rail: completion, lock, click-to-jump
+
+```yaml
+id: P2-WIZARD-003
+title: Navigate the guided step rail
+phase: P2
+goal: |
+  Verify the rail correctly reflects step state (current,
+  complete, locked) and lets the user navigate by clicking
+  earlier steps directly.
+roles:
+  - Engineer / R&D
+flows:
+  - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
+preconditions:
+  - A guided workflow can be opened on a Make + Subassembly
+    or Make + FinishedGood part definition.
+steps:
+  - n: 1
+    action: |
+      Open a guided new-part workflow. Inspect the rail.
+    expected: |
+      Step 1 (basics) is the current step (left-border accent in
+      primary color, indicator in primary, breadcrumb shows
+      "Step 1 of N · Basics"). Future steps show a lock icon and
+      muted text. No completed steps yet.
+  - n: 2
+    action: |
+      Fill basics fully and click Continue.
+    expected: |
+      Basics indicator pops to a green check (brief scale
+      animation). Step 2 becomes current. Breadcrumb advances.
+      The previously-locked step 2 is now unlocked; future
+      steps remain locked.
+  - n: 3
+    action: |
+      Click the basics row in the rail.
+    expected: |
+      The shell jumps back to basics. The values are still
+      populated. Step 2 is no longer current; basics is.
+  - n: 4
+    action: |
+      Try to click a future (locked) step in the rail.
+    expected: |
+      Click is rejected; the row's button is disabled.
+expected_overall: |
+  Rail states accurately reflect the user's progress; click-back
+  works on completed/visited steps; future steps remain
+  unreachable until preceding required steps are satisfied.
+pass_criteria: |
+  Current step is unambiguous AND completed steps are click-back
+  navigable AND future steps cannot be clicked into.
+est_minutes: 4
+```
+
+---
+
+## P2-WIZARD-004 — Validation popover click-to-jump
+
+```yaml
+id: P2-WIZARD-004
+title: Click a violation to jump to its field
+phase: P2
+goal: |
+  Verify the validation popover lets users click a listed
+  violation to scroll/focus the offending field directly,
+  closing the feedback loop instead of leaving the user
+  hunting.
+roles:
+  - Engineer / R&D
+flows:
+  - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
+preconditions:
+  - The express new-part form can be opened.
+steps:
+  - n: 1
+    action: |
+      Open the express new-part form. Leave Name blank. Verify
+      Save is disabled and a small red warning chip with a count
+      "1" sits to the LEFT of the Save button.
+    expected: |
+      Save is grayed out. Warning chip is visible to the left of
+      Save with the count badge.
+  - n: 2
+    action: |
+      Click the warning chip.
+    expected: |
+      A popover opens listing each violation as a clickable button
+      ending with a small forward-arrow icon. "Name is required"
+      is one entry.
+  - n: 3
+    action: |
+      Click the "Name is required" entry.
+    expected: |
+      The popover closes, the page scrolls (if needed) so the Name
+      field is in view, and the Name input receives focus (visible
+      cursor / Material focus ring).
+expected_overall: |
+  Each listed violation in the popover is a one-click jump to
+  the source field.
+pass_criteria: |
+  Clicking the violation focuses the corresponding field AND
+  closes the popover.
+est_minutes: 3
+```
+
+---
+
+## P2-WIZARD-005 — Resume affordance for in-flight workflows
+
+```yaml
+id: P2-WIZARD-005
+title: Pick up an in-flight workflow from a prior session
+phase: P2
+goal: |
+  Verify the workflow shell shows a resume banner when the user
+  comes back to a workflow run that's been idle for more than
+  five minutes — making the resumption feel intentional, not
+  jarring.
+roles:
+  - Engineer / R&D
+flows:
+  - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
+preconditions:
+  - A user has started a guided workflow (e.g. on a make-subassembly
+    part), filled at least the basics step (so an entity row was
+    materialized), and walked away without finishing.
+  - At least 5 minutes have passed since the last edit.
+  - The user has the URL or some way to navigate back to that
+    workflow (e.g. via the "active workflows" list).
+steps:
+  - n: 1
+    action: |
+      Navigate back to the in-flight workflow URL or open it from
+      the active-workflows list.
+    expected: |
+      The shell mounts on the step the user was on previously.
+      Above the step body, an info-tinted banner reads "Picking
+      up where you left off — last edited {date/time}." with a
+      history icon.
+  - n: 2
+    action: |
+      Compare the timestamp in the banner to when the user last
+      edited the workflow.
+    expected: |
+      The timestamp is the run's lastActivityAt and is presented
+      in a human-readable format (e.g. "Apr 15, 2026 3:47 PM" in
+      en-US).
+  - n: 3
+    action: |
+      Make any change and Continue.
+    expected: |
+      The banner disappears once the user interacts with the
+      workflow (or stays present until next remount; either is
+      acceptable as long as it doesn't read as noise).
+expected_overall: |
+  Resume banner makes returning to an idle workflow feel
+  acknowledged, not surprising. Threshold avoids surfacing the
+  banner during an active session.
+pass_criteria: |
+  Banner is shown when lastActivityAt > 5 min ago AND not shown
+  when < 5 min ago AND timestamp is human-readable.
+est_minutes: 5
+```
+
+---
+
+## P2-WIZARD-006 — Step rationale collapsible pane
+
+```yaml
+id: P2-WIZARD-006
+title: Read the "what does this step enable?" rationale pane
+phase: P2
+goal: |
+  Verify the per-step rationale pane (added on the major guided
+  steps) toggles open/closed and explains what filling the step
+  unlocks downstream.
+roles:
+  - Engineer / R&D
+flows:
+  - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
+preconditions:
+  - A guided new-part workflow is open on a step that has a
+    rationale pane (basics, sourcing, costing as of initial
+    rollout).
+steps:
+  - n: 1
+    action: |
+      Land on the basics step. Look between the header and the
+      form.
+    expected: |
+      An info-tinted strip is present with a chevron-down icon
+      and the heading "What does this step enable?" — collapsed
+      by default.
+  - n: 2
+    action: |
+      Click the strip header.
+    expected: |
+      The pane expands with a brief fade-in. The body explains
+      that identity is the foundation for every other step (POs,
+      work orders, BOM positions, ledger lines), and that the
+      procurement and inventory axes selected on the prior screen
+      drive which steps follow. The chevron flips to up.
+  - n: 3
+    action: |
+      Click the strip header again.
+    expected: |
+      The pane collapses. State does NOT persist across remounts
+      (that's a future enhancement; per-mount default is fine
+      today).
+expected_overall: |
+  The rationale pane is discoverable but unobtrusive. Helps new
+  users understand WHY they're filling in this step, not just
+  what fields to fill.
+pass_criteria: |
+  Pane defaults collapsed AND expands on click AND the body text
+  is meaningful (explains downstream enablement).
+est_minutes: 3
+```
+
+---
+
+## P2-WIZARD-007 — Mark Complete failure highlights the offending step
+
+```yaml
+id: P2-WIZARD-007
+title: Server-side completion gate failure feedback
+phase: P2
+goal: |
+  Verify that when Mark Complete fails because a server-side
+  readiness gate isn't satisfied, the rail visually highlights
+  the responsible step and the step body shows an inline alert
+  listing what's missing — not just an opaque toast.
+roles:
+  - Engineer / R&D
+flows:
+  - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
+preconditions:
+  - A guided workflow is open on a Make + Subassembly part.
+  - The user has filled basics + costing but skipped or left BOM
+    empty (so the hasBom gate will fail at completion).
+steps:
+  - n: 1
+    action: |
+      Click Mark Complete from the last step.
+    expected: |
+      The shell calls the server's complete endpoint. The server
+      returns 409 with a missing-validators payload listing
+      hasBom.
+  - n: 2
+    action: |
+      Look at the rail.
+    expected: |
+      The BOM step row turns red: indicator background tinted
+      with the error color, indicator icon switches to a
+      priority_high marker, label color is the error color,
+      index/check is replaced with the alert icon.
+  - n: 3
+    action: |
+      Click the BOM rail row.
+    expected: |
+      Shell jumps to the BOM step. At the top of the step body,
+      an inline error alert appears: heading "This step is missing
+      data needed to complete the workflow" + a bulleted list
+      including the human-readable missing-message ("BOM not yet
+      defined").
+  - n: 4
+    action: |
+      Add a BOM entry and Mark Complete again.
+    expected: |
+      The error indicator on the rail clears; promotion succeeds;
+      a snackbar reads "Part promoted to Active."
+expected_overall: |
+  Failure surfaces the offending step directly on the rail AND
+  in the step body — no hunting through toast text.
+pass_criteria: |
+  The failed step's rail row gets the error treatment AND the
+  step body shows the inline list of missing items AND clearing
+  the missing data clears the rail marker on the next attempt.
+est_minutes: 5
+```
+
+---
+
+## P2-WIZARD-008 — Per-record validator applicability
+
+```yaml
+id: P2-WIZARD-008
+title: Validator applicability skips non-applicable gates
+phase: P2
+goal: |
+  Verify the workflow shell + server agree that a validator with
+  an applicability predicate that doesn't match the record is
+  treated as satisfied — not as missing.
+roles:
+  - Administrator
+  - Engineer / R&D
+flows:
+  - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
+preconditions:
+  - At least one entity readiness validator with a non-null
+    ApplicabilityPredicate has been seeded or admin-authored.
+    (As of initial rollout no Part validator uses this; the
+    case validates the mechanism for forward use — Customer's
+    profile-flag pattern in particular.)
+notes: |
+  This case is a placeholder for the applicability mechanism.
+  When a Part validator with applicability ships (or when this
+  case is adapted for Customer per the workflow expansion plan),
+  the steps remain valid: build a record where the applicability
+  predicate is false, attempt Mark Complete, and verify the gate
+  is silently passed.
+steps:
+  - n: 1
+    action: |
+      Identify a validator V with ApplicabilityPredicate ≠ null.
+      Build a record where V's applicability predicate evaluates
+      to FALSE.
+    expected: |
+      The validator is registered globally for the entity type
+      but is configured to only apply when the applicability
+      predicate is true.
+  - n: 2
+    action: |
+      Open a workflow run on that record. Look at the step rail.
+    expected: |
+      The step that owns V's gate does NOT show as having an
+      unsatisfied gate (since V doesn't apply to this record).
+  - n: 3
+    action: |
+      Click Mark Complete.
+    expected: |
+      Promotion succeeds (or proceeds to the next genuine gate).
+      The non-applicable validator does NOT appear in any
+      missing-validators feedback.
+  - n: 4
+    action: |
+      For comparison, build a second record where V's applicability
+      predicate evaluates to TRUE. Repeat the Mark Complete attempt
+      with V's gate unsatisfied.
+    expected: |
+      V appears as a missing validator. The rail highlights the
+      step. The inline alert lists V's missing message.
+expected_overall: |
+  Applicability filter works symmetrically: validator skipped
+  when not applicable, enforced when applicable. Client and
+  server agree.
+pass_criteria: |
+  Non-applicable validator is silently skipped AND applicable
+  validator is enforced normally AND no client/server drift in
+  the missing-validators answer.
+est_minutes: 6
+```
+
+---
+
+## P2-WIZARD-009 — Workflow URL deep-link resumption
+
+```yaml
+id: P2-WIZARD-009
+title: Resume a workflow from a deep-link URL
+phase: P2
+goal: |
+  Verify that workflow URL state (run id, current step, mode)
+  fully restores the in-flight session — supports refresh,
+  bookmarks, and shared links.
+roles:
+  - Engineer / R&D
+flows:
+  - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
+preconditions:
+  - A new-part workflow run exists and is in flight on a
+    materialized entity (e.g. partway through guided basics →
+    BOM).
+steps:
+  - n: 1
+    action: |
+      Look at the browser URL while in the workflow.
+    expected: |
+      URL contains /parts/{id} (or /parts/new before
+      materialization) plus query params:
+        - workflow={definitionId}
+        - mode=guided | express
+        - step={currentStepId} (guided only)
+        - runId={runId} (when entity-less)
+  - n: 2
+    action: |
+      Copy the URL. Open a new tab and paste.
+    expected: |
+      The workflow shell mounts on the same step in the same
+      mode against the same run. Field values are restored from
+      the entity (any unsaved client-side edits in the original
+      tab are NOT carried over).
+  - n: 3
+    action: |
+      In the original tab, click the Guided/Express toggle to
+      switch modes. Watch the URL.
+    expected: |
+      The URL's mode= param updates to reflect the new choice.
+  - n: 4
+    action: |
+      Refresh the page.
+    expected: |
+      The shell remounts in the post-refresh URL state — the
+      same mode + step. The user does not lose their position.
+expected_overall: |
+  The URL is the source of truth for workflow navigation state.
+  Refresh, deep link, and shared link all land on the right
+  view.
+pass_criteria: |
+  The URL contains run id + step + mode AND deep-linking restores
+  exactly that state AND mode-toggle changes the URL AND refresh
+  preserves position.
+est_minutes: 4
+```
+
+---
+
+## P2-WIZARD-010 — Readonly mode (placeholder for workflow-runs admin)
+
+```yaml
+id: P2-WIZARD-010
+title: View a workflow run in read-only mode
+phase: P2
+goal: |
+  Verify the workflow shell's [readonly] mode hides editing
+  affordances so administrators (or future history-view
+  surfaces) can inspect a run without risk of mutation.
+roles:
+  - Administrator
+flows:
+  - part-to-inventory
+capabilities:
+  - CAP-MD-PARTS
+preconditions:
+  - A workflow run exists and a UI surface is wired to mount
+    the WorkflowComponent with [readonly]="true" (e.g., the
+    workflow-runs admin detail page once that's built; the
+    case is a placeholder until that surface ships).
+notes: |
+  This is a placeholder case for the workflow-runs admin (b)
+  extension described in docs/workflow-pattern-expansion.md.
+  Until that surface ships in the application, the case can
+  be exercised by ad-hoc temporarily setting the readonly
+  input via dev tools on any workflow-page mount.
+steps:
+  - n: 1
+    action: |
+      Open the workflow-runs admin detail page for any in-flight
+      run.
+    expected: |
+      The shell mounts. The mode toggle is replaced by a small
+      muted "View only" chip with a visibility (eyeball) icon.
+      The footer is gone — no Back, Skip, or Continue / Mark
+      Complete buttons.
+  - n: 2
+    action: |
+      Click into the rail to navigate between steps.
+    expected: |
+      The rail still works for navigation; the user can browse
+      previously-completed and current steps.
+  - n: 3
+    action: |
+      Inspect the step body's form controls.
+    expected: |
+      Step components honor the readonly contract by disabling
+      their form controls and hiding their own Save buttons.
+      The user can read but not edit.
+expected_overall: |
+  Readonly mode lets admins or auditors inspect a run without
+  any way to mutate it from this surface.
+pass_criteria: |
+  Footer is hidden AND mode toggle is replaced with View only
+  chip AND step components disable their controls AND no Save
+  button is visible anywhere.
+est_minutes: 4
 ```
 
 ---
