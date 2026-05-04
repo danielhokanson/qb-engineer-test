@@ -7,7 +7,7 @@ description: |
   Populate the records that transactions will reference. Multi-role:
   Procurement owns vendors, Sales owns customers, R&D owns parts/BOMs/
   routings, Controller approves pricing and credit limits.
-estimated_total_minutes: 180
+estimated_total_minutes: 220
 
 default_fixture: cascade-components-mid
 
@@ -53,6 +53,36 @@ sequence:
     scale_tags: [mid-market, enterprise]
   - id: P2-PART-005
     required: false
+
+  # Workflow shell — covers the new-part fork dialog + the
+  # express/guided wizard behaviors the rest of P2 inherits.
+  # P2-WIZARD-001 + P2-WIZARD-003 are blocking because every
+  # subsequent part-creating case relies on the fork → shell flow.
+  - id: P2-WIZARD-001
+    required: true
+    note: Blocking. All part creation flows through the four-step fork picker.
+  - id: P2-WIZARD-002
+    required: false
+  - id: P2-WIZARD-003
+    required: true
+    note: Blocking. Rail navigation underpins every guided case.
+  - id: P2-WIZARD-004
+    required: false
+  - id: P2-WIZARD-005
+    required: false
+  - id: P2-WIZARD-006
+    required: false
+  - id: P2-WIZARD-007
+    required: true
+    note: Required to verify server-side gate failure feedback.
+  - id: P2-WIZARD-008
+    required: false
+    note: Placeholder until Customer adopts applicability or a Part validator opts in.
+  - id: P2-WIZARD-009
+    required: false
+  - id: P2-WIZARD-010
+    required: false
+    note: Placeholder until the workflow-runs admin (b) ships.
 
   # BOMs
   - id: P2-BOM-001
